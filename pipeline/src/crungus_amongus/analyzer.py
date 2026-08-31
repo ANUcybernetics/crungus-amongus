@@ -43,17 +43,21 @@ def save_embeddings(path: Path, embeddings: dict[str, np.ndarray]) -> None:
 
 
 def embed_images(settings: Settings) -> dict[str, np.ndarray]:
-    """Embed every original image, reusing cached embeddings."""
+    """Embed every optimized image, reusing cached embeddings.
+
+    The optimized tree is the source (not originals): it is guaranteed raster
+    (SVG outputs get rasterised by optimize) and Pillow reads AVIF natively.
+    """
     import open_clip
     import torch
     from PIL import Image
 
     embeddings = load_embeddings(settings.embeddings_path)
-    all_images = sorted(p for p in settings.originals_dir.rglob("*") if p.is_file())
+    all_images = sorted(settings.optimized_dir.rglob("*.avif"))
     pending = [
         p
         for p in all_images
-        if str(p.relative_to(settings.originals_dir).with_suffix("")) not in embeddings
+        if str(p.relative_to(settings.optimized_dir).with_suffix("")) not in embeddings
     ]
     logger.info("embeddings: {} cached, {} to compute", len(embeddings), len(pending))
     if not pending:
@@ -76,7 +80,7 @@ def embed_images(settings: Settings) -> dict[str, np.ndarray]:
             features = model.encode_image(batch)
             features = features / features.norm(dim=-1, keepdim=True)
         for p, vector in zip(batch_paths, features.cpu().numpy(), strict=True):
-            key = str(p.relative_to(settings.originals_dir).with_suffix(""))
+            key = str(p.relative_to(settings.optimized_dir).with_suffix(""))
             embeddings[key] = vector.astype(np.float32)
         logger.info(
             "embedded {}/{}", min(start + BATCH_SIZE, len(pending)), len(pending)
