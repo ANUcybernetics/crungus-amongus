@@ -1,0 +1,154 @@
+"""CLIP embeddings → crungus-ness scores and UMAP atlas coordinates.
+
+Local and free: open-clip ViT-B/32 over the originals, cached in
+state/embeddings.npz (keyed by relative image path). The crungus-ness score
+of a (model, prompt) set is the mean pairwise cosine similarity of its
+embeddings — high means the model renders a consistent creature, the defining
+property of the original 2022 crungus. UMAP projects all embeddings to 2D for
+the atlas, normalised to [0, 1]².
+"""
+
+from pathlib import Path
+
+import numpy as np
+from loguru import logger
+from pydantic import BaseModel
+
+from .config import Settings
+
+CLIP_MODEL = "ViT-B-32"
+CLIP_PRETRAINED = "openai"
+BATCH_SIZE = 64
+
+
+class Analysis(BaseModel):
+    consistency: dict[str, float]  # "<slug>/<prompt_slug>" -> mean pairwise cos sim
+    atlas: dict[str, tuple[float, float]]  # "<slug>/<prompt_slug>/<index>" -> x, y
+
+
+def analysis_path(settings: Settings) -> Path:
+    return settings.state_dir / "analysis.json"
+
+
+def load_embeddings(path: Path) -> dict[str, np.ndarray]:
+    if not path.exists():
+        return {}
+    with np.load(path) as data:
+        return {key: data[key] for key in data.files}
+
+
+def save_embeddings(path: Path, embeddings: dict[str, np.ndarray]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(path, allow_pickle=False, **embeddings)
+
+
+def embed_images(settings: Settings) -> dict[str, np.ndarray]:
+    """Embed every original image, reusing cached embeddings."""
+    import open_clip
+    import torch
+    from PIL import Image
+
+    embeddings = load_embeddings(settings.embeddings_path)
+    all_images = sorted(p for p in settings.originals_dir.rglob("*") if p.is_file())
+    pending = [
+        p
+        for p in all_images
+        if str(p.relative_to(settings.originals_dir).with_suffix("")) not in embeddings
+    ]
+    logger.info("embeddings: {} cached, {} to compute", len(embeddings), len(pending))
+    if not pending:
+        return embeddings
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model, _, preprocess = open_clip.create_model_and_transforms(
+        CLIP_MODEL, pretrained=CLIP_PRETRAINED, device=device
+    )
+    model.eval()
+
+    for start in range(0, len(pending), BATCH_SIZE):
+        batch_paths = pending[start : start + BATCH_SIZE]
+        tensors = []
+        for p in batch_paths:
+            with Image.open(p) as img:
+                tensors.append(preprocess(img.convert("RGB")))
+        batch = torch.stack(tensors).to(device)
+        with torch.no_grad():
+            features = model.encode_image(batch)
+            features = features / features.norm(dim=-1, keepdim=True)
+        for p, vector in zip(batch_paths, features.cpu().numpy(), strict=True):
+            key = str(p.relative_to(settings.originals_dir).with_suffix(""))
+            embeddings[key] = vector.astype(np.float32)
+        logger.info(
+            "embedded {}/{}", min(start + BATCH_SIZE, len(pending)), len(pending)
+        )
+
+    save_embeddings(settings.embeddings_path, embeddings)
+    return embeddings
+
+
+def consistency_scores(embeddings: dict[str, np.ndarray]) -> dict[str, float]:
+    """Mean pairwise cosine similarity per <slug>/<prompt_slug> group."""
+    groups: dict[str, list[np.ndarray]] = {}
+    for key, vector in embeddings.items():
+        group = key.rsplit("/", 1)[0]
+        groups.setdefault(group, []).append(vector)
+
+    scores: dict[str, float] = {}
+    for group, vectors in groups.items():
+        if len(vectors) < 2:
+            continue
+        matrix = np.stack(vectors)  # already L2-normalised
+        sims = matrix @ matrix.T
+        n = len(vectors)
+        off_diagonal = (sims.sum() - np.trace(sims)) / (n * (n - 1))
+        scores[group] = round(float(off_diagonal), 4)
+    return scores
+
+
+def atlas_coords(embeddings: dict[str, np.ndarray]) -> dict[str, tuple[float, float]]:
+    """UMAP to 2D, normalised to [0, 1]²."""
+    import umap
+
+    keys = sorted(embeddings)
+    matrix = np.stack([embeddings[k] for k in keys])
+    # n_jobs=1 explicitly: random_state forces serial anyway, and leaving the
+    # default -1 makes umap emit an override warning
+    reducer = umap.UMAP(
+        n_neighbors=15, min_dist=0.1, metric="cosine", random_state=42, n_jobs=1
+    )
+    coords = reducer.fit_transform(matrix)
+    low = coords.min(axis=0)
+    span = coords.max(axis=0) - low
+    span[span == 0] = 1.0
+    normalised = (coords - low) / span
+    return {
+        key: (round(float(x), 4), round(float(y), 4))
+        for key, (x, y) in zip(keys, normalised, strict=True)
+    }
+
+
+def run_analysis(settings: Settings) -> Analysis:
+    embeddings = embed_images(settings)
+    if not embeddings:
+        logger.warning("no images to analyse")
+        return Analysis(consistency={}, atlas={})
+    analysis = Analysis(
+        consistency=consistency_scores(embeddings),
+        atlas=atlas_coords(embeddings),
+    )
+    path = analysis_path(settings)
+    path.write_text(analysis.model_dump_json(indent=2) + "\n")
+    logger.info(
+        "analysis: {} groups scored, {} atlas points → {}",
+        len(analysis.consistency),
+        len(analysis.atlas),
+        path,
+    )
+    return analysis
+
+
+def load_analysis(settings: Settings) -> Analysis | None:
+    path = analysis_path(settings)
+    if not path.exists():
+        return None
+    return Analysis.model_validate_json(path.read_text())

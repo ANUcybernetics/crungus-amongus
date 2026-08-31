@@ -6,11 +6,16 @@ readme = "README.md"
 authors = [{ name = "Ben Swift", email = "ben@benswift.me" }]
 requires-python = ">=3.14"
 dependencies = [
+    "boto3>=1.43.83",
     "httpx>=0.28.1",
     "loguru>=0.7.3",
+    "numpy>=2.5.2",
+    "open-clip-torch>=3.3.0",
+    "pillow>=12.3.0",
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
     "typer>=0.27.2",
+    "umap-learn>=0.5.12",
 ]
 
 [project.scripts]

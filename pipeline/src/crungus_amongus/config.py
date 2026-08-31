@@ -7,6 +7,7 @@ never an installed wheel.
 
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -25,6 +26,23 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(extra="ignore")
 
     replicate_api_token: str
+
+    # Tigris bucket (credentials live in the untracked mise [env] block)
+    s3_endpoint: str = Field(
+        "https://fly.storage.tigris.dev", validation_alias="CRUNGUS_S3_ENDPOINT"
+    )
+    s3_bucket: str = Field("crungus-amongus", validation_alias="CRUNGUS_S3_BUCKET")
+    s3_access_key_id: str | None = Field(
+        None, validation_alias="CRUNGUS_S3_ACCESS_KEY_ID"
+    )
+    s3_secret_access_key: str | None = Field(
+        None, validation_alias="CRUNGUS_S3_SECRET_ACCESS_KEY"
+    )
+    # public base the site fetches images from; swap when DNS lands
+    image_base_url: str = Field(
+        "https://crungus-amongus.fly.storage.tigris.dev",
+        validation_alias="CRUNGUS_IMAGE_BASE_URL",
+    )
 
     data_dir: Path = REPO_ROOT / "data"
     state_dir: Path = REPO_ROOT / "state"

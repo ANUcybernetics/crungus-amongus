@@ -131,6 +131,51 @@ def generate(
 
 
 @app.command()
+def optimize(
+    force: bool = typer.Option(False, help="re-encode even if up to date"),
+) -> None:
+    """Encode originals to AVIF under data/optimized/."""
+    from .optimizer import optimize_all
+
+    optimize_all(Settings(), force=force)
+
+
+@app.command()
+def analyze() -> None:
+    """CLIP embeddings → crungus-ness scores + UMAP atlas coords."""
+    from .analyzer import run_analysis
+
+    run_analysis(Settings())
+
+
+@app.command()
+def sync(
+    force: bool = typer.Option(False, help="re-upload everything"),
+) -> None:
+    """Upload the optimized AVIF tree to the Tigris bucket."""
+    from .bucket_sync import sync_optimized
+
+    sync_optimized(Settings(), force=force)
+
+
+@app.command()
+def publish(
+    out: str = typer.Option(None, "--out", help="output path for models.json"),
+) -> None:
+    """Assemble the site data contract from registry + manifest + analysis."""
+    from pathlib import Path
+
+    from .site_export import SITE_DATA_PATH, export_site_data
+
+    settings = Settings()
+    registry = load_registry(settings.registry_path)
+    if registry is None:
+        logger.error("no registry — run discover first")
+        raise typer.Exit(1)
+    export_site_data(registry, settings, Path(out) if out else SITE_DATA_PATH)
+
+
+@app.command()
 def status(
     models: str = typer.Option(None, "--models", help="fnmatch pattern filter"),
 ) -> None:
