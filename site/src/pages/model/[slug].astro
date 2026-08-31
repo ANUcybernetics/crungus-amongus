@@ -1,0 +1,198 @@
+---
+import { Image } from "astro:assets";
+
+import ConsistencyMeter from "../../components/ConsistencyMeter.astro";
+import Base from "../../layouts/Base.astro";
+import { siteData } from "../../lib/data";
+import { bucketUrl, localImage } from "../../lib/images";
+import { generatedModels, releaseYear } from "../../lib/models";
+
+export function getStaticPaths() {
+  return generatedModels(siteData).map((model) => ({
+    params: { slug: model.slug },
+    props: { model },
+  }));
+}
+
+const { model } = Astro.props;
+const dated = model.release_date !== null;
+---
+
+<Base
+  title={`${model.owner}/${model.name} — Crungus Amongus`}
+  description={`The crungus as rendered by ${model.owner}/${model.name}${dated ? ` (${releaseYear(model)})` : ""}.`}
+>
+  <article>
+    <header>
+      <p class="mono muted eyebrow">
+        {releaseYear(model)} · {model.source === "legacy" ? "curated relic" : "collection"} ·
+        <a href={model.replicate_url}>view on replicate</a>
+      </p>
+      <h1 class="mono">{model.owner}/{model.name}</h1>
+      {model.description && <p class="description">{model.description}</p>}
+      {model.notes && <p class="muted notes">{model.notes}</p>}
+    </header>
+
+    {
+      model.prompts
+        .filter((prompt) => prompt.images.length > 0)
+        .map((prompt) => (
+          <section aria-labelledby={`prompt-${prompt.prompt_slug}`}>
+            <div class="prompt-head">
+              <h2 id={`prompt-${prompt.prompt_slug}`} class="mono">
+                “{prompt.prompt}”
+              </h2>
+              <ConsistencyMeter value={prompt.consistency} />
+            </div>
+            <div class="grid">
+              {prompt.images.map((image, i) => {
+                const local = localImage(image.key);
+                return (
+                  local && (
+                    <button
+                      type="button"
+                      class="thumb"
+                      data-full={bucketUrl(image.key)}
+                      data-alt={`crungus ${i + 1} of ${prompt.images.length}, ${model.owner}/${model.name}, prompt “${prompt.prompt}”`}
+                    >
+                      <Image
+                        src={local}
+                        alt={`crungus ${i + 1} of ${prompt.images.length} for “${prompt.prompt}”`}
+                        widths={[240, 480]}
+                        sizes="(max-width: 40rem) 44vw, 240px"
+                        style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
+                      />
+                    </button>
+                  )
+                );
+              })}
+            </div>
+          </section>
+        ))
+    }
+  </article>
+
+  <dialog id="lightbox" closedby="any" aria-label="full-size image">
+    <form method="dialog">
+      <img alt="" />
+      <button type="submit" class="mono">close</button>
+    </form>
+  </dialog>
+</Base>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("#lightbox");
+  const img = dialog?.querySelector("img");
+
+  if (dialog && img) {
+    for (const thumb of document.querySelectorAll<HTMLButtonElement>(".thumb")) {
+      thumb.addEventListener("click", () => {
+        img.src = thumb.dataset.full ?? "";
+        img.alt = thumb.dataset.alt ?? "";
+        dialog.showModal();
+      });
+    }
+    dialog.addEventListener("close", () => {
+      img.removeAttribute("src");
+    });
+    // light-dismiss fallback for browsers without closedby support
+    if (!("closedBy" in HTMLDialogElement.prototype)) {
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+    }
+  }
+</script>
+
+<style>
+  header {
+    padding-block: 2rem 1rem;
+    max-width: 46rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 4vw, 2.1rem);
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
+  .description {
+    margin: 0;
+  }
+
+  .notes {
+    font-style: italic;
+  }
+
+  .prompt-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-block-end: 1px solid var(--line);
+    margin: 2rem 0 1rem;
+    padding-block-end: 0.4rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(170px, 44vw), 1fr));
+    gap: 0.75rem;
+  }
+
+  .thumb {
+    padding: 0;
+    border: none;
+    background: var(--surface);
+    cursor: zoom-in;
+  }
+
+  .thumb img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  dialog {
+    background: var(--ground);
+    border: 1px solid var(--line);
+    padding: 0.75rem;
+    max-width: min(92vw, 64rem);
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 75%);
+  }
+
+  dialog img {
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+  }
+
+  dialog button {
+    margin-block-start: 0.6rem;
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 0.25rem 0.8rem;
+    cursor: pointer;
+  }
+
+  dialog button:hover {
+    color: var(--text);
+  }
+</style>

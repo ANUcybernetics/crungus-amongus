@@ -1,0 +1,98 @@
+/* crungus-amongus design tokens: darkroom archive.
+   Warm brown-black ground so the specimens glow; bone text; a single
+   rust-ochre accent drawn from the creature's own fur. */
+
+:root {
+  --ground: #17140f;
+  --surface: #211c14;
+  --surface-raised: #2a2418;
+  --line: #3a3226;
+  --text: #d9cfbf;
+  --muted: #8d8171;
+  --accent: #c08434;
+  --accent-bright: #dfa14e;
+
+  --font-display: "Eczar", serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --content-width: 72rem;
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  width: min(var(--content-width), 100% - 2.5rem);
+  margin-inline: auto;
+  flex: 1;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+a {
+  color: var(--accent-bright);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--text);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ground);
+}
+
+/* utility voice: metadata, labels, measurements */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.muted {
+  color: var(--muted);
+}

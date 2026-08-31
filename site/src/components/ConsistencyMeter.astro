@@ -1,0 +1,54 @@
+---
+// Crungus-ness: mean pairwise CLIP similarity of the model's ten outputs.
+// High = the model summons one stable creature; low = ten unrelated guesses.
+interface Props {
+  value: number | null;
+  label?: string;
+}
+
+const { value, label = "consistency" } = Astro.props;
+---
+
+{
+  value !== null && (
+    <span class="consistency mono" title="mean pairwise CLIP similarity of this model's outputs">
+      <span class="muted">{label}</span>
+      <meter min="0" max="1" low={0.55} high={0.75} optimum={0.99} value={value} />
+      <span>{value.toFixed(2)}</span>
+    </span>
+  )
+}
+
+<style>
+  .consistency {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  meter {
+    width: 4.5rem;
+    height: 0.5rem;
+
+    /* firefox */
+    background: var(--surface-raised);
+    border: none;
+  }
+
+  meter::-webkit-meter-bar {
+    background: var(--surface-raised);
+    border: none;
+    border-radius: 0;
+    height: 0.5rem;
+  }
+
+  meter::-webkit-meter-optimum-value,
+  meter::-webkit-meter-suboptimum-value,
+  meter::-webkit-meter-even-less-good-value {
+    background: var(--accent);
+  }
+
+  meter::-moz-meter-bar {
+    background: var(--accent);
+  }
+</style>

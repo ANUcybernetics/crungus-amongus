@@ -1,0 +1,96 @@
+---
+import "@fontsource/eczar/500.css";
+import "@fontsource/eczar/600.css";
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/500.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const nav = [
+  { href: base, label: "archive" },
+  { href: `${base}/atlas/`, label: "atlas" },
+  { href: `${base}/about/`, label: "about" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <a class="wordmark" href={base}>crungus amongus</a>
+      <nav aria-label="Site">
+        {nav.map((item) => <a class="mono" href={item.href}>{item.label}</a>)}
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p class="mono muted">
+        an archive of a word that means nothing and summons something ·
+        <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    width: min(var(--content-width), 100% - 2.5rem);
+    margin-inline: auto;
+    padding-block: 1.4rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .wordmark:hover {
+    color: var(--accent-bright);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  nav a:hover {
+    color: var(--accent-bright);
+  }
+
+  footer {
+    width: min(var(--content-width), 100% - 2.5rem);
+    margin-inline: auto;
+    padding-block: 3rem 1.5rem;
+  }
+</style>

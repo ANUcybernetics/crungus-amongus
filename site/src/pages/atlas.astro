@@ -1,0 +1,286 @@
+---
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { generatedModels, releaseYear } from "../lib/models";
+
+const base = import.meta.env.BASE_URL;
+
+// every image with an atlas position, plus what the pointer needs to know
+const points = generatedModels(siteData).flatMap((model) =>
+  model.prompts.flatMap((prompt) =>
+    prompt.images
+      .filter((image) => image.atlas !== null)
+      .map((image) => ({
+        key: image.key,
+        x: image.atlas![0],
+        y: image.atlas![1],
+        slug: model.slug,
+        label: `${model.owner}/${model.name}`,
+        year: releaseYear(model),
+      })),
+  ),
+);
+
+const years = [...new Set(points.map((p) => p.year))].toSorted();
+---
+
+<Base
+  title="Atlas — Crungus Amongus"
+  description="Every crungus in the archive, placed by visual similarity. Clusters are creatures; the goat-demon lives in one of them."
+>
+  <section class="intro">
+    <h1>The atlas</h1>
+    <p class="lede">
+      Every image in the archive, placed by visual similarity (CLIP embeddings,
+      projected with UMAP). Clusters are creatures: where many models agree, a
+      crungus exists. Drag to pan, scroll to zoom, click an image to visit its
+      model.
+    </p>
+    <p class="mono legend" aria-hidden="true">
+      {years.map((year, i) => (
+        <span><i style={`--year-index: ${i}; --year-count: ${years.length}`}></i>{year}</span>
+      ))}
+    </p>
+  </section>
+
+  <div class="atlas-frame">
+    <canvas id="atlas" aria-label="map of all crungus images by visual similarity"></canvas>
+    <p id="atlas-caption" class="mono muted" aria-live="polite"></p>
+    <noscript>
+      <p class="muted">
+        The atlas needs JavaScript to draw. Everything on it is also in
+        <a href={base}>the archive</a>.
+      </p>
+    </noscript>
+  </div>
+</Base>
+
+<script
+  type="application/json"
+  id="atlas-points"
+  set:html={JSON.stringify({ points, years, base })}
+/>
+
+<script>
+  interface Point {
+    key: string;
+    x: number;
+    y: number;
+    slug: string;
+    label: string;
+    year: string;
+  }
+
+  const payload = JSON.parse(
+    document.getElementById("atlas-points")!.textContent!,
+  ) as { points: Point[]; years: string[]; base: string };
+  const canvas = document.getElementById("atlas") as HTMLCanvasElement;
+  const caption = document.getElementById("atlas-caption")!;
+  const context = canvas.getContext("2d")!;
+
+  const spriteIndex = (await (
+    await fetch(`${payload.base}/atlas/sprite.json`)
+  ).json()) as { cell_px: number; cols: number; keys: string[] };
+  const sprite = new Image();
+  sprite.src = `${payload.base}/atlas/sprite.webp`;
+  await sprite.decode();
+
+  const cellOf = new Map(spriteIndex.keys.map((key, i) => [key, i]));
+  const yearIndex = new Map(payload.years.map((year, i) => [year, i]));
+
+  // world space: [0, 1]² scaled to a square; the view is a scale + offset
+  const WORLD = 1600;
+  const CELL_WORLD = 26;
+  let scale = 1;
+  let offsetX = 0;
+  let offsetY = 0;
+  let hovered: Point | null = null;
+
+  function yearColor(year: string): string {
+    const i = yearIndex.get(year) ?? 0;
+    const t = payload.years.length > 1 ? i / (payload.years.length - 1) : 1;
+    return `oklch(${55 + t * 25}% ${0.06 + t * 0.09} 75)`;
+  }
+
+  function resize() {
+    const rect = canvas.parentElement!.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = Math.min(rect.width * 0.75, window.innerHeight * 0.75) * dpr;
+    canvas.style.height = `${canvas.height / dpr}px`;
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (scale === 1 && offsetX === 0) {
+      // initial fit: centre the world in the view
+      const view = Math.min(rect.width, canvas.height / dpr);
+      scale = (view / WORLD) * 0.95;
+      offsetX = (rect.width - WORLD * scale) / 2;
+      offsetY = (canvas.height / dpr - WORLD * scale) / 2;
+    }
+    draw();
+  }
+
+  function draw() {
+    const width = canvas.width / (window.devicePixelRatio || 1);
+    const height = canvas.height / (window.devicePixelRatio || 1);
+    context.clearRect(0, 0, width, height);
+    const size = CELL_WORLD * scale;
+    for (const point of payload.points) {
+      const cell = cellOf.get(point.key);
+      if (cell === undefined) continue;
+      const x = offsetX + point.x * WORLD * scale - size / 2;
+      const y = offsetY + point.y * WORLD * scale - size / 2;
+      if (x + size < 0 || y + size < 0 || x > width || y > height) continue;
+      context.drawImage(
+        sprite,
+        (cell % spriteIndex.cols) * spriteIndex.cell_px,
+        Math.floor(cell / spriteIndex.cols) * spriteIndex.cell_px,
+        spriteIndex.cell_px,
+        spriteIndex.cell_px,
+        x,
+        y,
+        size,
+        size,
+      );
+      context.strokeStyle =
+        point === hovered ? "oklch(85% 0.13 75)" : yearColor(point.year);
+      context.lineWidth = point === hovered ? 2 : 1;
+      context.strokeRect(x, y, size, size);
+    }
+  }
+
+  function pointAt(clientX: number, clientY: number): Point | null {
+    const rect = canvas.getBoundingClientRect();
+    const px = clientX - rect.left;
+    const py = clientY - rect.top;
+    const half = (CELL_WORLD * scale) / 2;
+    let best: Point | null = null;
+    let bestDist = Infinity;
+    for (const point of payload.points) {
+      const x = offsetX + point.x * WORLD * scale;
+      const y = offsetY + point.y * WORLD * scale;
+      const dist = Math.hypot(px - x, py - y);
+      if (dist < half + 2 && dist < bestDist) {
+        best = point;
+        bestDist = dist;
+      }
+    }
+    return best;
+  }
+
+  let dragging = false;
+  let moved = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  canvas.addEventListener("pointerdown", (event) => {
+    dragging = true;
+    moved = false;
+    lastX = event.clientX;
+    lastY = event.clientY;
+    canvas.setPointerCapture(event.pointerId);
+  });
+
+  canvas.addEventListener("pointermove", (event) => {
+    if (dragging) {
+      const dx = event.clientX - lastX;
+      const dy = event.clientY - lastY;
+      if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
+      offsetX += dx;
+      offsetY += dy;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      draw();
+    } else {
+      const point = pointAt(event.clientX, event.clientY);
+      if (point !== hovered) {
+        hovered = point;
+        caption.textContent = point ? `${point.label} · ${point.year}` : "";
+        canvas.style.cursor = point ? "pointer" : "grab";
+        draw();
+      }
+    }
+  });
+
+  canvas.addEventListener("pointerup", (event) => {
+    dragging = false;
+    if (!moved) {
+      const point = pointAt(event.clientX, event.clientY);
+      if (point) {
+        window.location.href = `${payload.base}/model/${point.slug}/`;
+      }
+    }
+  });
+
+  canvas.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const px = event.clientX - rect.left;
+    const py = event.clientY - rect.top;
+    const factor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
+    const next = Math.min(Math.max(scale * factor, 0.1), 12);
+    offsetX = px - ((px - offsetX) * next) / scale;
+    offsetY = py - ((py - offsetY) * next) / scale;
+    scale = next;
+    draw();
+  });
+
+  window.addEventListener("resize", resize);
+  resize();
+</script>
+
+<style>
+  .intro {
+    padding-block: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    margin: 0 0 1rem;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend i {
+    width: 0.7rem;
+    height: 0.7rem;
+    background: oklch(
+      calc(55% + (var(--year-index) / max(var(--year-count) - 1, 1)) * 25%)
+        calc(0.06 + (var(--year-index) / max(var(--year-count) - 1, 1)) * 0.09) 75
+    );
+  }
+
+  .atlas-frame {
+    margin-block-end: 2rem;
+  }
+
+  canvas {
+    width: 100%;
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #atlas-caption {
+    min-height: 1.4em;
+    margin: 0.5rem 0 0;
+  }
+</style>

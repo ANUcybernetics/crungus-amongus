@@ -1,0 +1,121 @@
+---
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { failedModels, generatedModels } from "../lib/models";
+
+const models = generatedModels(siteData);
+const failed = failedModels(siteData);
+const imageTotal = models.reduce(
+  (n, m) => n + m.prompts.reduce((k, p) => k + p.images.length, 0),
+  0,
+);
+const generatedAt = siteData.generated_at.slice(0, 10);
+---
+
+<Base
+  title="About — Crungus Amongus"
+  description="What the crungus is, how this archive was made, and what the consistency score does and doesn't mean."
+>
+  <article>
+    <h1>About</h1>
+
+    <h2>The word</h2>
+    <p>
+      In June 2022, Twitch streamer and comedian Guy Kelly typed
+      <em>crungus</em> — a word he made up on the spot — into DALL·E&nbsp;mini
+      (later renamed Craiyon) and got back nine pictures of the same snarling,
+      hairy goat-demon. A word with no meaning had a consistent referent inside
+      the model. The internet named it the first
+      <a href="https://en.wikipedia.org/wiki/Crungus">digital cryptid</a>.
+      Craiyon v2 shipped in 2023 and the creature vanished from it.
+    </p>
+
+    <h2>The archive</h2>
+    <p>
+      This site asks the same question of every text-to-image model that will
+      answer it: the models in Replicate's
+      <a href="https://replicate.com/collections/text-to-image">text-to-image
+      collection</a>, plus a hand-curated set of relics going back to
+      <a href="https://replicate.com/kuprel/min-dalle">min-dalle</a> — the
+      PyTorch port of DALL·E&nbsp;mini itself, still running on rented GPUs in
+      2026. Each model was asked for ten images of “crungus” and ten of “a
+      picture of a crungus”, with no other guidance: no style words, no seeds,
+      no negative prompts. As of {generatedAt} the archive holds
+      {imageTotal} images from {models.length} models; {failed.length} more
+      models were asked and produced nothing.
+    </p>
+
+    <h2>The consistency score</h2>
+    <p>
+      What made the original crungus uncanny was not that the picture was
+      frightening but that it was <em>repeatable</em>: ten samples, one
+      creature. The score reported beside each model measures exactly that —
+      the mean pairwise cosine similarity of CLIP embeddings across the
+      model's ten outputs for a prompt. High means the word lands somewhere
+      specific inside the model; low means each sample is a fresh guess. It
+      says nothing about image quality, and a model that always paints the
+      same beige void would also score high. Read it as: <em>does this model
+      have a crungus?</em>
+    </p>
+
+    <h2>The atlas</h2>
+    <p>
+      The atlas embeds every image in the archive with CLIP and projects the
+      embeddings to two dimensions with UMAP, so images that look alike sit
+      together. Distances are only meaningful locally — clusters are real,
+      the space between them is not.
+    </p>
+
+    <h2>Prior sightings</h2>
+    <ul>
+      <li>
+        <a href="https://en.wikipedia.org/wiki/Crungus">Crungus</a> on
+        Wikipedia
+      </li>
+      <li>
+        Bruce Sterling's
+        <a href="https://www.flickr.com/photos/brucesterling/albums/72177720324124391/">
+        Flickr archive</a> of the original Craiyon screenshots
+      </li>
+      <li>
+        <a href="https://artificialanalysis.ai/image/explore">Artificial
+        Analysis</a>, who compare current models on shared prompts (but keep
+        no history)
+      </li>
+    </ul>
+
+    <h2>Colophon</h2>
+    <p class="mono">
+      images generated via the Replicate API · scored with open-clip
+      (ViT-B/32) · projected with UMAP · encoded as AVIF · served from Tigris
+      object storage · built with Astro · made by
+      <a href="https://benswift.me">Ben Swift</a> at the ANU School of
+      Cybernetics
+    </p>
+  </article>
+</Base>
+
+<style>
+  article {
+    max-width: 46rem;
+    padding-block: 2rem 3rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 2rem 0 0.5rem;
+  }
+
+  ul {
+    padding-inline-start: 1.2rem;
+  }
+
+  li {
+    margin-block-end: 0.3rem;
+  }
+</style>

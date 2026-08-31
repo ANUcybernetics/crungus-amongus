@@ -159,6 +159,14 @@ def sync(
 
 
 @app.command()
+def sprite() -> None:
+    """Compose the atlas sprite sheet from the optimized images."""
+    from .sprite import build_sprite
+
+    build_sprite(Settings())
+
+
+@app.command()
 def publish(
     out: str = typer.Option(None, "--out", help="output path for models.json"),
 ) -> None:
