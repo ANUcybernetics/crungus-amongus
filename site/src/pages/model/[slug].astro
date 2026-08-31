@@ -25,7 +25,7 @@ const dated = model.release_date !== null;
   <article>
     <header>
       <p class="mono muted eyebrow">
-        {releaseYear(model)} · {model.source === "legacy" ? "curated relic" : "collection"} ·
+        {releaseYear(model)} · {model.source === "legacy" ? "curated relic" : "collection"} ·{" "}
         <a href={model.replicate_url}>view on replicate</a>
       </p>
       <h1 class="mono">{model.owner}/{model.name}</h1>

@@ -1,0 +1,79 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: jdx/mise-action@v3
+
+      - name: Install dependencies
+        working-directory: site
+        run: pnpm install --frozen-lockfile
+
+      # the image corpus lives in the public Tigris bucket, not git; cache the
+      # downloaded AVIFs and Astro's transform cache keyed on the data contract
+      - name: Cache image corpus and transforms
+        uses: actions/cache@v4
+        with:
+          path: |
+            site/src/assets/crungus
+            site/node_modules/.astro
+          key: crungus-images-${{ hashFiles('site/src/data/models.json') }}
+
+      - name: Sync images from bucket
+        working-directory: site
+        run: pnpm run sync-images
+
+      - name: Lint
+        working-directory: site
+        run: pnpm run lint
+
+      - name: Lint CSS
+        working-directory: site
+        run: pnpm run lint:css
+
+      - name: Check formatting
+        working-directory: site
+        run: pnpm run format:check
+
+      - name: Typecheck
+        working-directory: site
+        run: pnpm run typecheck
+
+      - name: Test
+        working-directory: site
+        run: pnpm run test
+
+      - name: Build
+        working-directory: site
+        run: pnpm run build
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
