@@ -98,12 +98,36 @@ async def run_batch(
 
         for ref, model_items in by_model.items():
             logger.info("{}: {} predictions to run", ref, len(model_items))
+            # circuit breaker: probe with one concurrency-wave first — a hung
+            # or dead model then costs one timeout wave, not the whole set.
+            # Skipped items get no manifest row, so the next run retries them.
+            probe, rest = (
+                model_items[: policy.concurrency],
+                model_items[policy.concurrency :],
+            )
             results = await asyncio.gather(
                 *(
                     _run_one(item, client, download_http, settings, policy, semaphore)
-                    for item in model_items
+                    for item in probe
                 )
             )
+            if rest:
+                if any(status == "succeeded" for status in results):
+                    results += await asyncio.gather(
+                        *(
+                            _run_one(
+                                item, client, download_http, settings, policy, semaphore
+                            )
+                            for item in rest
+                        )
+                    )
+                else:
+                    logger.warning(
+                        "{}: probe wave all failed ({}); skipping {} remaining items",
+                        ref,
+                        results,
+                        len(rest),
+                    )
             for status in results:
                 counts[status] = counts.get(status, 0) + 1
     return counts
