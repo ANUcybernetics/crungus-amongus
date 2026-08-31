@@ -8,10 +8,8 @@ import { localImage } from "../lib/images";
 import {
   byCrungusness,
   byYear,
-  coverImage,
   failedModels,
   generatedModels,
-  releaseYear,
   timelineSample,
 } from "../lib/models";
 
@@ -43,22 +41,21 @@ const imageTotal = models.reduce(
     </p>
     {
       strip.length > 1 && (
-        <ol class="filmstrip" aria-label="one crungus per year">
-          {strip.map((model) => {
-            const key = coverImage(model);
-            const image = key ? localImage(key) : null;
+        <ol class="filmstrip" aria-label="each year's most typical crungus">
+          {strip.map((sample) => {
+            const image = localImage(sample.key);
             return (
               <li>
-                <a href={`${base}/model/${model.slug}/`}>
+                <a href={`${base}/model/${sample.model.slug}/`}>
                   {image && (
                     <Image
                       src={image}
-                      alt={`crungus in ${releaseYear(model)}, by ${model.owner}/${model.name}`}
+                      alt={`the typical crungus of ${sample.year}, by ${sample.model.owner}/${sample.model.name}`}
                       widths={[160, 320]}
                       sizes="160px"
                     />
                   )}
-                  <span class="mono muted">{releaseYear(model)}</span>
+                  <span class="mono muted">{sample.year}</span>
                 </a>
               </li>
             );

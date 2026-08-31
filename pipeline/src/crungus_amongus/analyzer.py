@@ -24,6 +24,9 @@ BATCH_SIZE = 64
 class Analysis(BaseModel):
     consistency: dict[str, float]  # "<slug>/<prompt_slug>" -> mean pairwise cos sim
     atlas: dict[str, tuple[float, float]]  # "<slug>/<prompt_slug>/<index>" -> x, y
+    # "<slug>/<prompt_slug>/<index>" -> mean cos sim to all same-release-year
+    # images: how typical this image is of its year's crungus
+    year_typicality: dict[str, float] = {}
 
 
 def analysis_path(settings: Settings) -> Path:
@@ -131,6 +134,45 @@ def atlas_coords(embeddings: dict[str, np.ndarray]) -> dict[str, tuple[float, fl
     }
 
 
+def year_typicality_scores(
+    embeddings: dict[str, np.ndarray], year_of_slug: dict[str, str]
+) -> dict[str, float]:
+    """Mean cosine similarity of each image to every image of its release year."""
+    by_year: dict[str, list[str]] = {}
+    for key in embeddings:
+        year = year_of_slug.get(key.split("/", 1)[0])
+        if year is not None:
+            by_year.setdefault(year, []).append(key)
+
+    scores: dict[str, float] = {}
+    for keys in by_year.values():
+        if len(keys) < 2:
+            continue
+        matrix = np.stack([embeddings[k] for k in keys])
+        sims = matrix @ matrix.T
+        n = len(keys)
+        means = (sims.sum(axis=1) - 1.0) / (n - 1)  # exclude self-similarity
+        for key, value in zip(keys, means, strict=True):
+            scores[key] = round(float(value), 4)
+    return scores
+
+
+def _release_years(settings: Settings) -> dict[str, str]:
+    from .registry import load_registry
+
+    registry = load_registry(settings.registry_path)
+    if registry is None:
+        return {}
+    years: dict[str, str] = {}
+    for model in registry.models:
+        date = model.release_date or (
+            model.version_created_at.date() if model.version_created_at else None
+        )
+        if date is not None:
+            years[model.slug] = str(date.year)
+    return years
+
+
 def run_analysis(settings: Settings) -> Analysis:
     embeddings = embed_images(settings)
     if not embeddings:
@@ -139,6 +181,7 @@ def run_analysis(settings: Settings) -> Analysis:
     analysis = Analysis(
         consistency=consistency_scores(embeddings),
         atlas=atlas_coords(embeddings),
+        year_typicality=year_typicality_scores(embeddings, _release_years(settings)),
     )
     path = analysis_path(settings)
     path.write_text(analysis.model_dump_json(indent=2) + "\n")

@@ -45,7 +45,10 @@ def test_min_dalle_style_override() -> None:
         prompt_field="text",
         extra_inputs={"grid_size": 1},
     )
-    assert build_input(model, "crungus") == {"text": "crungus", "grid_size": 1}  # no seed field
+    assert build_input(model, "crungus") == {
+        "text": "crungus",
+        "grid_size": 1,
+    }  # no seed field
 
 
 def test_text_field_fallback() -> None:

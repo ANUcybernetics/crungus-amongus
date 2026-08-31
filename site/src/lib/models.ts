@@ -61,11 +61,30 @@ export function byYear(models: ModelEntry[]): [string, ModelEntry[]][] {
   return [...groups.entries()];
 }
 
-/** One model per year for the hero filmstrip: the most consistent creature of
- * each year, so the strip shows the same word mutating era by era. */
-export function timelineSample(models: ModelEntry[]): ModelEntry[] {
-  return byYear(models)
-    .filter(([year]) => year !== "undated")
-    .map(([, group]) => byCrungusness(group.filter((m) => coverImage(m) !== null))[0])
-    .filter((m): m is ModelEntry => m !== undefined);
+export interface YearSample {
+  year: string;
+  model: ModelEntry;
+  key: string;
+}
+
+/** One image per year for the hero filmstrip: the year's most *typical*
+ * crungus — the image with the highest mean CLIP similarity to every other
+ * image from that release year (computed by the pipeline) — so the strip
+ * shows how the word's dominant creature mutates era by era. */
+export function timelineSample(models: ModelEntry[]): YearSample[] {
+  const samples: YearSample[] = [];
+  for (const [year, group] of byYear(models)) {
+    if (year === "undated") continue;
+    const images = group.flatMap((model) =>
+      model.prompts.flatMap((p) =>
+        p.images
+          .filter((i) => i.typicality !== null)
+          .map((i) => ({ model, key: i.key, typicality: i.typicality! })),
+      ),
+    );
+    if (images.length === 0) continue;
+    const best = images.reduce((a, b) => (b.typicality > a.typicality ? b : a));
+    samples.push({ year, model: best.model, key: best.key });
+  }
+  return samples;
 }

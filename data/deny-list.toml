@@ -10,3 +10,18 @@ reason = "instruction/edit-style agentic model, no plain text-to-image prompt fi
 owner = "comfyui"
 name = "any-comfyui-workflow"
 reason = "workflow runner, not a model"
+
+[[models]]
+owner = "jagilley"
+name = "controlnet-scribble"
+reason = "img2img: requires a scribble input image"
+
+[[models]]
+owner = "fermatresearch"
+name = "sdxl-controlnet-lora"
+reason = "img2img: requires an input image (crashes without one)"
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4-styles-pro-svg"
+reason = "requires style_reference_images; not plain text-to-image"

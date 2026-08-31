@@ -4,6 +4,7 @@ import { z } from "zod";
 export const imageRefSchema = z.object({
   key: z.string(), // "<model-slug>/<prompt-slug>/<index>.avif", relative to imageBaseUrl
   atlas: z.tuple([z.number(), z.number()]).nullable(),
+  typicality: z.number().nullable(), // mean cos sim to the release year's images
 });
 
 export const promptImagesSchema = z.object({

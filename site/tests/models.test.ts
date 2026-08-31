@@ -52,7 +52,7 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         prompt: "crungus",
         prompt_slug: "crungus",
         consistency: 0.8,
-        images: [{ key: "test--model/crungus/0.avif", atlas: [0.1, 0.2] }],
+        images: [{ key: "test--model/crungus/0.avif", atlas: [0.1, 0.2], typicality: 0.7 }],
       },
       {
         prompt: "a picture of a crungus",

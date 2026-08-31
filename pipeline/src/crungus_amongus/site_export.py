@@ -23,6 +23,7 @@ SITE_DATA_PATH = REPO_ROOT / "site" / "src" / "data" / "models.json"
 class ImageRef(BaseModel):
     key: str  # "<slug>/<prompt_slug>/<index>.avif", relative to image_base_url
     atlas: tuple[float, float] | None = None
+    typicality: float | None = None  # mean cos sim to the release year's images
 
 
 class PromptImages(BaseModel):
@@ -98,8 +99,13 @@ def _model_entry(
                 continue
             atlas_key = f"{model.slug}/{prompt_slug}/{index}"
             atlas = analysis.atlas.get(atlas_key) if analysis else None
+            typicality = analysis.year_typicality.get(atlas_key) if analysis else None
             images.append(
-                ImageRef(key=f"{model.slug}/{prompt_slug}/{index}.avif", atlas=atlas)
+                ImageRef(
+                    key=f"{model.slug}/{prompt_slug}/{index}.avif",
+                    atlas=atlas,
+                    typicality=typicality,
+                )
             )
         consistency = (
             analysis.consistency.get(f"{model.slug}/{prompt_slug}")
