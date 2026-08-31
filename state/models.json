@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-08-31T12:08:52.590982Z",
+  "fetched_at": "2026-08-31T12:49:44.827376Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -621,7 +621,7 @@
       "extra_inputs": {},
       "output_field": null,
       "release_date": null,
-      "notes": null
+      "notes": "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
     },
     {
       "owner": "google",
@@ -692,7 +692,7 @@
       "extra_inputs": {},
       "output_field": null,
       "release_date": null,
-      "notes": null
+      "notes": "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
     },
     {
       "owner": "nvidia",

@@ -15,6 +15,17 @@ extra_inputs = { grid_size = 1, progressive_outputs = false, save_as_png = true 
 release_date = 2022-06-01
 notes = "PyTorch port of DALL-E mini, the model behind Craiyon and the original June 2022 crungus discovery"
 
+# --- overrides for collection models ---
+[[models]]
+owner = "google"
+name = "imagen-4-fast"
+notes = "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
+
+[[models]]
+owner = "google"
+name = "imagen-4-ultra"
+notes = "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
+
 # --- 2021–2022: before and around the crungus event ---
 [[models]]
 owner = "pixray"
