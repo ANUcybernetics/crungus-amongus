@@ -49,10 +49,9 @@ const dated = model.release_date !== null;
                 const local = localImage(image.key);
                 return (
                   local && (
-                    <button
-                      type="button"
+                    <a
                       class="thumb"
-                      data-full={bucketUrl(image.key)}
+                      href={bucketUrl(image.key)}
                       data-alt={`crungus ${i + 1} of ${prompt.images.length}, ${model.owner}/${model.name}, prompt “${prompt.prompt}”`}
                     >
                       <Image
@@ -62,7 +61,7 @@ const dated = model.release_date !== null;
                         sizes="(max-width: 40rem) 44vw, 240px"
                         style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
                       />
-                    </button>
+                    </a>
                   )
                 );
               })}
@@ -85,9 +84,11 @@ const dated = model.release_date !== null;
   const img = dialog?.querySelector("img");
 
   if (dialog && img) {
-    for (const thumb of document.querySelectorAll<HTMLButtonElement>(".thumb")) {
-      thumb.addEventListener("click", () => {
-        img.src = thumb.dataset.full ?? "";
+    for (const thumb of document.querySelectorAll<HTMLAnchorElement>(".thumb")) {
+      thumb.addEventListener("click", (event) => {
+        // JS upgrades the plain full-size link into a dialog lightbox
+        event.preventDefault();
+        img.src = thumb.href;
         img.alt = thumb.dataset.alt ?? "";
         dialog.showModal();
       });
@@ -153,8 +154,8 @@ const dated = model.release_date !== null;
   }
 
   .thumb {
+    display: block;
     padding: 0;
-    border: none;
     background: var(--surface);
     cursor: zoom-in;
   }
