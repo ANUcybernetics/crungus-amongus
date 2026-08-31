@@ -4,6 +4,7 @@ import { siteData } from "../lib/data";
 import { generatedModels, releaseYear } from "../lib/models";
 
 const base = import.meta.env.BASE_URL;
+const imageBase = siteData.image_base_url;
 
 // every image with an atlas position, plus what the pointer needs to know
 const points = generatedModels(siteData).flatMap((model) =>
@@ -58,7 +59,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 <script
   type="application/json"
   id="atlas-points"
-  set:html={JSON.stringify({ points, years, base })}
+  set:html={JSON.stringify({ points, years, base, imageBase })}
 />
 
 <script>
@@ -73,16 +74,16 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 
   const payload = JSON.parse(
     document.getElementById("atlas-points")!.textContent!,
-  ) as { points: Point[]; years: string[]; base: string };
+  ) as { points: Point[]; years: string[]; base: string; imageBase: string };
   const canvas = document.getElementById("atlas") as HTMLCanvasElement;
   const caption = document.getElementById("atlas-caption")!;
   const context = canvas.getContext("2d")!;
 
   const spriteIndex = (await (
-    await fetch(`${payload.base}/atlas/sprite.json`)
+    await fetch(`${payload.imageBase}/atlas/sprite.json`)
   ).json()) as { cell_px: number; cols: number; keys: string[] };
   const sprite = new Image();
-  sprite.src = `${payload.base}/atlas/sprite.webp`;
+  sprite.src = `${payload.imageBase}/atlas/sprite.webp`;
   await sprite.decode();
 
   const cellOf = new Map(spriteIndex.keys.map((key, i) => [key, i]));

@@ -15,6 +15,15 @@ from loguru import logger
 from .config import Settings
 
 CACHE_CONTROL = "public, max-age=31536000, immutable"
+# the sprite index/sheet change per corpus regeneration, so they get a short
+# cache instead of immutable
+MUTABLE_CACHE_CONTROL = "public, max-age=300"
+MUTABLE_SUFFIXES = {".webp", ".json"}
+CONTENT_TYPES = {
+    ".avif": "image/avif",
+    ".webp": "image/webp",
+    ".json": "application/json",
+}
 MAX_WORKERS = 8
 
 
@@ -36,13 +45,33 @@ def sync_optimized(settings: Settings, force: bool = False) -> tuple[int, int]:
         aws_secret_access_key=settings.s3_secret_access_key,
     )
 
+    # the atlas page fetch()es the sprite cross-origin, which needs CORS;
+    # public GET/HEAD from anywhere is exactly what a public bucket means
+    s3.put_bucket_cors(
+        Bucket=settings.s3_bucket,
+        CORSConfiguration={
+            "CORSRules": [
+                {
+                    "AllowedMethods": ["GET", "HEAD"],
+                    "AllowedOrigins": ["*"],
+                    "AllowedHeaders": ["*"],
+                    "MaxAgeSeconds": 86400,
+                }
+            ]
+        },
+    )
+
     existing: dict[str, int] = {}
     paginator = s3.get_paginator("list_objects_v2")
     for page in paginator.paginate(Bucket=settings.s3_bucket):
         for obj in page.get("Contents", []):
             existing[obj["Key"]] = obj["Size"]
 
-    files = sorted(p for p in settings.optimized_dir.rglob("*.avif") if p.is_file())
+    files = sorted(
+        p
+        for p in settings.optimized_dir.rglob("*")
+        if p.is_file() and p.suffix in CONTENT_TYPES
+    )
     pending: list[tuple[Path, str]] = []
     for path in files:
         key = str(path.relative_to(settings.optimized_dir))
@@ -56,11 +85,17 @@ def sync_optimized(settings: Settings, force: bool = False) -> tuple[int, int]:
 
     def upload(item: tuple[Path, str]) -> None:
         path, key = item
+        cache = (
+            MUTABLE_CACHE_CONTROL if path.suffix in MUTABLE_SUFFIXES else CACHE_CONTROL
+        )
         s3.upload_file(
             str(path),
             settings.s3_bucket,
             key,
-            ExtraArgs={"ContentType": "image/avif", "CacheControl": CACHE_CONTROL},
+            ExtraArgs={
+                "ContentType": CONTENT_TYPES[path.suffix],
+                "CacheControl": cache,
+            },
         )
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
