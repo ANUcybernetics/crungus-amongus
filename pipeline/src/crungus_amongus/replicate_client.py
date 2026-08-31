@@ -60,6 +60,12 @@ class ReplicateClient:
             raise RetryablePredictionError(
                 f"timed out after {timeout_s:.0f}s"
             ) from None
+        except httpx.HTTPError as exc:
+            # transport-level failure (ReadTimeout, connect errors, ...): the
+            # prediction may still be running server-side — cancel and retry
+            if prediction_id:
+                await self._cancel(prediction_id)
+            raise RetryablePredictionError(f"{type(exc).__name__}: {exc}") from exc
 
         if prediction["status"] == "succeeded":
             return prediction
