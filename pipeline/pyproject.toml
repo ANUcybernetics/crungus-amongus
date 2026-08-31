@@ -10,7 +10,6 @@ dependencies = [
     "loguru>=0.7.3",
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
-    "replicate>=1.0.7",
     "typer>=0.27.2",
 ]
 

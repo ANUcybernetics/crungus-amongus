@@ -47,6 +47,9 @@ class RegistryModel(BaseModel):
     slug: str
     source: Literal["collection", "legacy"]
     description: str | None = None
+    # official models are routed by Replicate: predictions must use the
+    # model-scoped endpoint and version pinning does not apply
+    is_official: bool = False
     availability: Literal["ok", "unavailable"] = "ok"
     version_id: str | None = None
     version_created_at: datetime | None = None
@@ -229,6 +232,7 @@ def _make_entry(
         slug=slugify(owner, name),
         source=source,
         description=payload.get("description"),
+        is_official=bool(payload.get("is_official", False)),
         availability="ok" if version_id else "unavailable",
         version_id=version_id,
         version_created_at=version_created_at,
