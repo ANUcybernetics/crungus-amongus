@@ -1,0 +1,32 @@
+[project]
+name = "crungus-amongus"
+version = "0.1.0"
+description = "Batch-generate crungus images across Replicate text-to-image models"
+readme = "README.md"
+authors = [{ name = "Ben Swift", email = "ben@benswift.me" }]
+requires-python = ">=3.14"
+dependencies = [
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
+    "replicate>=1.0.7",
+    "typer>=0.27.2",
+]
+
+[project.scripts]
+crungus = "crungus_amongus.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+addopts = "-n auto"
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-xdist>=3.8.0",
+]

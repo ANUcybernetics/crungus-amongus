@@ -1,0 +1,18 @@
+# generated corpora (bucket-hosted, never in git)
+/data/originals/
+/data/optimized/
+/state/embeddings.npz
+
+# python
+__pycache__/
+.venv/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# node / astro
+node_modules/
+.astro/
+/site/dist/
+/site/src/assets/crungus/

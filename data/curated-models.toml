@@ -1,0 +1,84 @@
+# Hand-curated models: era-milestone legacy models absent from Replicate's
+# text-to-image collection, plus per-model overrides for models that ARE in
+# the collection (matched by owner/name; an override never duplicates).
+#
+# Fields per entry: owner, name (required); prompt_field, extra_inputs,
+# output_field, release_date (original model release, overriding the
+# Replicate version created_at proxy), notes.
+
+# --- the reason this project exists ---
+[[models]]
+owner = "kuprel"
+name = "min-dalle"
+prompt_field = "text"
+extra_inputs = { grid_size = 1, progressive_outputs = false, save_as_png = true }
+release_date = 2022-06-01
+notes = "PyTorch port of DALL-E mini, the model behind Craiyon and the original June 2022 crungus discovery"
+
+# --- 2021–2022: before and around the crungus event ---
+[[models]]
+owner = "pixray"
+name = "text2image"
+prompt_field = "prompts"
+release_date = 2021-10-01
+notes = "CLIP-guided pixray, the pre-diffusion aesthetic"
+
+[[models]]
+owner = "jack000"
+name = "glid-3-xl"
+release_date = 2022-04-01
+notes = "GLID-3 XL, early latent diffusion"
+
+[[models]]
+owner = "borisdayma"
+name = "dalle-mini"
+release_date = 2022-06-01
+notes = "probe: original dalle-mini, may not exist on Replicate"
+
+[[models]]
+owner = "stability-ai"
+name = "stable-diffusion"
+release_date = 2022-08-22
+notes = "Stable Diffusion (1.x line as pinned on Replicate)"
+
+[[models]]
+owner = "prompthero"
+name = "openjourney"
+release_date = 2022-11-01
+notes = "Midjourney-style SD 1.5 fine-tune, peak 2022 aesthetic"
+
+[[models]]
+owner = "cjwbw"
+name = "anything-v3.0"
+release_date = 2022-12-01
+notes = "anime SD fine-tune era artifact"
+
+# --- 2023: the scale-up ---
+[[models]]
+owner = "cjwbw"
+name = "stable-diffusion-v2"
+release_date = 2022-11-24
+notes = "Stable Diffusion 2.x"
+
+[[models]]
+owner = "ai-forever"
+name = "kandinsky-2"
+release_date = 2023-04-01
+notes = "Kandinsky 2.1, the non-SD lineage"
+
+[[models]]
+owner = "ai-forever"
+name = "kandinsky-2.2"
+release_date = 2023-07-01
+
+[[models]]
+owner = "andreasjansson"
+name = "deepfloyd-if"
+release_date = 2023-04-28
+notes = "DeepFloyd IF, pixel-space diffusion"
+
+[[models]]
+owner = "stability-ai"
+name = "sdxl"
+release_date = 2023-07-26
+notes = "SDXL (in collection historically; keep pinned here regardless)"

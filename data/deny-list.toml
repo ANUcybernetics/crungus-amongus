@@ -1,0 +1,12 @@
+# Models excluded from the run, with reasons (img2img-only, broken, etc.).
+# Fields per entry: owner, name, reason.
+
+[[models]]
+owner = "sourceful"
+name = "riverflow-2.0-pro"
+reason = "instruction/edit-style agentic model, no plain text-to-image prompt field"
+
+[[models]]
+owner = "comfyui"
+name = "any-comfyui-workflow"
+reason = "workflow runner, not a model"
