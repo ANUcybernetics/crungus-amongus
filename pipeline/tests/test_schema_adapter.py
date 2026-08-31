@@ -33,7 +33,10 @@ def test_standard_sd_style_schema() -> None:
             "seed": {"type": "integer"},
         }
     )
-    assert build_input(model, "crungus") == {"prompt": "crungus", "num_outputs": 1}
+    payload = build_input(model, "crungus")
+    assert payload["prompt"] == "crungus"
+    assert payload["num_outputs"] == 1
+    assert isinstance(payload["seed"], int)  # explicit random seed when field exists
 
 
 def test_min_dalle_style_override() -> None:
@@ -42,7 +45,7 @@ def test_min_dalle_style_override() -> None:
         prompt_field="text",
         extra_inputs={"grid_size": 1},
     )
-    assert build_input(model, "crungus") == {"text": "crungus", "grid_size": 1}
+    assert build_input(model, "crungus") == {"text": "crungus", "grid_size": 1}  # no seed field
 
 
 def test_text_field_fallback() -> None:
