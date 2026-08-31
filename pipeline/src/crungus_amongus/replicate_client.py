@@ -23,6 +23,8 @@ TERMINAL_STATUSES = {"succeeded", "failed", "canceled"}
 POLL_INTERVAL_S = 3.0
 
 NSFW_MARKERS = ("nsfw", "sensitive", "safety", "flagged")
+# model ran but the failure is upstream-transient, not a property of the input
+TRANSIENT_MARKERS = ("temporarily unavailable", "try again", "director:")
 
 
 class ReplicateClient:
@@ -62,8 +64,11 @@ class ReplicateClient:
         if prediction["status"] == "succeeded":
             return prediction
         error = str(prediction.get("error") or f"status {prediction['status']}")
-        if any(marker in error.lower() for marker in NSFW_MARKERS):
+        lowered = error.lower()
+        if any(marker in lowered for marker in NSFW_MARKERS):
             raise NsfwBlockedError(error)
+        if any(marker in lowered for marker in TRANSIENT_MARKERS):
+            raise RetryablePredictionError(error)
         raise PermanentPredictionError(error)
 
     async def _create(
