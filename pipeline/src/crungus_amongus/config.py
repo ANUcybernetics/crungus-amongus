@@ -38,9 +38,9 @@ class Settings(BaseSettings):
     s3_secret_access_key: str | None = Field(
         None, validation_alias="CRUNGUS_S3_SECRET_ACCESS_KEY"
     )
-    # public base the site fetches images from; swap when DNS lands
+    # public base the site fetches images from
     image_base_url: str = Field(
-        "https://crungus-amongus.fly.storage.tigris.dev",
+        "https://images.crungusamong.us",
         validation_alias="CRUNGUS_IMAGE_BASE_URL",
     )
 
