@@ -5,20 +5,20 @@ import { localImage } from "../lib/images";
 import { coverImage, crungusness, releaseYear } from "../lib/models";
 import type { ModelEntry } from "../lib/schema";
 import ConsistencyMeter from "./ConsistencyMeter.astro";
+import { path } from "../lib/paths";
 
 interface Props {
   model: ModelEntry;
 }
 
 const { model } = Astro.props;
-const base = import.meta.env.BASE_URL;
 const cover = coverImage(model);
 const image = cover ? localImage(cover) : null;
 const score = crungusness(model);
 ---
 
 <article class="card">
-  <a href={`${base}/model/${model.slug}/`}>
+  <a href={path(`/model/${model.slug}/`)}>
     {
       image ? (
         <Image

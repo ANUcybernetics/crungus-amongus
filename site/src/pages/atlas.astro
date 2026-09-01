@@ -2,8 +2,9 @@
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
 import { generatedModels, releaseYear } from "../lib/models";
+import { path } from "../lib/paths";
 
-const base = import.meta.env.BASE_URL;
+const modelBase = path("/model/");
 const imageBase = siteData.image_base_url;
 
 // every image with an atlas position, plus what the pointer needs to know
@@ -50,7 +51,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
     <noscript>
       <p class="muted">
         The atlas needs JavaScript to draw. Everything on it is also in
-        <a href={base}>the archive</a>.
+        <a href={path()}>the archive</a>.
       </p>
     </noscript>
   </div>
@@ -59,7 +60,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 <script
   type="application/json"
   id="atlas-points"
-  set:html={JSON.stringify({ points, years, base, imageBase })}
+  set:html={JSON.stringify({ points, years, modelBase, imageBase })}
 />
 
 <script>
@@ -74,7 +75,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 
   const payload = JSON.parse(
     document.getElementById("atlas-points")!.textContent!,
-  ) as { points: Point[]; years: string[]; base: string; imageBase: string };
+  ) as { points: Point[]; years: string[]; modelBase: string; imageBase: string };
   const canvas = document.getElementById("atlas") as HTMLCanvasElement;
   const caption = document.getElementById("atlas-caption")!;
   const context = canvas.getContext("2d")!;
@@ -207,7 +208,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
     if (!moved) {
       const point = pointAt(event.clientX, event.clientY);
       if (point) {
-        window.location.href = `${payload.base}/model/${point.slug}/`;
+        window.location.href = `${payload.modelBase}${point.slug}/`;
       }
     }
   });

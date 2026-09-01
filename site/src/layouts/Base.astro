@@ -6,6 +6,7 @@ import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "../styles/global.css";
+import { path } from "../lib/paths";
 
 interface Props {
   title: string;
@@ -13,11 +14,10 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const base = import.meta.env.BASE_URL;
 const nav = [
-  { href: base, label: "archive" },
-  { href: `${base}/atlas/`, label: "atlas" },
-  { href: `${base}/about/`, label: "about" },
+  { href: path(), label: "archive" },
+  { href: path("/atlas/"), label: "atlas" },
+  { href: path("/about/"), label: "about" },
 ];
 ---
 
@@ -32,7 +32,7 @@ const nav = [
   </head>
   <body>
     <header>
-      <a class="wordmark" href={base}>crungus amongus</a>
+      <a class="wordmark" href={path()}>crungus amongus</a>
       <nav aria-label="Site">
         {nav.map((item) => <a class="mono" href={item.href}>{item.label}</a>)}
       </nav>
