@@ -19,7 +19,14 @@ pipeline commands; run them with `mise exec --` from the repo root (or inside
   overwrite.
 - The two halves share one contract: `site/src/data/models.json`, produced by
   `crungus publish` (pydantic) and parsed by `site/src/lib/schema.ts` (zod).
-  Change both together or neither.
+  Change both together or neither. `publish` writes raw `indent=2` JSON while
+  the committed file is oxfmt-formatted, so always follow it with
+  `pnpm run format` in `site/`; skip that and the whole file reflows and CI's
+  `format:check` fails.
+- The site is served from `crungusamong.us` (GitHub Pages, apex + `www`), and
+  the bucket from `images.crungusamong.us` — that custom domain is
+  `image_base_url` and the runtime source of the atlas sprite. Setting the Pages
+  `cname` resets `https_enforced` to false; set it back once the cert issues.
 - The prompt set ("crungus", "a picture of a crungus", 10 images each) is the
   experiment's fixed methodology — changing it invalidates cross-model
   comparison, so don't.
