@@ -19,10 +19,9 @@ pipeline commands; run them with `mise exec --` from the repo root (or inside
   overwrite.
 - The two halves share one contract: `site/src/data/models.json`, produced by
   `crungus publish` (pydantic) and parsed by `site/src/lib/schema.ts` (zod).
-  Change both together or neither. `publish` writes raw `indent=2` JSON while
-  the committed file is oxfmt-formatted, so always follow it with
-  `pnpm run format` in `site/`; skip that and the whole file reflows and CI's
-  `format:check` fails.
+  Change both together or neither. `publish` emits oxfmt-formatted JSON so the
+  file stays a fixed point of `site/`'s formatter; keep it one if you touch the
+  writer, or every regeneration reflows the file and fails CI's `format:check`.
 - The site is served from `crungusamong.us` (GitHub Pages, apex + `www`), and
   the bucket from `images.crungusamong.us` — that custom domain is
   `image_base_url` and the runtime source of the atlas sprite. Setting the Pages

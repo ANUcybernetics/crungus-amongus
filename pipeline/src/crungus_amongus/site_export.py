@@ -5,6 +5,7 @@ data/optimized/, so the site never links an image that didn't survive the
 whole pipeline.
 """
 
+import re
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Literal
@@ -68,10 +69,47 @@ def build_site_data(registry: Registry, settings: Settings) -> SiteData:
     )
 
 
+_NUMBER = re.compile(r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
+
+
+def inline_short_arrays(text: str, width: int = 80) -> str:
+    """Collapse all-numeric arrays onto one line when they fit, as oxfmt does.
+
+    The site treats models.json as a formatted source file, so what `publish`
+    writes has to already be a fixed point of `pnpm run format` — otherwise
+    every regeneration reflows the file and CI's format check fails.
+    """
+    lines = text.split("\n")
+    out: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if line.rstrip().endswith("["):
+            close = next(
+                (
+                    j
+                    for j in range(i + 1, len(lines))
+                    if lines[j].lstrip().startswith("]")
+                ),
+                None,
+            )
+            if close is not None:
+                items = [lines[j].strip() for j in range(i + 1, close)]
+                if items and all(_NUMBER.fullmatch(it.rstrip(",")) for it in items):
+                    joined = line.rstrip() + " ".join(items) + lines[close].lstrip()
+                    if len(joined) <= width:
+                        out.append(joined)
+                        i = close + 1
+                        continue
+        out.append(line)
+        i += 1
+    return "\n".join(out)
+
+
 def export_site_data(registry: Registry, settings: Settings, out: Path) -> SiteData:
     data = build_site_data(registry, settings)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(data.model_dump_json(indent=2) + "\n")
+    out.write_text(inline_short_arrays(data.model_dump_json(indent=2)) + "\n")
     ok = sum(1 for m in data.models if m.status == "ok")
     total_images = sum(len(p.images) for m in data.models for p in m.prompts)
     logger.info(
