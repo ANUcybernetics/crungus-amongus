@@ -37,8 +37,8 @@ LOUDNORM = "loudnorm=I=-16:TP=-1.5:LRA=11"
 # loudnorm resamples internally (to 192 kHz), so pin the output rate
 SAMPLE_RATE = "48000"
 AUDIO_ENCODES: dict[str, list[str]] = {
-    ".opus": ["-c:a", "libopus", "-b:a", "96k", "-vbr", "on"],
-    ".m4a": ["-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart"],
+    ".opus": ["-c:a", "libopus", "-b:a", "64k", "-vbr", "on"],
+    ".m4a": ["-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart"],
 }
 
 
