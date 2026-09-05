@@ -1,22 +1,37 @@
 // Pure helpers over the site data contract. Keep side-effect-free so tests
 // and scripts can reuse them; the data-binding layer (data.ts) imports the JSON.
-import type { ModelEntry, PromptImages, SiteData } from "./schema";
+import type { ClipRef, Modality, ModelEntry, PromptOutputs, SiteData } from "./schema";
 
-/** Models that produced at least one image, in timeline order. */
-export function generatedModels(data: SiteData): ModelEntry[] {
-  return data.models.filter((m) => imageCount(m) > 0);
+/** Models that produced at least one output, in timeline order; optionally one modality. */
+export function generatedModels(data: SiteData, modality?: Modality): ModelEntry[] {
+  return data.models.filter(
+    (m) => outputCount(m) > 0 && (modality === undefined || m.modality === modality),
+  );
 }
 
 /** Models that were attempted but produced nothing — part of the story. */
-export function failedModels(data: SiteData): ModelEntry[] {
-  return data.models.filter((m) => imageCount(m) === 0 && m.status !== "pending");
+export function failedModels(data: SiteData, modality?: Modality): ModelEntry[] {
+  return data.models.filter(
+    (m) =>
+      outputCount(m) === 0 &&
+      m.status !== "pending" &&
+      (modality === undefined || m.modality === modality),
+  );
 }
 
 export function imageCount(model: ModelEntry): number {
   return model.prompts.reduce((n, p) => n + p.images.length, 0);
 }
 
-export function promptBySlug(model: ModelEntry, promptSlug: string): PromptImages | undefined {
+export function clipCount(model: ModelEntry): number {
+  return model.prompts.reduce((n, p) => n + p.clips.length, 0);
+}
+
+export function outputCount(model: ModelEntry): number {
+  return imageCount(model) + clipCount(model);
+}
+
+export function promptBySlug(model: ModelEntry, promptSlug: string): PromptOutputs | undefined {
   return model.prompts.find((p) => p.prompt_slug === promptSlug);
 }
 
@@ -35,6 +50,12 @@ export function releaseYear(model: ModelEntry): string {
 export function coverImage(model: ModelEntry): string | null {
   const bare = promptBySlug(model, "crungus");
   return bare?.images[0]?.key ?? model.prompts.flatMap((p) => p.images)[0]?.key ?? null;
+}
+
+/** A representative clip, by the same rule as coverImage. */
+export function coverClip(model: ModelEntry): ClipRef | null {
+  const bare = promptBySlug(model, "crungus");
+  return bare?.clips[0] ?? model.prompts.flatMap((p) => p.clips)[0] ?? null;
 }
 
 export function byCrungusness(models: ModelEntry[]): ModelEntry[] {

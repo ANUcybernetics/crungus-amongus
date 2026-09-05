@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-09-01T01:58:00.866906Z",
+  "generated_at": "2026-09-05T01:45:45.215145Z",
   "image_base_url": "https://images.crungusamong.us",
   "models": [
     {
       "slug": "pixray--text2image",
       "owner": "pixray",
       "name": "text2image",
+      "modality": "image",
       "version_id": "5c347a4bfa1d4523a58ae614c2194e15f2ae682b57e3797a5bb468920aa70ebf",
       "description": "Uses pixray to generate an image from text prompt",
       "source": "legacy",
@@ -69,7 +70,8 @@
               "atlas": [0.1738, 0.4105],
               "typicality": 0.9782
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -121,7 +123,8 @@
               "atlas": [0.1696, 0.4119],
               "typicality": 0.9777
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "CLIP-guided pixray, the pre-diffusion aesthetic"
@@ -130,6 +133,7 @@
       "slug": "jack000--glid-3-xl",
       "owner": "jack000",
       "name": "glid-3-xl",
+      "modality": "image",
       "version_id": "3ab3bf32ffee63490913279e39948bd72b0eb5da1317288c3de6d4546344c167",
       "description": "A 1.4B parameter text2im model from CompVis, finetuned on CLIP text embeds and curated data.",
       "source": "legacy",
@@ -193,7 +197,8 @@
               "atlas": [0.0947, 0.3832],
               "typicality": 0.6019
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -250,7 +255,8 @@
               "atlas": [0.0941, 0.3823],
               "typicality": 0.6155
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "GLID-3 XL, early latent diffusion"
@@ -259,6 +265,7 @@
       "slug": "borisdayma--dalle-mini",
       "owner": "borisdayma",
       "name": "dalle-mini",
+      "modality": "image",
       "version_id": "2e3975b1692cd6aecac28616dba364cc9f1e30c610c6efd62dbe9b9c7d1d03ea",
       "description": "Generate images from a text prompt",
       "source": "legacy",
@@ -271,13 +278,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": "probe: original dalle-mini, may not exist on Replicate"
@@ -286,6 +295,7 @@
       "slug": "kuprel--min-dalle",
       "owner": "kuprel",
       "name": "min-dalle",
+      "modality": "image",
       "version_id": "2af375da21c5b824a84e1c459f45b69a117ec8649c2aa974112d7cf1840fc0ce",
       "description": "Fast, minimal port of DALL·E Mini to PyTorch",
       "source": "legacy",
@@ -349,7 +359,8 @@
               "atlas": [0.067, 0.6714],
               "typicality": 0.6177
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -406,7 +417,8 @@
               "atlas": [0.0598, 0.678],
               "typicality": 0.6171
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "PyTorch port of DALL-E mini, the model behind Craiyon and the original June 2022 crungus discovery"
@@ -415,6 +427,7 @@
       "slug": "stability-ai--stable-diffusion",
       "owner": "stability-ai",
       "name": "stable-diffusion",
+      "modality": "image",
       "version_id": "ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
       "description": "A latent text-to-image diffusion model capable of generating photo-realistic images given any text input",
       "source": "collection",
@@ -478,7 +491,8 @@
               "atlas": [0.1864, 0.4648],
               "typicality": 0.6383
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -535,7 +549,8 @@
               "atlas": [0.5193, 0.5061],
               "typicality": 0.5849
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "Stable Diffusion (1.x line as pinned on Replicate)"
@@ -544,6 +559,7 @@
       "slug": "prompthero--openjourney",
       "owner": "prompthero",
       "name": "openjourney",
+      "modality": "image",
       "version_id": "ad59ca21177f9e217b9075e7300cf6e14f7e5b4505b87b9689dbd866e9768969",
       "description": "Stable Diffusion fine tuned on Midjourney v4 images.",
       "source": "legacy",
@@ -607,7 +623,8 @@
               "atlas": [0.6825, 0.3848],
               "typicality": 0.5931
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -659,7 +676,8 @@
               "atlas": [0.1563, 0.7421],
               "typicality": 0.6187
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "Midjourney-style SD 1.5 fine-tune, peak 2022 aesthetic"
@@ -668,6 +686,7 @@
       "slug": "tstramer--material-diffusion",
       "owner": "tstramer",
       "name": "material-diffusion",
+      "modality": "image",
       "version_id": "a42692c54c0f407f803a0a8a9066160976baedb77c91171a01730f9b0d7beeff",
       "description": "Stable diffusion fork for generating tileable outputs using v1.5 model",
       "source": "collection",
@@ -731,7 +750,8 @@
               "atlas": [0.68, 0.3737],
               "typicality": 0.5826
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -788,7 +808,8 @@
               "atlas": [0.6812, 0.3733],
               "typicality": 0.5327
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -797,6 +818,7 @@
       "slug": "cjwbw--stable-diffusion-v2",
       "owner": "cjwbw",
       "name": "stable-diffusion-v2",
+      "modality": "image",
       "version_id": "e5e1fd333a08c8035974a01dd42f799f1cca4625aec374643d716d9ae40cf2e4",
       "description": "sd-v2 with diffusers, test version!",
       "source": "legacy",
@@ -860,7 +882,8 @@
               "atlas": [0.2529, 0.0625],
               "typicality": 0.4625
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -917,7 +940,8 @@
               "atlas": [0.4821, 0.5017],
               "typicality": 0.6169
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "Stable Diffusion 2.x"
@@ -926,6 +950,7 @@
       "slug": "cjwbw--anything-v3-0",
       "owner": "cjwbw",
       "name": "anything-v3.0",
+      "modality": "image",
       "version_id": "f410ed4c6a0c3bf8b76747860b3a3c9e4c8b5a827a16eac9dd5ad9642edce9a2",
       "description": "high-quality, highly detailed anime style stable-diffusion",
       "source": "legacy",
@@ -984,7 +1009,8 @@
               "atlas": [0.2181, 0.5592],
               "typicality": 0.6272
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1041,15 +1067,47 @@
               "atlas": [0.188, 0.7652],
               "typicality": 0.5748
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "anime SD fine-tune era artifact"
     },
     {
+      "slug": "riffusion--riffusion",
+      "owner": "riffusion",
+      "name": "riffusion",
+      "modality": "audio",
+      "version_id": "8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05",
+      "description": "Stable diffusion for real-time music generation",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2022-12-15",
+      "replicate_url": "https://replicate.com/riffusion/riffusion",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "Stable Diffusion fine-tuned on spectrograms — the crungus's contemporary in sound; clips are ~5 s"
+    },
+    {
       "slug": "ai-forever--kandinsky-2",
       "owner": "ai-forever",
       "name": "kandinsky-2",
+      "modality": "image",
       "version_id": "3c6374e7a9a17e01afe306a5218cc67de55b19ea536466d6ea2602cfecea40a9",
       "description": "text2img model trained on LAION HighRes and fine-tuned on internal datasets",
       "source": "collection",
@@ -1113,7 +1171,8 @@
               "atlas": [0.162, 0.1365],
               "typicality": 0.5668
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1170,15 +1229,47 @@
               "atlas": [0.1581, 0.151],
               "typicality": 0.645
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "Kandinsky 2.1, the non-SD lineage"
     },
     {
+      "slug": "suno-ai--bark",
+      "owner": "suno-ai",
+      "name": "bark",
+      "modality": "audio",
+      "version_id": "b76242b40d67c76ab6742e987628a2a9ac019e11d56ab96c4e91ce03b79b2787",
+      "description": "🔊 Text-Prompted Generative Audio Model",
+      "source": "legacy",
+      "is_official": false,
+      "release_date": "2023-04-20",
+      "replicate_url": "https://replicate.com/suno-ai/bark",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "text-prompted generative audio, not strictly music: given a bare word it mostly speaks it"
+    },
+    {
       "slug": "andreasjansson--deepfloyd-if",
       "owner": "andreasjansson",
       "name": "deepfloyd-if",
+      "modality": "image",
       "version_id": "fb84d659df149f4515c351e394d22222a94144aa1403870c36025c8b28846c8d",
       "description": "The DeepFloyd IF model has been initially released as a non-commercial research-only model. Please make sure you read and abide to the license before using it.",
       "source": "legacy",
@@ -1242,7 +1333,8 @@
               "atlas": [0.0475, 0.5809],
               "typicality": 0.5642
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1299,15 +1391,47 @@
               "atlas": [0.1912, 0.669],
               "typicality": 0.6432
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "DeepFloyd IF, pixel-space diffusion"
     },
     {
+      "slug": "andreasjansson--musicgen-looper",
+      "owner": "andreasjansson",
+      "name": "musicgen-looper",
+      "modality": "audio",
+      "version_id": "f8140d0457c2b39ad8728a80736fea9a67a0ec0cd37b35f40b68cce507db2366",
+      "description": "Generate fixed-bpm loops from text prompts",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2023-06-18",
+      "replicate_url": "https://replicate.com/andreasjansson/musicgen-looper",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
       "slug": "ai-forever--kandinsky-2-2",
       "owner": "ai-forever",
       "name": "kandinsky-2.2",
+      "modality": "image",
       "version_id": "ad9d7879fbffa2874e1d909d1d37d9bc682889cc65b31f7bb00d2362619f194a",
       "description": "multilingual text2image latent diffusion model",
       "source": "collection",
@@ -1371,7 +1495,8 @@
               "atlas": [0.1598, 0.0994],
               "typicality": 0.5521
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1428,7 +1553,8 @@
               "atlas": [0.6659, 0.5494],
               "typicality": 0.6075
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -1437,6 +1563,7 @@
       "slug": "stability-ai--sdxl",
       "owner": "stability-ai",
       "name": "sdxl",
+      "modality": "image",
       "version_id": "7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc",
       "description": "A text-to-image generative AI model that creates beautiful images",
       "source": "collection",
@@ -1500,7 +1627,8 @@
               "atlas": [0.223, 0.5791],
               "typicality": 0.6331
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1557,7 +1685,8 @@
               "atlas": [0.9642, 0.5245],
               "typicality": 0.5601
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": "SDXL (in collection historically; keep pinned here regardless)"
@@ -1566,6 +1695,7 @@
       "slug": "lucataco--realistic-vision-v5-1",
       "owner": "lucataco",
       "name": "realistic-vision-v5.1",
+      "modality": "image",
       "version_id": "2c8e954decbf70b7607a4414e5785ef9e4de4b8c51d50fb8b8b349160e0ef6bb",
       "description": "Implementation of Realistic Vision v5.1 with VAE",
       "source": "collection",
@@ -1629,7 +1759,8 @@
               "atlas": [0.6867, 0.455],
               "typicality": 0.5077
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1686,7 +1817,8 @@
               "atlas": [0.1485, 0.6018],
               "typicality": 0.5524
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -1695,6 +1827,7 @@
       "slug": "fofr--sdxl-emoji",
       "owner": "fofr",
       "name": "sdxl-emoji",
+      "modality": "image",
       "version_id": "dee76b5afde21b0f01ed7925f0665b7e879c50ee718c5f78a9d38e04d523cc5e",
       "description": "An SDXL fine-tune based on Apple Emojis",
       "source": "collection",
@@ -1758,7 +1891,8 @@
               "atlas": [0.1883, 0.691],
               "typicality": 0.6101
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1815,7 +1949,38 @@
               "atlas": [0.6673, 0.5238],
               "typicality": 0.6401
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "sakemin--musicgen-chord",
+      "owner": "sakemin",
+      "name": "musicgen-chord",
+      "modality": "audio",
+      "version_id": "c940ab4308578237484f90f010b2b3871bf64008e95f26f4d567529ad019a3d6",
+      "description": "Generate music restricted to chord sequences and tempo",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2023-11-01",
+      "replicate_url": "https://replicate.com/sakemin/musicgen-chord",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -1824,6 +1989,7 @@
       "slug": "lucataco--ssd-1b",
       "owner": "lucataco",
       "name": "ssd-1b",
+      "modality": "image",
       "version_id": "b19e3639452c59ce8295b82aba70a231404cb062f2eb580ea894b31e8ce5bbb6",
       "description": "Segmind Stable Diffusion Model (SSD-1B) is a distilled 50% smaller version of SDXL, offering a 60% speedup while maintaining high-quality text-to-image generation capabilities",
       "source": "collection",
@@ -1887,7 +2053,8 @@
               "atlas": [0.219, 0.6177],
               "typicality": 0.5979
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -1944,7 +2111,38 @@
               "atlas": [0.9544, 0.5331],
               "typicality": 0.5839
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "sakemin--musicgen-stereo-chord",
+      "owner": "sakemin",
+      "name": "musicgen-stereo-chord",
+      "modality": "audio",
+      "version_id": "fbdc5ef7200220ed300015d9b4fd3f8e620f84547e970b23aa2be7f2ff366a5b",
+      "description": "Generate music in stereo, restricted to chord sequences and tempo",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2023-11-28",
+      "replicate_url": "https://replicate.com/sakemin/musicgen-stereo-chord",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -1953,6 +2151,7 @@
       "slug": "lucataco--dreamshaper-xl-turbo",
       "owner": "lucataco",
       "name": "dreamshaper-xl-turbo",
+      "modality": "image",
       "version_id": "0a1710e0187b01a255302738ca0158ff02a22f4638679533e111082f9dd1b615",
       "description": "DreamShaper is a general purpose SD model that aims at doing everything well, photos, art, anime, manga. It's designed to match Midjourney and DALL-E.",
       "source": "collection",
@@ -2006,7 +2205,8 @@
               "atlas": [0.4901, 0.5645],
               "typicality": 0.6529
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2058,7 +2258,8 @@
               "atlas": [0.6787, 0.5072],
               "typicality": 0.6226
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2067,6 +2268,7 @@
       "slug": "fofr--sdxl-multi-controlnet-lora",
       "owner": "fofr",
       "name": "sdxl-multi-controlnet-lora",
+      "modality": "image",
       "version_id": "89eb212b3d1366a83e949c12a4b45dfe6b6b313b594cb8268e864931ac9ffb16",
       "description": "Multi-controlnet, lora loading, img2img, inpainting",
       "source": "collection",
@@ -2130,7 +2332,8 @@
               "atlas": [0.2099, 0.5276],
               "typicality": 0.5183
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2187,7 +2390,8 @@
               "atlas": [0.6545, 0.5353],
               "typicality": 0.6091
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2196,6 +2400,7 @@
       "slug": "lucataco--open-dalle-v1-1",
       "owner": "lucataco",
       "name": "open-dalle-v1.1",
+      "modality": "image",
       "version_id": "1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
       "description": "A unique fusion that showcases exceptional prompt adherence and semantic understanding, it seems to be a step above base SDXL and a step closer to DALLE-3 in terms of prompt comprehension",
       "source": "collection",
@@ -2259,7 +2464,8 @@
               "atlas": [0.3916, 0.6429],
               "typicality": 0.5606
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2316,7 +2522,8 @@
               "atlas": [0.6398, 0.5333],
               "typicality": 0.659
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2325,6 +2532,7 @@
       "slug": "sdxl-based--realvisxl-v3-multi-controlnet-lora",
       "owner": "sdxl-based",
       "name": "realvisxl-v3-multi-controlnet-lora",
+      "modality": "image",
       "version_id": "90a4a3604cd637cb9f1a2bdae1cfa9ed869362ca028814cdce310a78e27daade",
       "description": "RealVisXl V3 with multi-controlnet, lora loading, img2img, inpainting",
       "source": "collection",
@@ -2388,7 +2596,8 @@
               "atlas": [0.3592, 0.6136],
               "typicality": 0.6908
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2445,7 +2654,8 @@
               "atlas": [0.5926, 0.5065],
               "typicality": 0.6804
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2454,6 +2664,7 @@
       "slug": "fofr--latent-consistency-model",
       "owner": "fofr",
       "name": "latent-consistency-model",
+      "modality": "image",
       "version_id": "683d19dc312f7a9f0428b04429a9ccefd28dbf7785fef083ad5cf991b65f406f",
       "description": "Super-fast, 0.6s per image. LCM with img2img, large batching and canny controlnet",
       "source": "collection",
@@ -2517,7 +2728,8 @@
               "atlas": [0.1744, 0.6341],
               "typicality": 0.6592
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2574,7 +2786,38 @@
               "atlas": [0.1722, 0.6165],
               "typicality": 0.698
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "lucataco--magnet",
+      "owner": "lucataco",
+      "name": "magnet",
+      "modality": "audio",
+      "version_id": "e8e2ecd4a1dabb58924aa8300b668290cafae166dd36baf65dad9875877de50e",
+      "description": "MAGNeT: Masked Audio Generation using a Single Non-Autoregressive Transformer",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2024-01-17",
+      "replicate_url": "https://replicate.com/lucataco/magnet",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -2583,6 +2826,7 @@
       "slug": "adirik--realvisxl-v3-0-turbo",
       "owner": "adirik",
       "name": "realvisxl-v3.0-turbo",
+      "modality": "image",
       "version_id": "3dc73c805b11b4b01a60555e532fd3ab3f0e60d26f6584d9b8ba7e1b95858243",
       "description": "Photorealism with RealVisXL V3.0 Turbo based on SDXL",
       "source": "collection",
@@ -2646,7 +2890,8 @@
               "atlas": [0.3545, 0.6135],
               "typicality": 0.711
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2703,7 +2948,8 @@
               "atlas": [0.5127, 0.5024],
               "typicality": 0.6565
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2712,6 +2958,7 @@
       "slug": "datacte--proteus-v0-2",
       "owner": "datacte",
       "name": "proteus-v0.2",
+      "modality": "image",
       "version_id": "06775cd262843edbde5abab958abdbb65a0a6b58ca301c9fd78fa55c775fc019",
       "description": "Proteus v0.2 shows subtle yet significant improvements over Version 0.1. It demonstrates enhanced prompt understanding that surpasses MJ6, while also approaching its stylistic capabilities.",
       "source": "collection",
@@ -2775,7 +3022,8 @@
               "atlas": [0.3586, 0.6092],
               "typicality": 0.6846
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2832,7 +3080,8 @@
               "atlas": [0.6199, 0.5475],
               "typicality": 0.6631
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2841,6 +3090,7 @@
       "slug": "datacte--proteus-v0-3",
       "owner": "datacte",
       "name": "proteus-v0.3",
+      "modality": "image",
       "version_id": "b28b79d725c8548b173b6a19ff9bffd16b9b80df5b18b8dc5cb9e1ee471bfa48",
       "description": "ProteusV0.3: The Anime Update",
       "source": "collection",
@@ -2904,7 +3154,8 @@
               "atlas": [0.3292, 0.6354],
               "typicality": 0.6734
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -2961,7 +3212,8 @@
               "atlas": [0.6074, 0.5215],
               "typicality": 0.6595
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -2970,6 +3222,7 @@
       "slug": "playgroundai--playground-v2-5-1024px-aesthetic",
       "owner": "playgroundai",
       "name": "playground-v2.5-1024px-aesthetic",
+      "modality": "image",
       "version_id": "a45f82a1382bed5c7aeb861dac7c7d191b0fdf74d8d57c4a0e6ed7d4d0bf7d24",
       "description": "Playground v2.5 is the state-of-the-art open-source model in aesthetic quality",
       "source": "collection",
@@ -3028,7 +3281,8 @@
               "atlas": [0.1805, 0.8423],
               "typicality": 0.641
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3085,7 +3339,38 @@
               "atlas": [0.6743, 0.5449],
               "typicality": 0.6337
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "meta--musicgen",
+      "owner": "meta",
+      "name": "musicgen",
+      "modality": "audio",
+      "version_id": "671ac645ce5e552cc63a54a2bbff63fcf798043055d2dac5fc9e36a837eedcfb",
+      "description": "Generate music from a prompt or melody",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2024-03-28",
+      "replicate_url": "https://replicate.com/meta/musicgen",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -3094,6 +3379,7 @@
       "slug": "fofr--sticker-maker",
       "owner": "fofr",
       "name": "sticker-maker",
+      "modality": "image",
       "version_id": "4acb778eb059772225ec213948f0660867b2e03f277448f18cf1800b96a65a1a",
       "description": "Make stickers with AI. Generates graphics with transparent backgrounds.",
       "source": "collection",
@@ -3157,7 +3443,8 @@
               "atlas": [0.2344, 0.507],
               "typicality": 0.6503
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3214,7 +3501,38 @@
               "atlas": [0.241, 0.4913],
               "typicality": 0.623
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "zsxkib--flux-music",
+      "owner": "zsxkib",
+      "name": "flux-music",
+      "modality": "audio",
+      "version_id": "eebfed4a1749bb1172f005f71fac5a1e0377502ec149c9d02b56ac1de3aa9f07",
+      "description": "🎼FluxMusic Text-to-Music Generation with Rectified Flow Transformer🎶",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2024-09-26",
+      "replicate_url": "https://replicate.com/zsxkib/flux-music",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -3223,6 +3541,7 @@
       "slug": "luma--photon",
       "owner": "luma",
       "name": "photon",
+      "modality": "image",
       "version_id": "fe142c037cf359764f2058c3a42ef0dc750d908311d02868cbc7769fe800b648",
       "description": "High-quality image generation model optimized for creative professional workflows and ultra-high fidelity outputs",
       "source": "collection",
@@ -3286,7 +3605,8 @@
               "atlas": [0.0949, 0.7786],
               "typicality": 0.6653
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3343,7 +3663,8 @@
               "atlas": [0.4422, 0.6536],
               "typicality": 0.6947
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -3352,6 +3673,7 @@
       "slug": "nvidia--sana",
       "owner": "nvidia",
       "name": "sana",
+      "modality": "image",
       "version_id": "c6b5d2b7459910fec94432e9e1203c3cdce92d6db20f714f1355747990b52fa6",
       "description": "A fast image model with wide artistic range and resolutions up to 4096x4096",
       "source": "collection",
@@ -3415,7 +3737,8 @@
               "atlas": [0.2104, 0.6154],
               "typicality": 0.6569
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3472,7 +3795,8 @@
               "atlas": [0.514, 0.5264],
               "typicality": 0.63
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -3481,6 +3805,7 @@
       "slug": "bytedance--sdxl-lightning-4step",
       "owner": "bytedance",
       "name": "sdxl-lightning-4step",
+      "modality": "image",
       "version_id": "6f7a773af6fc3e8de9d5a3c00be77c17308914bf67772726aff83496ba1e3bbe",
       "description": "SDXL-Lightning by ByteDance: a fast text-to-image model that makes high-quality images in 4 steps",
       "source": "collection",
@@ -3544,7 +3869,8 @@
               "atlas": [0.4432, 0.3788],
               "typicality": 0.5725
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3601,7 +3927,38 @@
               "atlas": [0.9569, 0.5314],
               "typicality": 0.5554
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "lucataco--ace-step",
+      "owner": "lucataco",
+      "name": "ace-step",
+      "modality": "audio",
+      "version_id": "280fc4f9ee507577f880a167f639c02622421d8fecf492454320311217b688f1",
+      "description": "A Step Towards Music Generation Foundation Model text2music",
+      "source": "collection",
+      "is_official": false,
+      "release_date": "2025-05-14",
+      "replicate_url": "https://replicate.com/lucataco/ace-step",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -3610,6 +3967,7 @@
       "slug": "prunaai--sdxl-lightning",
       "owner": "prunaai",
       "name": "sdxl-lightning",
+      "modality": "image",
       "version_id": "123d4264aec4d1c81d8bf142e0d90d6fd4c346f1a869406019f6d1653882d7c3",
       "description": "This is the fastest sdxl-lightning endpoint in the world on A100, contact us for more at pruna.ai",
       "source": "collection",
@@ -3673,7 +4031,8 @@
               "atlas": [0.3112, 0.7502],
               "typicality": 0.689
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3730,7 +4089,8 @@
               "atlas": [0.5516, 0.4687],
               "typicality": 0.6614
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -3739,6 +4099,7 @@
       "slug": "black-forest-labs--flux-dev",
       "owner": "black-forest-labs",
       "name": "flux-dev",
+      "modality": "image",
       "version_id": "6e4a938f85952bdabcc15aa329178c4d681c52bf25a0342403287dc26944661d",
       "description": "A 12 billion parameter rectified flow transformer capable of generating images from text descriptions",
       "source": "collection",
@@ -3802,7 +4163,8 @@
               "atlas": [0.2684, 0.7465],
               "typicality": 0.6506
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3859,7 +4221,8 @@
               "atlas": [0.2921, 0.7025],
               "typicality": 0.699
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -3868,6 +4231,7 @@
       "slug": "black-forest-labs--flux-dev-lora",
       "owner": "black-forest-labs",
       "name": "flux-dev-lora",
+      "modality": "image",
       "version_id": "ae0d7d645446924cf1871e3ca8796e8318f72465d2b5af9323a835df93bf0917",
       "description": "A version of flux-dev, a text to image model, that supports fast fine-tuned lora inference",
       "source": "collection",
@@ -3931,7 +4295,8 @@
               "atlas": [0.3014, 0.7267],
               "typicality": 0.6219
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -3988,7 +4353,8 @@
               "atlas": [0.378, 0.5238],
               "typicality": 0.6682
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -3997,6 +4363,7 @@
       "slug": "black-forest-labs--flux-schnell",
       "owner": "black-forest-labs",
       "name": "flux-schnell",
+      "modality": "image",
       "version_id": "c846a69991daf4c0e5d016514849d14ee5b2e6846ce6b9d6f21369e564cfe51e",
       "description": "The fastest image generation model tailored for local development and personal use",
       "source": "collection",
@@ -4060,7 +4427,8 @@
               "atlas": [0.2301, 0.7888],
               "typicality": 0.604
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4117,7 +4485,8 @@
               "atlas": [0.2955, 0.7219],
               "typicality": 0.6765
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -4126,6 +4495,7 @@
       "slug": "prunaai--hidream-l1-dev",
       "owner": "prunaai",
       "name": "hidream-l1-dev",
+      "modality": "image",
       "version_id": "4dfcd146c0def4812455415f55556f6bc84025dcb15193cf1977f01bd384d191",
       "description": "This is an optimised version of the hidream-l1-dev model using the pruna ai optimisation toolkit!",
       "source": "collection",
@@ -4189,7 +4559,8 @@
               "atlas": [0.0029, 0.6236],
               "typicality": 0.4113
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4246,7 +4617,8 @@
               "atlas": [0.7323, 0.4836],
               "typicality": 0.5565
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -4255,6 +4627,7 @@
       "slug": "prunaai--hidream-l1-full",
       "owner": "prunaai",
       "name": "hidream-l1-full",
+      "modality": "image",
       "version_id": "03d58532fd29e39fd2ed80e86c3da1cebec28ef2734081cf1366710d30388f42",
       "description": "This is an optimised version of the hidream-full model using the pruna ai optimisation toolkit!",
       "source": "collection",
@@ -4318,7 +4691,8 @@
               "atlas": [0.2982, 0.5622],
               "typicality": 0.5602
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4375,7 +4749,8 @@
               "atlas": [0.7363, 0.4934],
               "typicality": 0.5851
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -4384,6 +4759,7 @@
       "slug": "prunaai--wan-2-2-image",
       "owner": "prunaai",
       "name": "wan-2.2-image",
+      "modality": "image",
       "version_id": "16e15e913fcc71c1a5defb335ea84739f99731fa1ee17995117c7d9adc6d176c",
       "description": "This model generates beautiful cinematic 2 megapixel images in 3-4 seconds and is derived from the Wan 2.2 model through optimisation techniques from the pruna package",
       "source": "collection",
@@ -4447,7 +4823,8 @@
               "atlas": [0.6135, 0.5602],
               "typicality": 0.5848
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4504,7 +4881,8 @@
               "atlas": [0.9963, 0.522],
               "typicality": 0.4782
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -4513,6 +4891,7 @@
       "slug": "nvidia--sana-sprint-1-6b",
       "owner": "nvidia",
       "name": "sana-sprint-1.6b",
+      "modality": "image",
       "version_id": "038aee6907b53a5c148780983e39a50ce7cd0747b4e2642e78387f48cf36039a",
       "description": "SANA-Sprint: One-Step Diffusion with Continuous-Time Consistency Distillation",
       "source": "collection",
@@ -4576,7 +4955,8 @@
               "atlas": [0.2448, 0.6686],
               "typicality": 0.671
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4633,7 +5013,8 @@
               "atlas": [0.2195, 0.6639],
               "typicality": 0.6769
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -4642,6 +5023,7 @@
       "slug": "tencent--hunyuan-image-3",
       "owner": "tencent",
       "name": "hunyuan-image-3",
+      "modality": "image",
       "version_id": "080dbbefcd1504ca5aeebaa2815fd51467d5bb793d2b1fb4eb4eb32ac22a3377",
       "description": "A powerful native multimodal model for image generation (PrunaAI squeezed)",
       "source": "collection",
@@ -4705,7 +5087,8 @@
               "atlas": [0.0229, 0.698],
               "typicality": 0.5803
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4762,7 +5145,38 @@
               "atlas": [0.4728, 0.448],
               "typicality": 0.5882
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "elevenlabs--music",
+      "owner": "elevenlabs",
+      "name": "music",
+      "modality": "audio",
+      "version_id": "66fa53d463ca3a0fd826c06b5b44804b32f74185c0c905162bb052c3a60a39fa",
+      "description": "Compose a song from a prompt or a composition plan",
+      "source": "collection",
+      "is_official": true,
+      "release_date": "2025-10-29",
+      "replicate_url": "https://replicate.com/elevenlabs/music",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -4771,6 +5185,7 @@
       "slug": "ideogram-ai--ideogram-v2",
       "owner": "ideogram-ai",
       "name": "ideogram-v2",
+      "modality": "image",
       "version_id": "3e6071946ab5319b3bcc37a4d00083e743dfdff5be386df6a2ff1f212fc7365b",
       "description": "An excellent image model with state of the art inpainting, prompt comprehension and text rendering",
       "source": "collection",
@@ -4834,7 +5249,8 @@
               "atlas": [0.6761, 0.3606],
               "typicality": 0.4765
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -4891,7 +5307,8 @@
               "atlas": [0.6673, 0.5754],
               "typicality": 0.6235
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -4900,6 +5317,7 @@
       "slug": "ideogram-ai--ideogram-v2-turbo",
       "owner": "ideogram-ai",
       "name": "ideogram-v2-turbo",
+      "modality": "image",
       "version_id": "7cef9d520d672bb802588ad0d13151bc51aee9a408c270aebf25d6530045dd29",
       "description": "A fast image model with state of the art inpainting, prompt comprehension and text rendering.",
       "source": "collection",
@@ -4963,7 +5381,8 @@
               "atlas": [0.6694, 0.3826],
               "typicality": 0.5266
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5020,7 +5439,8 @@
               "atlas": [0.5452, 0.5273],
               "typicality": 0.5601
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5029,6 +5449,7 @@
       "slug": "ideogram-ai--ideogram-v2a",
       "owner": "ideogram-ai",
       "name": "ideogram-v2a",
+      "modality": "image",
       "version_id": "8b85e4363b03c25f1d248d0f7e3e118503f2b33773a51bab414603bd52f6112d",
       "description": "Like Ideogram v2, but faster and cheaper",
       "source": "collection",
@@ -5092,7 +5513,8 @@
               "atlas": [0.2681, 0.9141],
               "typicality": 0.6271
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5149,7 +5571,8 @@
               "atlas": [0.2722, 0.9659],
               "typicality": 0.6115
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5158,6 +5581,7 @@
       "slug": "ideogram-ai--ideogram-v2a-turbo",
       "owner": "ideogram-ai",
       "name": "ideogram-v2a-turbo",
+      "modality": "image",
       "version_id": "0afb968f42d1f96ab92f9c8d669c0e819fa36ccc74f02a7cd057595c9e42da01",
       "description": "Like Ideogram v2 turbo, but now faster and cheaper",
       "source": "collection",
@@ -5221,7 +5645,8 @@
               "atlas": [0.3969, 0.7952],
               "typicality": 0.6362
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5278,7 +5703,8 @@
               "atlas": [0.4388, 0.7925],
               "typicality": 0.6262
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5287,6 +5713,7 @@
       "slug": "ideogram-ai--ideogram-v3-balanced",
       "owner": "ideogram-ai",
       "name": "ideogram-v3-balanced",
+      "modality": "image",
       "version_id": "41f9f0d4bf6c470dd0f5085dadc6c14ffb8ed4ce1f6bffbbc10b03ecf5b053fb",
       "description": "Balance speed, quality and cost. Ideogram v3 creates images with stunning realism, creative designs, and consistent styles",
       "source": "collection",
@@ -5350,7 +5777,8 @@
               "atlas": [0.4627, 0.8153],
               "typicality": 0.6396
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5407,7 +5835,8 @@
               "atlas": [0.4626, 0.7938],
               "typicality": 0.6428
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5416,6 +5845,7 @@
       "slug": "ideogram-ai--ideogram-v3-quality",
       "owner": "ideogram-ai",
       "name": "ideogram-v3-quality",
+      "modality": "image",
       "version_id": "6dafa89a04b1547f0d1c1680b8dcd41ebb2f82c4e2f0c8a92d4bf5ea5250150b",
       "description": "The highest quality Ideogram v3 model. v3 creates images with stunning realism, creative designs, and consistent styles",
       "source": "collection",
@@ -5479,7 +5909,8 @@
               "atlas": [0.4623, 0.8094],
               "typicality": 0.6366
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5536,7 +5967,8 @@
               "atlas": [0.4363, 0.7965],
               "typicality": 0.6787
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5545,6 +5977,7 @@
       "slug": "ideogram-ai--ideogram-v3-turbo",
       "owner": "ideogram-ai",
       "name": "ideogram-v3-turbo",
+      "modality": "image",
       "version_id": "d9b3748f95c0fe3e71f010f8cc5d80e8f5252acd0e74b1c294ee889eea52a47b",
       "description": "Turbo is the fastest and cheapest Ideogram v3. v3 creates images with stunning realism, creative designs, and consistent styles",
       "source": "collection",
@@ -5608,7 +6041,8 @@
               "atlas": [0.4781, 0.7957],
               "typicality": 0.6404
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5665,7 +6099,8 @@
               "atlas": [0.4562, 0.7976],
               "typicality": 0.6351
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5674,6 +6109,7 @@
       "slug": "luma--photon-flash",
       "owner": "luma",
       "name": "photon-flash",
+      "modality": "image",
       "version_id": "8cee7d47f81d8f4f77c1aec44ffb3d1ce09d36388db637ceaa8a6cbcf30b63e1",
       "description": "Accelerated variant of Photon prioritizing speed while maintaining quality",
       "source": "collection",
@@ -5737,7 +6173,8 @@
               "atlas": [0.0963, 0.6923],
               "typicality": 0.6438
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5794,7 +6231,8 @@
               "atlas": [0.0581, 0.7129],
               "typicality": 0.652
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -5803,6 +6241,7 @@
       "slug": "minimax--image-01",
       "owner": "minimax",
       "name": "image-01",
+      "modality": "image",
       "version_id": "928f3bd6ac899108d0ab8cf7f91dfa39a03eda0175e94c9b4cd075776dececf0",
       "description": "Minimax's first image model, with character reference support",
       "source": "collection",
@@ -5866,7 +6305,8 @@
               "atlas": [0.0611, 0.7211],
               "typicality": 0.632
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -5923,15 +6363,77 @@
               "atlas": [0.1009, 0.7371],
               "typicality": 0.6771
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
     },
     {
+      "slug": "minimax--music-01",
+      "owner": "minimax",
+      "name": "music-01",
+      "modality": "audio",
+      "version_id": "0254c7e2f54315b667dbae03da7c155822ba29ffe0457be5bc246d564be486bd",
+      "description": "Quickly generate up to 1 minute of music with lyrics and vocals in the style of a reference track",
+      "source": "collection",
+      "is_official": true,
+      "release_date": "2025-11-07",
+      "replicate_url": "https://replicate.com/minimax/music-01",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "has no prompt input at all — only lyrics — so the prompt goes in as lyrics"
+    },
+    {
+      "slug": "minimax--music-1-5",
+      "owner": "minimax",
+      "name": "music-1.5",
+      "modality": "audio",
+      "version_id": "70c8395540eae909be2c09a0b4897d22ee2455a5e5c9826b71161743b5cc45f1",
+      "description": "Music-1.5: Full-length songs (up to 4 mins) with natural vocals & rich instrumentation",
+      "source": "collection",
+      "is_official": true,
+      "release_date": "2025-11-07",
+      "replicate_url": "https://replicate.com/minimax/music-1.5",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "requires a 10–300 character prompt, so the bare word is rejected upstream"
+    },
+    {
       "slug": "recraft-ai--recraft-v3",
       "owner": "recraft-ai",
       "name": "recraft-v3",
+      "modality": "image",
       "version_id": "9507e61ddace8b3a238371b17a61be203747c5081ea6070fecd3c40d27318922",
       "description": "Recraft V3 (code-named red_panda) is a text-to-image model with the ability to generate long texts, and images in a wide list of styles. As of today, it is SOTA in image generation, proven by the Text-to-Image Benchmark by Artificial Analysis",
       "source": "collection",
@@ -5995,7 +6497,8 @@
               "atlas": [0.4262, 0.6294],
               "typicality": 0.6091
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6052,7 +6555,8 @@
               "atlas": [0.4602, 0.7136],
               "typicality": 0.6722
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6061,6 +6565,7 @@
       "slug": "recraft-ai--recraft-v3-svg",
       "owner": "recraft-ai",
       "name": "recraft-v3-svg",
+      "modality": "image",
       "version_id": "df041379628fa1d16bd406409930775b0904dc2bc0f3e3f38ecd2a4389e9329d",
       "description": "Recraft V3 SVG (code-named red_panda) is a text-to-image model with the ability to generate high quality SVG images including logotypes, and icons. The model supports a wide list of styles.",
       "source": "collection",
@@ -6124,7 +6629,8 @@
               "atlas": [0.2528, 0.3011],
               "typicality": 0.644
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6181,7 +6687,38 @@
               "atlas": [0.2547, 0.296],
               "typicality": 0.5946
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "stability-ai--stable-audio-2-5",
+      "owner": "stability-ai",
+      "name": "stable-audio-2.5",
+      "modality": "audio",
+      "version_id": "a61ac8edbb27cd2eda1b2eff2bbc03dcff1131f5560836ff77a052df05b77491",
+      "description": "Generate high-quality music and sound from text prompts",
+      "source": "collection",
+      "is_official": true,
+      "release_date": "2025-11-07",
+      "replicate_url": "https://replicate.com/stability-ai/stable-audio-2.5",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -6190,6 +6727,7 @@
       "slug": "stability-ai--stable-diffusion-3-5-large",
       "owner": "stability-ai",
       "name": "stable-diffusion-3.5-large",
+      "modality": "image",
       "version_id": "2fdf9488b53c1e0fd3aef7b477def1c00d1856a38466733711f9c769942598f5",
       "description": "A text-to-image model that generates high-resolution images with fine details. It supports various artistic styles and produces diverse outputs from the same prompt, thanks to Query-Key Normalization.",
       "source": "collection",
@@ -6253,7 +6791,8 @@
               "atlas": [0.2541, 0.4979],
               "typicality": 0.6097
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6310,7 +6849,8 @@
               "atlas": [0.6592, 0.5394],
               "typicality": 0.5959
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6319,6 +6859,7 @@
       "slug": "stability-ai--stable-diffusion-3-5-large-turbo",
       "owner": "stability-ai",
       "name": "stable-diffusion-3.5-large-turbo",
+      "modality": "image",
       "version_id": "6ce89263555dde3393564e799f1310ee247c5339c3c665250b5dd5d26b7bcc3d",
       "description": "A text-to-image model that generates high-resolution images with fine details. It supports various artistic styles and produces diverse outputs from the same prompt, with a focus on fewer inference steps",
       "source": "collection",
@@ -6382,7 +6923,8 @@
               "atlas": [0.4756, 0.7609],
               "typicality": 0.6389
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6439,7 +6981,8 @@
               "atlas": [0.6882, 0.549],
               "typicality": 0.6211
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6448,6 +6991,7 @@
       "slug": "stability-ai--stable-diffusion-3-5-medium",
       "owner": "stability-ai",
       "name": "stable-diffusion-3.5-medium",
+      "modality": "image",
       "version_id": "1323a3a68cbf2b58c708f38fba9557e39d68a77cb287a8d7372ba0443f6f0767",
       "description": "2.5 billion parameter image model with improved MMDiT-X architecture",
       "source": "collection",
@@ -6511,7 +7055,8 @@
               "atlas": [0.2341, 0.0546],
               "typicality": 0.6179
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6568,7 +7113,8 @@
               "atlas": [0.6161, 0.5595],
               "typicality": 0.6407
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6577,6 +7123,7 @@
       "slug": "prunaai--flux-fast",
       "owner": "prunaai",
       "name": "flux-fast",
+      "modality": "image",
       "version_id": "4f22c6cd75e0f95f12f55d1616a4d163e9166087ed4979f5cecc40418a522703",
       "description": "This is the fastest Flux endpoint in the world.",
       "source": "collection",
@@ -6640,7 +7187,8 @@
               "atlas": [0.2733, 0.741],
               "typicality": 0.5885
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6697,7 +7245,8 @@
               "atlas": [0.2886, 0.7039],
               "typicality": 0.6681
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6706,6 +7255,7 @@
       "slug": "black-forest-labs--flux-pro",
       "owner": "black-forest-labs",
       "name": "flux-pro",
+      "modality": "image",
       "version_id": "ce4035b99fc7bac18bc2f0384632858f126f6b4d96c88603a898a76b8e0c4ac2",
       "description": "State-of-the-art image generation with top of the line prompt following, visual quality, image detail and output diversity.",
       "source": "collection",
@@ -6764,7 +7314,8 @@
               "atlas": [0.25, 0.88],
               "typicality": 0.5462
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6821,7 +7372,8 @@
               "atlas": [0.2441, 0.7314],
               "typicality": 0.6756
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6830,6 +7382,7 @@
       "slug": "bytedance--seedream-3",
       "owner": "bytedance",
       "name": "seedream-3",
+      "modality": "image",
       "version_id": "ed344813bc9f4996be6de4febd8b9c14c7849ad7b21ab047572e3620ee374ee7",
       "description": "A text-to-image model with support for native high-resolution (2K) image generation",
       "source": "collection",
@@ -6842,13 +7395,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -6857,6 +7412,7 @@
       "slug": "black-forest-labs--flux-kontext-max",
       "owner": "black-forest-labs",
       "name": "flux-kontext-max",
+      "modality": "image",
       "version_id": "8389ed8e4b16016c44fcdcc3ad142cf1e182e0a1ecaf0347b3e5254303f2beac",
       "description": "A premium text-based image editing model that delivers maximum performance and improved typography generation for transforming images through natural language prompts",
       "source": "collection",
@@ -6920,7 +7476,8 @@
               "atlas": [0.4401, 0.5612],
               "typicality": 0.6197
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -6977,7 +7534,8 @@
               "atlas": [0.2065, 0.6129],
               "typicality": 0.622
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -6986,6 +7544,7 @@
       "slug": "black-forest-labs--flux-kontext-pro",
       "owner": "black-forest-labs",
       "name": "flux-kontext-pro",
+      "modality": "image",
       "version_id": "897a70f5a7dbd8a0611413b3b98cf417b45f266bd595c571a22947619d9ae462",
       "description": "A state-of-the-art text-based image editing model that delivers high-quality outputs with excellent prompt following and consistent results for transforming images through natural language",
       "source": "collection",
@@ -7049,7 +7608,8 @@
               "atlas": [0.0066, 0.6123],
               "typicality": 0.4537
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7106,7 +7666,8 @@
               "atlas": [0.4958, 0.4704],
               "typicality": 0.6622
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7115,6 +7676,7 @@
       "slug": "bytedance--seedream-4",
       "owner": "bytedance",
       "name": "seedream-4",
+      "modality": "image",
       "version_id": "cf7d431991436f19d1c8dad83fe463c729c816d7a21056c5105e75c84a0aa7e9",
       "description": "Unified text-to-image generation and precise single-sentence editing at up to 4K resolution",
       "source": "collection",
@@ -7178,7 +7740,8 @@
               "atlas": [0.1405, 0.7945],
               "typicality": 0.6565
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7235,7 +7798,38 @@
               "atlas": [0.5245, 0.7444],
               "typicality": 0.6314
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "google--lyria-2",
+      "owner": "google",
+      "name": "lyria-2",
+      "modality": "audio",
+      "version_id": "bb621623ee2772c96d300b2a303c9e444b482f6b0fafcc7424923e1429971120",
+      "description": "Lyria 2 is a music generation model that produces 48kHz stereo audio through text-based prompts",
+      "source": "collection",
+      "is_official": true,
+      "release_date": "2025-11-25",
+      "replicate_url": "https://replicate.com/google/lyria-2",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -7244,6 +7838,7 @@
       "slug": "black-forest-labs--flux-2-klein-4b",
       "owner": "black-forest-labs",
       "name": "flux-2-klein-4b",
+      "modality": "image",
       "version_id": "8e9c42d77b10a2a41af823ac4500f7545be6ebc4e745830fc3f3de10de200542",
       "description": "Very fast image generation and editing model. 4 steps distilled, sub-second inference for production and near real-time applications.",
       "source": "collection",
@@ -7307,7 +7902,8 @@
               "atlas": [0.1685, 0.7661],
               "typicality": 0.6731
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7364,7 +7960,8 @@
               "atlas": [0.0115, 0.5677],
               "typicality": 0.5773
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7373,6 +7970,7 @@
       "slug": "qwen--qwen-image",
       "owner": "qwen",
       "name": "qwen-image",
+      "modality": "image",
       "version_id": "0bba9e70f78437359725e0989ead45ca8b09e6c12a070dfe9a09e6856b43a44d",
       "description": "An image generation foundation model in the Qwen series that achieves significant advances in complex text rendering.",
       "source": "collection",
@@ -7436,7 +8034,8 @@
               "atlas": [0.2718, 0.988],
               "typicality": 0.5881
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7493,7 +8092,8 @@
               "atlas": [0.2741, 0.9902],
               "typicality": 0.5828
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7502,6 +8102,7 @@
       "slug": "openai--gpt-image-1-5",
       "owner": "openai",
       "name": "gpt-image-1.5",
+      "modality": "image",
       "version_id": "118f53498ea7319519229b2d5bd0d4a69e3d77eb60d6292d5db38125534dc1ca",
       "description": "OpenAI's latest image generation model with better instruction following and adherence to prompts",
       "source": "collection",
@@ -7565,7 +8166,8 @@
               "atlas": [0.2176, 0.1188],
               "typicality": 0.6261
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7622,7 +8224,8 @@
               "atlas": [0.0977, 0.7592],
               "typicality": 0.6973
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7631,6 +8234,7 @@
       "slug": "bria--fibo",
       "owner": "bria",
       "name": "fibo",
+      "modality": "image",
       "version_id": "11d5854315b5c315a9e9335bb816e693eea668e47e347ca69e2ea1eac16acd6b",
       "description": "SOTA Open source model trained on licensed data, transforming intent into structured control for precise, high-quality AI image generation in enterprise and agentic workflows.",
       "source": "collection",
@@ -7694,7 +8298,8 @@
               "atlas": [0.2394, 0.8315],
               "typicality": 0.7036
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7751,7 +8356,8 @@
               "atlas": [0.4239, 0.757],
               "typicality": 0.6445
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7760,6 +8366,7 @@
       "slug": "bria--image-3-2",
       "owner": "bria",
       "name": "image-3.2",
+      "modality": "image",
       "version_id": "cd4f78ccda1eb0983e504cfa1e58cfbd8edc8999ea9da87e1ac2ee541c205450",
       "description": "Commercial-ready, trained entirely on licensed data, text-to-image model. With only 4B parameters provides exceptional aesthetics and text rendering. Evaluated to be on par to other leading models in the market",
       "source": "collection",
@@ -7823,7 +8430,8 @@
               "atlas": [0.4141, 0.7555],
               "typicality": 0.6434
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7880,7 +8488,8 @@
               "atlas": [0.4476, 0.7034],
               "typicality": 0.6952
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7889,6 +8498,7 @@
       "slug": "google--nano-banana",
       "owner": "google",
       "name": "nano-banana",
+      "modality": "image",
       "version_id": "5bdc2c7cd642ae33611d8c33f79615f98ff02509ab8db9d8ec1cc6c36d378fba",
       "description": "Google's latest image editing model in Gemini 2.5",
       "source": "collection",
@@ -7927,7 +8537,8 @@
               "atlas": [0.2187, 0.7781],
               "typicality": 0.6753
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -7954,7 +8565,8 @@
               "atlas": [0.2137, 0.7947],
               "typicality": 0.6877
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -7963,6 +8575,7 @@
       "slug": "google--imagen-3",
       "owner": "google",
       "name": "imagen-3",
+      "modality": "image",
       "version_id": "dd38058a6e74c700dcd05db62896386817f3af627bbe71f869f9a43f02773fd4",
       "description": "Google's highest quality text-to-image model, capable of generating images with detail, rich lighting and beauty",
       "source": "collection",
@@ -7975,13 +8588,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -7990,6 +8605,7 @@
       "slug": "google--imagen-3-fast",
       "owner": "google",
       "name": "imagen-3-fast",
+      "modality": "image",
       "version_id": "2d1d7f7965a9b0b37ea8eb77f156e905631d27f0f56a234de98385703b5c380e",
       "description": "A faster and cheaper Imagen 3 model, for when price or speed are more important than final image quality",
       "source": "collection",
@@ -8002,13 +8618,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -8017,6 +8635,7 @@
       "slug": "google--imagen-4",
       "owner": "google",
       "name": "imagen-4",
+      "modality": "image",
       "version_id": "19335492dbe879d4b5983bff2149f597db8314ccc7fe374e6313af7c2b52792f",
       "description": "Google's Imagen 4 flagship model",
       "source": "collection",
@@ -8029,13 +8648,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -8044,6 +8665,7 @@
       "slug": "xai--grok-imagine-image",
       "owner": "xai",
       "name": "grok-imagine-image",
+      "modality": "image",
       "version_id": "3032db31147241f86351f0d7ab1ffd5150dcb482bcb873580f15d8cb8970a812",
       "description": "SOTA image model from xAI",
       "source": "collection",
@@ -8107,7 +8729,8 @@
               "atlas": [0.0896, 0.8342],
               "typicality": 0.676
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8164,7 +8787,8 @@
               "atlas": [0.1958, 0.8078],
               "typicality": 0.6883
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8173,6 +8797,7 @@
       "slug": "recraft-ai--recraft-v4-pro",
       "owner": "recraft-ai",
       "name": "recraft-v4-pro",
+      "modality": "image",
       "version_id": "da14602f43a83d1a85654e8cbce5afc0d4cca59b41c0c13f73be8ca84d54d6b6",
       "description": "Recraft's latest image generation model at ~2048px resolution. Same design taste and prompt accuracy as V4, with higher resolution for print-ready and large-scale work.",
       "source": "collection",
@@ -8236,7 +8861,8 @@
               "atlas": [0.0981, 0.7725],
               "typicality": 0.6445
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8293,7 +8919,8 @@
               "atlas": [0.1014, 0.8174],
               "typicality": 0.6054
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8302,6 +8929,7 @@
       "slug": "recraft-ai--recraft-v4-pro-svg",
       "owner": "recraft-ai",
       "name": "recraft-v4-pro-svg",
+      "modality": "image",
       "version_id": "b31f9d3b20f09d3029aee2d983641c36e7cbc2118d2c9d2fcb7a4f248b6e3538",
       "description": "Generate detailed SVG vector graphics from text prompts. Recraft V4 Pro's design taste with more geometric detail and finer paths — clean layers, editable output, and scalable to any size.",
       "source": "collection",
@@ -8365,7 +8993,8 @@
               "atlas": [0.2584, 0.0009],
               "typicality": 0.5529
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8422,7 +9051,8 @@
               "atlas": [0.2231, 0.4426],
               "typicality": 0.5285
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8431,6 +9061,7 @@
       "slug": "recraft-ai--recraft-v4-svg",
       "owner": "recraft-ai",
       "name": "recraft-v4-svg",
+      "modality": "image",
       "version_id": "93cbef8f201b974654d36b1247314072205583f6ff489a1582126f34f2f93635",
       "description": "Generate production-ready SVG vector images from text prompts. Recraft V4's design taste applied to vector output — clean geometry, structured layers, and editable paths.",
       "source": "collection",
@@ -8494,7 +9125,8 @@
               "atlas": [0.2754, 0.0166],
               "typicality": 0.5324
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8551,7 +9183,8 @@
               "atlas": [0.2743, 0.0198],
               "typicality": 0.5597
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8560,6 +9193,7 @@
       "slug": "bytedance--seedream-5-lite",
       "owner": "bytedance",
       "name": "seedream-5-lite",
+      "modality": "image",
       "version_id": "eeb2857d94c49a5bcbc9d6c6057416e1d3b1a2735a16e08e4def9bf7ee22ec71",
       "description": "Seedream 5.0 lite: image generation with built-in reasoning, example-based editing, and deep domain knowledge",
       "source": "collection",
@@ -8623,7 +9257,8 @@
               "atlas": [0.2513, 0.093],
               "typicality": 0.6651
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8680,7 +9315,8 @@
               "atlas": [0.5202, 0.6917],
               "typicality": 0.6365
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8689,6 +9325,7 @@
       "slug": "black-forest-labs--flux-2-max",
       "owner": "black-forest-labs",
       "name": "flux-2-max",
+      "modality": "image",
       "version_id": "9c23b0aaa98765a9676dbdda58b9c9915627751300747bad54cb1c11b135d3ca",
       "description": "The highest fidelity image model from Black Forest Labs",
       "source": "collection",
@@ -8732,7 +9369,8 @@
               "atlas": [0.0717, 0.824],
               "typicality": 0.6533
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8744,7 +9382,8 @@
               "atlas": [0.0632, 0.8199],
               "typicality": 0.6815
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8753,6 +9392,7 @@
       "slug": "black-forest-labs--flux-2-pro",
       "owner": "black-forest-labs",
       "name": "flux-2-pro",
+      "modality": "image",
       "version_id": "ccb5e33141097816e6fab8c895e702fe4c619e4e07500885b71214e9f6382a5c",
       "description": "High-quality image generation and editing with support for eight reference images",
       "source": "collection",
@@ -8806,7 +9446,8 @@
               "atlas": [0.0666, 0.8252],
               "typicality": 0.6438
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8828,7 +9469,8 @@
               "atlas": [0.0567, 0.7496],
               "typicality": 0.6835
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8837,6 +9479,7 @@
       "slug": "wan-video--wan-2-7-image",
       "owner": "wan-video",
       "name": "wan-2.7-image",
+      "modality": "image",
       "version_id": "2e9f097d4acc02be2d0d86ea8034402c9913488309db62dd8b7dbca3f810326c",
       "description": "Generate and edit images with Alibaba's Wan 2.7",
       "source": "collection",
@@ -8900,7 +9543,8 @@
               "atlas": [0.472, 0.3337],
               "typicality": 0.5829
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -8957,7 +9601,8 @@
               "atlas": [0.4599, 0.3403],
               "typicality": 0.5309
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -8966,6 +9611,7 @@
       "slug": "wan-video--wan-2-7-image-pro",
       "owner": "wan-video",
       "name": "wan-2.7-image-pro",
+      "modality": "image",
       "version_id": "d880bad3fb109170221d7c233c4665bab6ba83d01936f3c9b1389de6ed2a82ed",
       "description": "Generate and edit high-quality images with Alibaba's Wan 2.7 Pro with 4K output, thinking mode, text-to-image, multi-image editing, and image set generation",
       "source": "collection",
@@ -9029,7 +9675,8 @@
               "atlas": [0.4657, 0.3291],
               "typicality": 0.5392
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9086,7 +9733,8 @@
               "atlas": [0.4415, 0.348],
               "typicality": 0.5207
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -9095,6 +9743,7 @@
       "slug": "prunaai--hidream-l1-fast",
       "owner": "prunaai",
       "name": "hidream-l1-fast",
+      "modality": "image",
       "version_id": "a25bf35ce22aa4b948977b8e745cf666bc2b63032fc61cf039c745449a8cbe63",
       "description": "This is an optimised version of the hidream-l1 model using the pruna ai optimisation toolkit!",
       "source": "collection",
@@ -9158,7 +9807,8 @@
               "atlas": [0.2537, 0.0226],
               "typicality": 0.437
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9215,7 +9865,38 @@
               "atlas": [0.7296, 0.4866],
               "typicality": 0.5482
             }
-          ]
+          ],
+          "clips": []
+        }
+      ],
+      "notes": null
+    },
+    {
+      "slug": "minimax--music-2-5",
+      "owner": "minimax",
+      "name": "music-2.5",
+      "modality": "audio",
+      "version_id": "f2100977b6ce90322ab00443b76d48f079435c1d903c4805517f89d2b8cc9c5a",
+      "description": "Generate full-length songs with vocals, lyrics, and rich instrumentation from a text prompt",
+      "source": "collection",
+      "is_official": true,
+      "release_date": "2026-04-09",
+      "replicate_url": "https://replicate.com/minimax/music-2.5",
+      "status": "pending",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "the sound of a crungus",
+          "prompt_slug": "the-sound-of-a-crungus",
+          "consistency": null,
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -9224,6 +9905,7 @@
       "slug": "google--imagen-4-ultra",
       "owner": "google",
       "name": "imagen-4-ultra",
+      "modality": "image",
       "version_id": "94d9d5a0e8bf7691286756bf150fa0c81e1bc3d6e2cddfc7084781f54e0199b5",
       "description": "Use this ultra version of Imagen 4 when quality matters more than speed and cost",
       "source": "collection",
@@ -9236,13 +9918,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
@@ -9251,6 +9935,7 @@
       "slug": "google--imagen-4-fast",
       "owner": "google",
       "name": "imagen-4-fast",
+      "modality": "image",
       "version_id": "efb61e33cffb69a1725083f675a44793929553f479918d01d6ce6e00efbee0d7",
       "description": "Use this fast version of Imagen 4 when speed and cost are more important than quality",
       "source": "collection",
@@ -9263,13 +9948,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
@@ -9278,6 +9965,7 @@
       "slug": "quiverai--arrow-1-1",
       "owner": "quiverai",
       "name": "arrow-1.1",
+      "modality": "image",
       "version_id": "ad06c3ff29ebee1a9dbb1c11215cf24ae1d8f03a8f3cacdfdf20a0decd751bec",
       "description": "Generate editable SVG graphics from text prompts with Quiver's Arrow 1.1 model. Great for icons, logos, and illustrations.",
       "source": "collection",
@@ -9290,13 +9978,15 @@
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -9305,6 +9995,7 @@
       "slug": "quiverai--arrow-1-1-max",
       "owner": "quiverai",
       "name": "arrow-1.1-max",
+      "modality": "image",
       "version_id": "e469ccd61969cfacd38649a07976016657a7064bab1780a399704cd5b6ec32ef",
       "description": "Generate high-fidelity SVG graphics from text prompts with Quiver's Arrow 1.1 Max model. Tuned for dense illustrations, detailed logos, and technical diagrams.",
       "source": "collection",
@@ -9323,13 +10014,15 @@
               "atlas": [0.2334, 0.5137],
               "typicality": 0.6322
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
-          "images": []
+          "images": [],
+          "clips": []
         }
       ],
       "notes": null
@@ -9338,6 +10031,7 @@
       "slug": "black-forest-labs--flux-1-1-pro-ultra",
       "owner": "black-forest-labs",
       "name": "flux-1.1-pro-ultra",
+      "modality": "image",
       "version_id": "551f15a1f56b90795ed34e94f11efb17196a5145bf2ae58fbf2d7e7d8bb42aaf",
       "description": "FLUX1.1 [pro] in ultra and raw modes. Images are up to 4 megapixels. Use raw mode for realism.",
       "source": "collection",
@@ -9401,7 +10095,8 @@
               "atlas": [0.232, 0.7672],
               "typicality": 0.648
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9458,7 +10153,8 @@
               "atlas": [0.218, 0.7293],
               "typicality": 0.6487
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -9467,6 +10163,7 @@
       "slug": "black-forest-labs--flux-2-flex",
       "owner": "black-forest-labs",
       "name": "flux-2-flex",
+      "modality": "image",
       "version_id": "dbeea265fe7b67a03086ed29ddc54b55cc5387aeba8d84f9e80adbf5698a0f67",
       "description": "Max-quality image generation and editing with support for ten reference images",
       "source": "collection",
@@ -9515,7 +10212,8 @@
               "atlas": [0.0517, 0.8083],
               "typicality": 0.6785
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9557,7 +10255,8 @@
               "atlas": [0.0553, 0.8043],
               "typicality": 0.6862
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -9566,6 +10265,7 @@
       "slug": "bytedance--seedream-4-5",
       "owner": "bytedance",
       "name": "seedream-4.5",
+      "modality": "image",
       "version_id": "9fe3b8282dcb9d9063b05e33210a1432801f7c5a6641db944baefcec4886761a",
       "description": "Seedream 4.5: Upgraded Bytedance image model with stronger spatial understanding and world knowledge",
       "source": "collection",
@@ -9629,7 +10329,8 @@
               "atlas": [0.4897, 0.7234],
               "typicality": 0.6545
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9686,7 +10387,8 @@
               "atlas": [0.4861, 0.7411],
               "typicality": 0.6308
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -9695,6 +10397,7 @@
       "slug": "openai--gpt-image-2",
       "owner": "openai",
       "name": "gpt-image-2",
+      "modality": "image",
       "version_id": "225c978a7f938acc350564c4548ddc2476bfb33364bec6b5422227f55ce56bd3",
       "description": "OpenAI's state-of-the-art image generation model. Create and edit images from text with strong instruction following, sharp text rendering, and detailed editing.",
       "source": "collection",
@@ -9758,7 +10461,8 @@
               "atlas": [0.4546, 0.5424],
               "typicality": 0.6486
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9815,7 +10519,8 @@
               "atlas": [0.4556, 0.5411],
               "typicality": 0.6078
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -9824,6 +10529,7 @@
       "slug": "leonardoai--lucid-origin",
       "owner": "leonardoai",
       "name": "lucid-origin",
+      "modality": "image",
       "version_id": "b772951ed6ca66c93626bd27b2a0480fe392295126f39cb9e47cf6404a37def0",
       "description": "Artistic and high-quality visuals with improved prompt adherence, diversity, and definition",
       "source": "collection",
@@ -9887,7 +10593,8 @@
               "atlas": [0.2692, 0.7744],
               "typicality": 0.5964
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -9944,7 +10651,8 @@
               "atlas": [0.3863, 0.5087],
               "typicality": 0.6429
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -9953,6 +10661,7 @@
       "slug": "google--nano-banana-2",
       "owner": "google",
       "name": "nano-banana-2",
+      "modality": "image",
       "version_id": "d1be8b5fc0931a253d417e12a484ac01ee9ccbc6daffd4792151377d5e5ff55f",
       "description": "Google's fast image generation model with conversational editing, multi-image fusion, and character consistency",
       "source": "collection",
@@ -10016,7 +10725,8 @@
               "atlas": [0.3872, 0.3743],
               "typicality": 0.6771
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -10073,7 +10783,8 @@
               "atlas": [0.3917, 0.3734],
               "typicality": 0.6811
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -10082,6 +10793,7 @@
       "slug": "google--nano-banana-pro",
       "owner": "google",
       "name": "nano-banana-pro",
+      "modality": "image",
       "version_id": "93f55bfdbdfd4a62e16bf861729bcfa9e8fd9b0325fb218cbc4dd138ecc87cc7",
       "description": "Google's state of the art image generation and editing model 🍌🍌",
       "source": "collection",
@@ -10145,7 +10857,8 @@
               "atlas": [0.3883, 0.3769],
               "typicality": 0.6751
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -10202,7 +10915,8 @@
               "atlas": [0.3747, 0.3776],
               "typicality": 0.6798
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -10211,6 +10925,7 @@
       "slug": "prunaai--p-image-lora",
       "owner": "prunaai",
       "name": "p-image-lora",
+      "modality": "image",
       "version_id": "f69aaba63b0b2c22d2313c6219365a7344d6d51907c477f78986ee2de2e5d1a2",
       "description": "Use trained LoRAs from the https://replicate.com/prunaai/p-image-trainer. Find or contribute LoRAs here https://huggingface.co/collections/PrunaAI/p-image-loras",
       "source": "collection",
@@ -10274,7 +10989,8 @@
               "atlas": [0.0383, 0.5642],
               "typicality": 0.5466
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -10331,7 +11047,8 @@
               "atlas": [0.0374, 0.5783],
               "typicality": 0.6249
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -10340,6 +11057,7 @@
       "slug": "prunaai--p-image",
       "owner": "prunaai",
       "name": "p-image",
+      "modality": "image",
       "version_id": "10b739c5e107d9684e9e7eca6f443ab0861bd526af50a03cf42d6210b36684b7",
       "description": "A sub 1 second text-to-image model built for production use cases.",
       "source": "collection",
@@ -10403,7 +11121,8 @@
               "atlas": [0.0307, 0.5956],
               "typicality": 0.4417
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -10460,7 +11179,8 @@
               "atlas": [0.0183, 0.6405],
               "typicality": 0.4843
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null
@@ -10469,6 +11189,7 @@
       "slug": "prunaai--z-image-turbo",
       "owner": "prunaai",
       "name": "z-image-turbo",
+      "modality": "image",
       "version_id": "e2e4026056d5b1a80fa5f9f2fa27cd3b868eab220ba99402c5321362de0ee92a",
       "description": "Z-Image Turbo is a super fast text-to-image model of 6B parameters developed by Tongyi-MAI.",
       "source": "collection",
@@ -10532,7 +11253,8 @@
               "atlas": [0.2307, 0.112],
               "typicality": 0.6214
             }
-          ]
+          ],
+          "clips": []
         },
         {
           "prompt": "a picture of a crungus",
@@ -10589,7 +11311,8 @@
               "atlas": [0.26, 0.6182],
               "typicality": 0.6939
             }
-          ]
+          ],
+          "clips": []
         }
       ],
       "notes": null

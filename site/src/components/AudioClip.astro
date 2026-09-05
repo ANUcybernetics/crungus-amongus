@@ -1,0 +1,28 @@
+---
+// Native controls with two sources: the browser plays Opus where it can
+// (everything but Safari on macOS, which only takes Opus in CAF) and falls
+// back to AAC. Nothing is fetched until the listener presses play.
+import { bucketUrl } from "../lib/images";
+import type { ClipRef } from "../lib/schema";
+
+interface Props {
+  clip: ClipRef;
+  label: string;
+  preload?: "none" | "metadata";
+}
+
+const { clip, label, preload = "none" } = Astro.props;
+---
+
+<audio controls preload={preload} aria-label={label}>
+  <source src={bucketUrl(clip.opus)} type="audio/ogg; codecs=opus" />
+  <source src={bucketUrl(clip.m4a)} type="audio/mp4" />
+</audio>
+
+<style>
+  audio {
+    display: block;
+    width: 100%;
+    height: 2.25rem;
+  }
+</style>

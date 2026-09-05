@@ -1,7 +1,7 @@
 [project]
 name = "crungus-amongus"
 version = "0.1.0"
-description = "Batch-generate crungus images across Replicate text-to-image models"
+description = "Batch-generate crungus images and clips across Replicate text-to-image and music models"
 readme = "README.md"
 authors = [{ name = "Ben Swift", email = "ben@benswift.me" }]
 requires-python = ">=3.14"

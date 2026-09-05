@@ -2,16 +2,18 @@
 
 An archive of the [crungus](https://en.wikipedia.org/wiki/Crungus) — the
 creature that text-to-image models summon from a made-up word — recorded across
-~90 Replicate models from DALL·E mini (2022) to the present.
+~90 Replicate image models from DALL·E mini (2022) to the present, and what
+~15 text-to-music models make of the same word.
 
 Two components:
 
 - **`pipeline/`** — a Python batch tool (`crungus`) that discovers models,
-  generates images, encodes them to AVIF, scores each model's consistency with
-  CLIP, projects an embedding atlas with UMAP, uploads to a Tigris bucket, and
-  emits the site's data contract
+  generates images and clips, encodes them (AVIF; Opus with an AAC fallback),
+  scores each image model's consistency with CLIP, projects an embedding atlas
+  with UMAP, uploads to a Tigris bucket, and emits the site's data contract
 - **`site/`** — an Astro static site that presents the archive, per-model pages,
-  and the pan/zoom embedding atlas
+  the pan/zoom embedding atlas, the sound archive, and crungus radio (every clip
+  shuffled over every image)
 
 ## Pipeline
 
@@ -21,12 +23,12 @@ idempotent, and resumable:
 
 ```sh
 cd pipeline
-uv run crungus discover   # pin models from the collection + data/curated-models.toml
-uv run crungus generate   # run predictions (spends money; see --dry-run, --budget flags)
-uv run crungus optimize   # originals → AVIF
-uv run crungus analyze    # CLIP embeddings → consistency scores + atlas coords
+uv run crungus discover   # pin models from both collections + data/curated-*models.toml
+uv run crungus generate   # run predictions (spends money; see --dry-run, --modality, --max-predictions)
+uv run crungus optimize   # originals → AVIF (images) / Opus + AAC (audio); needs avifenc and ffmpeg
+uv run crungus analyze    # CLIP embeddings → consistency scores + atlas coords (images only)
 uv run crungus sprite     # atlas sprite sheet for the site
-uv run crungus sync       # upload AVIFs to the public bucket
+uv run crungus sync       # upload the optimized tree to the public bucket
 uv run crungus publish    # write site/src/data/models.json
 uv run crungus status     # progress/spend summary
 ```

@@ -4,6 +4,8 @@ import { siteData } from "../src/lib/data";
 import {
   byCrungusness,
   byTimeline,
+  clipCount,
+  coverClip,
   coverImage,
   crungusness,
   failedModels,
@@ -28,6 +30,27 @@ describe("dataset integrity", () => {
     }
   });
 
+  it("every clip has matching opus and m4a keys under its model", () => {
+    for (const model of siteData.models) {
+      for (const prompt of model.prompts) {
+        for (const clip of prompt.clips) {
+          expect(clip.opus).toMatch(/^[a-z0-9-]+\/[a-z0-9-]+\/\d\.opus$/);
+          expect(clip.m4a).toBe(clip.opus.replace(/\.opus$/, ".m4a"));
+          expect(clip.opus.startsWith(model.slug)).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("outputs match the model's modality", () => {
+    for (const model of siteData.models) {
+      for (const prompt of model.prompts) {
+        if (model.modality === "image") expect(prompt.clips).toEqual([]);
+        else expect(prompt.images).toEqual([]);
+      }
+    }
+  });
+
   it("slugs are unique", () => {
     const slugs = siteData.models.map((m) => m.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
@@ -39,6 +62,7 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
     slug: "test--model",
     owner: "test",
     name: "model",
+    modality: "image",
     version_id: "v1",
     description: null,
     source: "collection",
@@ -53,12 +77,14 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         prompt_slug: "crungus",
         consistency: 0.8,
         images: [{ key: "test--model/crungus/0.avif", atlas: [0.1, 0.2], typicality: 0.7 }],
+        clips: [],
       },
       {
         prompt: "a picture of a crungus",
         prompt_slug: "a-picture-of-a-crungus",
         consistency: 0.5,
         images: [],
+        clips: [],
       },
     ],
     ...overrides,
@@ -82,6 +108,24 @@ describe("helpers", () => {
     expect(generatedModels(data).map((m) => m.slug)).toEqual(["test--model"]);
     expect(failedModels(data).map((m) => m.slug)).toEqual(["b"]);
     expect(imageCount(generated)).toBe(1);
+  });
+
+  it("generatedModels filters by modality and counts clips as outputs", () => {
+    const clip = { opus: "s--m/crungus/0.opus", m4a: "s--m/crungus/0.m4a" };
+    const sound = fakeModel({
+      slug: "s--m",
+      modality: "audio",
+      prompts: [
+        { prompt: "crungus", prompt_slug: "crungus", consistency: null, images: [], clips: [clip] },
+      ],
+    });
+    const data = { ...siteData, models: [fakeModel({}), sound] };
+    expect(generatedModels(data).map((m) => m.slug)).toEqual(["test--model", "s--m"]);
+    expect(generatedModels(data, "audio").map((m) => m.slug)).toEqual(["s--m"]);
+    expect(failedModels(data, "audio")).toEqual([]);
+    expect(clipCount(sound)).toBe(1);
+    expect(coverClip(sound)).toEqual(clip);
+    expect(coverClip(fakeModel({}))).toBeNull();
   });
 
   it("byTimeline sorts by date with undated last, byCrungusness descends", () => {

@@ -1,7 +1,8 @@
 # crungus-amongus
 
-Batch-generates images of "crungus" across Replicate text-to-image models and
-publishes an Astro site exploring them. `README.md` has the stage-by-stage
+Batch-generates images and audio clips of "crungus" across Replicate
+text-to-image and text-to-music models and publishes an Astro site exploring
+them. `README.md` has the stage-by-stage
 pipeline commands; run them with `mise exec --` from the repo root (or inside
 `pipeline/` / `site/`).
 
@@ -13,7 +14,8 @@ pipeline commands; run them with `mise exec --` from the repo root (or inside
   bump orphans that model's images and implies re-spend. Only
   `discover --refresh-versions` may bump pins, and only when asked.
 - `state/manifest.jsonl` is append-only provenance — never edit or squash it.
-- Images never go in git. Originals and optimized AVIFs live under `data/`
+- Images and clips never go in git. Originals and optimized outputs (AVIF;
+  Opus plus an AAC fallback for Safari on macOS) live under `data/`
   (gitignored); the public corpus lives in the `crungus-amongus` Tigris bucket.
   Bucket objects are immutable-cached: changed content needs a new key, not an
   overwrite.
@@ -26,6 +28,9 @@ pipeline commands; run them with `mise exec --` from the repo root (or inside
   the bucket from `images.crungusamong.us` — that custom domain is
   `image_base_url` and the runtime source of the atlas sprite. Setting the Pages
   `cname` resets `https_enforced` to false; set it back once the cert issues.
-- The prompt set ("crungus", "a picture of a crungus", 10 images each) is the
-  experiment's fixed methodology — changing it invalidates cross-model
-  comparison, so don't.
+- The prompt sets are the experiments' fixed methodology — changing one
+  invalidates cross-model comparison, so don't. Images: "crungus" and "a
+  picture of a crungus", 10 each. Audio: "crungus" and "the sound of a
+  crungus", 10 each, 20 s where the model takes a duration. Per-modality
+  collection, curated file (`data/curated-*models.toml`) and prompts are in
+  `pipeline/src/crungus_amongus/config.py`.

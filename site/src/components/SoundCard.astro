@@ -1,0 +1,52 @@
+---
+import { clipCount, coverClip, releaseYear } from "../lib/models";
+import { path } from "../lib/paths";
+import type { ModelEntry } from "../lib/schema";
+import AudioClip from "./AudioClip.astro";
+
+interface Props {
+  model: ModelEntry;
+}
+
+const { model } = Astro.props;
+const clip = coverClip(model);
+const count = clipCount(model);
+---
+
+<article class="card">
+  <a href={path(`/model/${model.slug}/`)}>
+    <h3 class="mono">{model.owner}/{model.name}</h3>
+  </a>
+  <p class="meta mono muted">
+    {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"}
+  </p>
+  {clip && <AudioClip clip={clip} label={`crungus as played by ${model.owner}/${model.name}`} />}
+</article>
+
+<style>
+  .card {
+    padding: 0.9rem 1rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .card a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .card h3 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .card a:hover h3 {
+    color: var(--accent-bright);
+  }
+
+  .meta {
+    margin: 0.2rem 0 0.7rem;
+  }
+</style>

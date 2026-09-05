@@ -8,14 +8,17 @@ import { localImage } from "../lib/images";
 import {
   byCrungusness,
   byYear,
+  clipCount,
   failedModels,
   generatedModels,
   timelineSample,
 } from "../lib/models";
 import { path } from "../lib/paths";
 
-const models = generatedModels(siteData);
-const failed = failedModels(siteData);
+const models = generatedModels(siteData, "image");
+const failed = failedModels(siteData, "image");
+const soundModels = generatedModels(siteData, "audio");
+const clipTotal = soundModels.reduce((n, m) => n + clipCount(m), 0);
 const strip = timelineSample(models);
 const years = byYear(models);
 const scored = byCrungusness(models);
@@ -96,6 +99,20 @@ const imageTotal = models.reduce(
       </div>
     </div>
   </section>
+
+  {
+    clipTotal > 0 && (
+      <section class="listen" aria-labelledby="listen-heading">
+        <h2 id="listen-heading">The sound of crungus</h2>
+        <p>
+          The music models were asked the same question: {clipTotal} clips from{" "}
+          {soundModels.length} models, in the{" "}
+          <a href={path("/sound/")}>sound archive</a>, or shuffled end to end on{" "}
+          <a href={path("/radio/")}>crungus radio</a>.
+        </p>
+      </section>
+    )
+  }
 
   {
     failed.length > 0 && (
@@ -234,8 +251,14 @@ const imageTotal = models.reduce(
     gap: 1.25rem 1rem;
   }
 
+  .listen,
   .failed {
     margin-block-start: 3.5rem;
+  }
+
+  .listen p {
+    max-width: 46rem;
+    margin: 0;
   }
 
   .failed ul {

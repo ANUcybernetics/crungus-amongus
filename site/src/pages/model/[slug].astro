@@ -1,11 +1,13 @@
 ---
 import { Image } from "astro:assets";
 
+import AudioClip from "../../components/AudioClip.astro";
 import ConsistencyMeter from "../../components/ConsistencyMeter.astro";
 import Base from "../../layouts/Base.astro";
 import { siteData } from "../../lib/data";
 import { bucketUrl, localImage } from "../../lib/images";
 import { generatedModels, releaseYear } from "../../lib/models";
+import { path } from "../../lib/paths";
 
 export function getStaticPaths() {
   return generatedModels(siteData).map((model) => ({
@@ -16,16 +18,19 @@ export function getStaticPaths() {
 
 const { model } = Astro.props;
 const dated = model.release_date !== null;
+const audio = model.modality === "audio";
+const verb = audio ? "played" : "rendered";
 ---
 
 <Base
   title={`${model.owner}/${model.name} — Crungus Amongus`}
-  description={`The crungus as rendered by ${model.owner}/${model.name}${dated ? ` (${releaseYear(model)})` : ""}.`}
+  description={`The crungus as ${verb} by ${model.owner}/${model.name}${dated ? ` (${releaseYear(model)})` : ""}.`}
 >
   <article>
     <header>
       <p class="mono muted eyebrow">
         {releaseYear(model)} · {model.source === "legacy" ? "curated relic" : "collection"} ·{" "}
+        <a href={audio ? path("/sound/") : path()}>{audio ? "sound" : "image"}</a> ·{" "}
         <a href={model.replicate_url}>view on replicate</a>
       </p>
       <h1 class="mono">{model.owner}/{model.name}</h1>
@@ -35,7 +40,7 @@ const dated = model.release_date !== null;
 
     {
       model.prompts
-        .filter((prompt) => prompt.images.length > 0)
+        .filter((prompt) => prompt.images.length + prompt.clips.length > 0)
         .map((prompt) => (
           <section aria-labelledby={`prompt-${prompt.prompt_slug}`}>
             <div class="prompt-head">
@@ -44,39 +49,60 @@ const dated = model.release_date !== null;
               </h2>
               <ConsistencyMeter value={prompt.consistency} />
             </div>
-            <div class="grid">
-              {prompt.images.map((image, i) => {
-                const local = localImage(image.key);
-                return (
-                  local && (
-                    <a
-                      class="thumb"
-                      href={bucketUrl(image.key)}
-                      data-alt={`crungus ${i + 1} of ${prompt.images.length}, ${model.owner}/${model.name}, prompt “${prompt.prompt}”`}
-                    >
-                      <Image
-                        src={local}
-                        alt={`crungus ${i + 1} of ${prompt.images.length} for “${prompt.prompt}”`}
-                        widths={[240, 480]}
-                        sizes="(max-width: 40rem) 44vw, 240px"
-                        style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
-                      />
-                    </a>
-                  )
-                );
-              })}
-            </div>
+            {audio ? (
+              <ol class="clips">
+                {prompt.clips.map((clip, i) => (
+                  <li>
+                    <span class="mono muted">{String(i + 1).padStart(2, "0")}</span>
+                    <AudioClip
+                      clip={clip}
+                      preload="metadata"
+                      label={`clip ${i + 1} of ${prompt.clips.length} for “${prompt.prompt}”`}
+                    />
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <div class="grid">
+                {prompt.images.map((image, i) => {
+                  const local = localImage(image.key);
+                  return (
+                    local && (
+                      <a
+                        class="thumb"
+                        href={bucketUrl(image.key)}
+                        data-alt={`crungus ${i + 1} of ${prompt.images.length}, ${model.owner}/${model.name}, prompt “${prompt.prompt}”`}
+                      >
+                        <Image
+                          src={local}
+                          alt={`crungus ${i + 1} of ${prompt.images.length} for “${prompt.prompt}”`}
+                          widths={[240, 480]}
+                          sizes="(max-width: 40rem) 44vw, 240px"
+                          style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
+                        />
+                      </a>
+                    )
+                  );
+                })}
+              </div>
+            )}
           </section>
         ))
     }
   </article>
 
-  <dialog id="lightbox" closedby="any" aria-label="full-size image">
-    <form method="dialog">
-      <img alt="" />
-      <button type="submit" class="mono">close</button>
-    </form>
-  </dialog>
+  {
+    !audio && (
+      <dialog id="lightbox" closedby="any" aria-label="full-size image">
+        <form method="dialog">
+          <img alt="" />
+          <button type="submit" class="mono">
+            close
+          </button>
+        </form>
+      </dialog>
+    )
+  }
 </Base>
 
 <script>
@@ -165,6 +191,22 @@ const dated = model.release_date !== null;
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
+  }
+
+  .clips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
+    gap: 0.5rem 1.5rem;
+  }
+
+  .clips li {
+    display: grid;
+    grid-template-columns: 2ch 1fr;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   dialog {

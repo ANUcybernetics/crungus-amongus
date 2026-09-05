@@ -1,0 +1,395 @@
+---
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { generatedModels, releaseYear } from "../lib/models";
+import { path } from "../lib/paths";
+
+const audioModels = generatedModels(siteData, "audio");
+const imageModels = generatedModels(siteData, "image");
+
+// what the player needs: every clip, every image key, and a label per model
+const models = Object.fromEntries(
+  [...audioModels, ...imageModels].map((m) => [
+    m.slug,
+    { label: `${m.owner}/${m.name}`, year: releaseYear(m) },
+  ]),
+);
+const clips = audioModels.flatMap((m) =>
+  m.prompts.flatMap((p) => p.clips.map((c) => ({ ...c, slug: m.slug, prompt: p.prompt }))),
+);
+const images = imageModels.flatMap((m) => m.prompts.flatMap((p) => p.images.map((i) => i.key)));
+const payload = {
+  clips,
+  images,
+  models,
+  imageBase: siteData.image_base_url,
+  modelBase: path("/model/"),
+};
+---
+
+<Base
+  title="Radio — Crungus Amongus"
+  description="Crungus radio: every clip in the sound archive, shuffled and played end to end, over every image in the archive."
+>
+  <section class="intro">
+    <h1>Crungus radio</h1>
+    <p class="lede">
+      Every clip in the <a href={path("/sound/")}>sound archive</a>, shuffled and
+      played end to end, over every image in the <a href={path()}>archive</a>,
+      also shuffled. Nothing is matched or curated: the pairing of sound and
+      picture is chance, which is roughly how the crungus was found.
+    </p>
+  </section>
+
+  {
+    clips.length === 0 ? (
+      <p class="muted">Off air — the sound archive is still being recorded.</p>
+    ) : (
+      <div class="stage" id="stage" tabindex="-1">
+        <img class="slide" alt="" />
+        <img class="slide" alt="" />
+        <div class="bar">
+          <div class="captions">
+            <p class="mono" id="now-playing" aria-live="polite" />
+            <p class="mono muted" id="on-screen" />
+          </div>
+          <p class="controls mono">
+            <button id="tune" type="button">tune in</button>
+            <button id="toggle" type="button" hidden>
+              pause
+            </button>
+            <button id="skip" type="button" hidden>
+              next
+            </button>
+            <button id="full" type="button" hidden>
+              fullscreen
+            </button>
+          </p>
+        </div>
+        <audio id="player" preload="none" />
+      </div>
+    )
+  }
+  <noscript>
+    <p class="muted">
+      The radio needs JavaScript to play. Every clip is also in the{" "}
+      <a href={path("/sound/")}>sound archive</a>.
+    </p>
+  </noscript>
+  <p class="mono muted keys" hidden>space pause · n next · f fullscreen</p>
+</Base>
+
+<script type="application/json" id="radio-data" set:html={JSON.stringify(payload)} />
+
+<script>
+  interface Clip {
+    opus: string;
+    m4a: string;
+    slug: string;
+    prompt: string;
+  }
+  interface Payload {
+    clips: Clip[];
+    images: string[];
+    models: Record<string, { label: string; year: string }>;
+    imageBase: string;
+    modelBase: string;
+  }
+
+  const data = JSON.parse(document.getElementById("radio-data")!.textContent!) as Payload;
+
+  function shuffled<T>(items: T[]): T[] {
+    const out = [...items];
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j]!, out[i]!];
+    }
+    return out;
+  }
+
+  function tuneIn(stage: HTMLElement, player: HTMLAudioElement): void {
+    const slides = [...stage.querySelectorAll<HTMLImageElement>(".slide")];
+    const nowPlaying = document.getElementById("now-playing")!;
+    const onScreen = document.getElementById("on-screen")!;
+    const tune = document.getElementById("tune") as HTMLButtonElement;
+    const toggle = document.getElementById("toggle") as HTMLButtonElement;
+    const skip = document.getElementById("skip") as HTMLButtonElement;
+    const full = document.getElementById("full") as HTMLButtonElement;
+    const keys = document.querySelector<HTMLElement>(".keys");
+
+    const SLIDE_MS = 7000;
+    const IDLE_MS = 2500;
+    // opus everywhere it plays; Safari on macOS gets the AAC fallback
+    const canOpus = player.canPlayType('audio/ogg; codecs="opus"') !== "";
+
+    // shuffle-bag queues: every item once before any repeats
+    let clipQueue: Clip[] = [];
+    let imageQueue: string[] = [];
+    function nextClip(): Clip {
+      if (clipQueue.length === 0) clipQueue = shuffled(data.clips);
+      return clipQueue.pop()!;
+    }
+    function nextImageKey(): string {
+      if (imageQueue.length === 0) imageQueue = shuffled(data.images);
+      return imageQueue.pop()!;
+    }
+
+    function modelLink(slug: string): string {
+      const model = data.models[slug];
+      const label = model?.label ?? slug;
+      const year = model?.year ?? "";
+      return `<a href="${data.modelBase}${slug}/">${label}</a> · ${year}`;
+    }
+
+    // --- slideshow: two layers, the incoming image decodes before it fades in
+    let front = 0;
+    let upcoming = nextImageKey();
+    let preloaded = new Image();
+    preloaded.src = `${data.imageBase}/${upcoming}`;
+    let slideTimer: number | undefined;
+
+    async function showNext(): Promise<void> {
+      const key = upcoming;
+      const image = preloaded;
+      upcoming = nextImageKey();
+      preloaded = new Image();
+      preloaded.src = `${data.imageBase}/${upcoming}`;
+      try {
+        await image.decode();
+      } catch {
+        return; // a missing image just holds the current one
+      }
+      const back = 1 - front;
+      slides[back]!.src = image.src;
+      slides[back]!.classList.add("show");
+      slides[front]!.classList.remove("show");
+      front = back;
+      onScreen.innerHTML = `on screen · ${modelLink(key.split("/")[0]!)}`;
+    }
+
+    function startSlides(): void {
+      stopSlides();
+      slideTimer = window.setInterval(showNext, SLIDE_MS);
+    }
+    function stopSlides(): void {
+      if (slideTimer !== undefined) window.clearInterval(slideTimer);
+      slideTimer = undefined;
+    }
+
+    // --- player
+    let failures = 0;
+    function play(clip: Clip): void {
+      player.src = `${data.imageBase}/${canOpus ? clip.opus : clip.m4a}`;
+      void player.play().catch(() => {});
+      const model = data.models[clip.slug];
+      nowPlaying.innerHTML = `now playing · ${modelLink(clip.slug)} · “${clip.prompt}”`;
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: `“${clip.prompt}”`,
+          artist: model?.label ?? clip.slug,
+          album: "crungus radio",
+        });
+      }
+    }
+
+    player.addEventListener("ended", () => {
+      failures = 0;
+      play(nextClip());
+    });
+    player.addEventListener("error", () => {
+      // skip a clip that won't load, but don't spin forever if none will
+      failures += 1;
+      if (failures < data.clips.length) play(nextClip());
+      else nowPlaying.textContent = "off air · no clip would play";
+    });
+    player.addEventListener("play", () => {
+      toggle.textContent = "pause";
+      startSlides();
+    });
+    player.addEventListener("pause", () => {
+      toggle.textContent = "play";
+      stopSlides();
+    });
+
+    function start(): void {
+      tune.hidden = true;
+      toggle.hidden = false;
+      skip.hidden = false;
+      full.hidden = !document.fullscreenEnabled;
+      if (keys) keys.hidden = false;
+      play(nextClip());
+      stage.focus({ preventScroll: true });
+    }
+    function togglePlayback(): void {
+      if (player.paused) void player.play().catch(() => {});
+      else player.pause();
+    }
+    function toggleFullscreen(): void {
+      if (document.fullscreenElement) void document.exitFullscreen();
+      else void stage.requestFullscreen().catch(() => {});
+    }
+
+    tune.addEventListener("click", start);
+    toggle.addEventListener("click", togglePlayback);
+    skip.addEventListener("click", () => play(nextClip()));
+    full.addEventListener("click", toggleFullscreen);
+
+    document.addEventListener("keydown", (event) => {
+      if (tune.hidden === false) return; // not on air yet
+      if (event.target instanceof HTMLButtonElement) return; // buttons handle their own keys
+      if (event.key === " ") {
+        event.preventDefault();
+        togglePlayback();
+      } else if (event.key === "n" || event.key === "ArrowRight") {
+        play(nextClip());
+      } else if (event.key === "f") {
+        toggleFullscreen();
+      }
+    });
+
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("nexttrack", () => play(nextClip()));
+      navigator.mediaSession.setActionHandler("play", togglePlayback);
+      navigator.mediaSession.setActionHandler("pause", togglePlayback);
+    }
+
+    // in fullscreen the bar fades once the pointer has been still for a while
+    let idleTimer: number | undefined;
+    stage.addEventListener("pointermove", () => {
+      stage.classList.remove("idle");
+      if (idleTimer !== undefined) window.clearTimeout(idleTimer);
+      if (document.fullscreenElement === stage) {
+        idleTimer = window.setTimeout(() => stage.classList.add("idle"), IDLE_MS);
+      }
+    });
+    document.addEventListener("fullscreenchange", () => {
+      if (document.fullscreenElement !== stage) stage.classList.remove("idle");
+    });
+
+    // a first picture before anyone tunes in
+    void showNext();
+  }
+
+  const stage = document.getElementById("stage");
+  const player = document.getElementById("player");
+  if (stage && player instanceof HTMLAudioElement && data.clips.length > 0) {
+    tuneIn(stage, player);
+  }
+</script>
+
+<style>
+  .intro {
+    padding-block: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-height: 80vh;
+    background: #000;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    outline: none;
+  }
+
+  .stage:fullscreen {
+    border: none;
+    aspect-ratio: auto;
+    max-height: none;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+  }
+
+  .slide.show {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .slide {
+      transition: opacity 0.6s ease;
+    }
+  }
+
+  .bar {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 2.5rem 1rem 0.9rem;
+    background: linear-gradient(transparent, rgb(0 0 0 / 78%));
+    transition: opacity 0.4s ease;
+  }
+
+  .stage.idle .bar {
+    opacity: 0;
+  }
+
+  .stage.idle {
+    cursor: none;
+  }
+
+  .captions p {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .captions p + p {
+    margin-block-start: 0.2rem;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .controls button {
+    background: rgb(0 0 0 / 55%);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font: inherit;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+  }
+
+  .controls button:hover {
+    color: var(--accent-bright);
+    border-color: var(--accent);
+  }
+
+  #tune {
+    color: var(--ground);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  #tune:hover {
+    background: var(--accent-bright);
+    color: var(--ground);
+  }
+
+  .keys {
+    margin: 0.6rem 0 2rem;
+  }
+</style>

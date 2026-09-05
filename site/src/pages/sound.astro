@@ -1,0 +1,127 @@
+---
+import SoundCard from "../components/SoundCard.astro";
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { byYear, clipCount, failedModels, generatedModels } from "../lib/models";
+import { path } from "../lib/paths";
+
+const models = generatedModels(siteData, "audio");
+const failed = failedModels(siteData, "audio");
+const years = byYear(models);
+const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
+---
+
+<Base
+  title="Sound — Crungus Amongus"
+  description="What text-to-music models make of a word that means nothing: crungus, as played by every music model on Replicate."
+>
+  <section class="hero">
+    <h1>The sound of crungus</h1>
+    <p class="lede">
+      The image models were asked what a crungus looks like. These models were
+      asked what it sounds like: every text-to-music model in Replicate's{" "}
+      <a href="https://replicate.com/collections/ai-music-generation">music
+      collection</a>, plus Bark, given the word alone and twenty seconds.
+      {clipTotal > 0 && ` ${clipTotal} clips from ${models.length} models.`}
+    </p>
+    {
+      clipTotal > 0 && (
+        <p class="tune mono">
+          <a href={path("/radio/")}>tune in to crungus radio →</a>
+          <span class="muted"> every clip, shuffled, over every image</span>
+        </p>
+      )
+    }
+  </section>
+
+  {
+    clipTotal === 0 ? (
+      <p class="muted">Nothing on the air yet — the sound archive is still being recorded.</p>
+    ) : (
+      <section aria-labelledby="sound-heading">
+        <h2 id="sound-heading">The sound archive</h2>
+        {years.map(([year, group]) => (
+          <section class="year" aria-label={`models from ${year}`}>
+            <h3 class="mono muted">{year}</h3>
+            <div class="grid">
+              {group.map((model) => (
+                <SoundCard model={model} />
+              ))}
+            </div>
+          </section>
+        ))}
+      </section>
+    )
+  }
+
+  {
+    failed.length > 0 && (
+      <section class="failed" aria-labelledby="failed-heading">
+        <h2 id="failed-heading">Did not answer</h2>
+        <p class="muted">These models were asked and produced nothing.</p>
+        <ul class="mono">
+          {failed.map((model) => (
+            <li>
+              <a href={model.replicate_url}>
+                {model.owner}/{model.name}
+              </a>
+              <span class="muted"> — {model.status}</span>
+              {model.notes && <span class="muted"> · {model.notes}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .hero {
+    padding-block: 2.5rem 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    font-size: 1.1rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .tune {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .year h3 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-block-end: 1px solid var(--line);
+    padding-block-end: 0.4rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .failed {
+    margin-block-start: 3.5rem;
+  }
+
+  .failed ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+</style>

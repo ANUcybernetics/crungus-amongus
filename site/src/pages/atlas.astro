@@ -8,7 +8,7 @@ const modelBase = path("/model/");
 const imageBase = siteData.image_base_url;
 
 // every image with an atlas position, plus what the pointer needs to know
-const points = generatedModels(siteData).flatMap((model) =>
+const points = generatedModels(siteData, "image").flatMap((model) =>
   model.prompts.flatMap((prompt) =>
     prompt.images
       .filter((image) => image.atlas !== null)

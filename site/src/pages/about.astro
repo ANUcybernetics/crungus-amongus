@@ -1,14 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
-import { failedModels, generatedModels } from "../lib/models";
+import { clipCount, failedModels, generatedModels, imageCount } from "../lib/models";
 
-const models = generatedModels(siteData);
-const failed = failedModels(siteData);
-const imageTotal = models.reduce(
-  (n, m) => n + m.prompts.reduce((k, p) => k + p.images.length, 0),
-  0,
-);
+const models = generatedModels(siteData, "image");
+const failed = failedModels(siteData, "image");
+const imageTotal = models.reduce((n, m) => n + imageCount(m), 0);
+const soundModels = generatedModels(siteData, "audio");
+const soundFailed = failedModels(siteData, "audio");
+const clipTotal = soundModels.reduce((n, m) => n + clipCount(m), 0);
 const generatedAt = siteData.generated_at.slice(0, 10);
 ---
 
@@ -43,6 +43,22 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       no negative prompts. As of {generatedAt} the archive holds
       {imageTotal} images from {models.length} models; {failed.length} more
       models were asked and produced nothing.
+    </p>
+
+    <h2>The sound</h2>
+    <p>
+      The same question, put to the models in Replicate's
+      <a href="https://replicate.com/collections/ai-music-generation">music
+      collection</a> plus <a href="https://replicate.com/suno-ai/bark">Bark</a>:
+      ten clips of “crungus” and ten of “the sound of a crungus”, twenty
+      seconds each where the model lets you ask, and otherwise whatever length
+      it chooses. Models that need lyrics get the word itself as the lyric. No
+      style words, no genre, no tempo.
+      {clipTotal > 0
+        ? ` The sound archive holds ${clipTotal} clips from ${soundModels.length} models; ${soundFailed.length} more were asked and produced nothing.`
+        : " The sound archive is still being recorded."}
+      Clips are loudness-normalised so the radio doesn't lurch between
+      models, but otherwise untouched.
     </p>
 
     <h2>The consistency score</h2>
@@ -86,9 +102,10 @@ const generatedAt = siteData.generated_at.slice(0, 10);
 
     <h2>Colophon</h2>
     <p class="mono">
-      images generated via the Replicate API · scored with open-clip
-      (ViT-B/32) · projected with UMAP · encoded as AVIF · served from Tigris
-      object storage · built with Astro · made by
+      images and clips generated via the Replicate API · scored with
+      open-clip (ViT-B/32) · projected with UMAP · encoded as AVIF and Opus
+      (with an AAC fallback) · served from Tigris object storage · built with
+      Astro · made by
       <a href="https://benswift.me">Ben Swift</a> at the ANU School of
       Cybernetics
     </p>
