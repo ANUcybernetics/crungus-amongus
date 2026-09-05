@@ -1,4 +1,4 @@
-"""Model registry: Replicate's text-to-image collection merged with the curated list.
+"""Model registry: each modality's Replicate collection merged with its curated list.
 
 The registry (state/models.json) pins each model to a version id. Pinning is
 sticky: re-running discover never bumps an existing pin (that would orphan
@@ -15,7 +15,7 @@ import httpx
 from loguru import logger
 from pydantic import BaseModel, Field
 
-from .config import COLLECTION_SLUG, REPLICATE_API_BASE
+from .config import REPLICATE_API_BASE, Modality
 
 
 class CuratedModel(BaseModel):
@@ -28,6 +28,7 @@ class CuratedModel(BaseModel):
 
     owner: str
     name: str
+    modality: Modality = "image"
     prompt_field: str | None = None
     extra_inputs: dict[str, Any] = Field(default_factory=dict)
     output_field: str | None = None
@@ -46,6 +47,7 @@ class RegistryModel(BaseModel):
     name: str
     slug: str
     source: Literal["collection", "legacy"]
+    modality: Modality = "image"
     description: str | None = None
     # official models are routed by Replicate: predictions must use the
     # model-scoped endpoint and version pinning does not apply
@@ -79,9 +81,13 @@ def slugify(owner: str, name: str) -> str:
     return "".join(c if c.isalnum() or c == "-" else "-" for c in raw)
 
 
-def load_curated(path: Path) -> list[CuratedModel]:
+def load_curated(path: Path, modality: Modality = "image") -> list[CuratedModel]:
+    """Load one modality's curated file; the file, not each entry, names the modality."""
     doc = tomllib.loads(path.read_text())
-    return [CuratedModel.model_validate(entry) for entry in doc.get("models", [])]
+    return [
+        CuratedModel.model_validate(entry | {"modality": modality})
+        for entry in doc.get("models", [])
+    ]
 
 
 def load_deny_list(path: Path) -> list[DenyEntry]:
@@ -121,10 +127,10 @@ def _version_fields(
     return version.get("id"), created_at, _extract_input_schema(model_payload)
 
 
-def fetch_collection_models(client: httpx.Client) -> list[dict[str, Any]]:
-    """Fetch every model object in the text-to-image collection, following pagination."""
+def fetch_collection_models(client: httpx.Client, slug: str) -> list[dict[str, Any]]:
+    """Fetch every model object in a collection, following pagination."""
     models: list[dict[str, Any]] = []
-    url: str | None = f"{REPLICATE_API_BASE}/collections/{COLLECTION_SLUG}"
+    url: str | None = f"{REPLICATE_API_BASE}/collections/{slug}"
     while url:
         response = client.get(url)
         response.raise_for_status()
@@ -153,11 +159,14 @@ def build_registry(
     existing: Registry | None,
     fetch_legacy: LegacyFetcher,
     refresh_versions: bool = False,
+    modality: Modality = "image",
 ) -> Registry:
-    """Merge the collection, the curated list, and the existing registry.
+    """Merge one modality's collection, curated list, and prior registry entries.
 
     Pure with respect to the collection payloads; legacy models not present in
     the collection are fetched via fetch_legacy (injected for testability).
+    Entries of other modalities in `existing` are ignored here — discover
+    concatenates one build per modality.
     """
     denied = {(d.owner, d.name) for d in deny}
     curated_by_ref = {(c.owner, c.name): c for c in curated}
@@ -175,6 +184,7 @@ def build_registry(
             _make_entry(
                 payload,
                 "collection",
+                modality,
                 curated_by_ref.get((owner, name)),
                 existing_by_ref.get(f"{owner}/{name}"),
                 refresh_versions,
@@ -190,7 +200,12 @@ def build_registry(
             prior = existing_by_ref.get(f"{c.owner}/{c.name}")
             logger.warning("legacy model {}/{} not found on Replicate", c.owner, c.name)
             entry = _make_entry(
-                {"owner": c.owner, "name": c.name}, "legacy", c, prior, refresh_versions
+                {"owner": c.owner, "name": c.name},
+                "legacy",
+                modality,
+                c,
+                prior,
+                refresh_versions,
             )
             entry.availability = (
                 "unavailable" if entry.version_id is None else entry.availability
@@ -201,6 +216,7 @@ def build_registry(
                 _make_entry(
                     payload,
                     "legacy",
+                    modality,
                     c,
                     existing_by_ref.get(f"{c.owner}/{c.name}"),
                     refresh_versions,
@@ -213,6 +229,7 @@ def build_registry(
 def _make_entry(
     payload: dict[str, Any],
     source: Literal["collection", "legacy"],
+    modality: Modality,
     override: CuratedModel | None,
     prior: RegistryModel | None,
     refresh_versions: bool,
@@ -231,6 +248,7 @@ def _make_entry(
         name=name,
         slug=slugify(owner, name),
         source=source,
+        modality=modality,
         description=payload.get("description"),
         is_official=bool(payload.get("is_official", False)),
         availability="ok" if version_id else "unavailable",

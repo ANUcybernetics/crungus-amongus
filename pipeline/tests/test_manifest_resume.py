@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from pathlib import Path
 
-from crungus_amongus.config import IMAGES_PER_PROMPT, PROMPTS, Settings
+from crungus_amongus.config import OUTPUTS_PER_PROMPT, PROMPTS, Settings
 from crungus_amongus.generator import plan_work
 from crungus_amongus.manifest import ManifestEntry, Status, append_entry, load_manifest
 from crungus_amongus.registry import Registry, RegistryModel
@@ -58,7 +58,7 @@ def test_plan_work_full_and_resume(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     registry = make_registry()
 
-    total = len(PROMPTS) * IMAGES_PER_PROMPT
+    total = len(PROMPTS["image"]) * OUTPUTS_PER_PROMPT
     assert len(plan_work(registry, settings)) == total
 
     # permanent states are skipped; retryable states are retried
@@ -89,5 +89,15 @@ def test_version_change_invalidates_prior_work(tmp_path: Path) -> None:
     registry = make_registry()
     append_entry(settings.manifest_path, entry("succeeded", index=0))
     registry.models[0].version_id = "v2"
-    total = len(PROMPTS) * IMAGES_PER_PROMPT
+    total = len(PROMPTS["image"]) * OUTPUTS_PER_PROMPT
     assert len(plan_work(registry, settings)) == total
+
+
+def test_plan_work_uses_the_modality_prompt_set(tmp_path: Path) -> None:
+    settings = make_settings(tmp_path)
+    registry = make_registry()
+    registry.models[0].modality = "audio"
+    items = plan_work(registry, settings)
+    assert {i.prompt_slug for i in items} == set(PROMPTS["audio"])
+    assert len(items) == len(PROMPTS["audio"]) * OUTPUTS_PER_PROMPT
+    assert plan_work(registry, settings, modality="image") == []

@@ -1,5 +1,12 @@
-"""Originals → AVIF via Pillow resize + avifenc (settings cribbed from
-slop-university's ops/encode-images.py)."""
+"""Originals → web formats.
+
+Images: Pillow resize + avifenc (settings cribbed from slop-university's
+ops/encode-images.py). Audio: ffmpeg to Opus (the modern, efficient choice)
+plus an AAC fallback, because Safari on macOS only plays Opus inside a CAF
+container; the site picks whichever the browser can play. Both audio encodes
+apply EBU R128 loudness normalisation so the radio doesn't lurch between
+models mastered at wildly different levels.
+"""
 
 import subprocess
 import tempfile
@@ -9,6 +16,7 @@ from loguru import logger
 from PIL import Image, UnidentifiedImageError
 
 from .config import Settings
+from .output_normalizer import AUDIO_EXTENSIONS
 
 MAX_DIM = 1536
 AVIFENC_ARGS = [
@@ -25,33 +33,51 @@ AVIFENC_ARGS = [
     "-a",
     "cq-level=28",
 ]
+LOUDNORM = "loudnorm=I=-16:TP=-1.5:LRA=11"
+# loudnorm resamples internally (to 192 kHz), so pin the output rate
+SAMPLE_RATE = "48000"
+AUDIO_ENCODES: dict[str, list[str]] = {
+    ".opus": ["-c:a", "libopus", "-b:a", "96k", "-vbr", "on"],
+    ".m4a": ["-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart"],
+}
 
 
 def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int]:
-    """Encode every original to data/optimized/<same-relative-path>.avif.
+    """Encode every original under data/optimized/ at the same relative path.
 
-    Returns (encoded, skipped, failed). Incremental: an up-to-date output is
-    skipped. A single unreadable file is logged and skipped, never fatal —
-    publish only advertises images that exist post-optimisation.
+    Returns (encoded, skipped, failed), counting output files. Incremental: an
+    up-to-date output is skipped. A single unreadable file is logged and
+    skipped, never fatal — publish only advertises outputs that exist
+    post-optimisation.
     """
     encoded = skipped = failed = 0
     originals = sorted(p for p in settings.originals_dir.rglob("*") if p.is_file())
     for source in originals:
         relative = source.relative_to(settings.originals_dir)
-        dest = settings.optimized_dir / relative.with_suffix(".avif")
-        if (
-            not force
-            and dest.exists()
-            and dest.stat().st_mtime >= source.stat().st_mtime
-        ):
-            skipped += 1
-            continue
-        try:
-            encode_avif(source, dest)
-            encoded += 1
-        except (UnidentifiedImageError, OSError, subprocess.CalledProcessError) as exc:
-            failed += 1
-            logger.warning("optimize: skipping {}: {}", relative, exc)
+        is_audio = source.suffix.lower() in AUDIO_EXTENSIONS
+        suffixes = list(AUDIO_ENCODES) if is_audio else [".avif"]
+        for suffix in suffixes:
+            dest = settings.optimized_dir / relative.with_suffix(suffix)
+            if (
+                not force
+                and dest.exists()
+                and dest.stat().st_mtime >= source.stat().st_mtime
+            ):
+                skipped += 1
+                continue
+            try:
+                if is_audio:
+                    encode_audio(source, dest)
+                else:
+                    encode_avif(source, dest)
+                encoded += 1
+            except (
+                UnidentifiedImageError,
+                OSError,
+                subprocess.CalledProcessError,
+            ) as exc:
+                failed += 1
+                logger.warning("optimize: skipping {}: {}", dest.name, exc)
     logger.info(
         "optimize: {} encoded, {} up to date, {} unreadable", encoded, skipped, failed
     )
@@ -89,6 +115,29 @@ def encode_avif(source: Path, dest: Path) -> None:
                 check=True,
                 capture_output=True,
             )
+
+
+def encode_audio(source: Path, dest: Path) -> None:
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-loglevel",
+            "error",
+            "-i",
+            str(source),
+            "-vn",
+            "-af",
+            LOUDNORM,
+            "-ar",
+            SAMPLE_RATE,
+            *AUDIO_ENCODES[dest.suffix],
+            str(dest),
+        ],
+        check=True,
+        capture_output=True,
+    )
 
 
 def _is_svg(path: Path) -> bool:

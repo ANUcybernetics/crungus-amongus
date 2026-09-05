@@ -6,6 +6,7 @@ never an installed wheel.
 """
 
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -13,13 +14,30 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 REPLICATE_API_BASE = "https://api.replicate.com/v1"
-COLLECTION_SLUG = "text-to-image"
 
-PROMPTS: dict[str, str] = {
-    "crungus": "crungus",
-    "a-picture-of-a-crungus": "a picture of a crungus",
+# the archive has one experiment per modality: a Replicate collection plus a
+# curated list, a fixed prompt set, a fixed sample count
+type Modality = Literal["image", "audio"]
+MODALITIES: tuple[Modality, ...] = ("image", "audio")
+COLLECTIONS: dict[Modality, str] = {
+    "image": "text-to-image",
+    "audio": "ai-music-generation",
 }
-IMAGES_PER_PROMPT = 10
+PROMPTS: dict[Modality, dict[str, str]] = {
+    "image": {
+        "crungus": "crungus",
+        "a-picture-of-a-crungus": "a picture of a crungus",
+    },
+    "audio": {
+        "crungus": "crungus",
+        "the-sound-of-a-crungus": "the sound of a crungus",
+    },
+}
+OUTPUTS_PER_PROMPT = 10
+# clip length requested from audio models that expose a duration input
+AUDIO_DURATION_S = 20
+# flat per-output estimates for --dry-run (the dashboard is billing truth)
+ASSUMED_COST: dict[Modality, float] = {"image": 0.03, "audio": 0.10}
 
 
 class Settings(BaseSettings):
@@ -47,9 +65,12 @@ class Settings(BaseSettings):
     data_dir: Path = REPO_ROOT / "data"
     state_dir: Path = REPO_ROOT / "state"
 
-    @property
-    def curated_models_path(self) -> Path:
-        return self.data_dir / "curated-models.toml"
+    def curated_models_path(self, modality: Modality) -> Path:
+        return self.data_dir / (
+            "curated-models.toml"
+            if modality == "image"
+            else f"curated-{modality}-models.toml"
+        )
 
     @property
     def deny_list_path(self) -> Path:

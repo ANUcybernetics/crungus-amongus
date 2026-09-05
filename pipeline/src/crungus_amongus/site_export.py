@@ -14,7 +14,7 @@ from loguru import logger
 from pydantic import BaseModel
 
 from .analyzer import Analysis, load_analysis
-from .config import IMAGES_PER_PROMPT, PROMPTS, REPO_ROOT, Settings
+from .config import OUTPUTS_PER_PROMPT, PROMPTS, REPO_ROOT, Modality, Settings
 from .manifest import ManifestEntry, load_manifest
 from .registry import Registry, RegistryModel
 
@@ -27,17 +27,26 @@ class ImageRef(BaseModel):
     typicality: float | None = None  # mean cos sim to the release year's images
 
 
-class PromptImages(BaseModel):
+class ClipRef(BaseModel):
+    # both keys relative to image_base_url; the site plays opus where the
+    # browser can and falls back to m4a (Safari on macOS)
+    opus: str  # "<slug>/<prompt_slug>/<index>.opus"
+    m4a: str  # "<slug>/<prompt_slug>/<index>.m4a"
+
+
+class PromptOutputs(BaseModel):
     prompt: str
     prompt_slug: str
     consistency: float | None = None
-    images: list[ImageRef]
+    images: list[ImageRef]  # image models
+    clips: list[ClipRef]  # audio models
 
 
 class ModelEntry(BaseModel):
     slug: str
     owner: str
     name: str
+    modality: Modality
     version_id: str | None
     description: str | None
     source: Literal["collection", "legacy"]
@@ -45,7 +54,7 @@ class ModelEntry(BaseModel):
     release_date: date | None
     replicate_url: str
     status: Literal["ok", "partial", "failed", "incompatible", "unavailable", "pending"]
-    prompts: list[PromptImages]
+    prompts: list[PromptOutputs]
     notes: str | None
 
 
@@ -112,11 +121,13 @@ def export_site_data(registry: Registry, settings: Settings, out: Path) -> SiteD
     out.write_text(inline_short_arrays(data.model_dump_json(indent=2)) + "\n")
     ok = sum(1 for m in data.models if m.status == "ok")
     total_images = sum(len(p.images) for m in data.models for p in m.prompts)
+    total_clips = sum(len(p.clips) for m in data.models for p in m.prompts)
     logger.info(
-        "site data: {} models ({} complete), {} images → {}",
+        "site data: {} models ({} complete), {} images, {} clips → {}",
         len(data.models),
         ok,
         total_images,
+        total_clips,
         out,
     )
     return data
@@ -128,22 +139,23 @@ def _model_entry(
     analysis: Analysis | None,
     settings: Settings,
 ) -> ModelEntry:
-    prompts: list[PromptImages] = []
-    for prompt_slug, prompt in PROMPTS.items():
+    prompts: list[PromptOutputs] = []
+    for prompt_slug, prompt in PROMPTS[model.modality].items():
         images: list[ImageRef] = []
-        for index in range(IMAGES_PER_PROMPT):
-            avif = settings.optimized_dir / model.slug / prompt_slug / f"{index}.avif"
-            if not avif.exists():
+        clips: list[ClipRef] = []
+        for index in range(OUTPUTS_PER_PROMPT):
+            stem = f"{model.slug}/{prompt_slug}/{index}"
+            optimized = settings.optimized_dir / stem
+            if model.modality == "audio":
+                if all(optimized.with_suffix(s).exists() for s in (".opus", ".m4a")):
+                    clips.append(ClipRef(opus=f"{stem}.opus", m4a=f"{stem}.m4a"))
                 continue
-            atlas_key = f"{model.slug}/{prompt_slug}/{index}"
-            atlas = analysis.atlas.get(atlas_key) if analysis else None
-            typicality = analysis.year_typicality.get(atlas_key) if analysis else None
+            if not optimized.with_suffix(".avif").exists():
+                continue
+            atlas = analysis.atlas.get(stem) if analysis else None
+            typicality = analysis.year_typicality.get(stem) if analysis else None
             images.append(
-                ImageRef(
-                    key=f"{model.slug}/{prompt_slug}/{index}.avif",
-                    atlas=atlas,
-                    typicality=typicality,
-                )
+                ImageRef(key=f"{stem}.avif", atlas=atlas, typicality=typicality)
             )
         consistency = (
             analysis.consistency.get(f"{model.slug}/{prompt_slug}")
@@ -151,16 +163,17 @@ def _model_entry(
             else None
         )
         prompts.append(
-            PromptImages(
+            PromptOutputs(
                 prompt=prompt,
                 prompt_slug=prompt_slug,
                 consistency=consistency,
                 images=images,
+                clips=clips,
             )
         )
 
-    total = sum(len(p.images) for p in prompts)
-    expected = len(PROMPTS) * IMAGES_PER_PROMPT
+    total = sum(len(p.images) + len(p.clips) for p in prompts)
+    expected = len(PROMPTS[model.modality]) * OUTPUTS_PER_PROMPT
     if model.availability != "ok":
         status: Literal[
             "ok", "partial", "failed", "incompatible", "unavailable", "pending"
@@ -186,6 +199,7 @@ def _model_entry(
         slug=model.slug,
         owner=model.owner,
         name=model.name,
+        modality=model.modality,
         version_id=model.version_id,
         description=model.description,
         source=model.source,

@@ -2,16 +2,19 @@
 
 import asyncio
 from collections import Counter
+from datetime import UTC, datetime
+from typing import cast
 
 import httpx
 import typer
 from loguru import logger
 
-from .config import Settings
+from .config import ASSUMED_COST, COLLECTIONS, MODALITIES, Modality, Settings
 from .generator import RunPolicy, plan_work, run_batch
 from .logging_setup import setup_logging
 from .manifest import load_manifest
 from .registry import (
+    Registry,
     build_registry,
     fetch_collection_models,
     fetch_model,
@@ -38,25 +41,33 @@ def discover(
         False, help="Skip the collection fetch; curated models only"
     ),
 ) -> None:
-    """Fetch the text-to-image collection, merge the curated list, pin versions."""
+    """Fetch each modality's collection, merge its curated list, pin versions."""
     settings = Settings()
-    curated = load_curated(settings.curated_models_path)
     deny = load_deny_list(settings.deny_list_path)
     existing = load_registry(settings.registry_path)
 
     headers = {"Authorization": f"Bearer {settings.replicate_api_token}"}
+    models = []
     with httpx.Client(headers=headers, timeout=30.0) as client:
-        collection = [] if no_collection else fetch_collection_models(client)
-        logger.info("collection: {} models", len(collection))
-
-        registry = build_registry(
-            collection_payloads=collection,
-            curated=curated,
-            deny=deny,
-            existing=existing,
-            fetch_legacy=lambda owner, name: fetch_model(client, owner, name),
-            refresh_versions=refresh_versions,
-        )
+        for modality in MODALITIES:
+            curated = load_curated(settings.curated_models_path(modality), modality)
+            collection = (
+                []
+                if no_collection
+                else fetch_collection_models(client, COLLECTIONS[modality])
+            )
+            logger.info("{} collection: {} models", modality, len(collection))
+            built = build_registry(
+                collection_payloads=collection,
+                curated=curated,
+                deny=deny,
+                existing=existing,
+                fetch_legacy=lambda owner, name: fetch_model(client, owner, name),
+                refresh_versions=refresh_versions,
+                modality=modality,
+            )
+            models.extend(built.models)
+    registry = Registry(fetched_at=datetime.now(tz=UTC), models=models)
 
     save_registry(registry, settings.registry_path)
     ok = sum(1 for m in registry.models if m.availability == "ok")
@@ -79,6 +90,9 @@ def generate(
     prompt: str = typer.Option(
         None, "--prompt", help="restrict to one prompt slug (e.g. 'crungus')"
     ),
+    modality: str = typer.Option(
+        None, "--modality", help=f"restrict to one modality {MODALITIES}"
+    ),
     concurrency: int = typer.Option(4, help="max in-flight predictions"),
     timeout: float = typer.Option(300.0, help="per-prediction timeout (s)"),
     retries: int = typer.Option(2, help="retries per prediction on transient failure"),
@@ -88,8 +102,11 @@ def generate(
     max_predictions: int = typer.Option(
         None, "--max-predictions", help="soft cap on predictions this run"
     ),
-    assumed_cost_per_image: float = typer.Option(
-        0.03, help="flat per-image estimate for --dry-run (dashboard is billing truth)"
+    assumed_cost: float = typer.Option(
+        None,
+        "--assumed-cost",
+        help="flat per-output estimate for --dry-run; default per modality "
+        f"{ASSUMED_COST} (dashboard is billing truth)",
     ),
     dry_run: bool = typer.Option(False, "--dry-run", help="plan and estimate only"),
 ) -> None:
@@ -99,22 +116,29 @@ def generate(
     if registry is None:
         logger.error("no registry at {} — run discover first", settings.registry_path)
         raise typer.Exit(1)
+    if modality is not None and modality not in MODALITIES:
+        logger.error("--modality must be one of {}", MODALITIES)
+        raise typer.Exit(2)
 
     items = plan_work(
         registry,
         settings,
         model_pattern=models,
         prompt_filter=prompt,
+        modality=cast(Modality | None, modality),
         retry_failed=retry_failed,
     )
     capped = items[:max_predictions] if max_predictions is not None else items
     model_count = len({i.model.ref for i in capped})
+    estimate = sum(
+        assumed_cost if assumed_cost is not None else ASSUMED_COST[i.model.modality]
+        for i in capped
+    )
     logger.info(
-        "pending: {} predictions across {} models (~${:.2f} at ${}/image)",
+        "pending: {} predictions across {} models (~${:.2f})",
         len(capped),
         model_count,
-        len(capped) * assumed_cost_per_image,
-        assumed_cost_per_image,
+        estimate,
     )
     if dry_run or not capped:
         return
@@ -134,7 +158,7 @@ def generate(
 def optimize(
     force: bool = typer.Option(False, help="re-encode even if up to date"),
 ) -> None:
-    """Encode originals to AVIF under data/optimized/."""
+    """Encode originals (images → AVIF, audio → Opus + AAC) under data/optimized/."""
     from .optimizer import optimize_all
 
     optimize_all(Settings(), force=force)
@@ -152,7 +176,7 @@ def analyze() -> None:
 def sync(
     force: bool = typer.Option(False, help="re-upload everything"),
 ) -> None:
-    """Upload the optimized AVIF tree to the Tigris bucket."""
+    """Upload the optimized tree to the Tigris bucket."""
     from .bucket_sync import sync_optimized
 
     sync_optimized(Settings(), force=force)

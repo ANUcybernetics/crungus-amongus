@@ -1,13 +1,21 @@
-"""Coerce heterogeneous prediction outputs into image URLs."""
+"""Coerce heterogeneous prediction outputs into output-file URLs."""
 
 from typing import Any
 from urllib.parse import urlparse
 
+from .config import Modality
 from .exceptions import PermanentPredictionError
 from .registry import RegistryModel
 
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"}
-DEFAULT_EXTENSION = ".png"
+AUDIO_EXTENSIONS = {".wav", ".mp3", ".flac", ".ogg", ".opus", ".m4a", ".aac", ".webm"}
+EXTENSIONS: dict[Modality, set[str]] = {
+    "image": IMAGE_EXTENSIONS,
+    "audio": AUDIO_EXTENSIONS,
+}
+# an extensionless URL is saved with the modality's most common container;
+# the optimizer sniffs the real format anyway
+DEFAULT_EXTENSION: dict[Modality, str] = {"image": ".png", "audio": ".wav"}
 
 
 def output_urls(model: RegistryModel, output: Any) -> list[str]:
@@ -27,9 +35,9 @@ def output_urls(model: RegistryModel, output: Any) -> list[str]:
             )
 
 
-def url_extension(url: str) -> str:
+def url_extension(url: str, modality: Modality = "image") -> str:
     path = urlparse(url).path
-    for ext in IMAGE_EXTENSIONS:
+    for ext in EXTENSIONS[modality]:
         if path.lower().endswith(ext):
             return ".jpg" if ext == ".jpeg" else ext
-    return DEFAULT_EXTENSION
+    return DEFAULT_EXTENSION[modality]

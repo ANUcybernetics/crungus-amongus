@@ -40,3 +40,10 @@ def test_url_extension() -> None:
     assert url_extension("https://x/y.jpeg?sig=1") == ".jpg"
     assert url_extension("https://x/y.webp") == ".webp"
     assert url_extension("https://x/y") == ".png"
+
+
+def test_audio_url_extension() -> None:
+    assert url_extension("https://x/y.mp3?sig=1", "audio") == ".mp3"
+    assert url_extension("https://x/y.wav", "audio") == ".wav"
+    assert url_extension("https://x/y", "audio") == ".wav"
+    assert url_extension("https://x/y.wav") == ".png"  # image models ignore audio

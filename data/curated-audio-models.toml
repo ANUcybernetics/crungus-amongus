@@ -1,0 +1,63 @@
+# Hand-curated audio models: text-prompted audio models absent from Replicate's
+# ai-music-generation collection, plus per-model overrides for models that ARE
+# in the collection (matched by owner/name; an override never duplicates).
+# Same fields as curated-models.toml. The pipeline sets `duration` itself on
+# any model whose schema has one; models that name the clip length differently
+# get it here, at the same 20 s.
+
+# --- relics: text-prompted audio before "music generation" was a collection ---
+[[models]]
+owner = "suno-ai"
+name = "bark"
+output_field = "audio_out"
+release_date = 2023-04-20
+notes = "text-prompted generative audio, not strictly music: given a bare word it mostly speaks it"
+
+# --- overrides for collection models ---
+[[models]]
+owner = "riffusion"
+name = "riffusion"
+prompt_field = "prompt_a"
+output_field = "audio"
+release_date = 2022-12-15
+notes = "Stable Diffusion fine-tuned on spectrograms — the crungus's contemporary in sound; clips are ~5 s"
+
+[[models]]
+owner = "zsxkib"
+name = "flux-music"
+output_field = "wav"
+
+[[models]]
+owner = "andreasjansson"
+name = "musicgen-looper"
+output_field = "variation_01"
+extra_inputs = { max_duration = 20 }
+
+[[models]]
+owner = "elevenlabs"
+name = "music"
+extra_inputs = { music_length_ms = 20000 }
+
+[[models]]
+owner = "lucataco"
+name = "ace-step"
+prompt_field = "tags"
+
+# minimax's song models take the prompt as a style description and require
+# lyrics; the word itself is the only lyric we give them
+[[models]]
+owner = "minimax"
+name = "music-1.5"
+extra_inputs = { lyrics = "crungus" }
+notes = "requires a 10–300 character prompt, so the bare word is rejected upstream"
+
+[[models]]
+owner = "minimax"
+name = "music-2.5"
+extra_inputs = { lyrics = "crungus" }
+
+[[models]]
+owner = "minimax"
+name = "music-01"
+prompt_field = "lyrics"
+notes = "has no prompt input at all — only lyrics — so the prompt goes in as lyrics"

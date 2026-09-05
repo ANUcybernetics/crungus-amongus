@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from crungus_amongus.registry import (
@@ -6,6 +7,7 @@ from crungus_amongus.registry import (
     DenyEntry,
     Registry,
     build_registry,
+    load_curated,
     slugify,
 )
 
@@ -135,3 +137,21 @@ def test_unavailable_legacy_model_keeps_prior_pin() -> None:
 def test_slugify() -> None:
     assert slugify("stability-ai", "sdxl") == "stability-ai--sdxl"
     assert slugify("cjwbw", "anything-v3.0") == "cjwbw--anything-v3-0"
+
+
+def test_modality_is_stamped_on_every_entry(tmp_path: Path) -> None:
+    curated_path = tmp_path / "curated-audio-models.toml"
+    curated_path.write_text('[[models]]\nowner = "suno-ai"\nname = "bark"\n')
+    curated = load_curated(curated_path, "audio")
+    assert curated[0].modality == "audio"
+
+    registry = build_registry(
+        collection_payloads=[collection_payload("meta", "musicgen")],
+        curated=curated,
+        deny=[],
+        existing=None,
+        fetch_legacy=lambda o, n: collection_payload(o, n),
+        modality="audio",
+    )
+    assert {m.modality for m in registry.models} == {"audio"}
+    assert {m.ref for m in registry.models} == {"meta/musicgen", "suno-ai/bark"}

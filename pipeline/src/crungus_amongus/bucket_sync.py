@@ -1,4 +1,4 @@
-"""Upload the optimized AVIF tree to the public Tigris bucket.
+"""Upload the optimized tree (AVIF, Opus, AAC, atlas sprite) to the public Tigris bucket.
 
 Pattern cribbed from slop-university's ops/bucket-sync.py: boto3 against the
 Tigris S3 endpoint, immutable cache-control (safe: keys embed the pinned model
@@ -23,6 +23,8 @@ CONTENT_TYPES = {
     ".avif": "image/avif",
     ".webp": "image/webp",
     ".json": "application/json",
+    ".opus": "audio/ogg",
+    ".m4a": "audio/mp4",
 }
 MAX_WORKERS = 8
 

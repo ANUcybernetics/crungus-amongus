@@ -9,7 +9,7 @@ from datetime import UTC, datetime
 import httpx
 from loguru import logger
 
-from .config import IMAGES_PER_PROMPT, PROMPTS, Settings
+from .config import OUTPUTS_PER_PROMPT, PROMPTS, Modality, Settings
 from .exceptions import (
     NsfwBlockedError,
     PermanentPredictionError,
@@ -45,6 +45,7 @@ def plan_work(
     settings: Settings,
     model_pattern: str | None = None,
     prompt_filter: str | None = None,
+    modality: Modality | None = None,
     retry_failed: bool = False,
 ) -> list[WorkItem]:
     """Everything not yet in a permanent state, grouped by model."""
@@ -53,15 +54,17 @@ def plan_work(
     for model in registry.models:
         if model.availability != "ok" or model.version_id is None:
             continue
+        if modality and model.modality != modality:
+            continue
         if model_pattern and not (
             fnmatch.fnmatch(model.ref, model_pattern)
             or fnmatch.fnmatch(model.slug, model_pattern)
         ):
             continue
-        for prompt_slug, prompt in PROMPTS.items():
+        for prompt_slug, prompt in PROMPTS[model.modality].items():
             if prompt_filter and prompt_slug != prompt_filter:
                 continue
-            for index in range(IMAGES_PER_PROMPT):
+            for index in range(OUTPUTS_PER_PROMPT):
                 key = (model.owner, model.name, model.version_id, prompt_slug, index)
                 prior = manifest.get(key)
                 if (
@@ -177,8 +180,10 @@ async def _run_one(
                     timeout_s=policy.timeout_s,
                 )
                 urls = output_urls(model, prediction.get("output"))
-                image_bytes = await download(download_http, urls[0])
-                entry.output_path = _save_original(item, image_bytes, urls[0], settings)
+                output_bytes = await download(download_http, urls[0])
+                entry.output_path = _save_original(
+                    item, output_bytes, urls[0], settings
+                )
                 entry.status = "succeeded"
                 entry.prediction_id = prediction.get("id")
                 metrics = prediction.get("metrics") or {}
@@ -230,12 +235,11 @@ async def _run_one(
 
 
 def _save_original(
-    item: WorkItem, image_bytes: bytes, url: str, settings: Settings
+    item: WorkItem, output_bytes: bytes, url: str, settings: Settings
 ) -> str:
-    relative = (
-        f"{item.model.slug}/{item.prompt_slug}/{item.image_index}{url_extension(url)}"
-    )
+    extension = url_extension(url, item.model.modality)
+    relative = f"{item.model.slug}/{item.prompt_slug}/{item.image_index}{extension}"
     path = settings.originals_dir / relative
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(image_bytes)
+    path.write_bytes(output_bytes)
     return relative

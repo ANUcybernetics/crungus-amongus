@@ -25,3 +25,8 @@ reason = "img2img: requires an input image (crashes without one)"
 owner = "recraft-ai"
 name = "recraft-v4-styles-pro-svg"
 reason = "requires style_reference_images; not plain text-to-image"
+
+[[models]]
+owner = "sakemin"
+name = "musicgen-remixer"
+reason = "audio2audio: requires an input track to remix"
