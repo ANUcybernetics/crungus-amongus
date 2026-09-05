@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T01:45:45.215145Z",
+  "generated_at": "2026-09-05T03:17:24.176514Z",
   "image_base_url": "https://images.crungusamong.us",
   "models": [
     {
@@ -1084,21 +1084,103 @@
       "is_official": false,
       "release_date": "2022-12-15",
       "replicate_url": "https://replicate.com/riffusion/riffusion",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "riffusion--riffusion/crungus/0.opus",
+              "m4a": "riffusion--riffusion/crungus/0.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/1.opus",
+              "m4a": "riffusion--riffusion/crungus/1.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/2.opus",
+              "m4a": "riffusion--riffusion/crungus/2.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/3.opus",
+              "m4a": "riffusion--riffusion/crungus/3.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/4.opus",
+              "m4a": "riffusion--riffusion/crungus/4.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/5.opus",
+              "m4a": "riffusion--riffusion/crungus/5.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/6.opus",
+              "m4a": "riffusion--riffusion/crungus/6.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/7.opus",
+              "m4a": "riffusion--riffusion/crungus/7.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/8.opus",
+              "m4a": "riffusion--riffusion/crungus/8.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/crungus/9.opus",
+              "m4a": "riffusion--riffusion/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/0.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/1.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/2.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/3.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/4.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/5.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/6.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/7.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/8.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "riffusion--riffusion/the-sound-of-a-crungus/9.opus",
+              "m4a": "riffusion--riffusion/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": "Stable Diffusion fine-tuned on spectrograms — the crungus's contemporary in sound; clips are ~5 s"
@@ -1246,21 +1328,103 @@
       "is_official": false,
       "release_date": "2023-04-20",
       "replicate_url": "https://replicate.com/suno-ai/bark",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "suno-ai--bark/crungus/0.opus",
+              "m4a": "suno-ai--bark/crungus/0.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/1.opus",
+              "m4a": "suno-ai--bark/crungus/1.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/2.opus",
+              "m4a": "suno-ai--bark/crungus/2.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/3.opus",
+              "m4a": "suno-ai--bark/crungus/3.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/4.opus",
+              "m4a": "suno-ai--bark/crungus/4.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/5.opus",
+              "m4a": "suno-ai--bark/crungus/5.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/6.opus",
+              "m4a": "suno-ai--bark/crungus/6.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/7.opus",
+              "m4a": "suno-ai--bark/crungus/7.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/8.opus",
+              "m4a": "suno-ai--bark/crungus/8.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/crungus/9.opus",
+              "m4a": "suno-ai--bark/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/0.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/1.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/2.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/3.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/4.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/5.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/6.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/7.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/8.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "suno-ai--bark/the-sound-of-a-crungus/9.opus",
+              "m4a": "suno-ai--bark/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": "text-prompted generative audio, not strictly music: given a bare word it mostly speaks it"
@@ -1408,21 +1572,103 @@
       "is_official": false,
       "release_date": "2023-06-18",
       "replicate_url": "https://replicate.com/andreasjansson/musicgen-looper",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/0.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/0.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/1.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/1.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/2.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/2.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/3.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/3.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/4.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/4.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/5.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/5.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/6.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/6.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/7.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/7.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/8.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/8.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/crungus/9.opus",
+              "m4a": "andreasjansson--musicgen-looper/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/0.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/1.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/2.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/3.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/4.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/5.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/6.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/7.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/8.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/9.opus",
+              "m4a": "andreasjansson--musicgen-looper/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -1966,21 +2212,103 @@
       "is_official": false,
       "release_date": "2023-11-01",
       "replicate_url": "https://replicate.com/sakemin/musicgen-chord",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "sakemin--musicgen-chord/crungus/0.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/0.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/1.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/1.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/2.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/2.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/3.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/3.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/4.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/4.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/5.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/5.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/6.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/6.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/7.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/7.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/8.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/8.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/crungus/9.opus",
+              "m4a": "sakemin--musicgen-chord/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/0.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/1.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/2.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/3.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/4.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/5.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/6.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/7.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/8.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "sakemin--musicgen-chord/the-sound-of-a-crungus/9.opus",
+              "m4a": "sakemin--musicgen-chord/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -2128,7 +2456,7 @@
       "is_official": false,
       "release_date": "2023-11-28",
       "replicate_url": "https://replicate.com/sakemin/musicgen-stereo-chord",
-      "status": "pending",
+      "status": "failed",
       "prompts": [
         {
           "prompt": "crungus",
@@ -2803,21 +3131,103 @@
       "is_official": false,
       "release_date": "2024-01-17",
       "replicate_url": "https://replicate.com/lucataco/magnet",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "lucataco--magnet/crungus/0.opus",
+              "m4a": "lucataco--magnet/crungus/0.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/1.opus",
+              "m4a": "lucataco--magnet/crungus/1.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/2.opus",
+              "m4a": "lucataco--magnet/crungus/2.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/3.opus",
+              "m4a": "lucataco--magnet/crungus/3.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/4.opus",
+              "m4a": "lucataco--magnet/crungus/4.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/5.opus",
+              "m4a": "lucataco--magnet/crungus/5.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/6.opus",
+              "m4a": "lucataco--magnet/crungus/6.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/7.opus",
+              "m4a": "lucataco--magnet/crungus/7.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/8.opus",
+              "m4a": "lucataco--magnet/crungus/8.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/crungus/9.opus",
+              "m4a": "lucataco--magnet/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/0.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/1.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/2.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/3.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/4.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/5.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/6.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/7.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/8.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "lucataco--magnet/the-sound-of-a-crungus/9.opus",
+              "m4a": "lucataco--magnet/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -3356,21 +3766,103 @@
       "is_official": false,
       "release_date": "2024-03-28",
       "replicate_url": "https://replicate.com/meta/musicgen",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "meta--musicgen/crungus/0.opus",
+              "m4a": "meta--musicgen/crungus/0.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/1.opus",
+              "m4a": "meta--musicgen/crungus/1.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/2.opus",
+              "m4a": "meta--musicgen/crungus/2.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/3.opus",
+              "m4a": "meta--musicgen/crungus/3.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/4.opus",
+              "m4a": "meta--musicgen/crungus/4.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/5.opus",
+              "m4a": "meta--musicgen/crungus/5.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/6.opus",
+              "m4a": "meta--musicgen/crungus/6.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/7.opus",
+              "m4a": "meta--musicgen/crungus/7.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/8.opus",
+              "m4a": "meta--musicgen/crungus/8.m4a"
+            },
+            {
+              "opus": "meta--musicgen/crungus/9.opus",
+              "m4a": "meta--musicgen/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/0.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/1.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/2.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/3.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/4.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/5.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/6.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/7.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/8.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "meta--musicgen/the-sound-of-a-crungus/9.opus",
+              "m4a": "meta--musicgen/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -3518,21 +4010,103 @@
       "is_official": false,
       "release_date": "2024-09-26",
       "replicate_url": "https://replicate.com/zsxkib/flux-music",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "zsxkib--flux-music/crungus/0.opus",
+              "m4a": "zsxkib--flux-music/crungus/0.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/1.opus",
+              "m4a": "zsxkib--flux-music/crungus/1.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/2.opus",
+              "m4a": "zsxkib--flux-music/crungus/2.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/3.opus",
+              "m4a": "zsxkib--flux-music/crungus/3.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/4.opus",
+              "m4a": "zsxkib--flux-music/crungus/4.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/5.opus",
+              "m4a": "zsxkib--flux-music/crungus/5.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/6.opus",
+              "m4a": "zsxkib--flux-music/crungus/6.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/7.opus",
+              "m4a": "zsxkib--flux-music/crungus/7.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/8.opus",
+              "m4a": "zsxkib--flux-music/crungus/8.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/crungus/9.opus",
+              "m4a": "zsxkib--flux-music/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/0.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/1.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/2.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/3.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/4.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/5.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/6.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/7.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/8.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "zsxkib--flux-music/the-sound-of-a-crungus/9.opus",
+              "m4a": "zsxkib--flux-music/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -3944,21 +4518,103 @@
       "is_official": false,
       "release_date": "2025-05-14",
       "replicate_url": "https://replicate.com/lucataco/ace-step",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "lucataco--ace-step/crungus/0.opus",
+              "m4a": "lucataco--ace-step/crungus/0.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/1.opus",
+              "m4a": "lucataco--ace-step/crungus/1.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/2.opus",
+              "m4a": "lucataco--ace-step/crungus/2.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/3.opus",
+              "m4a": "lucataco--ace-step/crungus/3.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/4.opus",
+              "m4a": "lucataco--ace-step/crungus/4.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/5.opus",
+              "m4a": "lucataco--ace-step/crungus/5.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/6.opus",
+              "m4a": "lucataco--ace-step/crungus/6.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/7.opus",
+              "m4a": "lucataco--ace-step/crungus/7.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/8.opus",
+              "m4a": "lucataco--ace-step/crungus/8.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/crungus/9.opus",
+              "m4a": "lucataco--ace-step/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/0.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/1.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/2.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/3.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/4.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/5.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/6.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/7.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/8.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "lucataco--ace-step/the-sound-of-a-crungus/9.opus",
+              "m4a": "lucataco--ace-step/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -5162,21 +5818,103 @@
       "is_official": true,
       "release_date": "2025-10-29",
       "replicate_url": "https://replicate.com/elevenlabs/music",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "elevenlabs--music/crungus/0.opus",
+              "m4a": "elevenlabs--music/crungus/0.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/1.opus",
+              "m4a": "elevenlabs--music/crungus/1.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/2.opus",
+              "m4a": "elevenlabs--music/crungus/2.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/3.opus",
+              "m4a": "elevenlabs--music/crungus/3.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/4.opus",
+              "m4a": "elevenlabs--music/crungus/4.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/5.opus",
+              "m4a": "elevenlabs--music/crungus/5.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/6.opus",
+              "m4a": "elevenlabs--music/crungus/6.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/7.opus",
+              "m4a": "elevenlabs--music/crungus/7.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/8.opus",
+              "m4a": "elevenlabs--music/crungus/8.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/crungus/9.opus",
+              "m4a": "elevenlabs--music/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/0.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/1.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/2.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/3.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/4.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/5.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/6.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/7.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/8.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "elevenlabs--music/the-sound-of-a-crungus/9.opus",
+              "m4a": "elevenlabs--music/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -6370,36 +7108,6 @@
       "notes": null
     },
     {
-      "slug": "minimax--music-01",
-      "owner": "minimax",
-      "name": "music-01",
-      "modality": "audio",
-      "version_id": "0254c7e2f54315b667dbae03da7c155822ba29ffe0457be5bc246d564be486bd",
-      "description": "Quickly generate up to 1 minute of music with lyrics and vocals in the style of a reference track",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2025-11-07",
-      "replicate_url": "https://replicate.com/minimax/music-01",
-      "status": "pending",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "the sound of a crungus",
-          "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": "has no prompt input at all — only lyrics — so the prompt goes in as lyrics"
-    },
-    {
       "slug": "minimax--music-1-5",
       "owner": "minimax",
       "name": "music-1.5",
@@ -6410,7 +7118,7 @@
       "is_official": true,
       "release_date": "2025-11-07",
       "replicate_url": "https://replicate.com/minimax/music-1.5",
-      "status": "pending",
+      "status": "partial",
       "prompts": [
         {
           "prompt": "crungus",
@@ -6424,10 +7132,51 @@
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/0.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/1.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/2.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/3.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/4.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/5.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/6.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/7.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/8.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "minimax--music-1-5/the-sound-of-a-crungus/9.opus",
+              "m4a": "minimax--music-1-5/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
-      "notes": "requires a 10–300 character prompt, so the bare word is rejected upstream"
+      "notes": "requires a 10–300 character prompt, so the bare word is rejected upstream; lyrics are the word three times"
     },
     {
       "slug": "recraft-ai--recraft-v3",
@@ -6704,21 +7453,103 @@
       "is_official": true,
       "release_date": "2025-11-07",
       "replicate_url": "https://replicate.com/stability-ai/stable-audio-2.5",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/0.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/0.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/1.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/1.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/2.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/2.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/3.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/3.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/4.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/4.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/5.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/5.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/6.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/6.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/7.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/7.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/8.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/8.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/crungus/9.opus",
+              "m4a": "stability-ai--stable-audio-2-5/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/0.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/1.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/2.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/3.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/4.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/5.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/6.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/7.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/8.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/9.opus",
+              "m4a": "stability-ai--stable-audio-2-5/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -7815,21 +8646,103 @@
       "is_official": true,
       "release_date": "2025-11-25",
       "replicate_url": "https://replicate.com/google/lyria-2",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "google--lyria-2/crungus/0.opus",
+              "m4a": "google--lyria-2/crungus/0.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/1.opus",
+              "m4a": "google--lyria-2/crungus/1.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/2.opus",
+              "m4a": "google--lyria-2/crungus/2.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/3.opus",
+              "m4a": "google--lyria-2/crungus/3.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/4.opus",
+              "m4a": "google--lyria-2/crungus/4.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/5.opus",
+              "m4a": "google--lyria-2/crungus/5.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/6.opus",
+              "m4a": "google--lyria-2/crungus/6.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/7.opus",
+              "m4a": "google--lyria-2/crungus/7.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/8.opus",
+              "m4a": "google--lyria-2/crungus/8.m4a"
+            },
+            {
+              "opus": "google--lyria-2/crungus/9.opus",
+              "m4a": "google--lyria-2/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/0.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/1.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/2.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/3.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/4.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/5.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/6.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/7.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/8.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "google--lyria-2/the-sound-of-a-crungus/9.opus",
+              "m4a": "google--lyria-2/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
       "notes": null
@@ -9882,24 +10795,106 @@
       "is_official": true,
       "release_date": "2026-04-09",
       "replicate_url": "https://replicate.com/minimax/music-2.5",
-      "status": "pending",
+      "status": "ok",
       "prompts": [
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "minimax--music-2-5/crungus/0.opus",
+              "m4a": "minimax--music-2-5/crungus/0.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/1.opus",
+              "m4a": "minimax--music-2-5/crungus/1.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/2.opus",
+              "m4a": "minimax--music-2-5/crungus/2.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/3.opus",
+              "m4a": "minimax--music-2-5/crungus/3.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/4.opus",
+              "m4a": "minimax--music-2-5/crungus/4.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/5.opus",
+              "m4a": "minimax--music-2-5/crungus/5.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/6.opus",
+              "m4a": "minimax--music-2-5/crungus/6.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/7.opus",
+              "m4a": "minimax--music-2-5/crungus/7.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/8.opus",
+              "m4a": "minimax--music-2-5/crungus/8.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/crungus/9.opus",
+              "m4a": "minimax--music-2-5/crungus/9.m4a"
+            }
+          ]
         },
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
           "consistency": null,
           "images": [],
-          "clips": []
+          "clips": [
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/0.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/0.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/1.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/1.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/2.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/2.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/3.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/3.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/4.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/4.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/5.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/5.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/6.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/6.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/7.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/7.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/8.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/8.m4a"
+            },
+            {
+              "opus": "minimax--music-2-5/the-sound-of-a-crungus/9.opus",
+              "m4a": "minimax--music-2-5/the-sound-of-a-crungus/9.m4a"
+            }
+          ]
         }
       ],
-      "notes": null
+      "notes": "lyrics are the word three times"
     },
     {
       "slug": "google--imagen-4-ultra",
