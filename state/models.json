@@ -1,11 +1,12 @@
 {
-  "fetched_at": "2026-08-31T17:20:42.908252Z",
+  "fetched_at": "2026-09-05T01:44:46.942022Z",
   "models": [
     {
       "owner": "ideogram-ai",
       "name": "ideogram-v2a",
       "slug": "ideogram-ai--ideogram-v2a",
       "source": "collection",
+      "modality": "image",
       "description": "Like Ideogram v2, but faster and cheaper",
       "is_official": true,
       "availability": "ok",
@@ -83,6 +84,7 @@
       "name": "ideogram-v2a-turbo",
       "slug": "ideogram-ai--ideogram-v2a-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "Like Ideogram v2 turbo, but now faster and cheaper",
       "is_official": true,
       "availability": "ok",
@@ -160,6 +162,7 @@
       "name": "image-01",
       "slug": "minimax--image-01",
       "source": "collection",
+      "modality": "image",
       "description": "Minimax's first image model, with character reference support",
       "is_official": true,
       "availability": "ok",
@@ -220,6 +223,7 @@
       "name": "seedream-3",
       "slug": "bytedance--seedream-3",
       "source": "collection",
+      "modality": "image",
       "description": "A text-to-image model with support for native high-resolution (2K) image generation",
       "is_official": true,
       "availability": "ok",
@@ -300,6 +304,7 @@
       "name": "photon",
       "slug": "luma--photon",
       "source": "collection",
+      "modality": "image",
       "description": "High-quality image generation model optimized for creative professional workflows and ultra-high fidelity outputs",
       "is_official": true,
       "availability": "ok",
@@ -383,6 +388,7 @@
       "name": "photon-flash",
       "slug": "luma--photon-flash",
       "source": "collection",
+      "modality": "image",
       "description": "Accelerated variant of Photon prioritizing speed while maintaining quality",
       "is_official": true,
       "availability": "ok",
@@ -480,6 +486,7 @@
       "name": "hidream-l1-full",
       "slug": "prunaai--hidream-l1-full",
       "source": "collection",
+      "modality": "image",
       "description": "This is an optimised version of the hidream-full model using the pruna ai optimisation toolkit!",
       "is_official": false,
       "availability": "ok",
@@ -567,6 +574,7 @@
       "name": "imagen-4-fast",
       "slug": "google--imagen-4-fast",
       "source": "collection",
+      "modality": "image",
       "description": "Use this fast version of Imagen 4 when speed and cost are more important than quality",
       "is_official": true,
       "availability": "ok",
@@ -628,6 +636,7 @@
       "name": "imagen-4-ultra",
       "slug": "google--imagen-4-ultra",
       "source": "collection",
+      "modality": "image",
       "description": "Use this ultra version of Imagen 4 when quality matters more than speed and cost",
       "is_official": true,
       "availability": "ok",
@@ -699,6 +708,7 @@
       "name": "sana-sprint-1.6b",
       "slug": "nvidia--sana-sprint-1-6b",
       "source": "collection",
+      "modality": "image",
       "description": "SANA-Sprint: One-Step Diffusion with Continuous-Time Consistency Distillation",
       "is_official": false,
       "availability": "ok",
@@ -799,6 +809,7 @@
       "name": "hidream-l1-dev",
       "slug": "prunaai--hidream-l1-dev",
       "source": "collection",
+      "modality": "image",
       "description": "This is an optimised version of the hidream-l1-dev model using the pruna ai optimisation toolkit!",
       "is_official": false,
       "availability": "ok",
@@ -886,6 +897,7 @@
       "name": "hidream-l1-fast",
       "slug": "prunaai--hidream-l1-fast",
       "source": "collection",
+      "modality": "image",
       "description": "This is an optimised version of the hidream-l1 model using the pruna ai optimisation toolkit!",
       "is_official": true,
       "availability": "ok",
@@ -984,6 +996,7 @@
       "name": "flux-fast",
       "slug": "prunaai--flux-fast",
       "source": "collection",
+      "modality": "image",
       "description": "This is the fastest Flux endpoint in the world.",
       "is_official": true,
       "availability": "ok",
@@ -1076,6 +1089,7 @@
       "name": "sdxl-lightning",
       "slug": "prunaai--sdxl-lightning",
       "source": "collection",
+      "modality": "image",
       "description": "This is the fastest sdxl-lightning endpoint in the world on A100, contact us for more at pruna.ai",
       "is_official": false,
       "availability": "ok",
@@ -1168,6 +1182,7 @@
       "name": "ideogram-v3-quality",
       "slug": "ideogram-ai--ideogram-v3-quality",
       "source": "collection",
+      "modality": "image",
       "description": "The highest quality Ideogram v3 model. v3 creates images with stunning realism, creative designs, and consistent styles",
       "is_official": true,
       "availability": "ok",
@@ -1285,6 +1300,7 @@
       "name": "ideogram-v3-balanced",
       "slug": "ideogram-ai--ideogram-v3-balanced",
       "source": "collection",
+      "modality": "image",
       "description": "Balance speed, quality and cost. Ideogram v3 creates images with stunning realism, creative designs, and consistent styles",
       "is_official": true,
       "availability": "ok",
@@ -1402,6 +1418,7 @@
       "name": "flux-dev-lora",
       "slug": "black-forest-labs--flux-dev-lora",
       "source": "collection",
+      "modality": "image",
       "description": "A version of flux-dev, a text to image model, that supports fast fine-tuned lora inference",
       "is_official": true,
       "availability": "ok",
@@ -1583,6 +1600,7 @@
       "name": "image-3.2",
       "slug": "bria--image-3-2",
       "source": "collection",
+      "modality": "image",
       "description": "Commercial-ready, trained entirely on licensed data, text-to-image model. With only 4B parameters provides exceptional aesthetics and text rendering. Evaluated to be on par to other leading models in the market",
       "is_official": true,
       "availability": "ok",
@@ -1663,6 +1681,7 @@
       "name": "imagen-4",
       "slug": "google--imagen-4",
       "source": "collection",
+      "modality": "image",
       "description": "Google's Imagen 4 flagship model",
       "is_official": true,
       "availability": "ok",
@@ -1734,6 +1753,7 @@
       "name": "flux-kontext-pro",
       "slug": "black-forest-labs--flux-kontext-pro",
       "source": "collection",
+      "modality": "image",
       "description": "A state-of-the-art text-based image editing model that delivers high-quality outputs with excellent prompt following and consistent results for transforming images through natural language",
       "is_official": true,
       "availability": "ok",
@@ -1811,6 +1831,7 @@
       "name": "flux-kontext-max",
       "slug": "black-forest-labs--flux-kontext-max",
       "source": "collection",
+      "modality": "image",
       "description": "A premium text-based image editing model that delivers maximum performance and improved typography generation for transforming images through natural language prompts",
       "is_official": true,
       "availability": "ok",
@@ -1888,6 +1909,7 @@
       "name": "wan-2.2-image",
       "slug": "prunaai--wan-2-2-image",
       "source": "collection",
+      "modality": "image",
       "description": "This model generates beautiful cinematic 2 megapixel images in 3-4 seconds and is derived from the Wan 2.2 model through optimisation techniques from the pruna package",
       "is_official": true,
       "availability": "ok",
@@ -1971,6 +1993,7 @@
       "name": "nano-banana",
       "slug": "google--nano-banana",
       "source": "collection",
+      "modality": "image",
       "description": "Google's latest image editing model in Gemini 2.5",
       "is_official": true,
       "availability": "ok",
@@ -2033,6 +2056,7 @@
       "name": "wan-2.7-image",
       "slug": "wan-video--wan-2-7-image",
       "source": "collection",
+      "modality": "image",
       "description": "Generate and edit images with Alibaba's Wan 2.7",
       "is_official": true,
       "availability": "ok",
@@ -2115,6 +2139,7 @@
       "name": "imagen-3",
       "slug": "google--imagen-3",
       "source": "collection",
+      "modality": "image",
       "description": "Google's highest quality text-to-image model, capable of generating images with detail, rich lighting and beauty",
       "is_official": true,
       "availability": "ok",
@@ -2176,6 +2201,7 @@
       "name": "imagen-3-fast",
       "slug": "google--imagen-3-fast",
       "source": "collection",
+      "modality": "image",
       "description": "A faster and cheaper Imagen 3 model, for when price or speed are more important than final image quality",
       "is_official": true,
       "availability": "ok",
@@ -2237,6 +2263,7 @@
       "name": "flux-2-klein-4b",
       "slug": "black-forest-labs--flux-2-klein-4b",
       "source": "collection",
+      "modality": "image",
       "description": "Very fast image generation and editing model. 4 steps distilled, sub-second inference for production and near real-time applications.",
       "is_official": true,
       "availability": "ok",
@@ -2339,6 +2366,7 @@
       "name": "fibo",
       "slug": "bria--fibo",
       "source": "collection",
+      "modality": "image",
       "description": "SOTA Open source model trained on licensed data, transforming intent into structured control for precise, high-quality AI image generation in enterprise and agentic workflows.",
       "is_official": true,
       "availability": "ok",
@@ -2419,6 +2447,7 @@
       "name": "hunyuan-image-3",
       "slug": "tencent--hunyuan-image-3",
       "source": "collection",
+      "modality": "image",
       "description": "A powerful native multimodal model for image generation (PrunaAI squeezed)",
       "is_official": true,
       "availability": "ok",
@@ -2500,6 +2529,7 @@
       "name": "seedream-4",
       "slug": "bytedance--seedream-4",
       "source": "collection",
+      "modality": "image",
       "description": "Unified text-to-image generation and precise single-sentence editing at up to 4K resolution",
       "is_official": true,
       "availability": "ok",
@@ -2606,6 +2636,7 @@
       "name": "z-image-turbo",
       "slug": "prunaai--z-image-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "Z-Image Turbo is a super fast text-to-image model of 6B parameters developed by Tongyi-MAI.",
       "is_official": true,
       "availability": "ok",
@@ -2766,6 +2797,7 @@
       "name": "lucid-origin",
       "slug": "leonardoai--lucid-origin",
       "source": "collection",
+      "modality": "image",
       "description": "Artistic and high-quality visuals with improved prompt adherence, diversity, and definition",
       "is_official": true,
       "availability": "ok",
@@ -2853,6 +2885,7 @@
       "name": "wan-2.7-image-pro",
       "slug": "wan-video--wan-2-7-image-pro",
       "source": "collection",
+      "modality": "image",
       "description": "Generate and edit high-quality images with Alibaba's Wan 2.7 Pro with 4K output, thinking mode, text-to-image, multi-image editing, and image set generation",
       "is_official": true,
       "availability": "ok",
@@ -2935,6 +2968,7 @@
       "name": "recraft-v4-pro",
       "slug": "recraft-ai--recraft-v4-pro",
       "source": "collection",
+      "modality": "image",
       "description": "Recraft's latest image generation model at ~2048px resolution. Same design taste and prompt accuracy as V4, with higher resolution for print-ready and large-scale work.",
       "is_official": true,
       "availability": "ok",
@@ -2986,6 +3020,7 @@
       "name": "grok-imagine-image",
       "slug": "xai--grok-imagine-image",
       "source": "collection",
+      "modality": "image",
       "description": "SOTA image model from xAI",
       "is_official": true,
       "availability": "ok",
@@ -3034,6 +3069,7 @@
       "name": "seedream-5-lite",
       "slug": "bytedance--seedream-5-lite",
       "source": "collection",
+      "modality": "image",
       "description": "Seedream 5.0 lite: image generation with built-in reasoning, example-based editing, and deep domain knowledge",
       "is_official": true,
       "availability": "ok",
@@ -3125,6 +3161,7 @@
       "name": "gpt-image-2",
       "slug": "openai--gpt-image-2",
       "source": "collection",
+      "modality": "image",
       "description": "OpenAI's state-of-the-art image generation model. Create and edit images from text with strong instruction following, sharp text rendering, and detailed editing.",
       "is_official": true,
       "availability": "ok",
@@ -3255,6 +3292,7 @@
       "name": "recraft-v4-svg",
       "slug": "recraft-ai--recraft-v4-svg",
       "source": "collection",
+      "modality": "image",
       "description": "Generate production-ready SVG vector images from text prompts. Recraft V4's design taste applied to vector output — clean geometry, structured layers, and editable paths.",
       "is_official": true,
       "availability": "ok",
@@ -3306,6 +3344,7 @@
       "name": "seedream-4.5",
       "slug": "bytedance--seedream-4-5",
       "source": "collection",
+      "modality": "image",
       "description": "Seedream 4.5: Upgraded Bytedance image model with stronger spatial understanding and world knowledge",
       "is_official": true,
       "availability": "ok",
@@ -3413,6 +3452,7 @@
       "name": "recraft-v4-pro-svg",
       "slug": "recraft-ai--recraft-v4-pro-svg",
       "source": "collection",
+      "modality": "image",
       "description": "Generate detailed SVG vector graphics from text prompts. Recraft V4 Pro's design taste with more geometric detail and finer paths — clean layers, editable output, and scalable to any size.",
       "is_official": true,
       "availability": "ok",
@@ -3464,6 +3504,7 @@
       "name": "nano-banana-pro",
       "slug": "google--nano-banana-pro",
       "source": "collection",
+      "modality": "image",
       "description": "Google's state of the art image generation and editing model 🍌🍌",
       "is_official": true,
       "availability": "ok",
@@ -3553,6 +3594,7 @@
       "name": "p-image-lora",
       "slug": "prunaai--p-image-lora",
       "source": "collection",
+      "modality": "image",
       "description": "Use trained LoRAs from the https://replicate.com/prunaai/p-image-trainer. Find or contribute LoRAs here https://huggingface.co/collections/PrunaAI/p-image-loras",
       "is_official": true,
       "availability": "ok",
@@ -3659,6 +3701,7 @@
       "name": "arrow-1.1-max",
       "slug": "quiverai--arrow-1-1-max",
       "source": "collection",
+      "modality": "image",
       "description": "Generate high-fidelity SVG graphics from text prompts with Quiver's Arrow 1.1 Max model. Tuned for dense illustrations, detailed logos, and technical diagrams.",
       "is_official": true,
       "availability": "ok",
@@ -3735,6 +3778,7 @@
       "name": "arrow-1.1",
       "slug": "quiverai--arrow-1-1",
       "source": "collection",
+      "modality": "image",
       "description": "Generate editable SVG graphics from text prompts with Quiver's Arrow 1.1 model. Great for icons, logos, and illustrations.",
       "is_official": true,
       "availability": "ok",
@@ -3811,6 +3855,7 @@
       "name": "gpt-image-1.5",
       "slug": "openai--gpt-image-1-5",
       "source": "collection",
+      "modality": "image",
       "description": "OpenAI's latest image generation model with better instruction following and adherence to prompts",
       "is_official": true,
       "availability": "ok",
@@ -3948,6 +3993,7 @@
       "name": "kandinsky-2",
       "slug": "ai-forever--kandinsky-2",
       "source": "collection",
+      "modality": "image",
       "description": "text2img model trained on LAION HighRes and fine-tuned on internal datasets",
       "is_official": false,
       "availability": "ok",
@@ -4072,6 +4118,7 @@
       "name": "flux-2-pro",
       "slug": "black-forest-labs--flux-2-pro",
       "source": "collection",
+      "modality": "image",
       "description": "High-quality image generation and editing with support for eight reference images",
       "is_official": true,
       "availability": "ok",
@@ -4186,6 +4233,7 @@
       "name": "flux-2-flex",
       "slug": "black-forest-labs--flux-2-flex",
       "source": "collection",
+      "modality": "image",
       "description": "Max-quality image generation and editing with support for ten reference images",
       "is_official": true,
       "availability": "ok",
@@ -4325,6 +4373,7 @@
       "name": "ideogram-v3-turbo",
       "slug": "ideogram-ai--ideogram-v3-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "Turbo is the fastest and cheapest Ideogram v3. v3 creates images with stunning realism, creative designs, and consistent styles",
       "is_official": true,
       "availability": "ok",
@@ -4442,6 +4491,7 @@
       "name": "nano-banana-2",
       "slug": "google--nano-banana-2",
       "source": "collection",
+      "modality": "image",
       "description": "Google's fast image generation model with conversational editing, multi-image fusion, and character consistency",
       "is_official": true,
       "availability": "ok",
@@ -4528,6 +4578,7 @@
       "name": "ssd-1b",
       "slug": "lucataco--ssd-1b",
       "source": "collection",
+      "modality": "image",
       "description": "Segmind Stable Diffusion Model (SSD-1B) is a distilled 50% smaller version of SDXL, offering a 60% speedup while maintaining high-quality text-to-image generation capabilities",
       "is_official": false,
       "availability": "ok",
@@ -4680,6 +4731,7 @@
       "name": "flux-dev",
       "slug": "black-forest-labs--flux-dev",
       "source": "collection",
+      "modality": "image",
       "description": "A 12 billion parameter rectified flow transformer capable of generating images from text descriptions",
       "is_official": true,
       "availability": "ok",
@@ -4813,6 +4865,7 @@
       "name": "ideogram-v2-turbo",
       "slug": "ideogram-ai--ideogram-v2-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "A fast image model with state of the art inpainting, prompt comprehension and text rendering.",
       "is_official": true,
       "availability": "ok",
@@ -4906,6 +4959,7 @@
       "name": "qwen-image",
       "slug": "qwen--qwen-image",
       "source": "collection",
+      "modality": "image",
       "description": "An image generation foundation model in the Qwen series that achieves significant advances in complex text rendering.",
       "is_official": true,
       "availability": "ok",
@@ -5086,6 +5140,7 @@
       "name": "p-image",
       "slug": "prunaai--p-image",
       "source": "collection",
+      "modality": "image",
       "description": "A sub 1 second text-to-image model built for production use cases.",
       "is_official": true,
       "availability": "ok",
@@ -5192,6 +5247,7 @@
       "name": "proteus-v0.3",
       "slug": "datacte--proteus-v0-3",
       "source": "collection",
+      "modality": "image",
       "description": "ProteusV0.3: The Anime Update",
       "is_official": false,
       "availability": "ok",
@@ -5322,6 +5378,7 @@
       "name": "kandinsky-2.2",
       "slug": "ai-forever--kandinsky-2-2",
       "source": "collection",
+      "modality": "image",
       "description": "multilingual text2image latent diffusion model",
       "is_official": false,
       "availability": "ok",
@@ -5420,6 +5477,7 @@
       "name": "sdxl-emoji",
       "slug": "fofr--sdxl-emoji",
       "source": "collection",
+      "modality": "image",
       "description": "An SDXL fine-tune based on Apple Emojis",
       "is_official": false,
       "availability": "ok",
@@ -5590,6 +5648,7 @@
       "name": "sdxl-lightning-4step",
       "slug": "bytedance--sdxl-lightning-4step",
       "source": "collection",
+      "modality": "image",
       "description": "SDXL-Lightning by ByteDance: a fast text-to-image model that makes high-quality images in 4 steps",
       "is_official": false,
       "availability": "ok",
@@ -5695,6 +5754,7 @@
       "name": "ideogram-v2",
       "slug": "ideogram-ai--ideogram-v2",
       "source": "collection",
+      "modality": "image",
       "description": "An excellent image model with state of the art inpainting, prompt comprehension and text rendering",
       "is_official": true,
       "availability": "ok",
@@ -5788,6 +5848,7 @@
       "name": "realvisxl-v3-multi-controlnet-lora",
       "slug": "sdxl-based--realvisxl-v3-multi-controlnet-lora",
       "source": "collection",
+      "modality": "image",
       "description": "RealVisXl V3 with multi-controlnet, lora loading, img2img, inpainting",
       "is_official": false,
       "availability": "ok",
@@ -6091,6 +6152,7 @@
       "name": "flux-pro",
       "slug": "black-forest-labs--flux-pro",
       "source": "collection",
+      "modality": "image",
       "description": "State-of-the-art image generation with top of the line prompt following, visual quality, image detail and output diversity.",
       "is_official": true,
       "availability": "ok",
@@ -6214,6 +6276,7 @@
       "name": "material-diffusion",
       "slug": "tstramer--material-diffusion",
       "source": "collection",
+      "modality": "image",
       "description": "Stable diffusion fork for generating tileable outputs using v1.5 model",
       "is_official": false,
       "availability": "ok",
@@ -6327,6 +6390,7 @@
       "name": "realistic-vision-v5.1",
       "slug": "lucataco--realistic-vision-v5-1",
       "source": "collection",
+      "modality": "image",
       "description": "Implementation of Realistic Vision v5.1 with VAE",
       "is_official": false,
       "availability": "ok",
@@ -6412,6 +6476,7 @@
       "name": "sdxl",
       "slug": "stability-ai--sdxl",
       "source": "collection",
+      "modality": "image",
       "description": "A text-to-image generative AI model that creates beautiful images",
       "is_official": false,
       "availability": "ok",
@@ -6582,6 +6647,7 @@
       "name": "stable-diffusion-3.5-large",
       "slug": "stability-ai--stable-diffusion-3-5-large",
       "source": "collection",
+      "modality": "image",
       "description": "A text-to-image model that generates high-resolution images with fine details. It supports various artistic styles and produces diverse outputs from the same prompt, thanks to Query-Key Normalization.",
       "is_official": true,
       "availability": "ok",
@@ -6667,6 +6733,7 @@
       "name": "flux-1.1-pro-ultra",
       "slug": "black-forest-labs--flux-1-1-pro-ultra",
       "source": "collection",
+      "modality": "image",
       "description": "FLUX1.1 [pro] in ultra and raw modes. Images are up to 4 megapixels. Use raw mode for realism.",
       "is_official": true,
       "availability": "ok",
@@ -6756,6 +6823,7 @@
       "name": "flux-2-max",
       "slug": "black-forest-labs--flux-2-max",
       "source": "collection",
+      "modality": "image",
       "description": "The highest fidelity image model from Black Forest Labs",
       "is_official": true,
       "availability": "ok",
@@ -6870,6 +6938,7 @@
       "name": "stable-diffusion",
       "slug": "stability-ai--stable-diffusion",
       "source": "collection",
+      "modality": "image",
       "description": "A latent text-to-image diffusion model capable of generating photo-realistic images given any text input",
       "is_official": false,
       "availability": "ok",
@@ -6968,6 +7037,7 @@
       "name": "sticker-maker",
       "slug": "fofr--sticker-maker",
       "source": "collection",
+      "modality": "image",
       "description": "Make stickers with AI. Generates graphics with transparent backgrounds.",
       "is_official": false,
       "availability": "ok",
@@ -7055,6 +7125,7 @@
       "name": "playground-v2.5-1024px-aesthetic",
       "slug": "playgroundai--playground-v2-5-1024px-aesthetic",
       "source": "collection",
+      "modality": "image",
       "description": "Playground v2.5 is the state-of-the-art open-source model in aesthetic quality",
       "is_official": false,
       "availability": "ok",
@@ -7189,6 +7260,7 @@
       "name": "sdxl-multi-controlnet-lora",
       "slug": "fofr--sdxl-multi-controlnet-lora",
       "source": "collection",
+      "modality": "image",
       "description": "Multi-controlnet, lora loading, img2img, inpainting",
       "is_official": false,
       "availability": "ok",
@@ -7492,6 +7564,7 @@
       "name": "latent-consistency-model",
       "slug": "fofr--latent-consistency-model",
       "source": "collection",
+      "modality": "image",
       "description": "Super-fast, 0.6s per image. LCM with img2img, large batching and canny controlnet",
       "is_official": false,
       "availability": "ok",
@@ -7667,6 +7740,7 @@
       "name": "dreamshaper-xl-turbo",
       "slug": "lucataco--dreamshaper-xl-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "DreamShaper is a general purpose SD model that aims at doing everything well, photos, art, anime, manga. It's designed to match Midjourney and DALL-E.",
       "is_official": false,
       "availability": "ok",
@@ -7774,6 +7848,7 @@
       "name": "open-dalle-v1.1",
       "slug": "lucataco--open-dalle-v1-1",
       "source": "collection",
+      "modality": "image",
       "description": "A unique fusion that showcases exceptional prompt adherence and semantic understanding, it seems to be a step above base SDXL and a step closer to DALLE-3 in terms of prompt comprehension",
       "is_official": false,
       "availability": "ok",
@@ -7904,6 +7979,7 @@
       "name": "realvisxl-v3.0-turbo",
       "slug": "adirik--realvisxl-v3-0-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "Photorealism with RealVisXL V3.0 Turbo based on SDXL",
       "is_official": false,
       "availability": "ok",
@@ -8059,6 +8135,7 @@
       "name": "proteus-v0.2",
       "slug": "datacte--proteus-v0-2",
       "source": "collection",
+      "modality": "image",
       "description": "Proteus v0.2 shows subtle yet significant improvements over Version 0.1. It demonstrates enhanced prompt understanding that surpasses MJ6, while also approaching its stylistic capabilities.",
       "is_official": false,
       "availability": "ok",
@@ -8189,6 +8266,7 @@
       "name": "stable-diffusion-3.5-medium",
       "slug": "stability-ai--stable-diffusion-3-5-medium",
       "source": "collection",
+      "modality": "image",
       "description": "2.5 billion parameter image model with improved MMDiT-X architecture",
       "is_official": true,
       "availability": "ok",
@@ -8274,6 +8352,7 @@
       "name": "flux-schnell",
       "slug": "black-forest-labs--flux-schnell",
       "source": "collection",
+      "modality": "image",
       "description": "The fastest image generation model tailored for local development and personal use",
       "is_official": true,
       "availability": "ok",
@@ -8382,6 +8461,7 @@
       "name": "stable-diffusion-3.5-large-turbo",
       "slug": "stability-ai--stable-diffusion-3-5-large-turbo",
       "source": "collection",
+      "modality": "image",
       "description": "A text-to-image model that generates high-resolution images with fine details. It supports various artistic styles and produces diverse outputs from the same prompt, with a focus on fewer inference steps",
       "is_official": true,
       "availability": "ok",
@@ -8467,6 +8547,7 @@
       "name": "recraft-v3",
       "slug": "recraft-ai--recraft-v3",
       "source": "collection",
+      "modality": "image",
       "description": "Recraft V3 (code-named red_panda) is a text-to-image model with the ability to generate long texts, and images in a wide list of styles. As of today, it is SOTA in image generation, proven by the Text-to-Image Benchmark by Artificial Analysis",
       "is_official": true,
       "availability": "ok",
@@ -8527,6 +8608,7 @@
       "name": "recraft-v3-svg",
       "slug": "recraft-ai--recraft-v3-svg",
       "source": "collection",
+      "modality": "image",
       "description": "Recraft V3 SVG (code-named red_panda) is a text-to-image model with the ability to generate high quality SVG images including logotypes, and icons. The model supports a wide list of styles.",
       "is_official": true,
       "availability": "ok",
@@ -8587,6 +8669,7 @@
       "name": "sana",
       "slug": "nvidia--sana",
       "source": "collection",
+      "modality": "image",
       "description": "A fast image model with wide artistic range and resolutions up to 4096x4096",
       "is_official": false,
       "availability": "ok",
@@ -8679,6 +8762,7 @@
       "name": "min-dalle",
       "slug": "kuprel--min-dalle",
       "source": "legacy",
+      "modality": "image",
       "description": "Fast, minimal port of DALL·E Mini to PyTorch",
       "is_official": false,
       "availability": "ok",
@@ -8765,6 +8849,7 @@
       "name": "text2image",
       "slug": "pixray--text2image",
       "source": "legacy",
+      "modality": "image",
       "description": "Uses pixray to generate an image from text prompt",
       "is_official": false,
       "availability": "ok",
@@ -8811,6 +8896,7 @@
       "name": "glid-3-xl",
       "slug": "jack000--glid-3-xl",
       "source": "legacy",
+      "modality": "image",
       "description": "A 1.4B parameter text2im model from CompVis, finetuned on CLIP text embeds and curated data.",
       "is_official": false,
       "availability": "ok",
@@ -8920,6 +9006,7 @@
       "name": "dalle-mini",
       "slug": "borisdayma--dalle-mini",
       "source": "legacy",
+      "modality": "image",
       "description": "Generate images from a text prompt",
       "is_official": false,
       "availability": "ok",
@@ -8965,6 +9052,7 @@
       "name": "openjourney",
       "slug": "prompthero--openjourney",
       "source": "legacy",
+      "modality": "image",
       "description": "Stable Diffusion fine tuned on Midjourney v4 images.",
       "is_official": false,
       "availability": "ok",
@@ -9084,6 +9172,7 @@
       "name": "anything-v3.0",
       "slug": "cjwbw--anything-v3-0",
       "source": "legacy",
+      "modality": "image",
       "description": "high-quality, highly detailed anime style stable-diffusion",
       "is_official": false,
       "availability": "ok",
@@ -9173,6 +9262,7 @@
       "name": "stable-diffusion-v2",
       "slug": "cjwbw--stable-diffusion-v2",
       "source": "legacy",
+      "modality": "image",
       "description": "sd-v2 with diffusers, test version!",
       "is_official": false,
       "availability": "ok",
@@ -9285,6 +9375,7 @@
       "name": "deepfloyd-if",
       "slug": "andreasjansson--deepfloyd-if",
       "source": "legacy",
+      "modality": "image",
       "description": "The DeepFloyd IF model has been initially released as a non-commercial research-only model. Please make sure you read and abide to the license before using it.",
       "is_official": false,
       "availability": "ok",
@@ -9314,6 +9405,1435 @@
       "output_field": null,
       "release_date": "2023-04-28",
       "notes": "DeepFloyd IF, pixel-space diffusion"
+    },
+    {
+      "owner": "zsxkib",
+      "name": "flux-music",
+      "slug": "zsxkib--flux-music",
+      "source": "collection",
+      "modality": "audio",
+      "description": "🎼FluxMusic Text-to-Music Generation with Rectified Flow Transformer🎶",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "eebfed4a1749bb1172f005f71fac5a1e0377502ec149c9d02b56ac1de3aa9f07",
+      "version_created_at": "2024-09-26T13:34:46.954800Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 6,
+            "description": "Random seed. Leave blank to randomize the seed"
+          },
+          "steps": {
+            "type": "integer",
+            "title": "Steps",
+            "default": 50,
+            "maximum": 200,
+            "minimum": 1,
+            "x-order": 4,
+            "description": "Number of sampling steps"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": "The song is an epic blend of space-rock, rock, and post-rock genres.",
+            "x-order": 0,
+            "description": "Text prompt for music generation"
+          },
+          "model_version": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/model_version"
+              }
+            ],
+            "default": "base",
+            "x-order": 3,
+            "description": "Select the model version to use"
+          },
+          "guidance_scale": {
+            "type": "number",
+            "title": "Guidance Scale",
+            "default": 7,
+            "maximum": 20,
+            "minimum": 0,
+            "x-order": 2,
+            "description": "Classifier-free guidance scale"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "default": "low quality, gentle",
+            "x-order": 1,
+            "description": "Text prompt for negative guidance (unconditioned prompt)"
+          },
+          "save_spectrogram": {
+            "type": "boolean",
+            "title": "Save Spectrogram",
+            "default": false,
+            "x-order": 5,
+            "description": "Whether to save the spectrogram image"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": "wav",
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "sakemin",
+      "name": "musicgen-stereo-chord",
+      "slug": "sakemin--musicgen-stereo-chord",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Generate music in stereo, restricted to chord sequences and tempo",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "fbdc5ef7200220ed300015d9b4fd3f8e620f84547e970b23aa2be7f2ff366a5b",
+      "version_created_at": "2023-11-28T19:55:24.356973Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "bpm": {
+            "type": "number",
+            "title": "Bpm",
+            "x-order": 3,
+            "description": "BPM condition for the generated output. `text_chords` will be processed based on this value. This will be appended at the end of `prompt`."
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 18,
+            "description": "Seed for random number generator. If `None` or `-1`, a random seed will be used."
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 250,
+            "x-order": 13,
+            "description": "Reduces sampling to the k most likely tokens."
+          },
+          "top_p": {
+            "type": "number",
+            "title": "Top P",
+            "default": 0,
+            "x-order": 14,
+            "description": "Reduces sampling to tokens with cumulative probability of p. When set to  `0` (default), top_k sampling is used."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 1,
+            "description": "A description of the music you want to generate."
+          },
+          "duration": {
+            "type": "integer",
+            "title": "Duration",
+            "default": 8,
+            "x-order": 8,
+            "description": "Duration of the generated audio in seconds."
+          },
+          "time_sig": {
+            "type": "string",
+            "title": "Time Sig",
+            "default": "4/4",
+            "x-order": 4,
+            "description": "Time signature value for the generate output. `text_chords` will be processed based on this value. This will be appended at the end of `prompt`."
+          },
+          "audio_end": {
+            "type": "integer",
+            "title": "Audio End",
+            "minimum": 0,
+            "x-order": 7,
+            "description": "End time of the audio file to use for chord conditioning. If None, will default to the end of the audio clip."
+          },
+          "audio_start": {
+            "type": "integer",
+            "title": "Audio Start",
+            "default": 0,
+            "minimum": 0,
+            "x-order": 6,
+            "description": "Start time of the audio file to use for chord conditioning."
+          },
+          "temperature": {
+            "type": "number",
+            "title": "Temperature",
+            "default": 1,
+            "x-order": 15,
+            "description": "Controls the 'conservativeness' of the sampling process. Higher temperature means more diversity."
+          },
+          "text_chords": {
+            "type": "string",
+            "title": "Text Chords",
+            "x-order": 2,
+            "description": "A text based chord progression condition. Single uppercase alphabet character(eg. `C`) is considered as a major chord. Chord attributes like(`maj`, `min`, `dim`, `aug`, `min6`, `maj6`, `min7`, `minmaj7`, `maj7`, `7`, `dim7`, `hdim7`, `sus2` and `sus4`) can be added to the root alphabet character after `:`.(eg. `A:min7`) Each chord token splitted by `SPACE` is allocated to a single bar. If more than one chord must be allocated to a single bar, cluster the chords adding with `,` without any `SPACE`.(eg. `C,C:7 G, E:min A:min`) You must choose either only one of `audio_chords` below or `text_chords`."
+          },
+          "audio_chords": {
+            "type": "string",
+            "title": "Audio Chords",
+            "format": "uri",
+            "x-order": 5,
+            "description": "An audio file that will condition the chord progression. You must choose only one among `audio_chords` or `text_chords` above."
+          },
+          "continuation": {
+            "type": "boolean",
+            "title": "Continuation",
+            "default": false,
+            "x-order": 9,
+            "description": "If `True`, generated music will continue from `audio_chords`. If chord conditioning, this is only possible when the chord condition is given with `text_chords`. If `False`, generated music will mimic `audio_chords`'s chord."
+          },
+          "model_version": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/model_version"
+              }
+            ],
+            "default": "stereo-chord-large",
+            "x-order": 0,
+            "description": "Model type. Select `fine-tuned` if you trained the model into your own repository."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "wav",
+            "x-order": 17,
+            "description": "Output format for generated audio."
+          },
+          "chroma_coefficient": {
+            "type": "number",
+            "title": "Chroma Coefficient",
+            "default": 1,
+            "maximum": 2.5,
+            "minimum": 0.5,
+            "x-order": 12,
+            "description": "Coefficient value multiplied to multi-hot chord chroma."
+          },
+          "multi_band_diffusion": {
+            "type": "boolean",
+            "title": "Multi Band Diffusion",
+            "default": false,
+            "x-order": 10,
+            "description": "If `True`, the EnCodec tokens will be decoded with MultiBand Diffusion. Not compatible with stereo models."
+          },
+          "normalization_strategy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/normalization_strategy"
+              }
+            ],
+            "default": "loudness",
+            "x-order": 11,
+            "description": "Strategy for normalizing audio."
+          },
+          "classifier_free_guidance": {
+            "type": "integer",
+            "title": "Classifier Free Guidance",
+            "default": 3,
+            "x-order": 16,
+            "description": "Increases the influence of inputs on the output. Higher values produce lower-varience outputs that adhere more closely to inputs."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "lucataco",
+      "name": "ace-step",
+      "slug": "lucataco--ace-step",
+      "source": "collection",
+      "modality": "audio",
+      "description": "A Step Towards Music Generation Foundation Model text2music",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "280fc4f9ee507577f880a167f639c02622421d8fecf492454320311217b688f1",
+      "version_created_at": "2025-05-14T15:16:35.817405Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "tags"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": -1,
+            "x-order": 4,
+            "description": "Random seed. Set to -1 to randomize."
+          },
+          "tags": {
+            "type": "string",
+            "title": "Tags",
+            "x-order": 0,
+            "description": "Text prompts to guide music generation, e.g., 'epic,cinematic'"
+          },
+          "lyrics": {
+            "type": "string",
+            "title": "Lyrics",
+            "x-order": 1,
+            "description": "Lyrics for the music. Use [verse], [chorus], and [bridge] to separate different parts of the lyrics. Use [instrumental] or [inst] to generate instrumental music"
+          },
+          "duration": {
+            "type": "number",
+            "title": "Duration",
+            "default": 60,
+            "maximum": 240,
+            "minimum": 1,
+            "x-order": 2,
+            "description": "Duration of the generated audio in seconds. -1 means a random duration between 30 and 240 seconds."
+          },
+          "scheduler": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/scheduler"
+              }
+            ],
+            "default": "euler",
+            "x-order": 5,
+            "description": "Scheduler type."
+          },
+          "guidance_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/guidance_type"
+              }
+            ],
+            "default": "apg",
+            "x-order": 6,
+            "description": "Guidance type for CFG."
+          },
+          "guidance_scale": {
+            "type": "number",
+            "title": "Guidance Scale",
+            "default": 15,
+            "maximum": 30,
+            "minimum": 0,
+            "x-order": 10,
+            "description": "Overall guidance scale."
+          },
+          "number_of_steps": {
+            "type": "integer",
+            "title": "Number Of Steps",
+            "default": 60,
+            "maximum": 200,
+            "minimum": 10,
+            "x-order": 3,
+            "description": "Number of inference steps."
+          },
+          "granularity_scale": {
+            "type": "number",
+            "title": "Granularity Scale",
+            "default": 10,
+            "maximum": 100,
+            "minimum": -100,
+            "x-order": 7,
+            "description": "Omega scale for APG guidance, or similar for other CFG types."
+          },
+          "guidance_interval": {
+            "type": "number",
+            "title": "Guidance Interval",
+            "default": 0.5,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 8,
+            "description": "Guidance interval."
+          },
+          "min_guidance_scale": {
+            "type": "number",
+            "title": "Min Guidance Scale",
+            "default": 3,
+            "maximum": 100,
+            "minimum": 0,
+            "x-order": 11,
+            "description": "Minimum guidance scale."
+          },
+          "tag_guidance_scale": {
+            "type": "number",
+            "title": "Tag Guidance Scale",
+            "default": 0,
+            "maximum": 10,
+            "minimum": 0,
+            "x-order": 12,
+            "description": "Guidance scale for tags (text prompt)."
+          },
+          "lyric_guidance_scale": {
+            "type": "number",
+            "title": "Lyric Guidance Scale",
+            "default": 0,
+            "maximum": 10,
+            "minimum": 0,
+            "x-order": 13,
+            "description": "Guidance scale for lyrics."
+          },
+          "guidance_interval_decay": {
+            "type": "number",
+            "title": "Guidance Interval Decay",
+            "default": 0,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 9,
+            "description": "Guidance interval decay."
+          }
+        }
+      },
+      "prompt_field": "tags",
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "google",
+      "name": "lyria-2",
+      "slug": "google--lyria-2",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Lyria 2 is a music generation model that produces 48kHz stereo audio through text-based prompts",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "bb621623ee2772c96d300b2a303c9e444b482f6b0fafcc7424923e1429971120",
+      "version_created_at": "2025-11-25T16:14:35.700871Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 2,
+            "nullable": true,
+            "description": "Random seed. Omit for random generations"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for audio generation"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "x-order": 1,
+            "nullable": true,
+            "description": "Description of what to exclude from the generated audio"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "minimax",
+      "name": "music-1.5",
+      "slug": "minimax--music-1-5",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Music-1.5: Full-length songs (up to 4 mins) with natural vocals & rich instrumentation",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "70c8395540eae909be2c09a0b4897d22ee2455a5e5c9826b71161743b5cc45f1",
+      "version_created_at": "2025-11-07T13:22:21.338274Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt",
+          "lyrics"
+        ],
+        "properties": {
+          "lyrics": {
+            "type": "string",
+            "title": "Lyrics",
+            "description": "Lyrics. Use \n to separate lines. Supports [intro][verse][chorus][bridge][outro]. Valid input: 10-600 characters."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Control music generation with a text prompt. Valid input: 10-300 characters."
+          },
+          "bitrate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/bitrate"
+              }
+            ],
+            "default": 256000,
+            "x-order": 3,
+            "description": "Bitrate for the generated music"
+          },
+          "sample_rate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/sample_rate"
+              }
+            ],
+            "default": 44100,
+            "x-order": 2,
+            "description": "Sample rate for the generated music"
+          },
+          "audio_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/audio_format"
+              }
+            ],
+            "default": "mp3",
+            "x-order": 4,
+            "description": "Audio format"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {
+        "lyrics": "crungus"
+      },
+      "output_field": null,
+      "release_date": null,
+      "notes": "requires a 10–300 character prompt, so the bare word is rejected upstream"
+    },
+    {
+      "owner": "stability-ai",
+      "name": "stable-audio-2.5",
+      "slug": "stability-ai--stable-audio-2-5",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Generate high-quality music and sound from text prompts",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "a61ac8edbb27cd2eda1b2eff2bbc03dcff1131f5560836ff77a052df05b77491",
+      "version_created_at": "2025-11-07T13:20:02.292922Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "nullable": true,
+            "description": "Random seed for reproducible results. Leave blank for random seed."
+          },
+          "steps": {
+            "type": "integer",
+            "title": "Steps",
+            "default": 8,
+            "maximum": 8,
+            "minimum": 4,
+            "description": "Number of diffusion steps (higher = better quality but slower)"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Text prompt describing the desired audio"
+          },
+          "duration": {
+            "type": "integer",
+            "title": "Duration",
+            "default": 190,
+            "maximum": 190,
+            "minimum": 1,
+            "description": "Duration of generated audio in seconds"
+          },
+          "cfg_scale": {
+            "type": "number",
+            "title": "Cfg Scale",
+            "default": 1,
+            "maximum": 25,
+            "minimum": 1,
+            "description": "Classifier-free guidance scale (higher = more prompt adherence)"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "elevenlabs",
+      "name": "music",
+      "slug": "elevenlabs--music",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Compose a song from a prompt or a composition plan",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "66fa53d463ca3a0fd826c06b5b44804b32f74185c0c905162bb052c3a60a39fa",
+      "version_created_at": "2025-10-29T19:30:15.198759Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "description": "Description of the music you want to generate"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "mp3_standard",
+            "x-order": 3,
+            "description": "Audio output format: mp3_standard (128kbps MP3, balanced quality/size), mp3_high_quality (192kbps MP3, higher quality), wav_16khz (16kHz WAV, good for voice), wav_22khz (22kHz WAV), wav_24khz (24kHz WAV), wav_cd_quality (44.1kHz WAV, uncompressed CD quality)"
+          },
+          "music_length_ms": {
+            "type": "integer",
+            "title": "Music Length Ms",
+            "default": 10000,
+            "maximum": 300000,
+            "minimum": 5000,
+            "description": "Target duration of the music in milliseconds (optional, defaults to ~10 seconds)"
+          },
+          "force_instrumental": {
+            "type": "boolean",
+            "title": "Force Instrumental",
+            "default": true,
+            "description": "If true, removes vocal elements from the generated music"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {
+        "music_length_ms": 20000
+      },
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "andreasjansson",
+      "name": "musicgen-looper",
+      "slug": "andreasjansson--musicgen-looper",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Generate fixed-bpm loops from text prompts",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "f8140d0457c2b39ad8728a80736fea9a67a0ec0cd37b35f40b68cce507db2366",
+      "version_created_at": "2023-06-18T16:15:38.576590Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "bpm": {
+            "type": "number",
+            "title": "Bpm",
+            "default": 140,
+            "maximum": 300,
+            "minimum": 40,
+            "x-order": 1,
+            "description": "Tempo in beats per minute"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": -1,
+            "x-order": 10,
+            "description": "Seed for random number generator. If None or -1, a random seed will be used."
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 250,
+            "x-order": 5,
+            "description": "Reduces sampling to the k most likely tokens."
+          },
+          "top_p": {
+            "type": "number",
+            "title": "Top P",
+            "default": 0,
+            "x-order": 6,
+            "description": "Reduces sampling to tokens with cumulative probability of p. When set to  `0` (default), top_k sampling is used."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "A description of the music you want to generate."
+          },
+          "variations": {
+            "type": "integer",
+            "title": "Variations",
+            "default": 4,
+            "maximum": 20,
+            "minimum": 1,
+            "x-order": 2,
+            "description": "Number of variations to generate"
+          },
+          "temperature": {
+            "type": "number",
+            "title": "Temperature",
+            "default": 1,
+            "x-order": 7,
+            "description": "Controls the 'conservativeness' of the sampling process. Higher temperature means more diversity."
+          },
+          "max_duration": {
+            "type": "integer",
+            "title": "Max Duration",
+            "default": 8,
+            "maximum": 20,
+            "minimum": 2,
+            "x-order": 3,
+            "description": "Maximum duration of the generated loop in seconds."
+          },
+          "model_version": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/model_version"
+              }
+            ],
+            "default": "medium",
+            "x-order": 4,
+            "description": "Model to use for generation. ."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "wav",
+            "x-order": 9,
+            "description": "Output format for generated audio."
+          },
+          "classifier_free_guidance": {
+            "type": "integer",
+            "title": "Classifier Free Guidance",
+            "default": 3,
+            "x-order": 8,
+            "description": "Increases the influence of inputs on the output. Higher values produce lower-varience outputs that adhere more closely to inputs."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {
+        "max_duration": 20
+      },
+      "output_field": "variation_01",
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "minimax",
+      "name": "music-01",
+      "slug": "minimax--music-01",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Quickly generate up to 1 minute of music with lyrics and vocals in the style of a reference track",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "0254c7e2f54315b667dbae03da7c155822ba29ffe0457be5bc246d564be486bd",
+      "version_created_at": "2025-11-07T13:21:52.609920Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "lyrics": {
+            "type": "string",
+            "title": "Lyrics",
+            "default": "",
+            "description": "Lyrics with optional formatting. You can use a newline to separate each line of lyrics. You can use two newlines to add a pause between lines. You can use double hash marks (##) at the beginning and end of the lyrics to add accompaniment. Maximum 350 to 400 characters."
+          },
+          "bitrate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/bitrate"
+              }
+            ],
+            "default": 256000,
+            "x-order": 7,
+            "description": "Bitrate for the generated music"
+          },
+          "voice_id": {
+            "type": "string",
+            "title": "Voice Id",
+            "description": "Reuse a previously uploaded voice ID"
+          },
+          "song_file": {
+            "type": "string",
+            "title": "Song File",
+            "format": "uri",
+            "description": "Reference song, should contain music and vocals. Must be a .wav or .mp3 file longer than 15 seconds."
+          },
+          "voice_file": {
+            "type": "string",
+            "title": "Voice File",
+            "format": "uri",
+            "description": "Voice reference. Must be a .wav or .mp3 file longer than 15 seconds. If only a voice reference is given, an a cappella vocal hum will be generated."
+          },
+          "sample_rate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/sample_rate"
+              }
+            ],
+            "default": 44100,
+            "x-order": 6,
+            "description": "Sample rate for the generated music"
+          },
+          "instrumental_id": {
+            "type": "string",
+            "title": "Instrumental Id",
+            "description": "Reuse a previously uploaded instrumental ID"
+          },
+          "instrumental_file": {
+            "type": "string",
+            "title": "Instrumental File",
+            "format": "uri",
+            "description": "Instrumental reference. Must be a .wav or .mp3 file longer than 15 seconds. If only an instrumental reference is given, a track without vocals will be generated."
+          }
+        }
+      },
+      "prompt_field": "lyrics",
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": "has no prompt input at all — only lyrics — so the prompt goes in as lyrics"
+    },
+    {
+      "owner": "minimax",
+      "name": "music-2.5",
+      "slug": "minimax--music-2-5",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Generate full-length songs with vocals, lyrics, and rich instrumentation from a text prompt",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "f2100977b6ce90322ab00443b76d48f079435c1d903c4805517f89d2b8cc9c5a",
+      "version_created_at": "2026-04-09T14:58:42.123435Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "lyrics"
+        ],
+        "properties": {
+          "lyrics": {
+            "type": "string",
+            "title": "Lyrics",
+            "x-order": 0,
+            "description": "Lyrics for the song. Use \\n to separate lines. You can add structure tags like [Intro], [Verse], [Pre Chorus], [Chorus], [Interlude], [Bridge], [Outro], [Post Chorus], [Transition], [Break], [Hook], [Build Up], [Inst], [Solo] to control the arrangement. 1-3500 characters."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": "",
+            "x-order": 1,
+            "description": "A description of the music style, mood, and scenario. For example: 'Pop, melancholic, perfect for a rainy night'. 0-2000 characters."
+          },
+          "bitrate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/bitrate"
+              }
+            ],
+            "default": 256000,
+            "x-order": 3,
+            "description": "Bitrate for the generated music"
+          },
+          "sample_rate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/sample_rate"
+              }
+            ],
+            "default": 44100,
+            "x-order": 2,
+            "description": "Sample rate for the generated music"
+          },
+          "audio_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/audio_format"
+              }
+            ],
+            "default": "mp3",
+            "x-order": 4,
+            "description": "Audio format for the output"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {
+        "lyrics": "crungus"
+      },
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "meta",
+      "name": "musicgen",
+      "slug": "meta--musicgen",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Generate music from a prompt or melody",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "671ac645ce5e552cc63a54a2bbff63fcf798043055d2dac5fc9e36a837eedcfb",
+      "version_created_at": "2024-03-28T11:07:13.003999Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 14,
+            "description": "Seed for random number generator. If None or -1, a random seed will be used."
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 250,
+            "x-order": 9,
+            "description": "Reduces sampling to the k most likely tokens."
+          },
+          "top_p": {
+            "type": "number",
+            "title": "Top P",
+            "default": 0,
+            "x-order": 10,
+            "description": "Reduces sampling to tokens with cumulative probability of p. When set to  `0` (default), top_k sampling is used."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 1,
+            "description": "A description of the music you want to generate."
+          },
+          "duration": {
+            "type": "integer",
+            "title": "Duration",
+            "default": 8,
+            "x-order": 3,
+            "description": "Duration of the generated audio in seconds."
+          },
+          "input_audio": {
+            "type": "string",
+            "title": "Input Audio",
+            "format": "uri",
+            "x-order": 2,
+            "description": "An audio file that will influence the generated music. If `continuation` is `True`, the generated music will be a continuation of the audio file. Otherwise, the generated music will mimic the audio file's melody."
+          },
+          "temperature": {
+            "type": "number",
+            "title": "Temperature",
+            "default": 1,
+            "x-order": 11,
+            "description": "Controls the 'conservativeness' of the sampling process. Higher temperature means more diversity."
+          },
+          "continuation": {
+            "type": "boolean",
+            "title": "Continuation",
+            "default": false,
+            "x-order": 4,
+            "description": "If `True`, generated music will continue from `input_audio`. Otherwise, generated music will mimic `input_audio`'s melody."
+          },
+          "model_version": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/model_version"
+              }
+            ],
+            "default": "stereo-melody-large",
+            "x-order": 0,
+            "description": "Model to use for generation"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "wav",
+            "x-order": 13,
+            "description": "Output format for generated audio."
+          },
+          "continuation_end": {
+            "type": "integer",
+            "title": "Continuation End",
+            "minimum": 0,
+            "x-order": 6,
+            "description": "End time of the audio file to use for continuation. If -1 or None, will default to the end of the audio clip."
+          },
+          "continuation_start": {
+            "type": "integer",
+            "title": "Continuation Start",
+            "default": 0,
+            "minimum": 0,
+            "x-order": 5,
+            "description": "Start time of the audio file to use for continuation."
+          },
+          "multi_band_diffusion": {
+            "type": "boolean",
+            "title": "Multi Band Diffusion",
+            "default": false,
+            "x-order": 7,
+            "description": "If `True`, the EnCodec tokens will be decoded with MultiBand Diffusion. Only works with non-stereo models."
+          },
+          "normalization_strategy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/normalization_strategy"
+              }
+            ],
+            "default": "loudness",
+            "x-order": 8,
+            "description": "Strategy for normalizing audio."
+          },
+          "classifier_free_guidance": {
+            "type": "integer",
+            "title": "Classifier Free Guidance",
+            "default": 3,
+            "x-order": 12,
+            "description": "Increases the influence of inputs on the output. Higher values produce lower-varience outputs that adhere more closely to inputs."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "riffusion",
+      "name": "riffusion",
+      "slug": "riffusion--riffusion",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Stable diffusion for real-time music generation",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05",
+      "version_created_at": "2022-12-16T07:48:40.890140Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "default": 0.5,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 3,
+            "description": "Interpolation alpha if using two prompts. A value of 0 uses prompt_a fully, a value of 1 uses prompt_b fully"
+          },
+          "prompt_a": {
+            "type": "string",
+            "title": "Prompt A",
+            "default": "funky synth solo",
+            "x-order": 0,
+            "description": "The prompt for your audio"
+          },
+          "prompt_b": {
+            "type": "string",
+            "title": "Prompt B",
+            "x-order": 2,
+            "description": "The second prompt to interpolate with the first, leave blank if no interpolation"
+          },
+          "denoising": {
+            "type": "number",
+            "title": "Denoising",
+            "default": 0.75,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 1,
+            "description": "How much to transform input spectrogram"
+          },
+          "seed_image_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/seed_image_id"
+              }
+            ],
+            "default": "vibes",
+            "x-order": 5,
+            "description": "Seed spectrogram to use"
+          },
+          "num_inference_steps": {
+            "type": "integer",
+            "title": "Num Inference Steps",
+            "default": 50,
+            "minimum": 1,
+            "x-order": 4,
+            "description": "Number of steps to run the diffusion model"
+          }
+        }
+      },
+      "prompt_field": "prompt_a",
+      "extra_inputs": {},
+      "output_field": "audio",
+      "release_date": "2022-12-15",
+      "notes": "Stable Diffusion fine-tuned on spectrograms — the crungus's contemporary in sound; clips are ~5 s"
+    },
+    {
+      "owner": "sakemin",
+      "name": "musicgen-chord",
+      "slug": "sakemin--musicgen-chord",
+      "source": "collection",
+      "modality": "audio",
+      "description": "Generate music restricted to chord sequences and tempo",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "c940ab4308578237484f90f010b2b3871bf64008e95f26f4d567529ad019a3d6",
+      "version_created_at": "2023-11-01T17:27:03.663939Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "bpm": {
+            "type": "number",
+            "title": "Bpm",
+            "x-order": 2,
+            "description": "BPM condition for the generated output. `text_chords` will be processed based on this value. This will be appended at the end of `prompt`."
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 17,
+            "description": "Seed for random number generator. If `None` or `-1`, a random seed will be used."
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 250,
+            "x-order": 12,
+            "description": "Reduces sampling to the k most likely tokens."
+          },
+          "top_p": {
+            "type": "number",
+            "title": "Top P",
+            "default": 0,
+            "x-order": 13,
+            "description": "Reduces sampling to tokens with cumulative probability of p. When set to  `0` (default), top_k sampling is used."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "A description of the music you want to generate."
+          },
+          "duration": {
+            "type": "integer",
+            "title": "Duration",
+            "default": 8,
+            "x-order": 7,
+            "description": "Duration of the generated audio in seconds."
+          },
+          "time_sig": {
+            "type": "string",
+            "title": "Time Sig",
+            "x-order": 3,
+            "description": "Time signature value for the generate output. `text_chords` will be processed based on this value. This will be appended at the end of `prompt`."
+          },
+          "audio_end": {
+            "type": "integer",
+            "title": "Audio End",
+            "minimum": 0,
+            "x-order": 6,
+            "description": "End time of the audio file to use for chord conditioning. If None, will default to the end of the audio clip."
+          },
+          "audio_start": {
+            "type": "integer",
+            "title": "Audio Start",
+            "default": 0,
+            "minimum": 0,
+            "x-order": 5,
+            "description": "Start time of the audio file to use for chord conditioning."
+          },
+          "temperature": {
+            "type": "number",
+            "title": "Temperature",
+            "default": 1,
+            "x-order": 14,
+            "description": "Controls the 'conservativeness' of the sampling process. Higher temperature means more diversity."
+          },
+          "text_chords": {
+            "type": "string",
+            "title": "Text Chords",
+            "x-order": 1,
+            "description": "A text based chord progression condition. Single uppercase alphabet character(eg. `C`) is considered as a major chord. Chord attributes like(`maj`, `min`, `dim`, `aug`, `min6`, `maj6`, `min7`, `minmaj7`, `maj7`, `7`, `dim7`, `hdim7`, `sus2` and `sus4`) can be added to the root alphabet character after `:`.(eg. `A:min7`) Each chord token splitted by `SPACE` is allocated to a single bar. If more than one chord must be allocated to a single bar, cluster the chords adding with `,` without any `SPACE`.(eg. `C,C:7 G, E:min A:min`) You must choose either only one of `audio_chords` below or `text_chords`."
+          },
+          "audio_chords": {
+            "type": "string",
+            "title": "Audio Chords",
+            "format": "uri",
+            "x-order": 4,
+            "description": "An audio file that will condition the chord progression. You must choose only one among `audio_chords` or `text_chords` above."
+          },
+          "continuation": {
+            "type": "boolean",
+            "title": "Continuation",
+            "default": false,
+            "x-order": 8,
+            "description": "If `True`, generated music will continue from `audio_chords`. If chord conditioning, this is only possible when the chord condition is given with `text_chords`. If `False`, generated music will mimic `audio_chords`'s chord."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "wav",
+            "x-order": 16,
+            "description": "Output format for generated audio."
+          },
+          "chroma_coefficient": {
+            "type": "number",
+            "title": "Chroma Coefficient",
+            "default": 1,
+            "maximum": 2.5,
+            "minimum": 0.5,
+            "x-order": 11,
+            "description": "Coefficient value multiplied to multi-hot chord chroma."
+          },
+          "multi_band_diffusion": {
+            "type": "boolean",
+            "title": "Multi Band Diffusion",
+            "default": false,
+            "x-order": 9,
+            "description": "If `True`, the EnCodec tokens will be decoded with MultiBand Diffusion."
+          },
+          "normalization_strategy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/normalization_strategy"
+              }
+            ],
+            "default": "loudness",
+            "x-order": 10,
+            "description": "Strategy for normalizing audio."
+          },
+          "classifier_free_guidance": {
+            "type": "integer",
+            "title": "Classifier Free Guidance",
+            "default": 3,
+            "x-order": 15,
+            "description": "Increases the influence of inputs on the output. Higher values produce lower-varience outputs that adhere more closely to inputs."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "lucataco",
+      "name": "magnet",
+      "slug": "lucataco--magnet",
+      "source": "collection",
+      "modality": "audio",
+      "description": "MAGNeT: Masked Audio Generation using a Single Non-Autoregressive Transformer",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "e8e2ecd4a1dabb58924aa8300b668290cafae166dd36baf65dad9875877de50e",
+      "version_created_at": "2024-01-17T19:21:50.415392Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "model": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/model"
+              }
+            ],
+            "default": "facebook/magnet-small-10secs",
+            "x-order": 1,
+            "description": "Model to use"
+          },
+          "top_p": {
+            "type": "number",
+            "title": "Top P",
+            "default": 0.9,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 5,
+            "description": "Top p for sampling"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": "80s electronic track with melodic synthesizers, catchy beat and groovy bass",
+            "x-order": 0,
+            "description": "Input Text"
+          },
+          "max_cfg": {
+            "type": "number",
+            "title": "Max Cfg",
+            "default": 10,
+            "x-order": 6,
+            "description": "Max CFG coefficient"
+          },
+          "min_cfg": {
+            "type": "number",
+            "title": "Min Cfg",
+            "default": 1,
+            "x-order": 7,
+            "description": "Min CFG coefficient"
+          },
+          "span_score": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/span_score"
+              }
+            ],
+            "default": "prod-stride1",
+            "x-order": 3
+          },
+          "variations": {
+            "type": "integer",
+            "title": "Variations",
+            "default": 3,
+            "maximum": 4,
+            "minimum": 1,
+            "x-order": 2,
+            "description": "Number of variations to generate"
+          },
+          "temperature": {
+            "type": "number",
+            "title": "Temperature",
+            "default": 3,
+            "x-order": 4,
+            "description": "Temperature for sampling"
+          },
+          "decoding_steps_stage_1": {
+            "type": "integer",
+            "title": "Decoding Steps Stage 1",
+            "default": 20,
+            "x-order": 8,
+            "description": "Number of decoding steps for stage 1"
+          },
+          "decoding_steps_stage_2": {
+            "type": "integer",
+            "title": "Decoding Steps Stage 2",
+            "default": 10,
+            "x-order": 9,
+            "description": "Number of decoding steps for stage 2"
+          },
+          "decoding_steps_stage_3": {
+            "type": "integer",
+            "title": "Decoding Steps Stage 3",
+            "default": 10,
+            "x-order": 10,
+            "description": "Number of decoding steps for stage 3"
+          },
+          "decoding_steps_stage_4": {
+            "type": "integer",
+            "title": "Decoding Steps Stage 4",
+            "default": 10,
+            "x-order": 11,
+            "description": "Number of decoding steps for stage 4"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "suno-ai",
+      "name": "bark",
+      "slug": "suno-ai--bark",
+      "source": "legacy",
+      "modality": "audio",
+      "description": "🔊 Text-Prompted Generative Audio Model",
+      "is_official": false,
+      "availability": "ok",
+      "version_id": "b76242b40d67c76ab6742e987628a2a9ac019e11d56ab96c4e91ce03b79b2787",
+      "version_created_at": "2023-04-27T20:11:57.984157Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": "Hello, my name is Suno. And, uh — and I like pizza. [laughs] But I also have other interests such as playing tic tac toe.",
+            "x-order": 0,
+            "description": "Input prompt"
+          },
+          "text_temp": {
+            "type": "number",
+            "title": "Text Temp",
+            "default": 0.7,
+            "x-order": 3,
+            "description": "generation temperature (1.0 more diverse, 0.0 more conservative)"
+          },
+          "output_full": {
+            "type": "boolean",
+            "title": "Output Full",
+            "default": false,
+            "x-order": 5,
+            "description": "return full generation as a .npz file to be used as a history prompt"
+          },
+          "waveform_temp": {
+            "type": "number",
+            "title": "Waveform Temp",
+            "default": 0.7,
+            "x-order": 4,
+            "description": "generation temperature (1.0 more diverse, 0.0 more conservative)"
+          },
+          "history_prompt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/history_prompt"
+              }
+            ],
+            "x-order": 1,
+            "description": "history choice for audio cloning, choose from the list"
+          },
+          "custom_history_prompt": {
+            "type": "string",
+            "title": "Custom History Prompt",
+            "format": "uri",
+            "x-order": 2,
+            "description": "Provide your own .npz file with history choice for audio cloning, this will override the previous history_prompt setting"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": "audio_out",
+      "release_date": "2023-04-20",
+      "notes": "text-prompted generative audio, not strictly music: given a bare word it mostly speaks it"
     }
   ]
 }
