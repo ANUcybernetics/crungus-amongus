@@ -23,6 +23,9 @@ TERMINAL_STATUSES = {"succeeded", "failed", "canceled"}
 POLL_INTERVAL_S = 3.0
 
 NSFW_MARKERS = ("nsfw", "sensitive", "safety", "flagged")
+# the model rejected the input outright (e.g. a prompt-length minimum); the
+# message often also says "try again", so this is checked before TRANSIENT
+INVALID_INPUT_MARKERS = ("input was invalid", "must be between")
 # model ran but the failure is upstream-transient, not a property of the input
 TRANSIENT_MARKERS = ("temporarily unavailable", "try again", "director:")
 
@@ -73,6 +76,8 @@ class ReplicateClient:
         lowered = error.lower()
         if any(marker in lowered for marker in NSFW_MARKERS):
             raise NsfwBlockedError(error)
+        if any(marker in lowered for marker in INVALID_INPUT_MARKERS):
+            raise PermanentPredictionError(error)
         if any(marker in lowered for marker in TRANSIENT_MARKERS):
             raise RetryablePredictionError(error)
         raise PermanentPredictionError(error)
