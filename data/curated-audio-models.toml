@@ -44,17 +44,19 @@ name = "ace-step"
 prompt_field = "tags"
 
 # minimax's song models take the prompt as a style description and require
-# lyrics; the word itself is the only lyric we give them
+# lyrics of at least 10 characters; the word, repeated, is the only lyric we
+# give them
 [[models]]
 owner = "minimax"
 name = "music-1.5"
-extra_inputs = { lyrics = "crungus" }
-notes = "requires a 10–300 character prompt, so the bare word is rejected upstream"
+extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
+notes = "requires a 10–300 character prompt, so the bare word is rejected upstream; lyrics are the word three times"
 
 [[models]]
 owner = "minimax"
 name = "music-2.5"
-extra_inputs = { lyrics = "crungus" }
+extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
+notes = "lyrics are the word three times"
 
 [[models]]
 owner = "minimax"

@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-05T01:44:46.942022Z",
+  "fetched_at": "2026-09-05T02:13:47.458073Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -9903,11 +9903,11 @@
       },
       "prompt_field": null,
       "extra_inputs": {
-        "lyrics": "crungus"
+        "lyrics": "crungus\ncrungus\ncrungus"
       },
       "output_field": null,
       "release_date": null,
-      "notes": "requires a 10–300 character prompt, so the bare word is rejected upstream"
+      "notes": "requires a 10–300 character prompt, so the bare word is rejected upstream; lyrics are the word three times"
     },
     {
       "owner": "stability-ai",
@@ -10285,11 +10285,11 @@
       },
       "prompt_field": null,
       "extra_inputs": {
-        "lyrics": "crungus"
+        "lyrics": "crungus\ncrungus\ncrungus"
       },
       "output_field": null,
       "release_date": null,
-      "notes": null
+      "notes": "lyrics are the word three times"
     },
     {
       "owner": "meta",
