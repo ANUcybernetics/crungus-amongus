@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T03:17:24.176514Z",
+  "generated_at": "2026-09-05T03:34:57.647416Z",
   "image_base_url": "https://images.crungusamong.us",
   "models": [
     {
@@ -1089,7 +1089,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.7204,
           "images": [],
           "clips": [
             {
@@ -1137,7 +1137,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.835,
           "images": [],
           "clips": [
             {
@@ -1333,7 +1333,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.5975,
           "images": [],
           "clips": [
             {
@@ -1381,7 +1381,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.6569,
           "images": [],
           "clips": [
             {
@@ -1577,7 +1577,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.6615,
           "images": [],
           "clips": [
             {
@@ -1625,7 +1625,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.6995,
           "images": [],
           "clips": [
             {
@@ -2217,7 +2217,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.5698,
           "images": [],
           "clips": [
             {
@@ -2265,7 +2265,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.6219,
           "images": [],
           "clips": [
             {
@@ -3136,7 +3136,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.8373,
           "images": [],
           "clips": [
             {
@@ -3184,7 +3184,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.8309,
           "images": [],
           "clips": [
             {
@@ -3771,7 +3771,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.6987,
           "images": [],
           "clips": [
             {
@@ -3819,7 +3819,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.7346,
           "images": [],
           "clips": [
             {
@@ -4015,7 +4015,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.645,
           "images": [],
           "clips": [
             {
@@ -4063,7 +4063,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.6648,
           "images": [],
           "clips": [
             {
@@ -4523,7 +4523,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.7019,
           "images": [],
           "clips": [
             {
@@ -4571,7 +4571,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.5126,
           "images": [],
           "clips": [
             {
@@ -5823,7 +5823,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.8006,
           "images": [],
           "clips": [
             {
@@ -5871,7 +5871,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.8003,
           "images": [],
           "clips": [
             {
@@ -7130,7 +7130,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.8341,
           "images": [],
           "clips": [
             {
@@ -7458,7 +7458,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.8492,
           "images": [],
           "clips": [
             {
@@ -7506,7 +7506,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.5171,
           "images": [],
           "clips": [
             {
@@ -8651,7 +8651,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.9051,
           "images": [],
           "clips": [
             {
@@ -8699,7 +8699,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.9199,
           "images": [],
           "clips": [
             {
@@ -10800,7 +10800,7 @@
         {
           "prompt": "crungus",
           "prompt_slug": "crungus",
-          "consistency": null,
+          "consistency": 0.7822,
           "images": [],
           "clips": [
             {
@@ -10848,7 +10848,7 @@
         {
           "prompt": "the sound of a crungus",
           "prompt_slug": "the-sound-of-a-crungus",
-          "consistency": null,
+          "consistency": 0.8294,
           "images": [],
           "clips": [
             {

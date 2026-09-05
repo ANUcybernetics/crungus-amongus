@@ -1,8 +1,9 @@
 ---
-import { clipCount, coverClip, releaseYear } from "../lib/models";
+import { clipCount, coverClip, crungusness, releaseYear } from "../lib/models";
 import { path } from "../lib/paths";
 import type { ModelEntry } from "../lib/schema";
 import AudioClip from "./AudioClip.astro";
+import ConsistencyMeter from "./ConsistencyMeter.astro";
 
 interface Props {
   model: ModelEntry;
@@ -11,6 +12,7 @@ interface Props {
 const { model } = Astro.props;
 const clip = coverClip(model);
 const count = clipCount(model);
+const score = crungusness(model);
 ---
 
 <article class="card">
@@ -18,7 +20,10 @@ const count = clipCount(model);
     <h3 class="mono">{model.owner}/{model.name}</h3>
   </a>
   <p class="meta mono muted">
-    {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"}
+    <span>
+      {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"}
+    </span>
+    <ConsistencyMeter value={score} label="" modality="audio" />
   </p>
   {clip && <AudioClip clip={clip} label={`crungus as played by ${model.owner}/${model.name}`} />}
 </article>
@@ -47,6 +52,10 @@ const count = clipCount(model);
   }
 
   .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
     margin: 0.2rem 0 0.7rem;
   }
 </style>

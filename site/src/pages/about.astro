@@ -58,7 +58,12 @@ const generatedAt = siteData.generated_at.slice(0, 10);
         ? ` The sound archive holds ${clipTotal} clips from ${soundModels.length} models; ${soundFailed.length} more were asked and produced nothing.`
         : " The sound archive is still being recorded."}
       Clips are loudness-normalised so the radio doesn't lurch between
-      models, but otherwise untouched.
+      models, but otherwise untouched. Each model's clips get the same
+      consistency score as the images, computed from
+      <a href="https://github.com/LAION-AI/CLAP">CLAP</a> audio embeddings
+      instead of CLIP, and it carries the same caveat in its audio form: a
+      model with a strong house sound scores high whether or not it has a
+      crungus.
     </p>
 
     <h2>The consistency score</h2>
@@ -103,7 +108,8 @@ const generatedAt = siteData.generated_at.slice(0, 10);
     <h2>Colophon</h2>
     <p class="mono">
       images and clips generated via the Replicate API · scored with
-      open-clip (ViT-B/32) · projected with UMAP · encoded as AVIF and Opus
+      open-clip (ViT-B/32) and LAION CLAP · projected with UMAP · encoded as
+      AVIF and Opus
       (with an AAC fallback) · served from Tigris object storage · built with
       Astro · made by
       <a href="https://benswift.me">Ben Swift</a> at the ANU School of

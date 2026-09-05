@@ -1,19 +1,29 @@
 ---
-// Crungus-ness: mean pairwise CLIP similarity of the model's ten outputs.
-// High = the model summons one stable creature; low = ten unrelated guesses.
+// Crungus-ness: mean pairwise CLIP (images) or CLAP (clips) similarity of
+// the model's ten outputs. High = the model summons one stable creature;
+// low = ten unrelated guesses. The low/high bands are set per modality from
+// the spread of the archive's own scores.
+import type { Modality } from "../lib/schema";
+
 interface Props {
   value: number | null;
   label?: string;
+  modality?: Modality;
 }
 
-const { value, label = "consistency" } = Astro.props;
+const { value, label = "consistency", modality = "image" } = Astro.props;
+const bands = { image: { low: 0.55, high: 0.75 }, audio: { low: 0.65, high: 0.85 } }[modality];
+const embedding = modality === "audio" ? "CLAP" : "CLIP";
 ---
 
 {
   value !== null && (
-    <span class="consistency mono" title="mean pairwise CLIP similarity of this model's outputs">
+    <span
+      class="consistency mono"
+      title={`mean pairwise ${embedding} similarity of this model's outputs`}
+    >
       <span class="muted">{label}</span>
-      <meter min="0" max="1" low={0.55} high={0.75} optimum={0.99} value={value} />
+      <meter min="0" max="1" low={bands.low} high={bands.high} optimum={0.99} value={value} />
       <span>{value.toFixed(2)}</span>
     </span>
   )

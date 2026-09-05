@@ -2,6 +2,7 @@
 /data/originals/
 /data/optimized/
 /state/embeddings.npz
+/state/audio-embeddings.npz
 
 # python
 __pycache__/

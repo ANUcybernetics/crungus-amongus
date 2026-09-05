@@ -47,7 +47,7 @@ const verb = audio ? "played" : "rendered";
               <h2 id={`prompt-${prompt.prompt_slug}`} class="mono">
                 “{prompt.prompt}”
               </h2>
-              <ConsistencyMeter value={prompt.consistency} />
+              <ConsistencyMeter value={prompt.consistency} modality={model.modality} />
             </div>
             {audio ? (
               <ol class="clips">

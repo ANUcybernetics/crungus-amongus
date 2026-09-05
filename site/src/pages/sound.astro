@@ -2,12 +2,13 @@
 import SoundCard from "../components/SoundCard.astro";
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
-import { byYear, clipCount, failedModels, generatedModels } from "../lib/models";
+import { byCrungusness, byYear, clipCount, failedModels, generatedModels } from "../lib/models";
 import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "audio");
 const failed = failedModels(siteData, "audio");
 const years = byYear(models);
+const scored = byCrungusness(models);
 const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
 ---
 
@@ -39,17 +40,37 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
       <p class="muted">Nothing on the air yet — the sound archive is still being recorded.</p>
     ) : (
       <section aria-labelledby="sound-heading">
-        <h2 id="sound-heading">The sound archive</h2>
-        {years.map(([year, group]) => (
-          <section class="year" aria-label={`models from ${year}`}>
-            <h3 class="mono muted">{year}</h3>
-            <div class="grid">
-              {group.map((model) => (
-                <SoundCard model={model} />
-              ))}
-            </div>
-          </section>
-        ))}
+        <div class="archive-head">
+          <h2 id="sound-heading">The sound archive</h2>
+          <p class="mono sort" hidden>
+            <span class="muted">order by</span>
+            <button id="sort-year" aria-pressed="true" type="button">
+              year
+            </button>
+            <button id="sort-score" aria-pressed="false" type="button">
+              consistency
+            </button>
+          </p>
+        </div>
+        <div id="by-year">
+          {years.map(([year, group]) => (
+            <section class="year" aria-label={`models from ${year}`}>
+              <h3 class="mono muted">{year}</h3>
+              <div class="grid">
+                {group.map((model) => (
+                  <SoundCard model={model} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+        <div id="by-score" hidden>
+          <div class="grid">
+            {scored.map((model) => (
+              <SoundCard model={model} />
+            ))}
+          </div>
+        </div>
       </section>
     )
   }
@@ -75,6 +96,27 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
   }
 </Base>
 
+<script>
+  // progressive enhancement: the sort toggle only appears when JS runs
+  const controls = document.querySelector<HTMLElement>(".sort");
+  const byYearEl = document.getElementById("by-year");
+  const byScoreEl = document.getElementById("by-score");
+  const yearBtn = document.getElementById("sort-year");
+  const scoreBtn = document.getElementById("sort-score");
+
+  if (controls && byYearEl && byScoreEl && yearBtn && scoreBtn) {
+    controls.hidden = false;
+    const select = (score: boolean) => {
+      byYearEl.hidden = score;
+      byScoreEl.hidden = !score;
+      yearBtn.setAttribute("aria-pressed", String(!score));
+      scoreBtn.setAttribute("aria-pressed", String(score));
+    };
+    yearBtn.addEventListener("click", () => select(false));
+    scoreBtn.addEventListener("click", () => select(true));
+  }
+</script>
+
 <style>
   .hero {
     padding-block: 2.5rem 2rem;
@@ -95,9 +137,37 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
     margin: 0;
   }
 
+  .archive-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
   h2 {
     font-size: 1.6rem;
     margin: 0 0 0.75rem;
+  }
+
+  .sort button {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font: inherit;
+    padding: 0.2rem 0.7rem;
+    cursor: pointer;
+  }
+
+  .sort button[aria-pressed="true"] {
+    color: var(--ground);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .year + .year h3,
+  #by-score .grid {
+    margin-block-start: 1rem;
   }
 
   .year h3 {
