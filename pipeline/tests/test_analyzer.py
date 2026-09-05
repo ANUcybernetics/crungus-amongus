@@ -42,3 +42,14 @@ def test_atlas_coords_normalised_to_unit_square() -> None:
     ys = [y for _, y in coords.values()]
     assert min(xs) >= 0 and max(xs) <= 1
     assert min(ys) >= 0 and max(ys) <= 1
+
+
+def test_windows_cover_the_whole_clip() -> None:
+    from crungus_amongus.analyzer import windows
+
+    short = np.zeros(5, dtype=np.float32)
+    assert [len(w) for w in windows(short, size=10)] == [5]
+    long = np.arange(25, dtype=np.float32)
+    parts = windows(long, size=10)
+    assert [len(w) for w in parts] == [10, 10, 5]
+    assert np.concatenate(parts).tolist() == long.tolist()

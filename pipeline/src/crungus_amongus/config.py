@@ -95,3 +95,7 @@ class Settings(BaseSettings):
     @property
     def embeddings_path(self) -> Path:
         return self.state_dir / "embeddings.npz"
+
+    @property
+    def audio_embeddings_path(self) -> Path:
+        return self.state_dir / "audio-embeddings.npz"

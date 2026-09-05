@@ -1,13 +1,15 @@
-"""CLIP embeddings → crungus-ness scores and UMAP atlas coordinates.
+"""CLIP/CLAP embeddings → crungus-ness scores and UMAP atlas coordinates.
 
-Local and free: open-clip ViT-B/32 over the originals, cached in
-state/embeddings.npz (keyed by relative image path). The crungus-ness score
-of a (model, prompt) set is the mean pairwise cosine similarity of its
-embeddings — high means the model renders a consistent creature, the defining
-property of the original 2022 crungus. UMAP projects all embeddings to 2D for
-the atlas, normalised to [0, 1]².
+Local and free: open-clip ViT-B/32 over the images and LAION CLAP over the
+clips, cached in state/embeddings.npz and state/audio-embeddings.npz (keyed
+by relative path sans extension). The crungus-ness score of a (model, prompt)
+set is the mean pairwise cosine similarity of its embeddings — high means the
+model renders a consistent creature (or sound), the defining property of the
+original 2022 crungus. UMAP projects the image embeddings to 2D for the
+atlas, normalised to [0, 1]².
 """
 
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -19,6 +21,11 @@ from .config import Settings
 CLIP_MODEL = "ViT-B-32"
 CLIP_PRETRAINED = "openai"
 BATCH_SIZE = 64
+CLAP_MODEL = "laion/clap-htsat-unfused"
+CLAP_SAMPLE_RATE = 48000
+# CLAP's native input is 10 s; longer clips are embedded window by window
+# and averaged (the unfused model would otherwise take a random crop)
+CLAP_WINDOW = 10 * CLAP_SAMPLE_RATE
 
 
 class Analysis(BaseModel):
@@ -90,6 +97,76 @@ def embed_images(settings: Settings) -> dict[str, np.ndarray]:
         )
 
     save_embeddings(settings.embeddings_path, embeddings)
+    return embeddings
+
+
+def decode_clip(path: Path) -> np.ndarray:
+    """Decode any audio file to 48 kHz mono float32 via ffmpeg."""
+    raw = subprocess.run(
+        [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-i",
+            str(path),
+            "-f",
+            "f32le",
+            "-ac",
+            "1",
+            "-ar",
+            str(CLAP_SAMPLE_RATE),
+            "-",
+        ],
+        check=True,
+        capture_output=True,
+    ).stdout
+    return np.frombuffer(raw, dtype=np.float32)
+
+
+def windows(audio: np.ndarray, size: int = CLAP_WINDOW) -> list[np.ndarray]:
+    """Consecutive windows covering the whole clip; a short clip is one window."""
+    if len(audio) <= size:
+        return [audio]
+    return [audio[start : start + size] for start in range(0, len(audio), size)]
+
+
+def embed_clips(settings: Settings) -> dict[str, np.ndarray]:
+    """Embed every optimized clip with CLAP, reusing cached embeddings."""
+    import torch
+    from transformers import ClapModel, ClapProcessor
+
+    embeddings = load_embeddings(settings.audio_embeddings_path)
+    all_clips = sorted(settings.optimized_dir.rglob("*.opus"))
+    pending = [
+        p
+        for p in all_clips
+        if str(p.relative_to(settings.optimized_dir).with_suffix("")) not in embeddings
+    ]
+    logger.info(
+        "audio embeddings: {} cached, {} to compute", len(embeddings), len(pending)
+    )
+    if not pending:
+        return embeddings
+
+    model = ClapModel.from_pretrained(CLAP_MODEL).eval()
+    processor = ClapProcessor.from_pretrained(CLAP_MODEL)
+    for i, path in enumerate(pending, 1):
+        inputs = processor(
+            audio=windows(decode_clip(path)),
+            sampling_rate=CLAP_SAMPLE_RATE,
+            return_tensors="pt",
+            padding=True,
+        )
+        with torch.no_grad():
+            per_window = model.get_audio_features(**inputs).pooler_output
+        vector = per_window.mean(dim=0)
+        vector = vector / vector.norm()
+        key = str(path.relative_to(settings.optimized_dir).with_suffix(""))
+        embeddings[key] = vector.numpy().astype(np.float32)
+        if i % 25 == 0 or i == len(pending):
+            logger.info("embedded clips {}/{}", i, len(pending))
+
+    save_embeddings(settings.audio_embeddings_path, embeddings)
     return embeddings
 
 
@@ -175,12 +252,15 @@ def _release_years(settings: Settings) -> dict[str, str]:
 
 def run_analysis(settings: Settings) -> Analysis:
     embeddings = embed_images(settings)
-    if not embeddings:
-        logger.warning("no images to analyse")
+    clip_embeddings = embed_clips(settings)
+    if not embeddings and not clip_embeddings:
+        logger.warning("nothing to analyse")
         return Analysis(consistency={}, atlas={})
+    # image and audio keys never collide: each model has one modality
     analysis = Analysis(
-        consistency=consistency_scores(embeddings),
-        atlas=atlas_coords(embeddings),
+        consistency=consistency_scores(embeddings)
+        | consistency_scores(clip_embeddings),
+        atlas=atlas_coords(embeddings) if embeddings else {},
         year_typicality=year_typicality_scores(embeddings, _release_years(settings)),
     )
     path = analysis_path(settings)
