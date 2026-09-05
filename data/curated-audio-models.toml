@@ -57,9 +57,3 @@ owner = "minimax"
 name = "music-2.5"
 extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
 notes = "lyrics are the word three times"
-
-[[models]]
-owner = "minimax"
-name = "music-01"
-prompt_field = "lyrics"
-notes = "has no prompt input at all — only lyrics — so the prompt goes in as lyrics"

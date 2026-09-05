@@ -30,3 +30,8 @@ reason = "requires style_reference_images; not plain text-to-image"
 owner = "sakemin"
 name = "musicgen-remixer"
 reason = "audio2audio: requires an input track to remix"
+
+[[models]]
+owner = "minimax"
+name = "music-01"
+reason = "audio2audio: requires a reference song, voice or instrumental file"

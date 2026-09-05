@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-05T02:13:47.458073Z",
+  "fetched_at": "2026-09-05T02:27:22.954310Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -10142,83 +10142,6 @@
       "output_field": "variation_01",
       "release_date": null,
       "notes": null
-    },
-    {
-      "owner": "minimax",
-      "name": "music-01",
-      "slug": "minimax--music-01",
-      "source": "collection",
-      "modality": "audio",
-      "description": "Quickly generate up to 1 minute of music with lyrics and vocals in the style of a reference track",
-      "is_official": true,
-      "availability": "ok",
-      "version_id": "0254c7e2f54315b667dbae03da7c155822ba29ffe0457be5bc246d564be486bd",
-      "version_created_at": "2025-11-07T13:21:52.609920Z",
-      "input_schema": {
-        "type": "object",
-        "title": "Input",
-        "properties": {
-          "lyrics": {
-            "type": "string",
-            "title": "Lyrics",
-            "default": "",
-            "description": "Lyrics with optional formatting. You can use a newline to separate each line of lyrics. You can use two newlines to add a pause between lines. You can use double hash marks (##) at the beginning and end of the lyrics to add accompaniment. Maximum 350 to 400 characters."
-          },
-          "bitrate": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/bitrate"
-              }
-            ],
-            "default": 256000,
-            "x-order": 7,
-            "description": "Bitrate for the generated music"
-          },
-          "voice_id": {
-            "type": "string",
-            "title": "Voice Id",
-            "description": "Reuse a previously uploaded voice ID"
-          },
-          "song_file": {
-            "type": "string",
-            "title": "Song File",
-            "format": "uri",
-            "description": "Reference song, should contain music and vocals. Must be a .wav or .mp3 file longer than 15 seconds."
-          },
-          "voice_file": {
-            "type": "string",
-            "title": "Voice File",
-            "format": "uri",
-            "description": "Voice reference. Must be a .wav or .mp3 file longer than 15 seconds. If only a voice reference is given, an a cappella vocal hum will be generated."
-          },
-          "sample_rate": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/sample_rate"
-              }
-            ],
-            "default": 44100,
-            "x-order": 6,
-            "description": "Sample rate for the generated music"
-          },
-          "instrumental_id": {
-            "type": "string",
-            "title": "Instrumental Id",
-            "description": "Reuse a previously uploaded instrumental ID"
-          },
-          "instrumental_file": {
-            "type": "string",
-            "title": "Instrumental File",
-            "format": "uri",
-            "description": "Instrumental reference. Must be a .wav or .mp3 file longer than 15 seconds. If only an instrumental reference is given, a track without vocals will be generated."
-          }
-        }
-      },
-      "prompt_field": "lyrics",
-      "extra_inputs": {},
-      "output_field": null,
-      "release_date": null,
-      "notes": "has no prompt input at all — only lyrics — so the prompt goes in as lyrics"
     },
     {
       "owner": "minimax",
