@@ -1,0 +1,473 @@
+---
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { generatedModels, imageCount } from "../lib/models";
+import { path } from "../lib/paths";
+
+const models = generatedModels(siteData, "image");
+const imageTotal = models.reduce((n, m) => n + imageCount(m), 0);
+const labels = Object.fromEntries(models.map((m) => [m.slug, `${m.owner}/${m.name}`]));
+const modelBase = path("/model/");
+const imageBase = siteData.image_base_url;
+---
+
+<Base
+  title="Eigencrungi — Crungus Amongus"
+  description="The archive decomposed eigenfaces-style: a mean crungus and the components it varies along, each on a slider."
+>
+  <section class="intro">
+    <h1>The eigencrungi</h1>
+    <p class="lede">
+      In 1991 Turk and Pentland took a stack of face photographs, treated each one
+      as a point in pixel space and found the directions the stack varied along
+      most: the <em>eigenfaces</em>, from which any face could be rebuilt as a
+      weighted sum. Here the same arithmetic is done to the archive: {imageTotal}{" "}
+      crungi, centre-cropped and shrunk to 128 pixels, no alignment. The stage
+      starts on the mean crungus. Each slider is one component, shown beside the
+      archive's images at its two extremes; push it and see what it carries. Click
+      any image to load its coefficients and see how much of it survives.
+    </p>
+  </section>
+
+  <div class="lab" hidden>
+    <div class="stage">
+      <div class="pair">
+        <figure>
+          <canvas id="recon" width="128" height="128" aria-label="the reconstructed crungus"></canvas>
+          <figcaption id="stage-caption" class="mono muted" aria-live="polite">
+            the mean crungus
+          </figcaption>
+        </figure>
+        <figure id="original" hidden>
+          <img id="original-image" alt="" width="128" height="128" />
+          <figcaption class="mono muted"><a id="original-link" href="#">the original</a></figcaption>
+        </figure>
+      </div>
+      <p class="mono controls">
+        <button id="reset" type="button">the mean crungus</button>
+        <button id="random" type="button">a real crungus</button>
+      </p>
+    </div>
+    <ol id="components" class="components"></ol>
+  </div>
+
+  <p id="loading" class="mono muted">loading the eigencrungi…</p>
+  <noscript>
+    <p class="muted">
+      The sliders need JavaScript. The images they are built from are all in
+      <a href={path()}>the archive</a>.
+    </p>
+  </noscript>
+
+  <section class="notes">
+    <p>
+      Faces decompose neatly because they are aligned before the maths: eyes
+      here, mouth there. Nothing aligns a crungus, so the leading components
+      describe light, framing and palette before they describe a creature, and
+      the creature turns up further down the list as horns, ears and a bared
+      mouth. Components with a name were named by a human looking at the
+      extremes; the rest go by number. More in
+      <a href={path("/about/")}>about</a>.
+    </p>
+  </section>
+</Base>
+
+<script
+  type="application/json"
+  id="eigen-config"
+  set:html={JSON.stringify({ labels, modelBase, imageBase })}
+/>
+
+<script>
+  import {
+    decodeSheet,
+    modelSlug,
+    reconstruct,
+    type EigenData,
+  } from "../lib/eigen";
+
+  const config = JSON.parse(document.getElementById("eigen-config")!.textContent!) as {
+    labels: Record<string, string>;
+    modelBase: string;
+    imageBase: string;
+  };
+  const lab = document.querySelector<HTMLElement>(".lab")!;
+  const loading = document.getElementById("loading")!;
+  const recon = document.getElementById("recon") as HTMLCanvasElement;
+  const stageCaption = document.getElementById("stage-caption")!;
+  const original = document.getElementById("original") as HTMLElement;
+  const originalImage = document.getElementById("original-image") as HTMLImageElement;
+  const originalLink = document.getElementById("original-link") as HTMLAnchorElement;
+  const list = document.getElementById("components")!;
+
+  async function loadImage(src: string): Promise<HTMLImageElement> {
+    const image = new Image();
+    image.crossOrigin = "anonymous"; // the sheet's pixels are read back
+    image.src = src;
+    await image.decode();
+    return image;
+  }
+
+  const [data, sheet, spriteIndex, sprite] = await Promise.all([
+    fetch(`${config.imageBase}/eigen/eigen.json`).then(
+      (r) => r.json() as Promise<EigenData>,
+    ),
+    loadImage(`${config.imageBase}/eigen/eigen.webp`),
+    fetch(`${config.imageBase}/atlas/sprite.json`).then(
+      (r) => r.json() as Promise<{ cell_px: number; cols: number; keys: string[] }>,
+    ),
+    loadImage(`${config.imageBase}/atlas/sprite.webp`),
+  ]);
+
+  const side = data.side;
+  const scratch = document.createElement("canvas");
+  scratch.width = sheet.width;
+  scratch.height = sheet.height;
+  const scratchContext = scratch.getContext("2d", { willReadFrequently: true })!;
+  scratchContext.drawImage(sheet, 0, 0);
+  const decoded = decodeSheet(
+    scratchContext.getImageData(0, 0, sheet.width, sheet.height).data,
+    sheet.width,
+    side,
+    data.components,
+  );
+
+  const reconContext = recon.getContext("2d")!;
+  const frame = reconContext.createImageData(side, side);
+  const weights = data.components.map(() => 0);
+  const sliders: HTMLInputElement[] = [];
+  const outputs: HTMLOutputElement[] = [];
+  const cellOf = new Map(spriteIndex.keys.map((key, i) => [key, i]));
+  const keys = Object.keys(data.coefficients);
+
+  function labelFor(key: string): string {
+    return config.labels[modelSlug(key)] ?? modelSlug(key);
+  }
+
+  function render() {
+    reconstruct(decoded, data.components, weights, frame.data);
+    reconContext.putImageData(frame, 0, 0);
+  }
+
+  function setWeight(j: number, value: number) {
+    weights[j] = value;
+    sliders[j]!.value = String(value);
+    outputs[j]!.value = `${value >= 0 ? "+" : "−"}${Math.abs(value).toFixed(1)}σ`;
+  }
+
+  function showMean() {
+    data.components.forEach((_, j) => setWeight(j, 0));
+    original.hidden = true;
+    stageCaption.textContent = "the mean crungus";
+    render();
+  }
+
+  function showImage(key: string) {
+    const coefficients = data.coefficients[key]!;
+    data.components.forEach((_, j) => setWeight(j, coefficients[j] ?? 0));
+    originalImage.src = `${config.imageBase}/${key}`;
+    originalImage.alt = `crungus by ${labelFor(key)}`;
+    originalLink.href = `${config.modelBase}${modelSlug(key)}/`;
+    originalLink.textContent = labelFor(key);
+    original.hidden = false;
+    stageCaption.textContent = `the same crungus as ${data.components.length} numbers`;
+    render();
+  }
+
+  function thumbnail(key: string): HTMLButtonElement {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("aria-label", `load the crungus by ${labelFor(key)}`);
+    button.title = labelFor(key);
+    const canvas = document.createElement("canvas");
+    canvas.width = spriteIndex.cell_px;
+    canvas.height = spriteIndex.cell_px;
+    const cell = cellOf.get(key);
+    if (cell !== undefined) {
+      canvas.getContext("2d")!.drawImage(
+        sprite,
+        (cell % spriteIndex.cols) * spriteIndex.cell_px,
+        Math.floor(cell / spriteIndex.cols) * spriteIndex.cell_px,
+        spriteIndex.cell_px,
+        spriteIndex.cell_px,
+        0,
+        0,
+        spriteIndex.cell_px,
+        spriteIndex.cell_px,
+      );
+    }
+    button.append(canvas);
+    button.addEventListener("click", () => showImage(key));
+    return button;
+  }
+
+  function tile(j: number): HTMLCanvasElement {
+    const canvas = document.createElement("canvas");
+    canvas.width = side;
+    canvas.height = side;
+    canvas.className = "tile";
+    canvas.setAttribute("aria-hidden", "true");
+    canvas
+      .getContext("2d")!
+      .drawImage(sheet, (j + 1) * side, 0, side, side, 0, 0, side, side);
+    return canvas;
+  }
+
+  data.components.forEach((component, j) => {
+    const item = document.createElement("li");
+    item.className = "component";
+    const id = `component-${j + 1}`;
+    const label = document.createElement("label");
+    label.htmlFor = id;
+    label.innerHTML = `<b class="mono">${j + 1}</b> ${component.name ?? `<span class="muted">unnamed</span>`}`;
+    const meta = document.createElement("span");
+    meta.className = "mono muted";
+    const output = document.createElement("output");
+    output.htmlFor.add(id);
+    meta.append(`${(component.variance * 100).toFixed(1)}% · `, output);
+    const head = document.createElement("div");
+    head.className = "head";
+    head.append(label, meta);
+
+    const slider = document.createElement("input");
+    slider.type = "range";
+    slider.id = id;
+    slider.min = "-3";
+    slider.max = "3";
+    slider.step = "0.05";
+    slider.value = "0";
+    slider.addEventListener("input", () => {
+      setWeight(j, Number(slider.value));
+      original.hidden = true;
+      stageCaption.textContent = "a crungus that never was";
+      render();
+    });
+
+    const negatives = document.createElement("div");
+    negatives.className = "exemplars";
+    negatives.append(...component.negative.map(thumbnail));
+    const positives = document.createElement("div");
+    positives.className = "exemplars";
+    positives.append(...component.positive.map(thumbnail));
+    const row = document.createElement("div");
+    row.className = "row";
+    row.append(negatives, slider, positives);
+
+    item.append(tile(j), head, row);
+    list.append(item);
+    sliders.push(slider);
+    outputs.push(output);
+  });
+
+  document.getElementById("reset")!.addEventListener("click", showMean);
+  document.getElementById("random")!.addEventListener("click", () => {
+    showImage(keys[Math.floor(Math.random() * keys.length)]!);
+  });
+
+  showMean();
+  loading.hidden = true;
+  lab.hidden = false;
+</script>
+
+<style>
+  .intro {
+    padding-block: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .lab {
+    display: grid;
+    grid-template-columns: minmax(14rem, 20rem) 1fr;
+    gap: 2rem 3rem;
+    align-items: start;
+    margin-block-end: 2rem;
+  }
+
+  .lab[hidden] {
+    display: none;
+  }
+
+  @media (width <= 56rem) {
+    .lab {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .stage {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* a loaded original sits beside its reconstruction, not under it */
+  .pair:has(#original:not([hidden])) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stage figure {
+    margin: 0;
+  }
+
+  .stage canvas,
+  .stage img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .stage figcaption {
+    margin: 0.4rem 0 0;
+    min-height: 1.4em;
+  }
+
+  @media (width <= 56rem) {
+    .stage {
+      top: 0;
+      z-index: 1;
+      background: var(--ground);
+      padding-block: 0.5rem;
+    }
+
+    .pair {
+      max-width: 20rem;
+    }
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+  }
+
+  .controls button {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font: inherit;
+    padding: 0.25rem 0.7rem;
+    cursor: pointer;
+  }
+
+  .controls button:hover {
+    color: var(--ground);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .components {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .components :global(.component) {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.4rem 1rem;
+    align-items: center;
+    border-block-end: 1px solid var(--line);
+    padding-block-end: 1.25rem;
+  }
+
+  .components :global(.tile) {
+    grid-row: 1 / 3;
+    width: 4rem;
+    aspect-ratio: 1;
+    display: block;
+    border: 1px solid var(--line);
+  }
+
+  .components :global(.head) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .components :global(label b) {
+    color: var(--accent-bright);
+    font-weight: 500;
+    margin-inline-end: 0.35rem;
+  }
+
+  .components :global(.row) {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .components :global(.exemplars) {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .components :global(.exemplars button) {
+    padding: 0;
+    border: 1px solid var(--line);
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  .components :global(.exemplars button:hover) {
+    border-color: var(--accent-bright);
+  }
+
+  .components :global(.exemplars canvas) {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .components :global(input[type="range"]) {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--accent);
+  }
+
+  @media (width <= 40rem) {
+    .components :global(.row) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .components :global(input[type="range"]) {
+      grid-column: 1 / 3;
+      grid-row: 2;
+    }
+
+    .components :global(.exemplars:last-child) {
+      justify-content: end;
+    }
+  }
+
+  #loading[hidden] {
+    display: none;
+  }
+
+  .notes {
+    max-width: 46rem;
+    margin-block-end: 2rem;
+  }
+</style>

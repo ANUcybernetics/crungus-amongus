@@ -114,6 +114,15 @@ const imageTotal = models.reduce(
     )
   }
 
+  <section class="listen" aria-labelledby="eigen-heading">
+    <h2 id="eigen-heading">The eigencrungi</h2>
+    <p>
+      Every image in the archive decomposed, eigenfaces-style, into a mean
+      crungus and the components it varies along, each on a slider:{" "}
+      <a href={path("/eigen/")}>the eigencrungi</a>.
+    </p>
+  </section>
+
   {
     failed.length > 0 && (
       <section class="failed" aria-labelledby="failed-heading">

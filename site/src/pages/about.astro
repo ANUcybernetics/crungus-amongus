@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
 import { clipCount, failedModels, generatedModels, imageCount } from "../lib/models";
+import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "image");
 const failed = failedModels(siteData, "image");
@@ -87,6 +88,22 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       the space between them is not.
     </p>
 
+    <h2>The eigencrungi</h2>
+    <p>
+      Turk and Pentland's 1991 <em>eigenfaces</em> treated every face photograph
+      as one point in pixel space and found, by principal component analysis,
+      the directions that a stack of faces varies along most; any face is then
+      a mean face plus a weighted sum of those components. The
+      <a href={path("/eigen/")}>eigencrungi</a> page does the same to every
+      image in the archive: centre-cropped, shrunk to 128 pixels, and
+      decomposed with no alignment step, because there is nothing to align a
+      crungus by. That is why the first components are light, framing and
+      palette, and the creature only appears further down the list. Each
+      slider moves one component by up to three standard deviations of what
+      the archive actually contains; the images beside it are the archive's
+      real extremes. Names were given by hand, by looking.
+    </p>
+
     <h2>Prior sightings</h2>
     <ul>
       <li>
@@ -108,7 +125,8 @@ const generatedAt = siteData.generated_at.slice(0, 10);
     <h2>Colophon</h2>
     <p class="mono">
       images and clips generated via the Replicate API · scored with
-      open-clip (ViT-B/32) and LAION CLAP · projected with UMAP · encoded as
+      open-clip (ViT-B/32) and LAION CLAP · projected with UMAP · decomposed
+      with numpy · encoded as
       AVIF and Opus
       (with an AAC fallback) · served from Tigris object storage · built with
       Astro · made by
