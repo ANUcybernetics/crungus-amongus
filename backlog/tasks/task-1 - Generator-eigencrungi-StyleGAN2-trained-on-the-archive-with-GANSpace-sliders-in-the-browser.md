@@ -1,24 +1,23 @@
 ---
 id: TASK-1
-title: >-
-  Generator eigencrungi: StyleGAN2 trained on the archive with GANSpace sliders
-  in the browser
+title: Train a StyleGAN2 on the archive and evaluate the eigencrungi quality gate
 status: To Do
 assignee: []
 created_date: '2026-09-09 06:48'
+updated_date: '2026-09-09 07:46'
 labels:
   - pipeline
-  - site
   - gan
-dependencies: []
+dependencies:
+  - TASK-4
 references:
   - 'https://arxiv.org/abs/2004.02546'
   - 'https://arxiv.org/abs/2502.01639'
   - 'https://arxiv.org/abs/2006.10738'
   - pipeline/src/crungus_amongus/eigen.py
-  - site/src/pages/eigen.astro
-priority: high
-ordinal: 1000
+  - pipeline/src/crungus_amongus/analyzer.py
+priority: medium
+ordinal: 900
 ---
 
 ## Description
@@ -26,80 +25,58 @@ ordinal: 1000
 <!-- SECTION:DESCRIPTION:BEGIN -->
 ## Why
 
-The pixel-space eigencrungi (`crungus eigen`, `/eigen/`) are the faithful Turk and Pentland homage, but with no alignment the components are mostly light, framing and palette, and every reconstruction is a blur. The literature moved the same trick into a generator's latent space (GANSpace 2020; Concept Sliders 2024; SliderSpace 2025), where each slider re-renders a sharp image. We want that version: train a small generator on the archive itself, take the principal directions of its latent space, and put them on sliders that render in the browser in real time. Conceptually it is the eigencrungi of a model that has learned all 91 models' crungi --- a second-order cryptid. Cost of compute is not a constraint (Ben, 2026-09-09); quality is. The task carries an explicit go/no-go gate; if the gate fails, the fallback is the CLIP-space version with Kandinsky-rendered extremes (task-2).
+The pixel-space eigencrungi are the faithful Turk and Pentland homage, but with no alignment the components are mostly light, framing and palette — component 1 correlates with mean image brightness at r = 0.996 — and every reconstruction is a blur. The literature moved the same trick into a generator's latent space (GANSpace 2020; Concept Sliders 2024; SliderSpace 2025), where each slider re-renders a sharp image. This task trains a small generator on the archive itself so that later work can take the principal directions of its latent space. Conceptually it is the eigencrungi of a model that has learned the archive's crungi — a second-order cryptid.
 
-## Shape of the result
-
-- new pipeline stages `crungus gan train`, `crungus gan directions`, `crungus gan export`, writing under `state/gan/` (checkpoints, gitignored) and `data/optimized/gan/` (what the site fetches)
-- `/eigen/` gains a **generator** mode alongside the existing **pixels** mode; the generator mode is the default when the browser can run it and shows download progress while the model arrives
-- sliders edit a base latent (the mean, a random sample, or an inverted archive image) along PCA directions in W space, GANSpace-style, with the rendered ±3σ extremes of each component beside it and a hand-name from `data/eigen-names.toml`
+This task ends at a go/no-go gate. Shipping the sliders is task-6, and starts only if the gate passes.
 
 ## Design
 
-### Training (`crungus gan train`)
+### Data
 
-- data: every `data/optimized/**/*.avif`, centre-cropped with `sprite.square` to 128 px RGB, plus horizontal flips. Cache once as `state/gan/dataset.npy` (uint8, ~80 MB) so epochs don't decode AVIF.
-- model: StyleGAN2 at 128 px. Prefer a compact in-repo implementation in `pipeline/src/crungus_amongus/gan.py` (mapping MLP 8×512, modulated/demodulated convs, skip-connection generator, residual discriminator, R1 penalty lazy every 16 steps with γ=1, EMA generator β=0.999, Adam lr 0.002 β=(0, 0.99)) with plain ops so ONNX export is straightforward. `lucidrains/stylegan2-pytorch` is acceptable instead only if it installs and trains cleanly on the pipeline's torch 2.13 / Python 3.14 without pins. No custom CUDA ops (NVlabs code is out).
-- small-data regime: DiffAugment (colour, translation, cutout) on everything the discriminator sees, p=1.0. Channel cap 256, batch 32.
-- schedule: 5000 kimg default, checkpoint plus an 8×8 EMA sample grid every 100 kimg to `state/gan/`, resumable from the latest checkpoint (`--resume`). Budget ≤ 8 GPU-hours on the local RTX 6000 Ada before the gate decides. A bigger rented GPU only speeds this up; use one if the local box is busy.
-- seed fixed; log loss, R1 and kimg/s with loguru.
+Every image under `data/optimized/`, centre-cropped with `sprite.square` to 128 px RGB, plus horizontal flips. Cache once as `state/gan/dataset.npy` (uint8) so epochs do not decode AVIF.
 
-### Quality gate (the go/no-go test)
+This task should run **after** the corpus reaches 100 images per prompt (task-4). The reason is the binding one: the archive has 83 image models x 2 prompts = 166 style modes, so at the current size a generator sees about 10 examples per mode, which is memorisation territory rather than distribution learning. At 100 per prompt it is ~16 000 images and ~100 per mode — roughly AFHQ scale, and the regime where the small-data GAN literature actually holds. Training on the 1594-image archive is not worth the attempt.
 
-Run at 1000 kimg and at the end. All three must hold at the end for the task to continue past training:
+Consider a class-conditional generator over the 83 model labels with a projection discriminator. It costs almost nothing at this size, gives the model a way to represent the archive's multimodality instead of averaging over it, and makes "a model that learned all of them" literally true.
 
-1. **Not collapsed:** CLIP consistency (existing `consistency_scores`) over 1000 EMA samples < 0.90, i.e. the samples are at least as varied as the archive's most consistent model.
-2. **On distribution:** mean cosine similarity between each of 1000 EMA samples and its nearest archive image in CLIP space ≥ 0.80, and no archive image is the nearest neighbour of more than 5% of samples (no memorisation of a few images).
-3. **Looks like crungi:** Ben inspects the final 8×8 EMA grid and the ±3σ direction renders and says go. Post the grid in the task notes.
+### Model
 
-Two hyperparameter attempts are allowed inside the budget (e.g. capacity 128 → 256, DiffAugment p 1.0 → 0.6, kimg 5000 → 8000). If the gate still fails: record the grids and metrics in the notes, mark this task's AC 3 as failed, and start task-2 instead of continuing.
+StyleGAN2 at 128 px. Get **one known-good reference implementation training first**, even if it is replaced later: a from-scratch generator confounds an implementation bug with a genuine negative result, and "the gate failed" then means nothing. Note that NVlabs `stylegan2-ada-pytorch` ships pure-PyTorch `_ref` fallbacks for `bias_act` and `upfirdn2d` and does not require compiling CUDA ops — the real blockers there are its non-commercial licence and Python 3.14 compatibility, not custom ops. Whatever is chosen must export cleanly to ONNX later.
 
-### Directions (`crungus gan directions`)
+Settings: mapping MLP 8x512, modulated/demodulated convs, skip-connection generator, residual discriminator, R1 lazily every 16 steps with gamma=1, EMA generator beta=0.999, Adam lr 0.002 betas=(0.0, 0.99), channel cap 256, batch 32. Path length regularisation off (standard for small data). Seed fixed; log loss, R1 and kimg/s with loguru.
 
-- sample 20 000 z → w through the EMA mapping network, no truncation. PCA on the 512-d w vectors (reuse `eigen.pca`), keep 24 components; σ per component; sign fixed so the largest-|coefficient| sample is positive (same convention as `eigen.py`).
-- render the mean-w image and, per component, the image at mean ± 3σ·v (the GANSpace figure), into `data/optimized/gan/extremes.webp` (lossless, tiles of 128 px: mean, then −/+ per component) --- these are the exemplars beside each slider, replacing the real-image exemplars of pixel mode.
-- inversion: for one image per model (the cover image, 91 images), optimise w in W space (not W+) for 500 steps against LPIPS(VGG) + L2 from the mean w, seeded by the closest of the 20 000 samples in CLIP space. Store as `inverted: {key: w[512]}`. Extend to every archive image later only if the per-model set looks convincing.
-- write `data/optimized/gan/gan.json`: `{ mean_w, components: [{ variance, sigma, name, vector[512] }], inverted, synthesis: "<hashed .onnx key>", mapping: "<hashed .onnx key>", resolution }`. Names come from a `[generator]` table in `data/eigen-names.toml` (the existing `[names]` table stays for pixel mode; document both in the file header).
+Small-data augmentation: prefer **ADA** (adaptive augmentation probability) over fixed DiffAugment. DiffAugment applies its policies deterministically and has no p to tune; the adaptive probability is ADA's, and for a heterogeneous archive letting p adapt is the better default.
 
-### Export (`crungus gan export`)
+### Budget
 
-- export the EMA synthesis network (w[1,512] → RGB uint8 [128,128,3]) and the mapping network (z[1,512] → w[1,512]) to ONNX opset 17, fp16 weights, dynamic batch off. Filenames carry a content hash (`synthesis-<sha256[:12]>.onnx`) so the bucket's immutable cache is correct; `gan.json` (mutable, 5-min cache) points at the current ones.
-- parity test: torch vs onnxruntime output on 8 fixed w's, max abs pixel error ≤ 3/255. Add `onnxruntime` to the dev group for this test only.
-- size target ≤ 40 MB for synthesis; report the actual size in the notes. If over, reduce channel cap before reducing resolution.
-- `bucket_sync`: add `.onnx` → `application/octet-stream` (immutable cache, since the name is hashed). Add `state/gan/` to `.gitignore`. Weights never enter git.
+Measured on this machine: a pure-PyTorch StyleGAN2-shaped step at 128 px, batch 32, lazy R1 runs at 0.097 s/step, or about 1190 kimg/hr. That is an optimistic floor (no augmentation, no EMA copy, fp32), so assume 800-900 kimg/hr in practice.
 
-### Site
+So compute is not the constraint and there is no 8-hour cap. Default to **20 000 kimg**, about a day, and checkpoint plus an 8x8 EMA sample grid every 500 kimg to `state/gan/`, resumable with `--resume`. The small-data StyleGAN2-ADA results train in this range; 5000 kimg is too few. Evaluate the gate at each checkpoint so a hopeless run can be stopped early.
 
-- add `onnxruntime-web` to `site/`; copy its WASM assets into `site/public/ort/` at build (a small script in `package.json`, like `sync-images`) and point `ort.env.wasm.wasmPaths` there. GitHub Pages cannot set COOP/COEP, so threads are unavailable: use the WebGPU execution provider when `navigator.gpu` exists, else single-threaded WASM. Say which one is active in the stage caption.
-- `/eigen/` gets a mode toggle (**pixels** / **generator**), same visual pattern as the archive's sort toggle. Generator mode is the default when the page can run it; pixels mode is the instant no-download fallback and stays as it is.
-- state in generator mode is a full 512-d w: `w = base + Σ offsets`. Slider k shows `⟨w − mean, v_k⟩ / σ_k`; moving it adds `(new − old)·σ_k·v_k`. Base is the mean w on load, a fresh mapping-network sample on "a real crungus" (rename the button in this mode to "a new crungus"), or an inverted w when an archive image is chosen from a per-model picker (show the original beside the render, as pixel mode does). Reset returns to the mean.
-- rendering: run synthesis on `input`, coalesced with requestAnimationFrame and dropped while a run is in flight; draw the 128 px output to the same stage canvas. Target < 100 ms per frame on WebGPU on a laptop; WASM will be around a second, which is acceptable with the frame-dropping.
-- each component row: the rendered −3σ tile, the slider, the +3σ tile, the name or number, variance share. Keep the maths in `site/src/lib/eigen.ts` (or a sibling `generator.ts`) with vitest coverage for the slider ↔ w arithmetic.
-- copy: extend the intro and the about page's eigencrungi section with two sentences on what the generator is (StyleGAN2 trained on the archive; the sliders are principal directions of its latent space; it is not any of the 91 models). Colophon gains "a StyleGAN2 trained on the archive · run in the browser with onnxruntime-web".
-- README: the three new stages and the model asset flow. CLAUDE.md: one constraint line --- generator weights and checkpoints never go in git; the bucket copies are content-hashed and immutable, so a retrained model means new keys plus a `gan.json` update.
+### The quality gate
 
-### Verification and deployment
+All three must hold at the end.
 
-- pipeline: `uv run ruff check . && uv run ruff format --check . && uvx ty check && uv run pytest` green, including the parity test and unit tests for DiffAugment shapes, W-space PCA, and the inversion loss.
-- site: `pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm run format:check && pnpm run test && pnpm run build` green.
-- browser smoke test with `agent-browser`: open `/eigen/`, wait for the generator, move two sliders, confirm the stage canvas changes (compare pixel data before/after) on both execution providers (force WASM by stubbing `navigator.gpu`).
-- `crungus sync` then push to `main`; confirm `https://crungusamong.us/eigen/` loads the generator from `images.crungusamong.us/gan/` with correct content-type and cache headers.
-- commit at each checkpoint (training code, directions, export, site) --- only on a green state.
+1. **Not collapsed.** CLIP consistency (mean pairwise cosine similarity, as `analyzer.py` computes it) over 1000 EMA samples must fall within **0.585 +/- 0.05** — the archive's own global mean pairwise similarity. This is the right reference class: 1000 samples are meant to span the whole archive, so comparing them to a within-model set of ten near-duplicates is a category error. It is two-sided: a sample set markedly more varied than the archive is noise, not diversity.
+2. **On distribution, without memorising.** Mean cosine similarity between each of 1000 EMA samples and its nearest archive image in CLIP space must be at least **0.80** (the archive's own cross-model nearest-neighbour similarity is mean 0.849, p10 0.757, so this asks a sample to sit between the tenth percentile and the mean of real images), **and** no archive image may be the nearest neighbour of more than **1%** of samples. The archive's own maximum concentration is 0.50%, so 1% is already generous.
+3. **Looks like crungi.** Ben inspects the final 8x8 EMA grid and says go. Post the grid in the task notes.
+
+Two hyperparameter attempts are allowed. If the gate still fails, record the grids and metrics in the notes and stop — task-2 is already the primary semantic eigencrungi and does not depend on this.
+
+### Housekeeping
+
+- add `state/gan/` to `.gitignore`. Weights and checkpoints never enter git.
+- unit tests for the augmentation pipeline's output shapes and for the dataset cache round-tripping.
+- pipeline checks green: `uv run ruff check . && uv run ruff format --check . && uvx ty check && uv run pytest`.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 crungus gan train trains a StyleGAN2 at 128 px on the archive images on this machine, resumable, writing checkpoints and EMA sample grids under state/gan/ (gitignored)
-- [ ] #2 the quality gate passes: 1000 EMA samples have CLIP consistency below 0.90, mean nearest-archive-image CLIP similarity of at least 0.80 with no archive image nearest to more than 5% of samples, and Ben approves the final sample grid posted in the task notes
-- [ ] #3 if the gate fails after two attempts within 8 GPU-hours, the metrics and grids are recorded in the notes and task-2 (Kandinsky fallback) is started instead
-- [ ] #4 crungus gan directions writes data/optimized/gan/gan.json (mean w, 24 W-space PCA components with sigma and hand-names from the [generator] table of data/eigen-names.toml, inverted w for one image per model) and extremes.webp with the mean and the rendered plus/minus 3 sigma tile of every component
-- [ ] #5 crungus gan export writes content-hashed fp16 ONNX files for the synthesis and mapping networks, synthesis at most 40 MB, and a test shows onnxruntime output matches torch within 3/255 per pixel
-- [ ] #6 crungus sync uploads .onnx files with immutable cache-control and application/octet-stream content type, and the weights never enter git
-- [ ] #7 /eigen/ offers a generator mode, default when the browser can run it, that downloads the model with visible progress and renders a crungus on the stage from the sliders, on WebGPU where available and single-threaded WASM otherwise, stating which is active
-- [ ] #8 in generator mode sliders edit the current latent along PCA directions (slider value equals the latent's coefficient on that component), a new random crungus can be sampled in the browser via the mapping network, reset returns to the mean crungus, and moving sliders on WebGPU takes under 100 ms per frame on a laptop
-- [ ] #9 each component row shows its rendered minus and plus 3 sigma tiles, its variance share and its hand-name or number, and at least one archive image per model can be loaded as its inverted latent with the original shown beside the render
-- [ ] #10 pixels mode remains available as the instant no-download fallback with no regression
-- [ ] #11 the browser smoke test (agent-browser) confirms the stage canvas changes when a slider moves, on both execution providers
-- [ ] #12 all pipeline and site checks are green; README, CLAUDE.md and the about page describe the generator, its stages and the weights-never-in-git constraint
-- [ ] #13 the change is synced to the bucket and pushed to main, and https://crungusamong.us/eigen/ loads the generator from images.crungusamong.us/gan/ with the expected content-type and cache headers
+- [ ] #1 crungus gan train trains a StyleGAN2 at 128 px on the archive, resumable, writing checkpoints and 8x8 EMA sample grids every 500 kimg under state/gan/ (gitignored)
+- [ ] #2 training starts from a known-good reference implementation that is verified to train before any bespoke rewrite, so a failed gate cannot be an implementation bug
+- [ ] #3 1000 EMA samples have CLIP consistency within 0.585 +/- 0.05, matching the archive's own global mean pairwise similarity
+- [ ] #4 1000 EMA samples have mean nearest-archive-image CLIP similarity of at least 0.80, with no archive image nearest to more than 1% of samples
+- [ ] #5 Ben approves the final EMA sample grid, posted in the task notes
+- [ ] #6 if the gate fails after two hyperparameter attempts, the grids and metrics are recorded in the notes and the task is closed as failed
+- [ ] #7 weights and checkpoints never enter git, and all pipeline checks are green
 <!-- AC:END -->
