@@ -47,3 +47,22 @@ def test_audio_url_extension() -> None:
     assert url_extension("https://x/y.wav", "audio") == ".wav"
     assert url_extension("https://x/y", "audio") == ".wav"
     assert url_extension("https://x/y.wav") == ".png"  # image models ignore audio
+
+
+def test_a_list_of_records_resolves_through_output_field() -> None:
+    """dalle-mini returns [{image: uri, clip_score: float}], not bare URLs."""
+    model = make_model(output_field="image")
+    output = [
+        {"image": "https://example.com/0.png", "clip_score": 0.4},
+        {"image": "https://example.com/1.png", "clip_score": 0.3},
+    ]
+    assert output_urls(model, output) == [
+        "https://example.com/0.png",
+        "https://example.com/1.png",
+    ]
+
+
+def test_a_record_list_without_output_field_says_how_to_fix_it() -> None:
+    model = make_model()
+    with pytest.raises(PermanentPredictionError, match="output_field"):
+        output_urls(model, [{"image": "https://example.com/0.png"}])

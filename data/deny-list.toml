@@ -35,3 +35,38 @@ reason = "audio2audio: requires an input track to remix"
 owner = "minimax"
 name = "music-01"
 reason = "audio2audio: requires a reference song, voice or instrumental file"
+
+[[models]]
+owner = "google"
+name = "imagen-3"
+reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
+
+[[models]]
+owner = "google"
+name = "imagen-3-fast"
+reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
+
+[[models]]
+owner = "google"
+name = "imagen-4"
+reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
+
+[[models]]
+owner = "google"
+name = "imagen-4-fast"
+reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
+
+[[models]]
+owner = "google"
+name = "imagen-4-ultra"
+reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
+
+[[models]]
+owner = "quiverai"
+name = "arrow-1.1"
+reason = "every prediction fails with ModelError E001; 95 lifetime runs on Replicate"
+
+[[models]]
+owner = "quiverai"
+name = "arrow-1.1-max"
+reason = "one usable image in twenty attempts; the rest fail with ModelError E001"

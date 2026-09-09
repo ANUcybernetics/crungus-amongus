@@ -20,8 +20,14 @@ DEFAULT_EXTENSION: dict[Modality, str] = {"image": ".png", "audio": ".wav"}
 
 def output_urls(model: RegistryModel, output: Any) -> list[str]:
     """Normalise prediction.output to a non-empty list of URL strings."""
-    if model.output_field and isinstance(output, dict):
-        output = output.get(model.output_field)
+    if model.output_field:
+        # some models wrap their URLs in records rather than returning them
+        # bare: one object, or one object per output (dalle-mini pairs each
+        # image with its CLIP score). output_field names the URL key either way
+        if isinstance(output, dict):
+            output = output.get(model.output_field)
+        elif isinstance(output, list) and all(isinstance(o, dict) for o in output):
+            output = [o.get(model.output_field) for o in output]
     match output:
         case str() as url if url.startswith("http"):
             return [url]
@@ -30,8 +36,14 @@ def output_urls(model: RegistryModel, output: Any) -> list[str]:
         ):
             return items
         case _:
+            # a record shape is recoverable by naming its URL key, so say so
+            hint = (
+                " (name its URL key with output_field in data/curated-models.toml)"
+                if isinstance(output, dict | list)
+                else ""
+            )
             raise PermanentPredictionError(
-                f"{model.ref}: unrecognised output shape: {type(output).__name__}"
+                f"{model.ref}: unrecognised output shape: {type(output).__name__}{hint}"
             )
 
 

@@ -15,17 +15,6 @@ extra_inputs = { grid_size = 1, progressive_outputs = false, save_as_png = true 
 release_date = 2022-06-01
 notes = "PyTorch port of DALL-E mini, the model behind Craiyon and the original June 2022 crungus discovery"
 
-# --- overrides for collection models ---
-[[models]]
-owner = "google"
-name = "imagen-4-fast"
-notes = "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
-
-[[models]]
-owner = "google"
-name = "imagen-4-ultra"
-notes = "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
-
 # --- 2021–2022: before and around the crungus event ---
 [[models]]
 owner = "pixray"
@@ -43,8 +32,9 @@ notes = "GLID-3 XL, early latent diffusion"
 [[models]]
 owner = "borisdayma"
 name = "dalle-mini"
+output_field = "image"
 release_date = 2022-06-01
-notes = "probe: original dalle-mini, may not exist on Replicate"
+notes = "the original DALL-E mini, pinned at a 2022-06-14 version — the model and month of the crungus discovery. Returns [{image, clip_score}], hence output_field"
 
 [[models]]
 owner = "stability-ai"
@@ -93,3 +83,94 @@ owner = "stability-ai"
 name = "sdxl"
 release_date = 2023-07-26
 notes = "SDXL (in collection historically; keep pinned here regardless)"
+
+# --- 2021–2022 relics: the pre- and early-diffusion eras ---
+# Absent from Replicate's collection but still hosted, and the thin end of the
+# archive's timeline: the crungus story starts here.
+[[models]]
+owner = "nerdyrodent"
+name = "vqgan-clip"
+prompt_field = "prompts"
+release_date = 2021-08-01
+notes = "VQGAN+CLIP, the optimisation-loop era before diffusion; slow (each output is an optimisation run)"
+
+[[models]]
+owner = "nightmareai"
+name = "disco-diffusion"
+release_date = 2022-02-01
+notes = "CLIP-guided diffusion, the aesthetic immediately before Stable Diffusion"
+
+[[models]]
+owner = "cjwbw"
+name = "waifu-diffusion"
+release_date = 2022-09-01
+notes = "Stable Diffusion fine-tuned on Danbooru; the first big style-shifted fork"
+
+[[models]]
+owner = "cjwbw"
+name = "stable-diffusion-v1-5"
+release_date = 2022-10-20
+notes = "Stable Diffusion 1.5 itself, the most-forked open image model of the era"
+
+[[models]]
+owner = "tstramer"
+name = "midjourney-diffusion"
+release_date = 2022-11-01
+notes = "SD fine-tuned towards the Midjourney v4 look, when Midjourney itself had no API"
+
+# --- gaps in families the archive already covers ---
+[[models]]
+owner = "playgroundai"
+name = "playground-v2-1024px-aesthetic"
+release_date = 2023-12-01
+notes = "Playground v2, the generation before the v2.5 already in the archive"
+
+[[models]]
+owner = "stability-ai"
+name = "stable-diffusion-3"
+release_date = 2024-06-12
+notes = "SD3, the generation before the 3.5 line already in the archive"
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-1.1-pro"
+release_date = 2024-10-03
+notes = "base FLUX 1.1 Pro; the archive had only the -ultra variant"
+
+[[models]]
+owner = "openai"
+name = "gpt-image-1"
+release_date = 2025-04-23
+notes = "the first GPT Image; the archive had only 1.5 and 2"
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-krea-dev"
+release_date = 2025-07-31
+notes = "FLUX dev retrained with Krea for a deliberately un-AI aesthetic"
+
+[[models]]
+owner = "google"
+name = "gemini-2.5-flash-image"
+release_date = 2025-08-26
+notes = "the Gemini image model that became nano-banana"
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-2-dev"
+notes = "the open-weight FLUX.2; the archive had flex, klein, max and pro"
+
+[[models]]
+owner = "google"
+name = "nano-banana-2-lite"
+notes = "the cheap tier of nano-banana 2"
+
+[[models]]
+owner = "xai"
+name = "grok-imagine-image-quality"
+notes = "the higher-quality tier of xAI's image model"
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4"
+notes = "plain recraft v4; the archive had the pro and SVG variants only"
