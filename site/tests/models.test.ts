@@ -14,6 +14,10 @@ import {
 } from "../src/lib/models";
 import type { ModelEntry } from "../src/lib/schema";
 
+const IMAGE_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d\.avif$/;
+const OPUS_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d\.opus$/;
+const OPUS_SUFFIX = /\.opus$/;
+
 describe("dataset integrity", () => {
   it("parses the contract (data.ts throws otherwise)", () => {
     expect(siteData.models.length).toBeGreaterThan(0);
@@ -23,7 +27,7 @@ describe("dataset integrity", () => {
     for (const model of siteData.models) {
       for (const prompt of model.prompts) {
         for (const image of prompt.images) {
-          expect(image.key).toMatch(/^[a-z0-9-]+\/[a-z0-9-]+\/\d\.avif$/);
+          expect(image.key).toMatch(IMAGE_KEY);
           expect(image.key.startsWith(model.slug)).toBe(true);
         }
       }
@@ -34,8 +38,8 @@ describe("dataset integrity", () => {
     for (const model of siteData.models) {
       for (const prompt of model.prompts) {
         for (const clip of prompt.clips) {
-          expect(clip.opus).toMatch(/^[a-z0-9-]+\/[a-z0-9-]+\/\d\.opus$/);
-          expect(clip.m4a).toBe(clip.opus.replace(/\.opus$/, ".m4a"));
+          expect(clip.opus).toMatch(OPUS_KEY);
+          expect(clip.m4a).toBe(clip.opus.replace(OPUS_SUFFIX, ".m4a"));
           expect(clip.opus.startsWith(model.slug)).toBe(true);
         }
       }
