@@ -58,6 +58,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 </Base>
 
 <script
+  is:inline
   type="application/json"
   id="atlas-points"
   set:html={JSON.stringify({ points, years, modelBase, imageBase })}

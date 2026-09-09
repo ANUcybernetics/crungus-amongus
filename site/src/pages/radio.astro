@@ -79,7 +79,7 @@ const payload = {
   <p class="mono muted keys" hidden>space pause · n next · f fullscreen</p>
 </Base>
 
-<script type="application/json" id="radio-data" set:html={JSON.stringify(payload)} />
+<script is:inline type="application/json" id="radio-data" set:html={JSON.stringify(payload)} />
 
 <script>
   interface Clip {
