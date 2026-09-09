@@ -8,8 +8,11 @@ apply EBU R128 loudness normalisation so the radio doesn't lurch between
 models mastered at wildly different levels.
 """
 
+import os
 import subprocess
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from pathlib import Path
 
 from loguru import logger
@@ -19,9 +22,15 @@ from .config import Settings
 from .output_normalizer import AUDIO_EXTENSIONS
 
 MAX_DIM = 1536
+# Encoding is one avifenc/ffmpeg process per file, so it parallelises cleanly:
+# the threads spend their lives in subprocess.run with the GIL released. Each
+# avifenc gets AVIF_THREADS of its own, so the two multiply — keep the product
+# near the core count rather than oversubscribing.
+AVIF_THREADS = 4
+MAX_WORKERS = max(1, (os.cpu_count() or 8) // AVIF_THREADS)
 AVIFENC_ARGS = [
     "-j",
-    "4",
+    str(AVIF_THREADS),
     "-s",
     "6",
     "--min",
@@ -50,13 +59,13 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
     skipped, never fatal — publish only advertises outputs that exist
     post-optimisation.
     """
-    encoded = skipped = failed = 0
+    pending: list[_Encode] = []
+    skipped = 0
     originals = sorted(p for p in settings.originals_dir.rglob("*") if p.is_file())
     for source in originals:
         relative = source.relative_to(settings.originals_dir)
         is_audio = source.suffix.lower() in AUDIO_EXTENSIONS
-        suffixes = list(AUDIO_ENCODES) if is_audio else [".avif"]
-        for suffix in suffixes:
+        for suffix in list(AUDIO_ENCODES) if is_audio else [".avif"]:
             dest = settings.optimized_dir / relative.with_suffix(suffix)
             if (
                 not force
@@ -65,23 +74,42 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
             ):
                 skipped += 1
                 continue
-            try:
-                if is_audio:
-                    encode_audio(source, dest)
-                else:
-                    encode_avif(source, dest)
-                encoded += 1
-            except (
-                UnidentifiedImageError,
-                OSError,
-                subprocess.CalledProcessError,
-            ) as exc:
-                failed += 1
-                logger.warning("optimize: skipping {}: {}", dest.name, exc)
+            pending.append(_Encode(source, dest, is_audio))
+
+    logger.info(
+        "optimize: {} to encode, {} up to date ({} workers)",
+        len(pending),
+        skipped,
+        MAX_WORKERS,
+    )
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        results = list(pool.map(_encode_one, pending))
+    encoded = sum(results)
+    failed = len(results) - encoded
     logger.info(
         "optimize: {} encoded, {} up to date, {} unreadable", encoded, skipped, failed
     )
     return encoded, skipped, failed
+
+
+@dataclass(frozen=True)
+class _Encode:
+    source: Path
+    dest: Path
+    is_audio: bool
+
+
+def _encode_one(job: _Encode) -> bool:
+    """One file, never fatal: publish only advertises outputs that exist."""
+    try:
+        if job.is_audio:
+            encode_audio(job.source, job.dest)
+        else:
+            encode_avif(job.source, job.dest)
+    except (UnidentifiedImageError, OSError, subprocess.CalledProcessError) as exc:
+        logger.warning("optimize: skipping {}: {}", job.dest.name, exc)
+        return False
+    return True
 
 
 def encode_avif(source: Path, dest: Path) -> None:
