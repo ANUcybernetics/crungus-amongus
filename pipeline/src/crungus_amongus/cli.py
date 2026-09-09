@@ -191,6 +191,14 @@ def sprite() -> None:
 
 
 @app.command()
+def eigen() -> None:
+    """Pixel-space PCA over the images → eigencrungi sheet + coefficients."""
+    from .eigen import build_eigen
+
+    build_eigen(Settings())
+
+
+@app.command()
 def publish(
     out: str = typer.Option(None, "--out", help="output path for models.json"),
 ) -> None:

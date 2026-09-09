@@ -77,6 +77,10 @@ class Settings(BaseSettings):
         return self.data_dir / "deny-list.toml"
 
     @property
+    def eigen_names_path(self) -> Path:
+        return self.data_dir / "eigen-names.toml"
+
+    @property
     def originals_dir(self) -> Path:
         return self.data_dir / "originals"
 

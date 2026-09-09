@@ -1,0 +1,7 @@
+# Hand-given names for the eigencrungi (see pipeline/src/crungus_amongus/eigen.py),
+# keyed by 1-based component index as shown on the site's /eigen/ page. Unnamed
+# components are shown by number. The components — their order and which end is
+# "+" — are properties of the current corpus: if the image set changes, look at
+# the page again before trusting these names.
+
+[names]

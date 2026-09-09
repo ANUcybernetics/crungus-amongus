@@ -10,10 +10,11 @@ Two components:
 - **`pipeline/`** — a Python batch tool (`crungus`) that discovers models,
   generates images and clips, encodes them (AVIF; Opus with an AAC fallback),
   scores each image model's consistency with CLIP, projects an embedding atlas
-  with UMAP, uploads to a Tigris bucket, and emits the site's data contract
+  with UMAP, decomposes the images into eigencrungi, uploads to a Tigris
+  bucket, and emits the site's data contract
 - **`site/`** — an Astro static site that presents the archive, per-model pages,
-  the pan/zoom embedding atlas, the sound archive, and crungus radio (every clip
-  shuffled over every image)
+  the pan/zoom embedding atlas, the eigencrungi sliders, the sound archive, and
+  crungus radio (every clip shuffled over every image)
 
 ## Pipeline
 
@@ -28,6 +29,7 @@ uv run crungus generate   # run predictions (spends money; see --dry-run, --moda
 uv run crungus optimize   # originals → AVIF (images) / Opus + AAC (audio); needs avifenc and ffmpeg
 uv run crungus analyze    # CLIP embeddings → consistency scores + atlas coords (images only)
 uv run crungus sprite     # atlas sprite sheet for the site
+uv run crungus eigen      # pixel-space PCA → eigencrungi sheet + coefficients (names: data/eigen-names.toml)
 uv run crungus sync       # upload the optimized tree to the public bucket
 uv run crungus publish    # write site/src/data/models.json
 uv run crungus status     # progress/spend summary

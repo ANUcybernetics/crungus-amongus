@@ -19,6 +19,16 @@ from .config import Settings
 CELL_PX = 64
 
 
+def square(img: Image.Image, side: int) -> Image.Image:
+    """Centre-crop to a square and resize to side×side RGB."""
+    img = img.convert("RGB")
+    edge = min(img.size)
+    left = (img.width - edge) // 2
+    top = (img.height - edge) // 2
+    img = img.crop((left, top, left + edge, top + edge))
+    return img.resize((side, side), Image.Resampling.LANCZOS)
+
+
 def build_sprite(settings: Settings, out_dir: Path | None = None) -> list[str]:
     """Compose data/optimized/**.avif into sprite.webp + sprite.json."""
     if out_dir is None:
@@ -34,14 +44,9 @@ def build_sprite(settings: Settings, out_dir: Path | None = None) -> list[str]:
     sheet = Image.new("RGB", (cols * CELL_PX, rows * CELL_PX), (23, 20, 15))
     for i, path in enumerate(files):
         with Image.open(path) as img:
-            img = img.convert("RGB")
-            # centre-crop to square, then downscale to the cell
-            side = min(img.size)
-            left = (img.width - side) // 2
-            top = (img.height - side) // 2
-            img = img.crop((left, top, left + side, top + side))
-            img = img.resize((CELL_PX, CELL_PX), Image.Resampling.LANCZOS)
-            sheet.paste(img, ((i % cols) * CELL_PX, (i // cols) * CELL_PX))
+            sheet.paste(
+                square(img, CELL_PX), ((i % cols) * CELL_PX, (i // cols) * CELL_PX)
+            )
 
     out_dir.mkdir(parents=True, exist_ok=True)
     sheet.save(out_dir / "sprite.webp", format="WEBP", quality=62, method=6)
