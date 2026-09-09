@@ -23,9 +23,17 @@ const imageBase = siteData.image_base_url;
       most: the <em>eigenfaces</em>, from which any face could be rebuilt as a
       weighted sum. Here the same arithmetic is done to the archive: {imageTotal}{" "}
       crungi, centre-cropped and shrunk to 128 pixels, no alignment. The stage
-      starts on the mean crungus. Each slider is one component, shown beside the
+      starts on the mean crungus. Each slider is one direction, shown beside the
       archive's images at its two extremes; push it and see what it carries. Click
       any image to load its coefficients and see how much of it survives.
+    </p>
+    <p class="lede">
+      The first slider is the odd one out. Rather than a direction the archive
+      happened to vary along, it is the archive projected onto CLIP's reading of
+      the word <em>crungus</em> — the one axis here that means what a
+      crungus-ness slider should mean. The numbered components below it are
+      unsupervised, and most of them are sampling noise: beside each is how well
+      it reproduces when the archive is split in half and decomposed twice.
     </p>
   </section>
 
@@ -48,7 +56,10 @@ const imageBase = siteData.image_base_url;
         <button id="random" type="button">a real crungus</button>
       </p>
     </div>
-    <ol id="components" class="components"></ol>
+    <div class="axes">
+      <div id="headline"></div>
+      <ol id="components" class="components"></ol>
+    </div>
   </div>
 
   <p id="loading" class="mono muted">loading the eigencrungi…</p>
@@ -63,10 +74,28 @@ const imageBase = siteData.image_base_url;
     <p>
       Faces decompose neatly because they are aligned before the maths: eyes
       here, mouth there. Nothing aligns a crungus, so the leading components
-      describe light, framing and palette before they describe a creature, and
-      the creature turns up further down the list as horns, ears and a bared
-      mouth. Components with a name were named by a human looking at the
-      extremes; the rest go by number. More in
+      describe light, framing and palette before they describe a creature.
+      Component 1 is not subtle about it: its coefficient correlates with a
+      picture's mean brightness at r&nbsp;=&nbsp;0.996, which makes the most
+      reproducible axis in the archive a light meter. The components are also
+      about half model identity — as an analysis of variance over which model
+      drew each image, a mean of 46% of a component's spread is explained by
+      the model label alone. These are the archive's principal axes of
+      variation, and the archive is substantially the models.
+    </p>
+    <p>
+      <b>Stability</b> beside each slider is how much of the direction survives
+      a fresh draw: split the archive into disjoint halves, decompose both, and
+      take the cosine between the two versions of that component, averaged over
+      eight splits. One means the direction is a property of the archive; near
+      zero means it is a property of this particular sample. Five components
+      clear 0.7 and nineteen do not, because past the fifth the eigenvalues sit
+      too close together to fix a direction — more images would sharpen the
+      estimates but cannot manufacture gaps that are not in the data. Only a
+      component that clears 0.7 can be given a name; everything below it goes
+      by number, however suggestive its extremes look. The crungus-ness axis
+      sidesteps the problem: it is fixed by the prompt rather than estimated
+      from the sample, so resampling cannot move it. More in
       <a href={path("/about/")}>about</a>.
     </p>
   </section>
@@ -84,7 +113,10 @@ const imageBase = siteData.image_base_url;
     decodeSheet,
     modelSlug,
     reconstruct,
+    sliders as sliderAxes,
+    weightsFor,
     type EigenData,
+    type Slider,
   } from "../lib/eigen";
 
   const config = JSON.parse(document.getElementById("eigen-config")!.textContent!) as {
@@ -99,6 +131,7 @@ const imageBase = siteData.image_base_url;
   const original = document.getElementById("original") as HTMLElement;
   const originalImage = document.getElementById("original-image") as HTMLImageElement;
   const originalLink = document.getElementById("original-link") as HTMLAnchorElement;
+  const headline = document.getElementById("headline")!;
   const list = document.getElementById("components")!;
 
   async function loadImage(src: string): Promise<HTMLImageElement> {
@@ -120,6 +153,7 @@ const imageBase = siteData.image_base_url;
     loadImage(`${config.imageBase}/atlas/sprite.webp`),
   ]);
 
+  const axes = sliderAxes(data);
   const side = data.side;
   const scratch = document.createElement("canvas");
   scratch.width = sheet.width;
@@ -130,48 +164,53 @@ const imageBase = siteData.image_base_url;
     scratchContext.getImageData(0, 0, sheet.width, sheet.height).data,
     sheet.width,
     side,
-    data.components,
+    axes.map((slider) => slider.axis),
   );
 
   const reconContext = recon.getContext("2d")!;
   const frame = reconContext.createImageData(side, side);
-  const weights = data.components.map(() => 0);
-  const sliders: HTMLInputElement[] = [];
+  const weights = axes.map(() => 0);
+  const inputs: HTMLInputElement[] = [];
   const outputs: HTMLOutputElement[] = [];
   const cellOf = new Map(spriteIndex.keys.map((key, i) => [key, i]));
   const keys = Object.keys(data.coefficients);
+  const threshold = data.stability_threshold ?? 0.7;
 
   function labelFor(key: string): string {
     return config.labels[modelSlug(key)] ?? modelSlug(key);
   }
 
   function render() {
-    reconstruct(decoded, data.components, weights, frame.data);
+    reconstruct(
+      decoded,
+      axes.map((slider) => slider.axis),
+      weights,
+      frame.data,
+    );
     reconContext.putImageData(frame, 0, 0);
   }
 
   function setWeight(j: number, value: number) {
     weights[j] = value;
-    sliders[j]!.value = String(value);
+    inputs[j]!.value = String(value);
     outputs[j]!.value = `${value >= 0 ? "+" : "−"}${Math.abs(value).toFixed(1)}σ`;
   }
 
   function showMean() {
-    data.components.forEach((_, j) => setWeight(j, 0));
+    axes.forEach((_, j) => setWeight(j, 0));
     original.hidden = true;
     stageCaption.textContent = "the mean crungus";
     render();
   }
 
   function showImage(key: string) {
-    const coefficients = data.coefficients[key]!;
-    data.components.forEach((_, j) => setWeight(j, coefficients[j] ?? 0));
+    weightsFor(data, key).forEach((value, j) => setWeight(j, value));
     originalImage.src = `${config.imageBase}/${key}`;
     originalImage.alt = `crungus by ${labelFor(key)}`;
     originalLink.href = `${config.modelBase}${modelSlug(key)}/`;
     originalLink.textContent = labelFor(key);
     original.hidden = false;
-    stageCaption.textContent = `the same crungus as ${data.components.length} numbers`;
+    stageCaption.textContent = `the same crungus as ${axes.length} numbers`;
     render();
   }
 
@@ -202,7 +241,7 @@ const imageBase = siteData.image_base_url;
     return button;
   }
 
-  function tile(j: number): HTMLCanvasElement {
+  function tile(index: number): HTMLCanvasElement {
     const canvas = document.createElement("canvas");
     canvas.width = side;
     canvas.height = side;
@@ -210,35 +249,63 @@ const imageBase = siteData.image_base_url;
     canvas.setAttribute("aria-hidden", "true");
     canvas
       .getContext("2d")!
-      .drawImage(sheet, (j + 1) * side, 0, side, side, 0, 0, side, side);
+      .drawImage(sheet, index * side, 0, side, side, 0, 0, side, side);
     return canvas;
   }
 
-  data.components.forEach((component, j) => {
-    const item = document.createElement("li");
+  /** The figures under a slider's heading: how big it is, and how well it holds. */
+  function meta(slider: Slider, output: HTMLOutputElement): HTMLElement {
+    const span = document.createElement("span");
+    span.className = "mono muted";
+    const stability = document.createElement("span");
+    const held = slider.axis.stability ?? 0;
+    stability.className = held > threshold ? "holds" : "noise";
+    stability.title =
+      held > threshold
+        ? "this direction reproduces when the archive is resampled"
+        : "a different draw of the archive would have rotated this direction away";
+    if (slider.number === null) {
+      span.append("supervised · ");
+      stability.textContent = "fixed by the prompt";
+    } else {
+      const component = slider.axis as { variance?: number };
+      span.append(`${((component.variance ?? 0) * 100).toFixed(1)}% · `);
+      stability.textContent = `stability ${held.toFixed(2)}`;
+    }
+    span.append(stability, " · ", output);
+    return span;
+  }
+
+  function row(slider: Slider, j: number, tag: "li" | "div"): HTMLElement {
+    const item = document.createElement(tag);
     item.className = "component";
-    const id = `component-${j + 1}`;
+    if (slider.number !== null && (slider.axis.stability ?? 0) <= threshold) {
+      item.classList.add("unstable");
+    }
+    const id = `axis-${j}`;
     const label = document.createElement("label");
     label.htmlFor = id;
-    label.innerHTML = `<b class="mono">${j + 1}</b> ${component.name ?? `<span class="muted">unnamed</span>`}`;
-    const meta = document.createElement("span");
-    meta.className = "mono muted";
+    // a component past the stability threshold goes by number: a hand-name
+    // there would be naming this draw of the archive rather than the archive
+    label.innerHTML = slider.name
+      ? `${slider.number === null ? "" : `<b class="mono">${slider.number}</b>`}${slider.name}`
+      : `<span class="muted">component ${slider.number}</span>`;
+
     const output = document.createElement("output");
     output.htmlFor.add(id);
-    meta.append(`${(component.variance * 100).toFixed(1)}% · `, output);
     const head = document.createElement("div");
     head.className = "head";
-    head.append(label, meta);
+    head.append(label, meta(slider, output));
 
-    const slider = document.createElement("input");
-    slider.type = "range";
-    slider.id = id;
-    slider.min = "-3";
-    slider.max = "3";
-    slider.step = "0.05";
-    slider.value = "0";
-    slider.addEventListener("input", () => {
-      setWeight(j, Number(slider.value));
+    const input = document.createElement("input");
+    input.type = "range";
+    input.id = id;
+    input.min = "-3";
+    input.max = "3";
+    input.step = "0.05";
+    input.value = "0";
+    input.addEventListener("input", () => {
+      setWeight(j, Number(input.value));
       original.hidden = true;
       stageCaption.textContent = "a crungus that never was";
       render();
@@ -246,18 +313,26 @@ const imageBase = siteData.image_base_url;
 
     const negatives = document.createElement("div");
     negatives.className = "exemplars";
-    negatives.append(...component.negative.map(thumbnail));
+    negatives.append(...slider.axis.negative.map(thumbnail));
     const positives = document.createElement("div");
     positives.className = "exemplars";
-    positives.append(...component.positive.map(thumbnail));
-    const row = document.createElement("div");
-    row.className = "row";
-    row.append(negatives, slider, positives);
+    positives.append(...slider.axis.positive.map(thumbnail));
+    const controls = document.createElement("div");
+    controls.className = "row";
+    controls.append(negatives, input, positives);
 
-    item.append(tile(j), head, row);
-    list.append(item);
-    sliders.push(slider);
+    item.append(tile(slider.axis.tile), head, controls);
+    inputs.push(input);
     outputs.push(output);
+    return item;
+  }
+
+  axes.forEach((slider, j) => {
+    if (slider.number === null) {
+      headline.append(row(slider, j, "div"));
+    } else {
+      list.append(row(slider, j, "li"));
+    }
   });
 
   document.getElementById("reset")!.addEventListener("click", showMean);
@@ -372,6 +447,23 @@ const imageBase = siteData.image_base_url;
     border-color: var(--accent);
   }
 
+  .axes {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  /* the supervised axis leads, set apart from the numbered components */
+  #headline :global(.component) {
+    border: 1px solid var(--accent);
+    border-inline-start-width: 3px;
+    padding: 0.75rem;
+  }
+
+  #headline :global(label) {
+    font-size: 1.1rem;
+  }
+
   .components {
     list-style: none;
     padding: 0;
@@ -380,7 +472,7 @@ const imageBase = siteData.image_base_url;
     gap: 1.25rem;
   }
 
-  .components :global(.component) {
+  .axes :global(.component) {
     display: grid;
     grid-template-columns: 4rem 1fr;
     grid-template-rows: auto auto;
@@ -390,7 +482,7 @@ const imageBase = siteData.image_base_url;
     padding-block-end: 1.25rem;
   }
 
-  .components :global(.tile) {
+  .axes :global(.tile) {
     grid-row: 1 / 3;
     width: 4rem;
     aspect-ratio: 1;
@@ -398,7 +490,7 @@ const imageBase = siteData.image_base_url;
     border: 1px solid var(--line);
   }
 
-  .components :global(.head) {
+  .axes :global(.head) {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -406,25 +498,25 @@ const imageBase = siteData.image_base_url;
     flex-wrap: wrap;
   }
 
-  .components :global(label b) {
+  .axes :global(label b) {
     color: var(--accent-bright);
     font-weight: 500;
     margin-inline-end: 0.35rem;
   }
 
-  .components :global(.row) {
+  .axes :global(.row) {
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 0.6rem;
     align-items: center;
   }
 
-  .components :global(.exemplars) {
+  .axes :global(.exemplars) {
     display: flex;
     gap: 0.25rem;
   }
 
-  .components :global(.exemplars button) {
+  .axes :global(.exemplars button) {
     padding: 0;
     border: 1px solid var(--line);
     background: none;
@@ -432,35 +524,44 @@ const imageBase = siteData.image_base_url;
     line-height: 0;
   }
 
-  .components :global(.exemplars button:hover) {
+  .axes :global(.exemplars button:hover) {
     border-color: var(--accent-bright);
   }
 
-  .components :global(.exemplars canvas) {
+  .axes :global(.exemplars canvas) {
     display: block;
     width: 2.5rem;
     height: 2.5rem;
   }
 
-  .components :global(input[type="range"]) {
+  .axes :global(input[type="range"]) {
     width: 100%;
     margin: 0;
     accent-color: var(--accent);
   }
 
   @media (width <= 40rem) {
-    .components :global(.row) {
+    .axes :global(.row) {
       grid-template-columns: 1fr 1fr;
     }
 
-    .components :global(input[type="range"]) {
+    .axes :global(input[type="range"]) {
       grid-column: 1 / 3;
       grid-row: 2;
     }
 
-    .components :global(.exemplars:last-child) {
+    .axes :global(.exemplars:last-child) {
       justify-content: end;
     }
+  }
+
+  /* an unstable component is still shown, just not dressed up as a finding */
+  .axes :global(.component.unstable .tile) {
+    opacity: 0.55;
+  }
+
+  .axes :global(.holds) {
+    color: var(--accent-bright);
   }
 
   #loading[hidden] {

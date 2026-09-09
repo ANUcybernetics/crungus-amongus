@@ -6,6 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-09-09 07:45'
+updated_date: '2026-09-09 09:59'
 labels:
   - pipeline
   - site
@@ -68,12 +69,12 @@ Also state on the page and in the about section that pixel component 1 is bright
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 eigen.json carries a per-component stability score: mean |cos| against the counterpart component from disjoint-half resampling over 8 splits, computed at build time
-- [ ] #2 eigen.json carries a text_axis built by projecting each image onto the CLIP text embedding of crungus, with sigma and exemplars at each extreme in the same convention as the components
-- [ ] #3 /eigen/ shows the crungus-ness slider as the headline axis above the numbered components, and moving it changes the reconstruction
-- [ ] #4 components with stability at or below 0.7 render as component N rather than a hand-name, and eigen-names.toml documents the threshold
-- [ ] #5 each component row shows its stability score, and the copy explains what resampling stability means
-- [ ] #6 the page and about section state that pixel component 1 is brightness (r = 0.996) and that the components are roughly half model identity
-- [ ] #7 the PCA basis is kept unrotated and the decision against varimax is recorded with its measured trade-off
-- [ ] #8 tests cover the stability computation against a planted spectrum and the text-axis slider arithmetic; all pipeline and site checks are green
+- [x] #1 eigen.json carries a per-component stability score: mean |cos| against the counterpart component from disjoint-half resampling over 8 splits, computed at build time
+- [x] #2 eigen.json carries a text_axis built by projecting each image onto the CLIP text embedding of crungus, with sigma and exemplars at each extreme in the same convention as the components
+- [x] #3 /eigen/ shows the crungus-ness slider as the headline axis above the numbered components, and moving it changes the reconstruction
+- [x] #4 components with stability at or below 0.7 render as component N rather than a hand-name, and eigen-names.toml documents the threshold
+- [x] #5 each component row shows its stability score, and the copy explains what resampling stability means
+- [x] #6 the page and about section state that pixel component 1 is brightness (r = 0.996) and that the components are roughly half model identity
+- [x] #7 the PCA basis is kept unrotated and the decision against varimax is recorded with its measured trade-off
+- [x] #8 tests cover the stability computation against a planted spectrum and the text-axis slider arithmetic; all pipeline and site checks are green
 <!-- AC:END -->

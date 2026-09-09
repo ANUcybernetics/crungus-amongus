@@ -99,9 +99,44 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       decomposed with no alignment step, because there is nothing to align a
       crungus by. That is why the first components are light, framing and
       palette, and the creature only appears further down the list. Each
-      slider moves one component by up to three standard deviations of what
+      slider moves one direction by up to three standard deviations of what
       the archive actually contains; the images beside it are the archive's
-      real extremes. Names were given by hand, by looking.
+      real extremes.
+    </p>
+    <p>
+      Most of the components are sampling noise, and the page says so. Split
+      the archive into disjoint halves, decompose both and take the cosine
+      between the two versions of a component: five of the twenty-four hold up
+      and nineteen do not. The cause is the eigenvalue spectrum rather than the
+      sample size — past the fifth component the eigenvalues sit close enough
+      together that the components rotate freely between draws, and more images
+      would sharpen the estimates without manufacturing gaps that are not in
+      the data. Only a component that clears 0.7 can be given a hand-name, by
+      a human looking at the extremes; everything below it goes by number. The basis is left
+      unrotated: varimax was tried, and on the CLIP basis it lifts the mean
+      cosine from 0.61 to 0.71 while dropping the number of axes above 0.9 from
+      two to none, because it rotates the reproducible components into the
+      mixture. A few strong axes are worth more here than a dozen soft ones.
+    </p>
+    <p>
+      Two things about those components are worth stating plainly. The first
+      and most reproducible one is a light meter: its coefficient correlates
+      with a picture's mean brightness at r&nbsp;=&nbsp;0.996. And the
+      components are roughly half model identity — as an analysis of variance
+      over which model drew each image, a mean of 46% of a component's spread
+      is explained by the model label alone. The archive's principal axes of
+      variation are substantially the models, not the creature, which is the
+      same unalignment result seen from another angle.
+    </p>
+    <p>
+      So the headline slider is not a component at all. It is every image
+      projected onto CLIP's <em>text</em> embedding of the word “crungus”,
+      rendered back into pixel space by least squares. That direction is fixed
+      by the prompt rather than estimated from the archive, so resampling
+      cannot rotate it, and it means what a crungus-ness slider should mean. It
+      is only weakly aligned with the unsupervised basis, and it is 46% model
+      identity in its own right: the least crungus-like images in the archive
+      come from ideogram, the most from recraft's SVG models.
     </p>
 
     <h2>Prior sightings</h2>

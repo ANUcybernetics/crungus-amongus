@@ -1,7 +1,14 @@
 # Hand-given names for the eigencrungi (see pipeline/src/crungus_amongus/eigen.py),
-# keyed by 1-based component index as shown on the site's /eigen/ page. Unnamed
-# components are shown by number. The components — their order and which end is
-# "+" — are properties of the current corpus: if the image set changes, look at
-# the page again before trusting these names.
+# keyed by 1-based component index as shown on the site's /eigen/ page.
+#
+# Only name a component whose resampling stability clears 0.7 (eigen.py's
+# STABILITY_THRESHOLD). Below that the direction is a property of this draw of
+# the archive rather than of the archive, so a name would be describing noise —
+# `crungus eigen` drops names that fall short and the page shows "component N"
+# instead. The names, the component order and which end is "+" are all
+# properties of the current corpus: if the image set changes, look at the page
+# again before trusting them.
 
 [names]
+# component 1 correlates with mean image brightness at r = 0.996
+1 = "brightness"

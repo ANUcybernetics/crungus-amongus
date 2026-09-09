@@ -100,6 +100,27 @@ def embed_images(settings: Settings) -> dict[str, np.ndarray]:
     return embeddings
 
 
+def embed_text(prompt: str) -> np.ndarray:
+    """L2-normalised CLIP text embedding, in the same space as embed_images.
+
+    The supervised eigencrungi axis (see eigen.py) is this vector: a direction
+    fixed by the prompt rather than estimated from the archive.
+    """
+    import open_clip
+    import torch
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model, _, _ = open_clip.create_model_and_transforms(
+        CLIP_MODEL, pretrained=CLIP_PRETRAINED, device=device
+    )
+    model.eval()
+    tokenizer = open_clip.get_tokenizer(CLIP_MODEL)
+    with torch.no_grad():
+        features = model.encode_text(tokenizer([prompt]).to(device))
+        features = features / features.norm(dim=-1, keepdim=True)
+    return features.cpu().numpy()[0].astype(np.float32)
+
+
 def decode_clip(path: Path) -> np.ndarray:
     """Decode any audio file to 48 kHz mono float32 via ffmpeg."""
     raw = subprocess.run(
