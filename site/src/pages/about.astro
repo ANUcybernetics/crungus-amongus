@@ -82,17 +82,29 @@ const generatedAt = siteData.generated_at.slice(0, 10);
 
     <h2>Refusals</h2>
     <p>
-      Not every ask comes back as a picture. Some models hand back a safety
-      block instead, and the model pages report that as a refusal rate: the
-      share of asks whose output the provider's own classifier rejected. It is
-      counted from the record of asking, not from what survived, because a
-      model that will not draw a crungus is telling you something about the
-      model. The refusals cluster hard: the FLUX 2 family blocks between a
-      quarter and nearly two thirds of the time, while most models never block
-      at all. Nothing in the prompt changed — it is the word <em>crungus</em>
-      and whatever the model made of it. The block is on the picture, not the
-      prompt, so the same model and the same word succeed on a different draw;
-      that is why re-asking works and why the counts are worth publishing.
+      Not every ask came back as a picture. Asked with each provider's default
+      settings, some models handed back a safety block instead — the FLUX 2
+      family between a quarter and nearly two thirds of the time, while most
+      models never blocked at all. The block lands on the picture rather than
+      the prompt, so the same model and the same word succeed on a different
+      draw; nothing in the asking changed but the seed.
+    </p>
+    <p>
+      Worse than the refusals were the ones that did not announce themselves.
+      One model returned sixteen pure black frames and reported every one as a
+      success, which is a silent hole in the archive rather than a visible one
+      — and a black frame is an extreme outlier on the eigencrungi's most
+      reproducible axis, which is brightness.
+    </p>
+    <p>
+      So the archive is now generated with every safety control a model exposes
+      turned as permissive as it goes: 37 of the image models have such a
+      control, the rest have none and are asked exactly as before. That makes
+      the corpus a record of what these models draw rather than of what their
+      hosts will show. The refusal rates on the model pages are therefore a
+      <em>dated measurement</em> and not a live statistic: they record what the
+      defaults did up to the date shown, and they stop there. The pictures on
+      the page are no longer the ones those numbers describe.
     </p>
 
     <h2>The atlas</h2>

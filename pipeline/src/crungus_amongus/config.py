@@ -5,6 +5,7 @@ to the checkout via this file's location. This is an app run from its checkout,
 never an installed wheel.
 """
 
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
 
@@ -42,6 +43,12 @@ PROMPTS: dict[Modality, dict[str, str]] = {
 OUTPUTS_PER_PROMPT: dict[Modality, int] = {"image": 100, "audio": 10}
 # clip length requested from audio models that expose a duration input
 AUDIO_DURATION_S = 20
+# Until this moment every prediction was made with the provider's default
+# safety filters; after it, schema_adapter.relax_safety turns off every control
+# a model exposes. The refusal figures the site reports are the measurement
+# taken before the change and are frozen there: they describe what the defaults
+# did, not what the corpus now contains. Moving this line rewrites history.
+SAFETY_DEFAULTS_UNTIL = datetime(2026, 9, 9, 22, 35, 55, tzinfo=UTC)
 # flat per-output estimates for --dry-run (the dashboard is billing truth)
 ASSUMED_COST: dict[Modality, float] = {"image": 0.03, "audio": 0.10}
 

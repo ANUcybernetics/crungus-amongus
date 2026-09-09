@@ -7,6 +7,7 @@ is simply retried on the next run.
 
 import os
 import re
+from collections.abc import Iterator
 from datetime import datetime
 from pathlib import Path
 from typing import Literal
@@ -87,15 +88,21 @@ def append_entry(path: Path, entry: ManifestEntry) -> None:
         f.write(entry.model_dump_json() + "\n")
 
 
-def load_manifest(path: Path) -> dict[tuple[str, str, str, str, int], ManifestEntry]:
-    """Reduce the append-only log to the latest entry per key."""
-    entries: dict[tuple[str, str, str, str, int], ManifestEntry] = {}
+def read_manifest(path: Path) -> Iterator[ManifestEntry]:
+    """Every entry ever appended, in order — the record of the asking.
+
+    load_manifest answers "what is the state now"; this answers "what happened",
+    which is what a historical measurement needs.
+    """
     if not path.exists():
-        return entries
+        return
     with path.open() as f:
         for line in f:
             line = line.strip()
             if line:
-                entry = ManifestEntry.model_validate_json(line)
-                entries[entry.key] = entry
-    return entries
+                yield ManifestEntry.model_validate_json(line)
+
+
+def load_manifest(path: Path) -> dict[tuple[str, str, str, str, int], ManifestEntry]:
+    """Reduce the append-only log to the latest entry per key."""
+    return {entry.key: entry for entry in read_manifest(path)}

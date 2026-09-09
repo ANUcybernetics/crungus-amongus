@@ -42,19 +42,23 @@ export function crungusness(model: ModelEntry): number | null {
   return scores.length ? Math.max(...scores) : null;
 }
 
-/** Share of asks the provider's classifier refused, or null if never asked. */
+/** Share of asks the provider's default filter refused, when it was measured.
+ *
+ * Historical: the filters are off now, so this does not move. Null when the
+ * model was never asked under its defaults.
+ */
 export function refusalRate(prompt: PromptOutputs): number | null {
-  return prompt.attempts.total === 0 ? null : prompt.attempts.refused / prompt.attempts.total;
+  return prompt.refusals.asked === 0 ? null : prompt.refusals.refused / prompt.refusals.asked;
 }
 
-/** Refusals across every prompt, for a model-level summary. */
-export function modelRefusals(model: ModelEntry): { refused: number; total: number } {
+/** The same measurement summed across a model's prompts. */
+export function modelRefusals(model: ModelEntry): { refused: number; asked: number } {
   return model.prompts.reduce(
     (sum, p) => ({
-      refused: sum.refused + p.attempts.refused,
-      total: sum.total + p.attempts.total,
+      refused: sum.refused + p.refusals.refused,
+      asked: sum.asked + p.refusals.asked,
     }),
-    { refused: 0, total: 0 },
+    { refused: 0, asked: 0 },
   );
 }
 

@@ -50,12 +50,15 @@ const verb = audio ? "played" : "rendered";
               <ConsistencyMeter value={prompt.consistency} modality={model.modality} />
             </div>
             {
-              // only worth saying when it happened; most models refuse nothing
+              // only worth saying when it happened; most models refused nothing
               (refusalRate(prompt) ?? 0) > 0 && (
                 <p class="mono refusals">
-                  <b>{Math.round(refusalRate(prompt)! * 100)}%</b> refused —{" "}
-                  {prompt.attempts.refused} of {prompt.attempts.total} asks came back
-                  blocked by the provider's safety filter rather than as a picture.
+                  <b>{Math.round(refusalRate(prompt)! * 100)}%</b> refused under the
+                  default filters — {prompt.refusals.refused} of {prompt.refusals.asked}{" "}
+                  asks came back blocked rather than as a picture, measured up to{" "}
+                  {prompt.refusals.measured_until.slice(0, 10)}. The archive is now
+                  generated with this model's safety controls turned off, so the
+                  pictures above are not the ones that number describes.
                 </p>
               )
             }
@@ -188,7 +191,9 @@ const verb = audio ? "played" : "rendered";
     padding: 0.5rem 0.75rem;
     border-inline-start: 3px solid var(--accent);
     background: var(--surface);
-    color: var(--muted);
+    /* --muted is 4.44:1 on --surface, just under AA; this is a finding rather
+       than an aside, so it takes the body colour */
+    color: var(--text);
     font-size: 0.85rem;
   }
 

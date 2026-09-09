@@ -83,6 +83,7 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         prompt_slug: "crungus",
         consistency: 0.8,
         attempts: { total: 4, succeeded: 1, refused: 2, failed: 1 },
+        refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 8, refused: 2 },
         images: [{ key: "test--model/crungus/0.avif", atlas: [0.1, 0.2], typicality: 0.7 }],
         clips: [],
       },
@@ -91,6 +92,7 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         prompt_slug: "a-picture-of-a-crungus",
         consistency: 0.5,
         attempts: { total: 0, succeeded: 0, refused: 0, failed: 0 },
+        refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 0, refused: 0 },
         images: [],
         clips: [],
       },
@@ -129,6 +131,7 @@ describe("helpers", () => {
           prompt_slug: "crungus",
           consistency: null,
           attempts: { total: 1, succeeded: 1, refused: 0, failed: 0 },
+          refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 1, refused: 0 },
           images: [],
           clips: [clip],
         },
@@ -153,13 +156,14 @@ describe("helpers", () => {
 });
 
 describe("refusals", () => {
-  it("reports the share of asks the provider blocked", () => {
+  it("reports the share the default filters blocked, over what was asked then", () => {
     const model = fakeModel({});
-    expect(refusalRate(model.prompts[0]!)).toBe(0.5);
-    expect(modelRefusals(model)).toEqual({ refused: 2, total: 4 });
+    // 2 of 8 default-era asks, not 2 of the 4 attempts behind today's corpus
+    expect(refusalRate(model.prompts[0]!)).toBe(0.25);
+    expect(modelRefusals(model)).toEqual({ refused: 2, asked: 8 });
   });
 
-  it("has no rate for a prompt that was never asked", () => {
+  it("has no rate for a prompt never asked under the defaults", () => {
     expect(refusalRate(fakeModel({}).prompts[1]!)).toBeNull();
   });
 });

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-09T18:19:09.008757Z",
+  "generated_at": "2026-09-09T22:46:01.177873Z",
   "image_base_url": "https://images.crungusamong.us",
   "models": [
     {
@@ -21,9 +21,14 @@
           "consistency": 0.973,
           "attempts": {
             "total": 100,
-            "succeeded": 82,
+            "succeeded": 93,
             "refused": 0,
-            "failed": 18
+            "failed": 7
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 123,
+            "refused": 0
           },
           "images": [
             {
@@ -84,10 +89,15 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": 0.9757,
           "attempts": {
-            "total": 95,
-            "succeeded": 94,
+            "total": 100,
+            "succeeded": 99,
             "refused": 0,
             "failed": 1
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
           },
           "images": [
             {
@@ -142,6 +152,58 @@
       "notes": "CLIP-guided pixray, the pre-diffusion aesthetic"
     },
     {
+      "slug": "nightmareai--disco-diffusion",
+      "owner": "nightmareai",
+      "name": "disco-diffusion",
+      "modality": "image",
+      "version_id": "3c128f652e9f24e72896ac0b019e47facfd6bccf93104d50f09f1f2196325507",
+      "description": "Generate images using a variety of techniques - Powered by Discoart",
+      "source": "legacy",
+      "is_official": false,
+      "release_date": "2022-02-01",
+      "replicate_url": "https://replicate.com/nightmareai/disco-diffusion",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "CLIP-guided diffusion, the aesthetic immediately before Stable Diffusion"
+    },
+    {
       "slug": "jack000--glid-3-xl",
       "owner": "jack000",
       "name": "glid-3-xl",
@@ -159,10 +221,15 @@
           "prompt_slug": "crungus",
           "consistency": 0.9131,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -223,10 +290,15 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": 0.9379,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -303,10 +375,15 @@
           "prompt_slug": "crungus",
           "consistency": null,
           "attempts": {
-            "total": 10,
-            "succeeded": 0,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 10
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 110,
+            "refused": 0
           },
           "images": [],
           "clips": []
@@ -316,16 +393,21 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": null,
           "attempts": {
-            "total": 10,
-            "succeeded": 0,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 10
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 110,
+            "refused": 0
           },
           "images": [],
           "clips": []
         }
       ],
-      "notes": "probe: original dalle-mini, may not exist on Replicate"
+      "notes": "the original DALL-E mini, pinned at a 2022-06-14 version — the model and month of the crungus discovery. Returns [{image, clip_score}], hence output_field"
     },
     {
       "slug": "kuprel--min-dalle",
@@ -349,6 +431,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -413,6 +500,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -490,9 +582,14 @@
           "consistency": 0.5949,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -554,9 +651,14 @@
           "consistency": 0.6629,
           "attempts": {
             "total": 100,
-            "succeeded": 89,
-            "refused": 11,
+            "succeeded": 98,
+            "refused": 2,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 111,
+            "refused": 13
           },
           "images": [
             {
@@ -616,6 +718,110 @@
       "notes": "Stable Diffusion (1.x line as pinned on Replicate)"
     },
     {
+      "slug": "cjwbw--waifu-diffusion",
+      "owner": "cjwbw",
+      "name": "waifu-diffusion",
+      "modality": "image",
+      "version_id": "25d2f75ecda0c0bed34c806b7b70319a53a1bccad3ade1a7496524f013f48983",
+      "description": "Stable Diffusion on Danbooru images",
+      "source": "legacy",
+      "is_official": false,
+      "release_date": "2022-09-01",
+      "replicate_url": "https://replicate.com/cjwbw/waifu-diffusion",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 91,
+            "refused": 9,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 9
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 95,
+            "refused": 5,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 5
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "Stable Diffusion fine-tuned on Danbooru; the first big style-shifted fork"
+    },
+    {
+      "slug": "cjwbw--stable-diffusion-v1-5",
+      "owner": "cjwbw",
+      "name": "stable-diffusion-v1-5",
+      "modality": "image",
+      "version_id": "f370727477aa04d12d8c0b5c4e3a22399296c21cd18ff67cd7619710630fe3cb",
+      "description": "stable-diffusion with v1-5 checkpoint",
+      "source": "legacy",
+      "is_official": false,
+      "release_date": "2022-10-20",
+      "replicate_url": "https://replicate.com/cjwbw/stable-diffusion-v1-5",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 98,
+            "refused": 2,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 2
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 96,
+            "refused": 4,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 4
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "Stable Diffusion 1.5 itself, the most-forked open image model of the era"
+    },
+    {
       "slug": "prompthero--openjourney",
       "owner": "prompthero",
       "name": "openjourney",
@@ -633,10 +839,15 @@
           "prompt_slug": "crungus",
           "consistency": 0.6407,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 102,
+            "refused": 2
           },
           "images": [
             {
@@ -697,10 +908,15 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": 0.7176,
           "attempts": {
-            "total": 10,
-            "succeeded": 9,
-            "refused": 1,
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 103,
+            "refused": 3
           },
           "images": [
             {
@@ -755,6 +971,58 @@
       "notes": "Midjourney-style SD 1.5 fine-tune, peak 2022 aesthetic"
     },
     {
+      "slug": "tstramer--midjourney-diffusion",
+      "owner": "tstramer",
+      "name": "midjourney-diffusion",
+      "modality": "image",
+      "version_id": "436b051ebd8f68d23e83d22de5e198e0995357afef113768c20f0b6fcef23c8b",
+      "description": null,
+      "source": "legacy",
+      "is_official": false,
+      "release_date": "2022-11-01",
+      "replicate_url": "https://replicate.com/tstramer/midjourney-diffusion",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 99,
+            "refused": 1,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 1
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "SD fine-tuned towards the Midjourney v4 look, when Midjourney itself had no API"
+    },
+    {
       "slug": "tstramer--material-diffusion",
       "owner": "tstramer",
       "name": "material-diffusion",
@@ -776,6 +1044,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -840,6 +1113,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -916,10 +1194,15 @@
           "prompt_slug": "crungus",
           "consistency": 0.4919,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -980,10 +1263,15 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": 0.7086,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -1060,10 +1348,15 @@
           "prompt_slug": "crungus",
           "consistency": 0.8114,
           "attempts": {
-            "total": 10,
-            "succeeded": 9,
-            "refused": 1,
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 108,
+            "refused": 8
           },
           "images": [
             {
@@ -1119,10 +1412,15 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": 0.8664,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -1204,6 +1502,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -1257,6 +1560,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -1328,6 +1636,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ai-forever--kandinsky-2/crungus/0.avif",
@@ -1391,6 +1704,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -1472,6 +1790,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -1525,6 +1848,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -1591,10 +1919,15 @@
           "prompt_slug": "crungus",
           "consistency": 0.6565,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -1655,10 +1988,15 @@
           "prompt_slug": "a-picture-of-a-crungus",
           "consistency": 0.7623,
           "attempts": {
-            "total": 10,
-            "succeeded": 10,
+            "total": 100,
+            "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -1740,6 +2078,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 12,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -1793,6 +2136,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 11,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -1864,6 +2212,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ai-forever--kandinsky-2-2/crungus/0.avif",
@@ -1927,6 +2280,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -2008,6 +2366,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "stability-ai--sdxl/crungus/0.avif",
@@ -2068,9 +2431,14 @@
           "consistency": 0.7677,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -2152,6 +2520,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "lucataco--realistic-vision-v5-1/crungus/0.avif",
@@ -2215,6 +2588,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -2296,6 +2674,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "fofr--sdxl-emoji/crungus/0.avif",
@@ -2359,6 +2742,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -2440,6 +2828,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -2493,6 +2886,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -2560,9 +2958,14 @@
           "consistency": 0.5914,
           "attempts": {
             "total": 100,
-            "succeeded": 85,
-            "refused": 15,
+            "succeeded": 97,
+            "refused": 3,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 115,
+            "refused": 18
           },
           "images": [
             {
@@ -2624,9 +3027,14 @@
           "consistency": 0.7438,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -2708,6 +3116,11 @@
             "refused": 0,
             "failed": 8
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 12,
+            "refused": 0
+          },
           "images": [],
           "clips": []
         },
@@ -2721,11 +3134,68 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 0,
+            "refused": 0
+          },
           "images": [],
           "clips": []
         }
       ],
       "notes": null
+    },
+    {
+      "slug": "playgroundai--playground-v2-1024px-aesthetic",
+      "owner": "playgroundai",
+      "name": "playground-v2-1024px-aesthetic",
+      "modality": "image",
+      "version_id": "42fe626e41cc811eaf02c94b892774839268ce1994ea778eba97103fe1ef51b8",
+      "description": "Playground v2 is a diffusion-based text-to-image generative model trained from scratch by the research team at Playground",
+      "source": "legacy",
+      "is_official": false,
+      "release_date": "2023-12-01",
+      "replicate_url": "https://replicate.com/playgroundai/playground-v2-1024px-aesthetic",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "Playground v2, the generation before the v2.5 already in the archive"
     },
     {
       "slug": "lucataco--dreamshaper-xl-turbo",
@@ -2746,9 +3216,14 @@
           "consistency": 0.6849,
           "attempts": {
             "total": 100,
-            "succeeded": 90,
-            "refused": 10,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 110,
+            "refused": 10
           },
           "images": [
             {
@@ -2800,9 +3275,14 @@
           "consistency": 0.7955,
           "attempts": {
             "total": 100,
-            "succeeded": 87,
-            "refused": 13,
+            "succeeded": 98,
+            "refused": 2,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 113,
+            "refused": 15
           },
           "images": [
             {
@@ -2875,9 +3355,14 @@
           "consistency": 0.6062,
           "attempts": {
             "total": 100,
-            "succeeded": 93,
-            "refused": 7,
+            "succeeded": 98,
+            "refused": 2,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 107,
+            "refused": 9
           },
           "images": [
             {
@@ -2942,6 +3427,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -3023,6 +3513,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "lucataco--open-dalle-v1-1/crungus/0.avif",
@@ -3086,6 +3581,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -3167,6 +3667,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "sdxl-based--realvisxl-v3-multi-controlnet-lora/crungus/0.avif",
@@ -3227,9 +3732,14 @@
           "consistency": 0.7669,
           "attempts": {
             "total": 100,
-            "succeeded": 94,
-            "refused": 6,
+            "succeeded": 99,
+            "refused": 1,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 106,
+            "refused": 7
           },
           "images": [
             {
@@ -3311,6 +3821,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "fofr--latent-consistency-model/crungus/0.avif",
@@ -3374,6 +3889,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -3455,6 +3975,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -3508,6 +4033,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -3579,6 +4109,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "adirik--realvisxl-v3-0-turbo/crungus/0.avif",
@@ -3639,9 +4174,14 @@
           "consistency": 0.8245,
           "attempts": {
             "total": 100,
-            "succeeded": 98,
-            "refused": 2,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 102,
+            "refused": 2
           },
           "images": [
             {
@@ -3723,6 +4263,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "datacte--proteus-v0-2/crungus/0.avif",
@@ -3783,9 +4328,14 @@
           "consistency": 0.8746,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -3863,9 +4413,14 @@
           "consistency": 0.8243,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -3930,6 +4485,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -4007,9 +4567,14 @@
           "consistency": 0.6935,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -4069,6 +4634,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -4150,6 +4720,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -4203,6 +4778,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -4274,6 +4854,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "fofr--sticker-maker/crungus/0.avif",
@@ -4338,6 +4923,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "fofr--sticker-maker/a-picture-of-a-crungus/0.avif",
@@ -4396,6 +4986,58 @@
       "notes": null
     },
     {
+      "slug": "stability-ai--stable-diffusion-3",
+      "owner": "stability-ai",
+      "name": "stable-diffusion-3",
+      "modality": "image",
+      "version_id": "527d2a6296facb8e47ba1eaf17f142c240c19a30894f437feee9b91cc29d8e4f",
+      "description": "A text-to-image model with greatly improved performance in image quality, typography, complex prompt understanding, and resource-efficiency",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2024-06-12",
+      "replicate_url": "https://replicate.com/stability-ai/stable-diffusion-3",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "SD3, the generation before the 3.5 line already in the archive"
+    },
+    {
       "slug": "zsxkib--flux-music",
       "owner": "zsxkib",
       "name": "flux-music",
@@ -4417,6 +5059,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -4472,6 +5119,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -4520,6 +5172,58 @@
       "notes": null
     },
     {
+      "slug": "black-forest-labs--flux-1-1-pro",
+      "owner": "black-forest-labs",
+      "name": "flux-1.1-pro",
+      "modality": "image",
+      "version_id": "609793a667ed94b210242837d3c3c9fc9a64ae93685f15d75002ba0ed9a97f2b",
+      "description": "Faster, better FLUX Pro. Text-to-image model with excellent image quality, prompt adherence, and output diversity.",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2024-10-03",
+      "replicate_url": "https://replicate.com/black-forest-labs/flux-1.1-pro",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 93,
+            "refused": 7,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 7
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 99,
+            "refused": 1,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 1
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "base FLUX 1.1 Pro; the archive had only the -ultra variant"
+    },
+    {
       "slug": "luma--photon",
       "owner": "luma",
       "name": "photon",
@@ -4541,6 +5245,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -4605,6 +5314,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -4686,6 +5400,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "nvidia--sana/crungus/0.avif",
@@ -4749,6 +5468,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -4826,9 +5550,14 @@
           "consistency": 0.6478,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 121,
+            "refused": 1
           },
           "images": [
             {
@@ -4894,6 +5623,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 120,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bytedance--sdxl-lightning-4step/a-picture-of-a-crungus/0.avif",
@@ -4952,6 +5686,58 @@
       "notes": null
     },
     {
+      "slug": "openai--gpt-image-1",
+      "owner": "openai",
+      "name": "gpt-image-1",
+      "modality": "image",
+      "version_id": "5ac56c15446a60fa63b3823de926ada90f5971c2cf9b1dd07659126cfda434e6",
+      "description": "A multimodal image generation model that creates high-quality images. You need to bring your own verified OpenAI key to use this model. Your OpenAI account will be charged for usage.",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2025-04-23",
+      "replicate_url": "https://replicate.com/openai/gpt-image-1",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 120,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "the first GPT Image; the archive had only 1.5 and 2. A passthrough listing: it wants the caller's own OpenAI key, so this bills to OpenAI rather than Replicate"
+    },
+    {
       "slug": "lucataco--ace-step",
       "owner": "lucataco",
       "name": "ace-step",
@@ -4973,6 +5759,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -5027,6 +5818,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -5098,6 +5894,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--sdxl-lightning/crungus/0.avif",
@@ -5161,6 +5962,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -5242,6 +6048,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "black-forest-labs--flux-dev/crungus/0.avif",
@@ -5305,6 +6116,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -5386,6 +6202,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "black-forest-labs--flux-dev-lora/crungus/0.avif",
@@ -5449,6 +6270,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -5526,9 +6352,14 @@
           "consistency": 0.8122,
           "attempts": {
             "total": 100,
-            "succeeded": 97,
-            "refused": 3,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 107,
+            "refused": 3
           },
           "images": [
             {
@@ -5590,9 +6421,14 @@
           "consistency": 0.8708,
           "attempts": {
             "total": 100,
-            "succeeded": 93,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 7
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 107,
+            "refused": 0
           },
           "images": [
             {
@@ -5674,6 +6510,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--hidream-l1-dev/crungus/0.avif",
@@ -5737,6 +6578,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -5818,6 +6664,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--hidream-l1-full/crungus/0.avif",
@@ -5881,6 +6732,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -5962,6 +6818,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--wan-2-2-image/crungus/0.avif",
@@ -6025,6 +6886,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -6102,9 +6968,14 @@
           "consistency": 0.8773,
           "attempts": {
             "total": 100,
-            "succeeded": 92,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 8
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 110,
+            "refused": 0
           },
           "images": [
             {
@@ -6166,9 +7037,14 @@
           "consistency": 0.7432,
           "attempts": {
             "total": 100,
-            "succeeded": 92,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 8
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 118,
+            "refused": 0
           },
           "images": [
             {
@@ -6228,6 +7104,110 @@
       "notes": null
     },
     {
+      "slug": "black-forest-labs--flux-krea-dev",
+      "owner": "black-forest-labs",
+      "name": "flux-krea-dev",
+      "modality": "image",
+      "version_id": "9d7a7c510de5b6bab1b183a9ed61cee5416ea3b4ab0bd644047780c4ef115662",
+      "description": "An opinionated text-to-image model from Black Forest Labs in collaboration with Krea that excels in photorealism. Creates images that avoid the oversaturated \"AI look\".",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2025-07-31",
+      "replicate_url": "https://replicate.com/black-forest-labs/flux-krea-dev",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "FLUX dev retrained with Krea for a deliberately un-AI aesthetic"
+    },
+    {
+      "slug": "google--gemini-2-5-flash-image",
+      "owner": "google",
+      "name": "gemini-2.5-flash-image",
+      "modality": "image",
+      "version_id": "223f41a22ea7248af23a91cd5f661755652e0494cce44695f41c6a8ac6fbc00c",
+      "description": "Google's latest image generation model in Gemini 2.5",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2025-08-26",
+      "replicate_url": "https://replicate.com/google/gemini-2.5-flash-image",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 35,
+            "refused": 1,
+            "failed": 64
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 1
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 48,
+            "refused": 1,
+            "failed": 51
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 1
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "the Gemini image model that became nano-banana"
+    },
+    {
       "slug": "tencent--hunyuan-image-3",
       "owner": "tencent",
       "name": "hunyuan-image-3",
@@ -6249,6 +7229,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -6313,6 +7298,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -6394,6 +7384,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -6447,6 +7442,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -6518,6 +7518,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v2/crungus/0.avif",
@@ -6581,6 +7586,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -6662,6 +7672,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v2-turbo/crungus/0.avif",
@@ -6725,6 +7740,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -6806,6 +7826,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v2a/crungus/0.avif",
@@ -6869,6 +7894,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -6950,6 +7980,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v2a-turbo/crungus/0.avif",
@@ -7013,6 +8048,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -7094,6 +8134,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v3-balanced/crungus/0.avif",
@@ -7157,6 +8202,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -7238,6 +8288,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v3-quality/crungus/0.avif",
@@ -7301,6 +8356,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -7382,6 +8442,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "ideogram-ai--ideogram-v3-turbo/crungus/0.avif",
@@ -7445,6 +8510,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -7526,6 +8596,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "luma--photon-flash/crungus/0.avif",
@@ -7589,6 +8664,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -7670,6 +8750,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "minimax--image-01/crungus/0.avif",
@@ -7733,6 +8818,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -7814,6 +8904,11 @@
             "refused": 0,
             "failed": 10
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 18,
+            "refused": 0
+          },
           "images": [],
           "clips": []
         },
@@ -7826,6 +8921,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -7897,6 +8997,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "recraft-ai--recraft-v3/crungus/0.avif",
@@ -7960,6 +9065,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -8041,6 +9151,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "recraft-ai--recraft-v3-svg/crungus/0.avif",
@@ -8104,6 +9219,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -8185,6 +9305,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -8238,6 +9363,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -8309,6 +9439,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "stability-ai--stable-diffusion-3-5-large/crungus/0.avif",
@@ -8372,6 +9507,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -8453,6 +9593,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "stability-ai--stable-diffusion-3-5-large-turbo/crungus/0.avif",
@@ -8516,6 +9661,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -8597,6 +9747,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "stability-ai--stable-diffusion-3-5-medium/crungus/0.avif",
@@ -8660,6 +9815,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -8741,6 +9901,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--flux-fast/crungus/0.avif",
@@ -8804,6 +9969,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -8881,9 +10051,14 @@
           "consistency": 0.8072,
           "attempts": {
             "total": 100,
-            "succeeded": 97,
-            "refused": 3,
+            "succeeded": 99,
+            "refused": 1,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 103,
+            "refused": 4
           },
           "images": [
             {
@@ -8944,6 +10119,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "black-forest-labs--flux-pro/a-picture-of-a-crungus/0.avif",
@@ -9002,48 +10182,6 @@
       "notes": null
     },
     {
-      "slug": "bytedance--seedream-3",
-      "owner": "bytedance",
-      "name": "seedream-3",
-      "modality": "image",
-      "version_id": "ed344813bc9f4996be6de4febd8b9c14c7849ad7b21ab047572e3620ee374ee7",
-      "description": "A text-to-image model with support for native high-resolution (2K) image generation",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2025-11-10",
-      "replicate_url": "https://replicate.com/bytedance/seedream-3",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": null
-    },
-    {
       "slug": "black-forest-labs--flux-kontext-max",
       "owner": "black-forest-labs",
       "name": "flux-kontext-max",
@@ -9062,9 +10200,14 @@
           "consistency": 0.6611,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 1
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
           },
           "images": [
             {
@@ -9129,6 +10272,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -9210,6 +10358,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "black-forest-labs--flux-kontext-pro/crungus/0.avif",
@@ -9273,6 +10426,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -9354,6 +10512,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bytedance--seedream-4/crungus/0.avif",
@@ -9418,6 +10581,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bytedance--seedream-4/a-picture-of-a-crungus/0.avif",
@@ -9476,6 +10644,58 @@
       "notes": null
     },
     {
+      "slug": "black-forest-labs--flux-2-dev",
+      "owner": "black-forest-labs",
+      "name": "flux-2-dev",
+      "modality": "image",
+      "version_id": "7bba46bdde863cfd7aaee87649a5aa49f39f368495dbea500998d1fcbb262050",
+      "description": "Quality image generation and editing with support for reference images",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2025-11-24",
+      "replicate_url": "https://replicate.com/black-forest-labs/flux-2-dev",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "the open-weight FLUX.2; the archive had flex, klein, max and pro"
+    },
+    {
       "slug": "google--lyria-2",
       "owner": "google",
       "name": "lyria-2",
@@ -9497,6 +10717,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -9551,6 +10776,11 @@
             "succeeded": 10,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
           },
           "images": [],
           "clips": [
@@ -9618,9 +10848,14 @@
           "consistency": 0.8438,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 1
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
           },
           "images": [
             {
@@ -9685,6 +10920,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -9766,6 +11006,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
+          },
           "images": [
             {
               "key": "qwen--qwen-image/crungus/0.avif",
@@ -9829,6 +11074,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -9910,6 +11160,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "openai--gpt-image-1-5/crungus/0.avif",
@@ -9973,6 +11228,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -10054,6 +11314,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bria--fibo/crungus/0.avif",
@@ -10114,9 +11379,14 @@
           "consistency": 0.851,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
+            "succeeded": 100,
             "refused": 0,
-            "failed": 1
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
           },
           "images": [
             {
@@ -10198,6 +11468,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bria--image-3-2/crungus/0.avif",
@@ -10261,6 +11536,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -10338,9 +11618,14 @@
           "consistency": 0.8832,
           "attempts": {
             "total": 100,
-            "succeeded": 44,
-            "refused": 5,
-            "failed": 51
+            "succeeded": 73,
+            "refused": 0,
+            "failed": 27
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 156,
+            "refused": 5
           },
           "images": [
             {
@@ -10377,9 +11662,14 @@
           "consistency": 0.9036,
           "attempts": {
             "total": 100,
-            "succeeded": 47,
-            "refused": 1,
-            "failed": 52
+            "succeeded": 72,
+            "refused": 0,
+            "failed": 28
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 153,
+            "refused": 1
           },
           "images": [
             {
@@ -10409,132 +11699,6 @@
       "notes": null
     },
     {
-      "slug": "google--imagen-3",
-      "owner": "google",
-      "name": "imagen-3",
-      "modality": "image",
-      "version_id": "dd38058a6e74c700dcd05db62896386817f3af627bbe71f869f9a43f02773fd4",
-      "description": "Google's highest quality text-to-image model, capable of generating images with detail, rich lighting and beauty",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-02-12",
-      "replicate_url": "https://replicate.com/google/imagen-3",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": null
-    },
-    {
-      "slug": "google--imagen-3-fast",
-      "owner": "google",
-      "name": "imagen-3-fast",
-      "modality": "image",
-      "version_id": "2d1d7f7965a9b0b37ea8eb77f156e905631d27f0f56a234de98385703b5c380e",
-      "description": "A faster and cheaper Imagen 3 model, for when price or speed are more important than final image quality",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-02-12",
-      "replicate_url": "https://replicate.com/google/imagen-3-fast",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": null
-    },
-    {
-      "slug": "google--imagen-4",
-      "owner": "google",
-      "name": "imagen-4",
-      "modality": "image",
-      "version_id": "19335492dbe879d4b5983bff2149f597db8314ccc7fe374e6313af7c2b52792f",
-      "description": "Google's Imagen 4 flagship model",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-02-12",
-      "replicate_url": "https://replicate.com/google/imagen-4",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": null
-    },
-    {
       "slug": "xai--grok-imagine-image",
       "owner": "xai",
       "name": "grok-imagine-image",
@@ -10553,9 +11717,14 @@
           "consistency": 0.9009,
           "attempts": {
             "total": 100,
-            "succeeded": 99,
-            "refused": 1,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 1
           },
           "images": [
             {
@@ -10621,6 +11790,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "xai--grok-imagine-image/a-picture-of-a-crungus/0.avif",
@@ -10679,6 +11853,58 @@
       "notes": null
     },
     {
+      "slug": "recraft-ai--recraft-v4",
+      "owner": "recraft-ai",
+      "name": "recraft-v4",
+      "modality": "image",
+      "version_id": "a8bc7377c37baeea1e01568f88b6abfb38939135071a38ca4267c8f82c3cbbf0",
+      "description": "Recraft's latest image generation model, built around design taste. Strong prompt accuracy, art-directed composition, and integrated text rendering. Fast and cost-efficient at standard resolution.",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2026-02-18",
+      "replicate_url": "https://replicate.com/recraft-ai/recraft-v4",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "plain recraft v4; the archive had the pro and SVG variants only"
+    },
+    {
       "slug": "recraft-ai--recraft-v4-pro",
       "owner": "recraft-ai",
       "name": "recraft-v4-pro",
@@ -10700,6 +11926,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -10764,6 +11995,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -10845,6 +12081,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "recraft-ai--recraft-v4-pro-svg/crungus/0.avif",
@@ -10908,6 +12149,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -10989,6 +12235,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "recraft-ai--recraft-v4-svg/crungus/0.avif",
@@ -11052,6 +12303,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -11133,6 +12389,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bytedance--seedream-5-lite/crungus/0.avif",
@@ -11196,6 +12457,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 101,
+            "refused": 0
           },
           "images": [
             {
@@ -11273,9 +12539,14 @@
           "consistency": 0.9008,
           "attempts": {
             "total": 100,
-            "succeeded": 37,
-            "refused": 63,
+            "succeeded": 61,
+            "refused": 39,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 163,
+            "refused": 102
           },
           "images": [
             {
@@ -11317,9 +12588,14 @@
           "consistency": null,
           "attempts": {
             "total": 100,
-            "succeeded": 44,
-            "refused": 56,
+            "succeeded": 69,
+            "refused": 31,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 156,
+            "refused": 87
           },
           "images": [
             {
@@ -11352,9 +12628,14 @@
           "consistency": 0.9087,
           "attempts": {
             "total": 100,
-            "succeeded": 50,
-            "refused": 50,
+            "succeeded": 82,
+            "refused": 18,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 150,
+            "refused": 68
           },
           "images": [
             {
@@ -11406,9 +12687,14 @@
           "consistency": 0.8485,
           "attempts": {
             "total": 100,
-            "succeeded": 40,
-            "refused": 60,
+            "succeeded": 68,
+            "refused": 32,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 160,
+            "refused": 92
           },
           "images": [
             {
@@ -11454,6 +12740,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -11518,6 +12809,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -11599,6 +12895,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "wan-video--wan-2-7-image-pro/crungus/0.avif",
@@ -11662,6 +12963,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -11743,6 +13049,11 @@
             "refused": 0,
             "failed": 3
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 103,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--hidream-l1-fast/crungus/0.avif",
@@ -11806,6 +13117,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -11887,6 +13203,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -11941,6 +13262,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 10,
+            "refused": 0
+          },
           "images": [],
           "clips": [
             {
@@ -11989,180 +13315,6 @@
       "notes": "lyrics are the word three times"
     },
     {
-      "slug": "google--imagen-4-ultra",
-      "owner": "google",
-      "name": "imagen-4-ultra",
-      "modality": "image",
-      "version_id": "94d9d5a0e8bf7691286756bf150fa0c81e1bc3d6e2cddfc7084781f54e0199b5",
-      "description": "Use this ultra version of Imagen 4 when quality matters more than speed and cost",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-04-15",
-      "replicate_url": "https://replicate.com/google/imagen-4-ultra",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
-    },
-    {
-      "slug": "google--imagen-4-fast",
-      "owner": "google",
-      "name": "imagen-4-fast",
-      "modality": "image",
-      "version_id": "efb61e33cffb69a1725083f675a44793929553f479918d01d6ce6e00efbee0d7",
-      "description": "Use this fast version of Imagen 4 when speed and cost are more important than quality",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-04-17",
-      "replicate_url": "https://replicate.com/google/imagen-4-fast",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": "fails on Replicate itself: the upstream Vertex endpoint returns 404 (retired by Google)"
-    },
-    {
-      "slug": "quiverai--arrow-1-1",
-      "owner": "quiverai",
-      "name": "arrow-1.1",
-      "modality": "image",
-      "version_id": "ad06c3ff29ebee1a9dbb1c11215cf24ae1d8f03a8f3cacdfdf20a0decd751bec",
-      "description": "Generate editable SVG graphics from text prompts with Quiver's Arrow 1.1 model. Great for icons, logos, and illustrations.",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-04-21",
-      "replicate_url": "https://replicate.com/quiverai/arrow-1.1",
-      "status": "failed",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": null
-    },
-    {
-      "slug": "quiverai--arrow-1-1-max",
-      "owner": "quiverai",
-      "name": "arrow-1.1-max",
-      "modality": "image",
-      "version_id": "e469ccd61969cfacd38649a07976016657a7064bab1780a399704cd5b6ec32ef",
-      "description": "Generate high-fidelity SVG graphics from text prompts with Quiver's Arrow 1.1 Max model. Tuned for dense illustrations, detailed logos, and technical diagrams.",
-      "source": "collection",
-      "is_official": true,
-      "release_date": "2026-04-21",
-      "replicate_url": "https://replicate.com/quiverai/arrow-1.1-max",
-      "status": "partial",
-      "prompts": [
-        {
-          "prompt": "crungus",
-          "prompt_slug": "crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 30,
-            "succeeded": 1,
-            "refused": 0,
-            "failed": 29
-          },
-          "images": [
-            {
-              "key": "quiverai--arrow-1-1-max/crungus/3.avif",
-              "atlas": [0.7779, 0.5774],
-              "typicality": 0.6159
-            }
-          ],
-          "clips": []
-        },
-        {
-          "prompt": "a picture of a crungus",
-          "prompt_slug": "a-picture-of-a-crungus",
-          "consistency": null,
-          "attempts": {
-            "total": 10,
-            "succeeded": 0,
-            "refused": 0,
-            "failed": 10
-          },
-          "images": [],
-          "clips": []
-        }
-      ],
-      "notes": null
-    },
-    {
       "slug": "black-forest-labs--flux-1-1-pro-ultra",
       "owner": "black-forest-labs",
       "name": "flux-1.1-pro-ultra",
@@ -12181,9 +13333,14 @@
           "consistency": 0.7751,
           "attempts": {
             "total": 100,
-            "succeeded": 93,
-            "refused": 7,
+            "succeeded": 99,
+            "refused": 1,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 107,
+            "refused": 8
           },
           "images": [
             {
@@ -12245,9 +13402,14 @@
           "consistency": 0.8692,
           "attempts": {
             "total": 100,
-            "succeeded": 98,
-            "refused": 2,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 102,
+            "refused": 2
           },
           "images": [
             {
@@ -12325,9 +13487,14 @@
           "consistency": 0.9079,
           "attempts": {
             "total": 100,
-            "succeeded": 77,
-            "refused": 23,
+            "succeeded": 94,
+            "refused": 6,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 123,
+            "refused": 29
           },
           "images": [
             {
@@ -12374,9 +13541,14 @@
           "consistency": 0.8858,
           "attempts": {
             "total": 100,
-            "succeeded": 73,
-            "refused": 27,
+            "succeeded": 97,
+            "refused": 3,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 127,
+            "refused": 30
           },
           "images": [
             {
@@ -12421,6 +13593,58 @@
       "notes": null
     },
     {
+      "slug": "xai--grok-imagine-image-quality",
+      "owner": "xai",
+      "name": "grok-imagine-image-quality",
+      "modality": "image",
+      "version_id": "6faafedf4c5e7331751297579882b0dc6defb2271a703a9241260c3148f82236",
+      "description": "xAI's higher-quality image model with sharper details, better text rendering, and 2k output",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2026-05-08",
+      "replicate_url": "https://replicate.com/xai/grok-imagine-image-quality",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 97,
+            "refused": 2,
+            "failed": 1
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 2
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "the higher-quality tier of xAI's image model"
+    },
+    {
       "slug": "bytedance--seedream-4-5",
       "owner": "bytedance",
       "name": "seedream-4.5",
@@ -12442,6 +13666,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -12507,6 +13736,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "bytedance--seedream-4-5/a-picture-of-a-crungus/0.avif",
@@ -12565,6 +13799,58 @@
       "notes": null
     },
     {
+      "slug": "google--nano-banana-2-lite",
+      "owner": "google",
+      "name": "nano-banana-2-lite",
+      "modality": "image",
+      "version_id": "8bd4298c0f1887a53a351a0b01d46c92ac8aceff14a16c743f958b291d5e5b40",
+      "description": "Google's fastest image generation model — the lightweight, low-cost version of Nano Banana 2, for rapid creation and editing",
+      "source": "legacy",
+      "is_official": true,
+      "release_date": "2026-07-05",
+      "replicate_url": "https://replicate.com/google/nano-banana-2-lite",
+      "status": "failed",
+      "prompts": [
+        {
+          "prompt": "crungus",
+          "prompt_slug": "crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        },
+        {
+          "prompt": "a picture of a crungus",
+          "prompt_slug": "a-picture-of-a-crungus",
+          "consistency": null,
+          "attempts": {
+            "total": 100,
+            "succeeded": 100,
+            "refused": 0,
+            "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
+          "images": [],
+          "clips": []
+        }
+      ],
+      "notes": "the cheap tier of nano-banana 2"
+    },
+    {
       "slug": "openai--gpt-image-2",
       "owner": "openai",
       "name": "gpt-image-2",
@@ -12583,9 +13869,14 @@
           "consistency": 0.8825,
           "attempts": {
             "total": 100,
-            "succeeded": 98,
-            "refused": 2,
+            "succeeded": 100,
+            "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 102,
+            "refused": 2
           },
           "images": [
             {
@@ -12650,6 +13941,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -12731,6 +14027,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "leonardoai--lucid-origin/crungus/0.avif",
@@ -12794,6 +14095,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -12875,6 +14181,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "google--nano-banana-2/crungus/0.avif",
@@ -12938,6 +14249,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -13019,6 +14335,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "google--nano-banana-pro/crungus/0.avif",
@@ -13082,6 +14403,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -13163,6 +14489,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--p-image-lora/crungus/0.avif",
@@ -13226,6 +14557,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -13307,6 +14643,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--p-image/crungus/0.avif",
@@ -13370,6 +14711,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {
@@ -13451,6 +14797,11 @@
             "refused": 0,
             "failed": 0
           },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
+          },
           "images": [
             {
               "key": "prunaai--z-image-turbo/crungus/0.avif",
@@ -13514,6 +14865,11 @@
             "succeeded": 100,
             "refused": 0,
             "failed": 0
+          },
+          "refusals": {
+            "measured_until": "2026-09-09T22:35:55Z",
+            "asked": 100,
+            "refused": 0
           },
           "images": [
             {

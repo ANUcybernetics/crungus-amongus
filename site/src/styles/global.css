@@ -8,7 +8,7 @@
   --surface-raised: #2a2418;
   --line: #3a3226;
   --text: #d9cfbf;
-  --muted: #8d8171;
+  --muted: #968a7a; /* clears AA on --surface (5.01:1) and --surface-raised (4.56:1); #8d8171 was 4.44 */
   --accent: #c08434;
   --accent-bright: #dfa14e;
 

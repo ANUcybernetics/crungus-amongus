@@ -15,9 +15,7 @@ export const clipRefSchema = z.object({
   m4a: z.string(), // "<model-slug>/<prompt-slug>/<index>.m4a"
 });
 
-// what happened when the model was asked, from the manifest: the record of the
-// asking, not of what survived. A model that refuses to draw a crungus is a
-// finding about the model, so the refusals are published rather than dropped.
+// how the asking went for the images the corpus actually holds
 export const attemptsSchema = z.object({
   total: z.number().int(),
   succeeded: z.number().int(),
@@ -25,11 +23,22 @@ export const attemptsSchema = z.object({
   failed: z.number().int(), // everything else terminal
 });
 
+// what the provider's default safety filter did, before it was turned off: a
+// dated historical measurement, frozen, not a live statistic. Every model with
+// a safety control is now asked with it wide open, so a rate computed today
+// would describe our configuration rather than theirs.
+export const refusalsSchema = z.object({
+  measured_until: z.iso.datetime(),
+  asked: z.number().int(),
+  refused: z.number().int(),
+});
+
 export const promptOutputsSchema = z.object({
   prompt: z.string(),
   prompt_slug: z.string(),
   consistency: z.number().nullable(),
   attempts: attemptsSchema,
+  refusals: refusalsSchema,
   images: z.array(imageRefSchema), // image models
   clips: z.array(clipRefSchema), // audio models
 });
@@ -60,6 +69,7 @@ export type Modality = z.infer<typeof modalitySchema>;
 export type ImageRef = z.infer<typeof imageRefSchema>;
 export type ClipRef = z.infer<typeof clipRefSchema>;
 export type Attempts = z.infer<typeof attemptsSchema>;
+export type Refusals = z.infer<typeof refusalsSchema>;
 export type PromptOutputs = z.infer<typeof promptOutputsSchema>;
 export type ModelEntry = z.infer<typeof modelEntrySchema>;
 export type SiteData = z.infer<typeof siteDataSchema>;

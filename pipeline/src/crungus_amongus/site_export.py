@@ -15,8 +15,15 @@ from loguru import logger
 from pydantic import BaseModel
 
 from .analyzer import Analysis, load_analysis
-from .config import OUTPUTS_PER_PROMPT, PROMPTS, REPO_ROOT, Modality, Settings
-from .manifest import ManifestEntry, load_manifest
+from .config import (
+    OUTPUTS_PER_PROMPT,
+    PROMPTS,
+    REPO_ROOT,
+    SAFETY_DEFAULTS_UNTIL,
+    Modality,
+    Settings,
+)
+from .manifest import ManifestEntry, load_manifest, read_manifest
 from .registry import Registry, RegistryModel
 
 SITE_DATA_PATH = REPO_ROOT / "site" / "src" / "data" / "models.json"
@@ -36,12 +43,11 @@ class ClipRef(BaseModel):
 
 
 class Attempts(BaseModel):
-    """What happened when this model was asked, straight from the manifest.
+    """How the asking went for the images the corpus actually holds.
 
-    The record of the asking, not of what survived: a model that will not draw
-    a crungus is a finding about the model, so the refusals are published
-    rather than quietly dropped. Counted for the model's currently pinned
-    version only, since a version change invalidates earlier work.
+    The latest attempt per slot, so it describes the corpus as it stands, and
+    for the model's currently pinned version only — a version change
+    invalidates earlier work.
     """
 
     total: int
@@ -50,11 +56,27 @@ class Attempts(BaseModel):
     failed: int  # everything else terminal: errors, timeouts, bad schemas
 
 
+class Refusals(BaseModel):
+    """What the provider's default safety filter did, before it was turned off.
+
+    A dated historical measurement rather than a live statistic. Every model
+    exposing a safety control is now asked with it as permissive as it goes
+    (see schema_adapter.relax_safety), so a refusal rate computed today would
+    describe our configuration and not theirs. This counts only predictions
+    made before config.SAFETY_DEFAULTS_UNTIL, and stops moving thereafter.
+    """
+
+    measured_until: datetime
+    asked: int
+    refused: int
+
+
 class PromptOutputs(BaseModel):
     prompt: str
     prompt_slug: str
     consistency: float | None = None
     attempts: Attempts
+    refusals: Refusals
     images: list[ImageRef]  # image models
     clips: list[ClipRef]  # audio models
 
@@ -91,12 +113,30 @@ def attempt_counts(
     return counts
 
 
+def refusal_counts(settings: Settings) -> dict[tuple[str, str, str], Counter[str]]:
+    """Default-filter-era asks and refusals per (owner, name, prompt slug).
+
+    Read from the whole append-only log rather than its latest state, because a
+    refusal that was later re-rolled into a success still happened — and this
+    is a record of what the filters did, not of what the corpus holds. Version
+    is deliberately not part of the key: the measurement is about the provider's
+    filter, which outlives any one pin.
+    """
+    counts: dict[tuple[str, str, str], Counter[str]] = defaultdict(Counter)
+    for entry in read_manifest(settings.manifest_path):
+        if entry.created_at < SAFETY_DEFAULTS_UNTIL:
+            counts[(entry.owner, entry.name, entry.prompt_slug)][entry.status] += 1
+    return counts
+
+
 def build_site_data(registry: Registry, settings: Settings) -> SiteData:
     manifest = load_manifest(settings.manifest_path)
     counts = attempt_counts(manifest)
+    refusals = refusal_counts(settings)
     analysis = load_analysis(settings)
     models = [
-        _model_entry(model, counts, analysis, settings) for model in registry.models
+        _model_entry(model, counts, refusals, analysis, settings)
+        for model in registry.models
     ]
     models.sort(key=lambda m: (m.release_date or date.max, m.slug))
     return SiteData(
@@ -164,6 +204,7 @@ def export_site_data(registry: Registry, settings: Settings, out: Path) -> SiteD
 def _model_entry(
     model: RegistryModel,
     counts: dict[tuple[str, str, str, str], Counter[str]],
+    refusals: dict[tuple[str, str, str], Counter[str]],
     analysis: Analysis | None,
     settings: Settings,
 ) -> ModelEntry:
@@ -196,11 +237,17 @@ def _model_entry(
         refused = tally["nsfw_blocked"]
         succeeded = tally["succeeded"]
         total = sum(tally.values())
+        historic = refusals.get((model.owner, model.name, prompt_slug), Counter())
         prompts.append(
             PromptOutputs(
                 prompt=prompt,
                 prompt_slug=prompt_slug,
                 consistency=consistency,
+                refusals=Refusals(
+                    measured_until=SAFETY_DEFAULTS_UNTIL,
+                    asked=sum(historic.values()),
+                    refused=historic["nsfw_blocked"],
+                ),
                 attempts=Attempts(
                     total=total,
                     succeeded=succeeded,
