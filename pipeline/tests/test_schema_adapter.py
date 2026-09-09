@@ -84,3 +84,36 @@ def test_variations_count_field_forced_to_one() -> None:
         {"prompt": {"type": "string"}, "variations": {"default": 3}}, modality="audio"
     )
     assert build_input(model, "crungus")["variations"] == 1
+
+
+def test_extra_input_env_reference_is_filled_from_the_environment(monkeypatch) -> None:
+    """A passthrough model's key is named in the curated file, never stored there."""
+    monkeypatch.setenv("CRUNGUS_TEST_KEY", "sk-not-a-real-key")
+    model = RegistryModel(
+        owner="o",
+        name="n",
+        slug="o--n",
+        source="collection",
+        version_id="v1",
+        input_schema={"properties": {"prompt": {"type": "string"}}},
+        extra_inputs={"api_key": "${CRUNGUS_TEST_KEY}", "quality": "high"},
+    )
+    payload = build_input(model, "crungus")
+    assert payload["api_key"] == "sk-not-a-real-key"
+    assert payload["quality"] == "high"  # a plain value is untouched
+
+
+def test_an_unset_env_reference_is_a_schema_incompatibility(monkeypatch) -> None:
+    """Better to skip the model than spend on a prediction containing '${VAR}'."""
+    monkeypatch.delenv("CRUNGUS_TEST_KEY", raising=False)
+    model = RegistryModel(
+        owner="o",
+        name="n",
+        slug="o--n",
+        source="collection",
+        version_id="v1",
+        input_schema={"properties": {"prompt": {"type": "string"}}},
+        extra_inputs={"api_key": "${CRUNGUS_TEST_KEY}"},
+    )
+    with pytest.raises(SchemaIncompatibleError, match="CRUNGUS_TEST_KEY"):
+        build_input(model, "crungus")

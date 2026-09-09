@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from crungus_amongus.config import Settings
-from crungus_amongus.manifest import ManifestEntry, append_entry
+from crungus_amongus.manifest import ManifestEntry, Status, append_entry
 from crungus_amongus.registry import Registry, RegistryModel
 from crungus_amongus.site_export import build_site_data
 
@@ -55,9 +55,13 @@ def test_attempts_publish_the_refusals_not_just_the_survivors(tmp_path: Path) ->
     image_dir = settings.optimized_dir / "bfl--flux" / "crungus"
     image_dir.mkdir(parents=True)
     (image_dir / "0.avif").write_bytes(b"")
-    for index, status in enumerate(
-        ["succeeded", "nsfw_blocked", "nsfw_blocked", "failed_permanent"]
-    ):
+    statuses: list[Status] = [
+        "succeeded",
+        "nsfw_blocked",
+        "nsfw_blocked",
+        "failed_permanent",
+    ]
+    for index, status in enumerate(statuses):
         append_entry(
             settings.manifest_path,
             ManifestEntry(

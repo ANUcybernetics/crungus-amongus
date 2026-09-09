@@ -5,11 +5,32 @@ line per idempotency key. A crash mid-prediction leaves no line, so the item
 is simply retried on the next run.
 """
 
+import os
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
+
+# environment variables whose values must never reach a committed file
+SECRET_NAME = re.compile(r"(KEY|TOKEN|SECRET|PASSWORD)$")
+
+
+def redact(text: str | None) -> str | None:
+    """Blank out any environment secret that has leaked into an error message.
+
+    This file is committed, and a provider's validation error can echo the
+    prediction input straight back — which for a passthrough model means its
+    API key. Scrubbing on the way in makes that impossible to get wrong.
+    """
+    if not text:
+        return text
+    for name, value in os.environ.items():
+        if len(value) >= 16 and SECRET_NAME.search(name):
+            text = text.replace(value, f"<{name}>")
+    return text
+
 
 type Status = Literal[
     "succeeded",
@@ -46,6 +67,8 @@ class ManifestEntry(BaseModel):
     wall_time_s: float | None = None
     error: str | None = None
     output_path: str | None = None
+
+    _redact_error = field_validator("error")(lambda cls, v: redact(v))
 
     @property
     def key(self) -> tuple[str, str, str, str, int]:

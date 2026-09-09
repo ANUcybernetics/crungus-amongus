@@ -131,6 +131,13 @@ release_date = 2024-10-03
 notes = "base FLUX 1.1 Pro; the archive had only the -ultra variant"
 
 [[models]]
+owner = "openai"
+name = "gpt-image-1"
+extra_inputs = { openai_api_key = "${OPENAI_API_KEY}" }
+release_date = 2025-04-23
+notes = "the first GPT Image; the archive had only 1.5 and 2. A passthrough listing: it wants the caller's own OpenAI key, so this bills to OpenAI rather than Replicate"
+
+[[models]]
 owner = "black-forest-labs"
 name = "flux-krea-dev"
 release_date = 2025-07-31

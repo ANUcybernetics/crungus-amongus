@@ -80,8 +80,3 @@ reason = "HTTP 410 on every prediction: Replicate no longer runs this version, t
 owner = "bytedance"
 name = "seedream-3"
 reason = "every prediction returns \"Service is temporarily unavailable (E004)\"; unchanged across two runs months apart"
-
-[[models]]
-owner = "openai"
-name = "gpt-image-1"
-reason = "passthrough listing: rejects every prediction with \"openai_api_key is required\", so it would bill to a separate OpenAI account. gpt-image-1.5 and gpt-image-2 need no key and already cover the line"

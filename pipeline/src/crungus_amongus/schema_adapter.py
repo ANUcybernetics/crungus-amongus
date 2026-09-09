@@ -10,7 +10,9 @@ length fields are set per model in the curated file. No confident prompt
 field → SchemaIncompatibleError; never guess-and-spend.
 """
 
+import os
 import random
+import re
 from typing import Any
 
 from .config import AUDIO_DURATION_S
@@ -19,6 +21,30 @@ from .registry import RegistryModel
 
 COUNT_FIELDS = ("num_outputs", "num_images", "number_of_images", "variations")
 SEED_MAX = 2**31 - 1
+# a curated extra input of the form ${VAR} is filled from the environment
+ENV_REFERENCE = re.compile(r"\$\{([A-Z][A-Z0-9_]*)\}")
+
+
+def resolve_env(value: Any, ref: str) -> Any:
+    """Fill a ${VAR} extra input from the environment.
+
+    A few models are passthroughs that want the caller's own provider key.
+    That key never goes in the tracked curated file: the file names the
+    variable, the value comes from the untracked mise [env] block. An unset
+    variable is a schema incompatibility rather than a prediction sent with a
+    literal "${VAR}" in it — never guess-and-spend.
+    """
+    if not isinstance(value, str):
+        return value
+    match = ENV_REFERENCE.fullmatch(value)
+    if match is None:
+        return value
+    resolved = os.environ.get(match[1])
+    if not resolved:
+        raise SchemaIncompatibleError(
+            f"{ref}: {match[1]} is not set in the environment"
+        )
+    return resolved
 
 
 def find_prompt_field(model: RegistryModel) -> str:
@@ -43,7 +69,9 @@ def build_input(model: RegistryModel, prompt: str) -> dict[str, Any]:
         payload["seed"] = random.randint(0, SEED_MAX)
     if model.modality == "audio" and "duration" in props:
         payload["duration"] = _clamp(AUDIO_DURATION_S, props["duration"])
-    payload.update(model.extra_inputs)
+    payload.update(
+        {k: resolve_env(v, model.ref) for k, v in model.extra_inputs.items()}
+    )
     return payload
 
 

@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-09T19:13:31.297193Z",
+  "fetched_at": "2026-09-09T22:13:16.041981Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -209,87 +209,6 @@
             "title": "Subject Reference",
             "format": "uri",
             "description": "An optional character reference image (human face) to use as the subject in the generated image(s)."
-          }
-        }
-      },
-      "prompt_field": null,
-      "extra_inputs": {},
-      "output_field": null,
-      "release_date": null,
-      "notes": null
-    },
-    {
-      "owner": "bytedance",
-      "name": "seedream-3",
-      "slug": "bytedance--seedream-3",
-      "source": "collection",
-      "modality": "image",
-      "description": "A text-to-image model with support for native high-resolution (2K) image generation",
-      "is_official": true,
-      "availability": "ok",
-      "version_id": "ed344813bc9f4996be6de4febd8b9c14c7849ad7b21ab047572e3620ee374ee7",
-      "version_created_at": "2025-11-10T17:29:34.687457Z",
-      "input_schema": {
-        "type": "object",
-        "title": "Input",
-        "required": [
-          "prompt"
-        ],
-        "properties": {
-          "seed": {
-            "type": "integer",
-            "title": "Seed",
-            "nullable": true,
-            "description": "Random seed. Set for reproducible generation"
-          },
-          "size": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/size"
-              }
-            ],
-            "default": "regular",
-            "x-order": 3,
-            "description": "Big images will have their longest dimension be 2048px. Small images will have their shortest dimension be 512px. Regular images will always be 1 megapixel. Ignored if aspect ratio is custom."
-          },
-          "width": {
-            "type": "integer",
-            "title": "Width",
-            "default": 2048,
-            "maximum": 2048,
-            "minimum": 512,
-            "description": "Image width"
-          },
-          "height": {
-            "type": "integer",
-            "title": "Height",
-            "default": 2048,
-            "maximum": 2048,
-            "minimum": 512,
-            "description": "Image height"
-          },
-          "prompt": {
-            "type": "string",
-            "title": "Prompt",
-            "description": "Text prompt for image generation"
-          },
-          "aspect_ratio": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/aspect_ratio"
-              }
-            ],
-            "default": "16:9",
-            "x-order": 2,
-            "description": "Image aspect ratio. Set to 'custom' to specify width and height."
-          },
-          "guidance_scale": {
-            "type": "number",
-            "title": "Guidance Scale",
-            "default": 2.5,
-            "maximum": 10,
-            "minimum": 1,
-            "description": "Prompt adherence. Higher = more literal."
           }
         }
       },
@@ -8923,53 +8842,6 @@
       "notes": "DeepFloyd IF, pixel-space diffusion"
     },
     {
-      "owner": "nerdyrodent",
-      "name": "vqgan-clip",
-      "slug": "nerdyrodent--vqgan-clip",
-      "source": "legacy",
-      "modality": "image",
-      "description": "Image Generation with VQGAN+CLIP",
-      "is_official": false,
-      "availability": "ok",
-      "version_id": "eae144b3ea325b889030f7919d0d1ca7b85be28ad496cf8c98f34f5440b8db32",
-      "version_created_at": "2021-11-07T23:03:58.772312Z",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "type": "string",
-            "format": "uri",
-            "default": null,
-            "x-order": 0,
-            "description": "Initial Image, optional. When the image is provided, the prompts will be used to create some 'style transfer' effect"
-          },
-          "prompts": {
-            "type": "string",
-            "default": "A cute, smiling, Nerdy Rodent",
-            "x-order": 1,
-            "description": "Prompts for generating images. Supports multiple prompts separated by pipe | "
-          },
-          "iterations": {
-            "type": "integer",
-            "default": 300,
-            "x-order": 2,
-            "description": "total iterations for generating images. Set to lower iterations when initial image is uploaded"
-          },
-          "display_frequency": {
-            "type": "integer",
-            "default": 20,
-            "x-order": 3,
-            "description": "display frequency for intermediate generated images"
-          }
-        }
-      },
-      "prompt_field": "prompts",
-      "extra_inputs": {},
-      "output_field": null,
-      "release_date": "2021-08-01",
-      "notes": "VQGAN+CLIP, the optimisation-loop era before diffusion; slow (each output is an optimisation run)"
-    },
-    {
       "owner": "nightmareai",
       "name": "disco-diffusion",
       "slug": "nightmareai--disco-diffusion",
@@ -10041,10 +9913,12 @@
         }
       },
       "prompt_field": null,
-      "extra_inputs": {},
+      "extra_inputs": {
+        "openai_api_key": "${OPENAI_API_KEY}"
+      },
       "output_field": null,
       "release_date": "2025-04-23",
-      "notes": "the first GPT Image; the archive had only 1.5 and 2"
+      "notes": "the first GPT Image; the archive had only 1.5 and 2. A passthrough listing: it wants the caller's own OpenAI key, so this bills to OpenAI rather than Replicate"
     },
     {
       "owner": "black-forest-labs",
