@@ -88,13 +88,6 @@ notes = "SDXL (in collection historically; keep pinned here regardless)"
 # Absent from Replicate's collection but still hosted, and the thin end of the
 # archive's timeline: the crungus story starts here.
 [[models]]
-owner = "nerdyrodent"
-name = "vqgan-clip"
-prompt_field = "prompts"
-release_date = 2021-08-01
-notes = "VQGAN+CLIP, the optimisation-loop era before diffusion; slow (each output is an optimisation run)"
-
-[[models]]
 owner = "nightmareai"
 name = "disco-diffusion"
 release_date = 2022-02-01
@@ -136,12 +129,6 @@ owner = "black-forest-labs"
 name = "flux-1.1-pro"
 release_date = 2024-10-03
 notes = "base FLUX 1.1 Pro; the archive had only the -ultra variant"
-
-[[models]]
-owner = "openai"
-name = "gpt-image-1"
-release_date = 2025-04-23
-notes = "the first GPT Image; the archive had only 1.5 and 2"
 
 [[models]]
 owner = "black-forest-labs"
