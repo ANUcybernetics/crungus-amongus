@@ -18,7 +18,7 @@ from pydantic import BaseModel
 
 from .config import Settings
 
-CLIP_MODEL = "ViT-B-32"
+CLIP_MODEL = "ViT-B-32-quickgelu"
 CLIP_PRETRAINED = "openai"
 BATCH_SIZE = 64
 CLAP_MODEL = "laion/clap-htsat-unfused"
