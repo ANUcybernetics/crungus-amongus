@@ -1,12 +1,56 @@
 import numpy as np
 
 from crungus_amongus.eigen import (
+    Pca,
     dequantise,
     pca,
     quantise,
     stability,
     supervised_direction,
 )
+
+
+def gram_pca(rows: np.ndarray, k: int) -> Pca:
+    """The exact Turk & Pentland decomposition that `pca` replaced.
+
+    Kept here as the reference the randomised SVD is pinned against: it is
+    unusable at corpus scale (a centred copy plus an N x N Gram matrix), but at
+    test size it is the ground truth.
+    """
+    n = rows.shape[0]
+    k = min(k, n - 1)
+    mean = rows.mean(axis=0)
+    centred = rows - mean
+    gram = (centred @ centred.T).astype(np.float64)
+    eigenvalues, eigenvectors = np.linalg.eigh(gram)
+    order = np.argsort(eigenvalues)[::-1][:k]
+    eigenvalues = np.clip(eigenvalues[order], 0, None)
+    u = eigenvectors[:, order].astype(np.float32)
+    singular = np.sqrt(eigenvalues).astype(np.float32)
+    components = (centred.T @ u).T / singular[:, None]
+    coefficients = u * singular
+    for j in range(k):
+        if coefficients[np.argmax(np.abs(coefficients[:, j])), j] < 0:
+            components[j] *= -1
+            coefficients[:, j] *= -1
+    return Pca(
+        mean=mean,
+        components=components,
+        coefficients=coefficients,
+        variance_ratio=(eigenvalues / float(np.trace(gram))).astype(np.float32),
+    )
+
+
+def assert_matches_gram(rows: np.ndarray, k: int) -> None:
+    reference = gram_pca(rows, k)
+    result = pca(rows, k)
+    # the sign convention is part of the contract, so these should agree
+    # outright rather than only up to sign
+    aligned = np.sum(result.components * reference.components, axis=1)
+    assert np.all(aligned > 0)
+    assert np.abs(np.abs(aligned) - 1).max() < 1e-4
+    assert np.abs(result.variance_ratio - reference.variance_ratio).max() < 1e-6
+    assert np.allclose(result.mean, reference.mean, atol=1e-6)
 
 
 def test_components_are_orthonormal_and_ordered() -> None:
@@ -95,3 +139,28 @@ def test_supervised_axis_survives_resampling_by_construction() -> None:
     assert np.allclose(
         gaps_full / gaps_full.sum(), gaps_resampled / gaps_resampled.sum(), atol=1e-5
     )
+
+
+def test_randomised_svd_matches_the_gram_decomposition_on_a_spectrum() -> None:
+    """The regime the archive is in: singular values that decay, so the top
+    components are identified and both implementations must find the same ones."""
+    rng = np.random.default_rng(11)
+    basis = np.linalg.qr(rng.normal(size=(800, 800)))[0]
+    decay = rng.normal(size=(300, 800)) * 0.85 ** np.arange(800)
+    assert_matches_gram((decay @ basis.T).astype(np.float32), 24)
+
+
+def test_randomised_svd_matches_the_gram_decomposition_on_a_full_sketch() -> None:
+    """When the sketch is as wide as the centred matrix's rank it spans the
+    whole range, so agreement holds even on a flat spectrum with no gaps."""
+    rng = np.random.default_rng(12)
+    assert_matches_gram(rng.normal(size=(40, 300)).astype(np.float32), 5)
+
+
+def test_variance_ratios_sum_over_a_block_boundary() -> None:
+    """Total variance is accumulated a block at a time; the blocking must not
+    show up in the answer."""
+    rng = np.random.default_rng(13)
+    rows = rng.normal(size=(2500, 40)).astype(np.float32)  # more rows than a block
+    result = pca(rows, 40)  # every component, so the shares must sum to one
+    assert np.isclose(result.variance_ratio.sum(), 1.0, atol=1e-4)

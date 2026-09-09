@@ -28,7 +28,7 @@ uv run crungus discover   # pin models from both collections + data/curated-*mod
 uv run crungus generate   # run predictions (spends money; see --dry-run, --modality, --max-predictions)
 uv run crungus optimize   # originals → AVIF (images) / Opus + AAC (audio); needs avifenc and ffmpeg
 uv run crungus analyze    # CLIP embeddings → consistency scores + atlas coords (images only)
-uv run crungus sprite     # atlas sprite sheet for the site
+uv run crungus sprite     # atlas sprite tiles for the site
 uv run crungus eigen      # pixel-space PCA → eigencrungi sheet + coefficients (names: data/eigen-names.toml)
 uv run crungus sync       # upload the optimized tree to the public bucket
 uv run crungus publish    # write site/src/data/models.json

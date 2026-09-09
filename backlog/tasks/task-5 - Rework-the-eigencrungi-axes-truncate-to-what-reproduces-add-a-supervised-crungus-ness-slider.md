@@ -3,10 +3,10 @@ id: TASK-5
 title: >-
   Rework the eigencrungi axes: truncate to what reproduces, add a supervised
   crungus-ness slider
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-09-09 07:45'
-updated_date: '2026-09-09 09:59'
+updated_date: '2026-09-09 10:00'
 labels:
   - pipeline
   - site

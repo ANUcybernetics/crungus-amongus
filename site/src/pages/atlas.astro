@@ -65,6 +65,8 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 />
 
 <script>
+  import { TileLoader, cellFinder, tileNames, type SpriteIndex } from "../lib/sprite";
+
   interface Point {
     key: string;
     x: number;
@@ -83,12 +85,15 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 
   const spriteIndex = (await (
     await fetch(`${payload.imageBase}/atlas/sprite.json`)
-  ).json()) as { cell_px: number; cols: number; keys: string[] };
-  const sprite = new Image();
-  sprite.src = `${payload.imageBase}/atlas/sprite.webp`;
-  await sprite.decode();
+  ).json()) as SpriteIndex;
+  // tiles arrive as the viewport asks for them; each one redraws what it fills in
+  const tiles = new TileLoader(
+    tileNames(spriteIndex),
+    `${payload.imageBase}/atlas`,
+    () => draw(),
+  );
 
-  const cellOf = new Map(spriteIndex.keys.map((key, i) => [key, i]));
+  const cellOf = cellFinder(spriteIndex);
   const yearIndex = new Map(payload.years.map((year, i) => [year, i]));
 
   // world space: [0, 1]² scaled to a square; the view is a scale + offset
@@ -128,22 +133,26 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
     context.clearRect(0, 0, width, height);
     const size = CELL_WORLD * scale;
     for (const point of payload.points) {
-      const cell = cellOf.get(point.key);
+      const cell = cellOf(point.key);
       if (cell === undefined) continue;
       const x = offsetX + point.x * WORLD * scale - size / 2;
       const y = offsetY + point.y * WORLD * scale - size / 2;
       if (x + size < 0 || y + size < 0 || x > width || y > height) continue;
-      context.drawImage(
-        sprite,
-        (cell % spriteIndex.cols) * spriteIndex.cell_px,
-        Math.floor(cell / spriteIndex.cols) * spriteIndex.cell_px,
-        spriteIndex.cell_px,
-        spriteIndex.cell_px,
-        x,
-        y,
-        size,
-        size,
-      );
+      // only tiles with something on screen are ever asked for
+      const sheet = tiles.get(cell.tile);
+      if (sheet !== undefined) {
+        context.drawImage(
+          sheet,
+          cell.x,
+          cell.y,
+          spriteIndex.cell_px,
+          spriteIndex.cell_px,
+          x,
+          y,
+          size,
+          size,
+        );
+      }
       context.strokeStyle =
         point === hovered ? "oklch(85% 0.13 75)" : yearColor(point.year);
       context.lineWidth = point === hovered ? 2 : 1;

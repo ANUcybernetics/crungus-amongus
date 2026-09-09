@@ -4,8 +4,15 @@ Every optimized image is centre-cropped, shrunk to SIDE×SIDE RGB and flattened
 to a row; the principal components of that matrix are the eigencrungi. Nothing
 aligns a crungus the way eyes and mouths align a face, so the leading
 components encode framing, palette and light before they encode a creature —
-which is the finding, not a bug. The decomposition uses the Turk & Pentland
-trick: eigenvectors of the small N×N Gram matrix, lifted back to pixel space.
+which is the finding, not a bug.
+
+The decomposition is a randomised SVD. Turk & Pentland's trick — eigenvectors
+of the small N×N Gram matrix — is the right algorithm only while N is much
+smaller than D, and at corpus scale it stops being: a centred copy of the rows
+plus an N×N Gram matrix runs to several gigabytes at N = 16 000. The randomised
+range finder never materialises either, so peak memory is the rows themselves
+plus a few narrow blocks, and the top components agree with the exact
+decomposition to about 1e-6 on this archive.
 
 Most of the components are sampling noise, so the sheet ships a reproducibility
 score alongside each one. `stability` splits the archive into disjoint halves,
@@ -64,6 +71,15 @@ STABILITY_SPLITS = 8
 STABILITY_THRESHOLD = 0.7
 # the supervised axis: images projected onto this prompt's CLIP text embedding
 TEXT_PROMPT = "crungus"
+# randomised SVD: extra sampled directions and power iterations. Generous on
+# both, because the archive's spectrum is nearly flat past the leading few and
+# a thin sketch there returns a rotation of the true components rather than the
+# components. These values pin the top COMPONENTS to the exact decomposition to
+# about 1e-6, for a couple of seconds at the current corpus size.
+OVERSAMPLING = 32
+POWER_ITERATIONS = 8
+# rows per block when accumulating total variance, bounding the temporary
+VARIANCE_BLOCK = 1024
 
 
 @dataclass
@@ -74,34 +90,59 @@ class Pca:
     variance_ratio: np.ndarray  # (k,), share of total variance
 
 
-def pca(rows: np.ndarray, k: int) -> Pca:
-    """Top-k principal components of rows (N×D) via the N×N Gram matrix.
+def total_variance(rows: np.ndarray, mean: np.ndarray) -> float:
+    """Σ‖row − mean‖², accumulated a block at a time so nothing is copied whole."""
+    total = 0.0
+    for start in range(0, len(rows), VARIANCE_BLOCK):
+        block = rows[start : start + VARIANCE_BLOCK] - mean
+        total += float(np.einsum("ij,ij->", block, block, dtype=np.float64))
+    return total
 
-    Each component's sign is fixed so that the image projecting furthest
-    along it projects positively — the "+" end is the archive's extreme.
+
+def pca(rows: np.ndarray, k: int) -> Pca:
+    """Top-k principal components of rows (N×D) by randomised SVD.
+
+    The centred matrix is never formed: every product with it is written in
+    terms of the rows and their mean, so the working set is the rows plus a few
+    N×ℓ and D×ℓ blocks. The sketch is seeded fixed, so a build is reproducible.
+
+    Each component's sign is fixed so that the image projecting furthest along
+    it projects positively — the "+" end is the archive's extreme.
     """
-    n = rows.shape[0]
+    n, d = rows.shape
     k = min(k, n - 1)
     mean = rows.mean(axis=0)
-    centred = rows - mean
-    gram = (centred @ centred.T).astype(np.float64)
-    eigenvalues, eigenvectors = np.linalg.eigh(gram)
-    order = np.argsort(eigenvalues)[::-1][:k]
-    eigenvalues = np.clip(eigenvalues[order], 0, None)
-    u = eigenvectors[:, order].astype(np.float32)
-    singular = np.sqrt(eigenvalues).astype(np.float32)
-    components = (centred.T @ u).T / singular[:, None]
-    coefficients = u * singular
+    # ℓ cannot usefully exceed the centred matrix's rank, which is n − 1
+    width = min(k + OVERSAMPLING, n - 1, d)
+    rng = np.random.default_rng(0)
+
+    def forward(x: np.ndarray) -> np.ndarray:
+        """(rows − mean) @ x"""
+        return rows @ x - mean @ x
+
+    def backward(x: np.ndarray) -> np.ndarray:
+        """(rows − mean).T @ x"""
+        return rows.T @ x - np.outer(mean, x.sum(axis=0))
+
+    sketch = rng.standard_normal((d, width)).astype(rows.dtype)
+    basis, _ = np.linalg.qr(forward(sketch))
+    for _ in range(POWER_ITERATIONS):
+        rotated, _ = np.linalg.qr(backward(basis))
+        basis, _ = np.linalg.qr(forward(rotated))
+    left, singular, right = np.linalg.svd(backward(basis).T, full_matrices=False)
+
+    components = right[:k]
+    coefficients = (basis @ left)[:, :k] * singular[:k]
     for j in range(k):
         if coefficients[np.argmax(np.abs(coefficients[:, j])), j] < 0:
             components[j] *= -1
             coefficients[:, j] *= -1
-    total = float(np.trace(gram))
+    eigenvalues = singular[:k].astype(np.float64) ** 2
     return Pca(
         mean=mean,
         components=components,
         coefficients=coefficients,
-        variance_ratio=(eigenvalues / total).astype(np.float32),
+        variance_ratio=(eigenvalues / total_variance(rows, mean)).astype(np.float32),
     )
 
 

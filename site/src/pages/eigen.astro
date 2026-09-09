@@ -118,6 +118,7 @@ const imageBase = siteData.image_base_url;
     type EigenData,
     type Slider,
   } from "../lib/eigen";
+  import { TileLoader, cellFinder, tileNames, type SpriteIndex } from "../lib/sprite";
 
   const config = JSON.parse(document.getElementById("eigen-config")!.textContent!) as {
     labels: Record<string, string>;
@@ -142,15 +143,14 @@ const imageBase = siteData.image_base_url;
     return image;
   }
 
-  const [data, sheet, spriteIndex, sprite] = await Promise.all([
+  const [data, sheet, spriteIndex] = await Promise.all([
     fetch(`${config.imageBase}/eigen/eigen.json`).then(
       (r) => r.json() as Promise<EigenData>,
     ),
     loadImage(`${config.imageBase}/eigen/eigen.webp`),
     fetch(`${config.imageBase}/atlas/sprite.json`).then(
-      (r) => r.json() as Promise<{ cell_px: number; cols: number; keys: string[] }>,
+      (r) => r.json() as Promise<SpriteIndex>,
     ),
-    loadImage(`${config.imageBase}/atlas/sprite.webp`),
   ]);
 
   const axes = sliderAxes(data);
@@ -172,7 +172,18 @@ const imageBase = siteData.image_base_url;
   const weights = axes.map(() => 0);
   const inputs: HTMLInputElement[] = [];
   const outputs: HTMLOutputElement[] = [];
-  const cellOf = new Map(spriteIndex.keys.map((key, i) => [key, i]));
+  const cellOf = cellFinder(spriteIndex);
+  // exemplars are scattered across the corpus, so their tiles arrive as the
+  // thumbnails ask for them and each one paints itself when its tile lands
+  const pendingThumbnails = new Map<number, (() => void)[]>();
+  const tiles = new TileLoader(
+    tileNames(spriteIndex),
+    `${config.imageBase}/atlas`,
+    (loaded) => {
+      for (const paint of pendingThumbnails.get(loaded) ?? []) paint();
+      pendingThumbnails.delete(loaded);
+    },
+  );
   const keys = Object.keys(data.coefficients);
   const threshold = data.stability_threshold ?? 0.7;
 
@@ -222,26 +233,39 @@ const imageBase = siteData.image_base_url;
     const canvas = document.createElement("canvas");
     canvas.width = spriteIndex.cell_px;
     canvas.height = spriteIndex.cell_px;
-    const cell = cellOf.get(key);
+    const cell = cellOf(key);
     if (cell !== undefined) {
-      canvas.getContext("2d")!.drawImage(
-        sprite,
-        (cell % spriteIndex.cols) * spriteIndex.cell_px,
-        Math.floor(cell / spriteIndex.cols) * spriteIndex.cell_px,
-        spriteIndex.cell_px,
-        spriteIndex.cell_px,
-        0,
-        0,
-        spriteIndex.cell_px,
-        spriteIndex.cell_px,
-      );
+      const paint = () => {
+        const spriteTile = tiles.get(cell.tile);
+        if (spriteTile === undefined) return false;
+        canvas
+          .getContext("2d")!
+          .drawImage(
+            spriteTile,
+            cell.x,
+            cell.y,
+            spriteIndex.cell_px,
+            spriteIndex.cell_px,
+            0,
+            0,
+            spriteIndex.cell_px,
+            spriteIndex.cell_px,
+          );
+        return true;
+      };
+      if (!paint()) {
+        const waiting = pendingThumbnails.get(cell.tile) ?? [];
+        waiting.push(paint);
+        pendingThumbnails.set(cell.tile, waiting);
+      }
     }
     button.append(canvas);
     button.addEventListener("click", () => showImage(key));
     return button;
   }
 
-  function tile(index: number): HTMLCanvasElement {
+  /** One tile of the eigencrungi sheet, as its own canvas beside a slider. */
+  function sheetTile(index: number): HTMLCanvasElement {
     const canvas = document.createElement("canvas");
     canvas.width = side;
     canvas.height = side;
@@ -321,7 +345,7 @@ const imageBase = siteData.image_base_url;
     controls.className = "row";
     controls.append(negatives, input, positives);
 
-    item.append(tile(slider.axis.tile), head, controls);
+    item.append(sheetTile(slider.axis.tile), head, controls);
     inputs.push(input);
     outputs.push(output);
     return item;

@@ -1,9 +1,10 @@
 ---
 id: TASK-3
 title: Scale the eigen decomposition and atlas sprite for a 10x image corpus
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-09-09 07:44'
+updated_date: '2026-09-09 10:13'
 labels:
   - pipeline
   - site
@@ -47,8 +48,8 @@ This is the prerequisite for the corpus regeneration: land it first so the pipel
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 eigen.pca uses a randomised SVD and peaks under 4 GB at N=16000, SIDE=128, with a test pinning it against the current Gram implementation to within 1e-4 on components and 1e-6 on variance ratios
-- [ ] #2 build_sprite emits tiles of at most 4096x4096 px with sprite.json carrying a tiles array, and a test shows a synthetic 20000-key corpus resolves every key to exactly one tile
-- [ ] #3 the atlas page loads sprite tiles lazily and pan/zoom shows no regression at the current corpus size under an agent-browser smoke test
-- [ ] #4 all pipeline and site checks are green
+- [x] #1 eigen.pca uses a randomised SVD and peaks under 4 GB at N=16000, SIDE=128, with a test pinning it against the current Gram implementation to within 1e-4 on components and 1e-6 on variance ratios
+- [x] #2 build_sprite emits tiles of at most 4096x4096 px with sprite.json carrying a tiles array, and a test shows a synthetic 20000-key corpus resolves every key to exactly one tile
+- [x] #3 the atlas page loads sprite tiles lazily and pan/zoom shows no regression at the current corpus size under an agent-browser smoke test
+- [x] #4 all pipeline and site checks are green
 <!-- AC:END -->
