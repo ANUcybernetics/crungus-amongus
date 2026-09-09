@@ -15,10 +15,21 @@ export const clipRefSchema = z.object({
   m4a: z.string(), // "<model-slug>/<prompt-slug>/<index>.m4a"
 });
 
+// what happened when the model was asked, from the manifest: the record of the
+// asking, not of what survived. A model that refuses to draw a crungus is a
+// finding about the model, so the refusals are published rather than dropped.
+export const attemptsSchema = z.object({
+  total: z.number().int(),
+  succeeded: z.number().int(),
+  refused: z.number().int(), // the provider's own classifier rejected the output
+  failed: z.number().int(), // everything else terminal
+});
+
 export const promptOutputsSchema = z.object({
   prompt: z.string(),
   prompt_slug: z.string(),
   consistency: z.number().nullable(),
+  attempts: attemptsSchema,
   images: z.array(imageRefSchema), // image models
   clips: z.array(clipRefSchema), // audio models
 });
@@ -48,6 +59,7 @@ export const siteDataSchema = z.object({
 export type Modality = z.infer<typeof modalitySchema>;
 export type ImageRef = z.infer<typeof imageRefSchema>;
 export type ClipRef = z.infer<typeof clipRefSchema>;
+export type Attempts = z.infer<typeof attemptsSchema>;
 export type PromptOutputs = z.infer<typeof promptOutputsSchema>;
 export type ModelEntry = z.infer<typeof modelEntrySchema>;
 export type SiteData = z.infer<typeof siteDataSchema>;

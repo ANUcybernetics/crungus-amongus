@@ -6,6 +6,7 @@ whole pipeline.
 """
 
 import re
+from collections import Counter, defaultdict
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Literal
@@ -34,10 +35,26 @@ class ClipRef(BaseModel):
     m4a: str  # "<slug>/<prompt_slug>/<index>.m4a"
 
 
+class Attempts(BaseModel):
+    """What happened when this model was asked, straight from the manifest.
+
+    The record of the asking, not of what survived: a model that will not draw
+    a crungus is a finding about the model, so the refusals are published
+    rather than quietly dropped. Counted for the model's currently pinned
+    version only, since a version change invalidates earlier work.
+    """
+
+    total: int
+    succeeded: int
+    refused: int  # the provider's own classifier rejected the output
+    failed: int  # everything else terminal: errors, timeouts, bad schemas
+
+
 class PromptOutputs(BaseModel):
     prompt: str
     prompt_slug: str
     consistency: float | None = None
+    attempts: Attempts
     images: list[ImageRef]  # image models
     clips: list[ClipRef]  # audio models
 
@@ -64,11 +81,22 @@ class SiteData(BaseModel):
     models: list[ModelEntry]
 
 
+def attempt_counts(
+    manifest: dict[tuple[str, str, str, str, int], ManifestEntry],
+) -> dict[tuple[str, str, str, str], Counter[str]]:
+    """Terminal statuses grouped by (owner, name, version, prompt slug)."""
+    counts: dict[tuple[str, str, str, str], Counter[str]] = defaultdict(Counter)
+    for (owner, name, version, prompt_slug, _), entry in manifest.items():
+        counts[(owner, name, version, prompt_slug)][entry.status] += 1
+    return counts
+
+
 def build_site_data(registry: Registry, settings: Settings) -> SiteData:
     manifest = load_manifest(settings.manifest_path)
+    counts = attempt_counts(manifest)
     analysis = load_analysis(settings)
     models = [
-        _model_entry(model, manifest, analysis, settings) for model in registry.models
+        _model_entry(model, counts, analysis, settings) for model in registry.models
     ]
     models.sort(key=lambda m: (m.release_date or date.max, m.slug))
     return SiteData(
@@ -135,7 +163,7 @@ def export_site_data(registry: Registry, settings: Settings, out: Path) -> SiteD
 
 def _model_entry(
     model: RegistryModel,
-    manifest: dict[tuple[str, str, str, str, int], ManifestEntry],
+    counts: dict[tuple[str, str, str, str], Counter[str]],
     analysis: Analysis | None,
     settings: Settings,
 ) -> ModelEntry:
@@ -162,11 +190,23 @@ def _model_entry(
             if analysis
             else None
         )
+        tally = counts.get(
+            (model.owner, model.name, model.version_id or "", prompt_slug), Counter()
+        )
+        refused = tally["nsfw_blocked"]
+        succeeded = tally["succeeded"]
+        total = sum(tally.values())
         prompts.append(
             PromptOutputs(
                 prompt=prompt,
                 prompt_slug=prompt_slug,
                 consistency=consistency,
+                attempts=Attempts(
+                    total=total,
+                    succeeded=succeeded,
+                    refused=refused,
+                    failed=total - succeeded - refused,
+                ),
                 images=images,
                 clips=clips,
             )
@@ -183,10 +223,13 @@ def _model_entry(
     elif total > 0:
         status = "partial"
     else:
+        # every version's rows, not just the pinned one: a model that only ever
+        # failed under an older pin has still been asked
         manifest_statuses = {
-            e.status
-            for e in manifest.values()
-            if e.owner == model.owner and e.name == model.name
+            status
+            for (owner, name, _, _), tally in counts.items()
+            if owner == model.owner and name == model.name
+            for status in tally
         }
         if not manifest_statuses:
             status = "pending"  # batch has not reached this model yet

@@ -16,7 +16,13 @@ from .exceptions import (
     RetryablePredictionError,
     SchemaIncompatibleError,
 )
-from .manifest import PERMANENT_STATUSES, ManifestEntry, append_entry, load_manifest
+from .manifest import (
+    PERMANENT_STATUSES,
+    REROLLABLE_STATUSES,
+    ManifestEntry,
+    append_entry,
+    load_manifest,
+)
 from .output_normalizer import output_urls, url_extension
 from .registry import Registry, RegistryModel
 from .replicate_client import ReplicateClient, download
@@ -70,7 +76,7 @@ def plan_work(
                 if (
                     prior is not None
                     and prior.status in PERMANENT_STATUSES
-                    and not (retry_failed and prior.status == "failed_permanent")
+                    and not (retry_failed and prior.status in REROLLABLE_STATUSES)
                 ):
                     continue
                 items.append(WorkItem(model, prompt_slug, prompt, index))

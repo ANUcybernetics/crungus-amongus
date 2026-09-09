@@ -101,3 +101,39 @@ def test_plan_work_uses_the_modality_prompt_set(tmp_path: Path) -> None:
     assert {i.prompt_slug for i in items} == set(PROMPTS["audio"])
     assert len(items) == len(PROMPTS["audio"]) * OUTPUTS_PER_PROMPT["audio"]
     assert plan_work(registry, settings, modality="image") == []
+
+
+def test_retry_failed_re_rolls_nsfw_blocks(tmp_path: Path) -> None:
+    """An NSFW block judges the output, not the prompt, so a fresh seed may pass."""
+    settings = make_settings(tmp_path)
+    registry = make_registry()
+    for index, status in (
+        (0, "nsfw_blocked"),
+        (1, "failed_permanent"),
+        (2, "succeeded"),
+    ):
+        append_entry(settings.manifest_path, entry(status, index=index))
+
+    without = {(i.prompt_slug, i.image_index) for i in plan_work(registry, settings)}
+    assert ("crungus", 0) not in without
+    assert ("crungus", 1) not in without
+
+    with_retry = {
+        (i.prompt_slug, i.image_index)
+        for i in plan_work(registry, settings, retry_failed=True)
+    }
+    assert ("crungus", 0) in with_retry  # the NSFW block is re-rolled
+    assert ("crungus", 1) in with_retry
+    assert ("crungus", 2) not in with_retry  # a success is never re-spent
+
+
+def test_retry_failed_leaves_schema_incompatible_alone(tmp_path: Path) -> None:
+    """A missing prompt field never resolves itself; re-rolling it only spends."""
+    settings = make_settings(tmp_path)
+    registry = make_registry()
+    append_entry(settings.manifest_path, entry("schema_incompatible"))
+    planned = {
+        (i.prompt_slug, i.image_index)
+        for i in plan_work(registry, settings, retry_failed=True)
+    }
+    assert ("crungus", 0) not in planned

@@ -80,6 +80,21 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       have a crungus?</em>
     </p>
 
+    <h2>Refusals</h2>
+    <p>
+      Not every ask comes back as a picture. Some models hand back a safety
+      block instead, and the model pages report that as a refusal rate: the
+      share of asks whose output the provider's own classifier rejected. It is
+      counted from the record of asking, not from what survived, because a
+      model that will not draw a crungus is telling you something about the
+      model. The refusals cluster hard: the FLUX 2 family blocks between a
+      quarter and nearly two thirds of the time, while most models never block
+      at all. Nothing in the prompt changed — it is the word <em>crungus</em>
+      and whatever the model made of it. The block is on the picture, not the
+      prompt, so the same model and the same word succeed on a different draw;
+      that is why re-asking works and why the counts are worth publishing.
+    </p>
+
     <h2>The atlas</h2>
     <p>
       The atlas embeds every image in the archive with CLIP and projects the

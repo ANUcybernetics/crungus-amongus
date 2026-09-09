@@ -24,6 +24,12 @@ type Status = Literal[
 PERMANENT_STATUSES: frozenset[str] = frozenset(
     {"succeeded", "nsfw_blocked", "schema_incompatible", "failed_permanent"}
 )
+# ...of which these can come out differently on a fresh sample, so --retry-failed
+# re-rolls them. An NSFW block is the provider's classifier judging the *output*,
+# not a refusal of the prompt: the same prompt and model routinely succeed on a
+# different seed. A schema incompatibility never resolves itself, and a success
+# is not re-spent.
+REROLLABLE_STATUSES: frozenset[str] = frozenset({"failed_permanent", "nsfw_blocked"})
 
 
 class ManifestEntry(BaseModel):

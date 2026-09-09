@@ -42,6 +42,22 @@ export function crungusness(model: ModelEntry): number | null {
   return scores.length ? Math.max(...scores) : null;
 }
 
+/** Share of asks the provider's classifier refused, or null if never asked. */
+export function refusalRate(prompt: PromptOutputs): number | null {
+  return prompt.attempts.total === 0 ? null : prompt.attempts.refused / prompt.attempts.total;
+}
+
+/** Refusals across every prompt, for a model-level summary. */
+export function modelRefusals(model: ModelEntry): { refused: number; total: number } {
+  return model.prompts.reduce(
+    (sum, p) => ({
+      refused: sum.refused + p.attempts.refused,
+      total: sum.total + p.attempts.total,
+    }),
+    { refused: 0, total: 0 },
+  );
+}
+
 export function releaseYear(model: ModelEntry): string {
   return model.release_date?.slice(0, 4) ?? "undated";
 }

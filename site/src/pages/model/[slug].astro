@@ -6,7 +6,7 @@ import ConsistencyMeter from "../../components/ConsistencyMeter.astro";
 import Base from "../../layouts/Base.astro";
 import { siteData } from "../../lib/data";
 import { bucketUrl, localImage } from "../../lib/images";
-import { generatedModels, releaseYear } from "../../lib/models";
+import { generatedModels, refusalRate, releaseYear } from "../../lib/models";
 import { path } from "../../lib/paths";
 
 export function getStaticPaths() {
@@ -49,6 +49,16 @@ const verb = audio ? "played" : "rendered";
               </h2>
               <ConsistencyMeter value={prompt.consistency} modality={model.modality} />
             </div>
+            {
+              // only worth saying when it happened; most models refuse nothing
+              (refusalRate(prompt) ?? 0) > 0 && (
+                <p class="mono refusals">
+                  <b>{Math.round(refusalRate(prompt)! * 100)}%</b> refused —{" "}
+                  {prompt.attempts.refused} of {prompt.attempts.total} asks came back
+                  blocked by the provider's safety filter rather than as a picture.
+                </p>
+              )
+            }
             {audio ? (
               <ol class="clips">
                 {prompt.clips.map((clip, i) => (
@@ -171,6 +181,20 @@ const verb = audio ? "played" : "rendered";
     font-size: 1rem;
     font-weight: 500;
     margin: 0;
+  }
+
+  .refusals {
+    margin: 0 0 1rem;
+    padding: 0.5rem 0.75rem;
+    border-inline-start: 3px solid var(--accent);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .refusals b {
+    color: var(--accent-bright);
+    font-weight: 500;
   }
 
   .grid {

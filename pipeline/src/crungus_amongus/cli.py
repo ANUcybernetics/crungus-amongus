@@ -97,7 +97,9 @@ def generate(
     timeout: float = typer.Option(300.0, help="per-prediction timeout (s)"),
     retries: int = typer.Option(2, help="retries per prediction on transient failure"),
     retry_failed: bool = typer.Option(
-        False, help="also retry predictions previously marked failed_permanent"
+        False,
+        help="also re-roll predictions previously marked failed_permanent or "
+        "nsfw_blocked (both can come out differently on a fresh sample)",
     ),
     max_predictions: int = typer.Option(
         None, "--max-predictions", help="soft cap on predictions this run"
