@@ -143,7 +143,7 @@ def _model_entry(
     for prompt_slug, prompt in PROMPTS[model.modality].items():
         images: list[ImageRef] = []
         clips: list[ClipRef] = []
-        for index in range(OUTPUTS_PER_PROMPT):
+        for index in range(OUTPUTS_PER_PROMPT[model.modality]):
             stem = f"{model.slug}/{prompt_slug}/{index}"
             optimized = settings.optimized_dir / stem
             if model.modality == "audio":
@@ -173,7 +173,7 @@ def _model_entry(
         )
 
     total = sum(len(p.images) + len(p.clips) for p in prompts)
-    expected = len(PROMPTS[model.modality]) * OUTPUTS_PER_PROMPT
+    expected = len(PROMPTS[model.modality]) * OUTPUTS_PER_PROMPT[model.modality]
     if model.availability != "ok":
         status: Literal[
             "ok", "partial", "failed", "incompatible", "unavailable", "pending"

@@ -33,7 +33,13 @@ PROMPTS: dict[Modality, dict[str, str]] = {
         "the-sound-of-a-crungus": "the sound of a crungus",
     },
 }
-OUTPUTS_PER_PROMPT = 10
+# samples per (model, prompt). Images went to 100 because at 10 the consistency
+# scores are mostly noise (jackknife SE 0.023 against a between-model spread of
+# 0.106) and 98% of adjacent pairs in the leaderboard sit within one standard
+# error; at 100 the SE falls to about 0.007. Audio stays at 10: nothing
+# downstream needs the precision, and 100 twenty-second clips per model is a
+# far heavier job for no gain.
+OUTPUTS_PER_PROMPT: dict[Modality, int] = {"image": 100, "audio": 10}
 # clip length requested from audio models that expose a duration input
 AUDIO_DURATION_S = 20
 # flat per-output estimates for --dry-run (the dashboard is billing truth)

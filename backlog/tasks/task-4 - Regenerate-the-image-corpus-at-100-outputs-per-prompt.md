@@ -4,6 +4,7 @@ title: Regenerate the image corpus at 100 outputs per prompt
 status: To Do
 assignee: []
 created_date: '2026-09-09 07:44'
+updated_date: '2026-09-09 10:17'
 labels:
   - pipeline
 dependencies:
@@ -60,11 +61,62 @@ A mixed corpus is the real methodology violation — scores at n=10 and n=100 ha
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 every one of the 83 image models is confirmed to still resolve at its pinned version before any generation runs, with the result recorded in the task notes
-- [ ] #2 OUTPUTS_PER_PROMPT is per-modality: 100 for image, 10 for audio, with the prompt sets themselves unchanged
-- [ ] #3 crungus generate was dry-run first and the estimate reported, and no model version pin was bumped
+- [x] #1 every one of the 83 image models is confirmed to still resolve at its pinned version before any generation runs, with the result recorded in the task notes
+- [x] #2 OUTPUTS_PER_PROMPT is per-modality: 100 for image, 10 for audio, with the prompt sets themselves unchanged
+- [x] #3 crungus generate was dry-run first and the estimate reported, and no model version pin was bumped
 - [ ] #4 every (image model, prompt) pair has exactly 100 optimized images, with no pair left short and manifest.jsonl only appended to
 - [ ] #5 optimize, analyze, sprite, eigen, sync and publish have all been re-run over the larger corpus and the site builds from it
 - [ ] #6 the recomputed consistency jackknife SE and top-24 subspace overlap are reported in the notes
 - [ ] #7 all pipeline and site checks are green
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## Pre-flight, 2026-09-09 — before any spend
+
+### Version pins: all resolve
+
+Read-only check against the Replicate API (GETs only, no predictions).
+Community models were checked at `/models/{ref}/versions/{version_id}`;
+official models are routed by Replicate and ignore version pinning (see
+`replicate_client._create`), so those were checked at `/models/{ref}`.
+
+**91 of 91 image models pinned `ok` in `state/models.json` returned 200. None
+is delisted.** 83 of those have images in the archive; the other 8 are pinned
+but have never produced one: borisdayma/dalle-mini, bytedance/seedream-3,
+google/imagen-3, google/imagen-3-fast, google/imagen-4, google/imagen-4-fast,
+google/imagen-4-ultra, quiverai/arrow-1.1. No pin was bumped and
+`discover --refresh-versions` was not run.
+
+### Dry run
+
+`crungus generate --modality image --dry-run`:
+
+    pending: 16400 predictions across 91 models (~$492.00)
+
+That estimate is the flat $0.03/output in `ASSUMED_COST`, not per-model
+pricing; the real figure will skew higher because the expensive models
+(imagen-4-ultra, flux-2-max, nano-banana-pro, recraft) count the same as
+flux-schnell. The dashboard is billing truth.
+
+1460 of the 16400 go to the 8 models that have never succeeded. The per-model
+probe wave in `run_batch` stops each after about 4 attempts, so the real waste
+is roughly 32 predictions.
+
+### The corpus is already not uniform
+
+The premise that today's archive is a clean 10 per pair does not hold, so
+AC #4 as written ("exactly 100, no pair short") is not reachable:
+
+- 165 (model, prompt) pairs have images, not 166 —
+  quiverai/arrow-1.1-max × "a picture of a crungus" has none.
+- 16 pairs are already short of 10: 1594 images against 1660 expected.
+- The shortfall is 249 permanent failures, 35 NSFW blocks and 24 retryable
+  failures. The NSFW blocks are concentrated in the flux-2 family
+  (flux-2-max 13, flux-2-pro 9, flux-2-flex 6) and are the model refusing the
+  prompt, so scaling to 100 will scale the refusals too.
+
+Scaling to 100 per prompt therefore lands a corpus that is uniform in what was
+*asked* but not in what came back. Ben's call.
+<!-- SECTION:NOTES:END -->

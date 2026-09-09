@@ -64,7 +64,7 @@ def plan_work(
         for prompt_slug, prompt in PROMPTS[model.modality].items():
             if prompt_filter and prompt_slug != prompt_filter:
                 continue
-            for index in range(OUTPUTS_PER_PROMPT):
+            for index in range(OUTPUTS_PER_PROMPT[model.modality]):
                 key = (model.owner, model.name, model.version_id, prompt_slug, index)
                 prior = manifest.get(key)
                 if (
