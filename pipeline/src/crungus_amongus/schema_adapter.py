@@ -21,6 +21,15 @@ from .registry import RegistryModel
 
 COUNT_FIELDS = ("num_outputs", "num_images", "number_of_images", "variations")
 SEED_MAX = 2**31 - 1
+SAFETY_FIELD = re.compile(
+    r"safety|nsfw|moderation|content_filter|censor", re.IGNORECASE
+)
+# the most permissive option where a provider offers a named choice rather than
+# a boolean or a range; a field not listed here is left alone rather than guessed
+PERMISSIVE_CHOICE = {
+    "moderation": "low",
+    "safety_filter_level": "block_only_high",
+}
 # a curated extra input of the form ${VAR} is filled from the environment
 ENV_REFERENCE = re.compile(r"\$\{([A-Z][A-Z0-9_]*)\}")
 
@@ -59,6 +68,30 @@ def find_prompt_field(model: RegistryModel) -> str:
     )
 
 
+def relax_safety(props: dict[str, Any]) -> dict[str, Any]:
+    """Every safety control the model exposes, set as permissive as it goes.
+
+    The archive is a record of what a model draws, not of what its host will
+    show. Leaving these at their defaults corrupts the corpus in two ways: a
+    loud refusal costs a sample, and a silent one is worse — Replicate's
+    latent-consistency-model returned sixteen pure-black frames that the
+    manifest recorded as successes. Applied wherever a control exists; the
+    59 models without one are simply asked as they are.
+    """
+    payload: dict[str, Any] = {}
+    for field, spec in props.items():
+        if not SAFETY_FIELD.search(field):
+            continue
+        if spec.get("type") == "boolean" or isinstance(spec.get("default"), bool):
+            # disable_safety_checker → on, enable_safety_checker → off
+            payload[field] = field.startswith("disable")
+        elif spec.get("maximum") is not None:
+            payload[field] = spec["maximum"]
+        elif field in PERMISSIVE_CHOICE:
+            payload[field] = PERMISSIVE_CHOICE[field]
+    return payload
+
+
 def build_input(model: RegistryModel, prompt: str) -> dict[str, Any]:
     payload: dict[str, Any] = {find_prompt_field(model): prompt}
     props: dict[str, Any] = (model.input_schema or {}).get("properties", {})
@@ -67,6 +100,7 @@ def build_input(model: RegistryModel, prompt: str) -> dict[str, Any]:
             payload[field] = 1
     if "seed" in props:
         payload["seed"] = random.randint(0, SEED_MAX)
+    payload.update(relax_safety(props))
     if model.modality == "audio" and "duration" in props:
         payload["duration"] = _clamp(AUDIO_DURATION_S, props["duration"])
     payload.update(

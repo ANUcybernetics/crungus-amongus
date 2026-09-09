@@ -137,3 +137,28 @@ def test_retry_failed_leaves_schema_incompatible_alone(tmp_path: Path) -> None:
         for i in plan_work(registry, settings, retry_failed=True)
     }
     assert ("crungus", 0) not in planned
+
+
+def test_force_replans_work_the_manifest_calls_done(tmp_path: Path) -> None:
+    """A changed input with an unchanged version pin needs a way back in."""
+    settings = make_settings(tmp_path)
+    registry = make_registry()
+    for index in range(3):
+        append_entry(settings.manifest_path, entry("succeeded", index=index))
+
+    planned = {(i.prompt_slug, i.image_index) for i in plan_work(registry, settings)}
+    assert not {("crungus", 0), ("crungus", 1), ("crungus", 2)} & planned
+    forced = {
+        (i.prompt_slug, i.image_index)
+        for i in plan_work(registry, settings, force=True)
+    }
+    assert {("crungus", 0), ("crungus", 1), ("crungus", 2)} <= forced
+
+
+def test_force_does_not_edit_the_manifest(tmp_path: Path) -> None:
+    """Append-only: re-running rewrites nothing, the later row simply wins."""
+    settings = make_settings(tmp_path)
+    append_entry(settings.manifest_path, entry("succeeded"))
+    before = settings.manifest_path.read_text()
+    plan_work(make_registry(), settings, force=True)
+    assert settings.manifest_path.read_text() == before

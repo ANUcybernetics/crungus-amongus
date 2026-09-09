@@ -101,6 +101,12 @@ def generate(
         help="also re-roll predictions previously marked failed_permanent or "
         "nsfw_blocked (both can come out differently on a fresh sample)",
     ),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        help="re-run work the manifest already calls done (for when the inputs "
+        "changed but the pinned version did not); overwrites its outputs",
+    ),
     max_predictions: int = typer.Option(
         None, "--max-predictions", help="soft cap on predictions this run"
     ),
@@ -129,6 +135,7 @@ def generate(
         prompt_filter=prompt,
         modality=cast(Modality | None, modality),
         retry_failed=retry_failed,
+        force=force,
     )
     capped = items[:max_predictions] if max_predictions is not None else items
     model_count = len({i.model.ref for i in capped})

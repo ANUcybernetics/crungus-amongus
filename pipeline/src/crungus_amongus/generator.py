@@ -53,8 +53,16 @@ def plan_work(
     prompt_filter: str | None = None,
     modality: Modality | None = None,
     retry_failed: bool = False,
+    force: bool = False,
 ) -> list[WorkItem]:
-    """Everything not yet in a permanent state, grouped by model."""
+    """Everything not yet in a permanent state, grouped by model.
+
+    `force` re-plans work the manifest already calls done, for when the
+    experiment changed but the pinned version did not — the safety settings in
+    schema_adapter.relax_safety being the case that needed it. The manifest
+    stays append-only: the new rows simply win, since the effective state is
+    the last line per key.
+    """
     manifest = load_manifest(settings.manifest_path)
     items: list[WorkItem] = []
     for model in registry.models:
@@ -74,7 +82,8 @@ def plan_work(
                 key = (model.owner, model.name, model.version_id, prompt_slug, index)
                 prior = manifest.get(key)
                 if (
-                    prior is not None
+                    not force
+                    and prior is not None
                     and prior.status in PERMANENT_STATUSES
                     and not (retry_failed and prior.status in REROLLABLE_STATUSES)
                 ):
