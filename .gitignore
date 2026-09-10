@@ -1,8 +1,11 @@
 # generated corpora (bucket-hosted, never in git)
 /data/originals/
 /data/optimized/
+/data/derived/
 /state/embeddings.npz
+/state/embeddings-bigg.npz
 /state/audio-embeddings.npz
+/state/eigen-clip.npz
 
 # python
 __pycache__/

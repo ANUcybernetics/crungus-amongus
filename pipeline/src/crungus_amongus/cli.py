@@ -200,11 +200,34 @@ def sprite() -> None:
 
 
 @app.command()
-def eigen() -> None:
-    """Pixel-space PCA over the images → eigencrungi sheet + coefficients."""
-    from .eigen import build_eigen
+def eigen(
+    space: str = typer.Option(
+        "pixels", "--space", help="pixels (eigenfaces-style) or clip (semantic)"
+    ),
+) -> None:
+    """PCA over the images → eigencrungi basis + coefficients."""
+    settings = Settings()
+    if space == "pixels":
+        from .eigen import build_eigen
 
-    build_eigen(Settings())
+        build_eigen(settings)
+    elif space == "clip":
+        from .eigen_clip import build_clip_eigen
+
+        build_clip_eigen(settings)
+    else:
+        logger.error("--space must be 'pixels' or 'clip'")
+        raise typer.Exit(2)
+
+
+@app.command()
+def render(
+    force: bool = typer.Option(False, help="re-render frames that already exist"),
+) -> None:
+    """Render the semantic eigencrungi's filmstrips with Kandinsky 2.2."""
+    from .kandinsky import render_filmstrips
+
+    render_filmstrips(Settings(), force=force)
 
 
 @app.command()

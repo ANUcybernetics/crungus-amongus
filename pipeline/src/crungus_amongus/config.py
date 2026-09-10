@@ -102,16 +102,22 @@ class Settings(BaseSettings):
         return self.data_dir / "optimized"
 
     @property
+    def derived_dir(self) -> Path:
+        """Everything the pipeline *renders* rather than collects.
+
+        Deliberately outside optimized_dir: the atlas, the pixel eigencrungi
+        and the consistency scores all glob that tree, so a rendered image
+        stored there would silently join the corpus it was derived from.
+        """
+        return self.data_dir / "derived"
+
+    @property
     def registry_path(self) -> Path:
         return self.state_dir / "models.json"
 
     @property
     def manifest_path(self) -> Path:
         return self.state_dir / "manifest.jsonl"
-
-    @property
-    def embeddings_path(self) -> Path:
-        return self.state_dir / "embeddings.npz"
 
     @property
     def audio_embeddings_path(self) -> Path:

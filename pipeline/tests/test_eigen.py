@@ -164,3 +164,15 @@ def test_variance_ratios_sum_over_a_block_boundary() -> None:
     rows = rng.normal(size=(2500, 40)).astype(np.float32)  # more rows than a block
     result = pca(rows, 40)  # every component, so the shares must sum to one
     assert np.isclose(result.variance_ratio.sum(), 1.0, atol=1e-4)
+
+
+def test_stability_scores_zero_where_a_half_cannot_reach() -> None:
+    """A half of a small archive has fewer components than the whole does, and
+    the ones it cannot offer are unmeasurable rather than an index error."""
+    rng = np.random.default_rng(14)
+    rows = rng.normal(size=(8, 60)).astype(np.float32)
+    scores = stability(rows, 7, splits=2)
+    assert scores.shape == (7,)
+    # four rows per half span three directions; the rest score zero
+    assert np.all(scores[:3] > 0)
+    assert np.array_equal(scores[3:], np.zeros(4, dtype=np.float32))

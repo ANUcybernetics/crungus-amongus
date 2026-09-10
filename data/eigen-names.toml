@@ -12,3 +12,8 @@
 [names]
 # component 1 correlates with mean image brightness at r = 0.996
 1 = "brightness"
+
+# The semantic basis (crungus eigen --space clip), same rule and same threshold.
+# These are directions in CLIP embedding space, so read the filmstrip and the
+# nearest real images together before naming one.
+[clip]

@@ -160,16 +160,21 @@ def stability(
     |cos| between the two bases component by component; the score is the mean
     over splits. 1 means the direction is a property of the archive, and a
     number near zero means it is a property of this particular sample.
+
+    A half of the archive has rank one less than its row count, so on a small
+    archive it cannot offer all k components to compare against. Those score
+    zero, which is the right reading: there are not enough images to tell.
     """
     rng = np.random.default_rng(seed)
     n = rows.shape[0]
     half = n // 2
+    width = max(0, min(k, half - 1))
     total = np.zeros(k, dtype=np.float64)
     for _ in range(splits):
         order = rng.permutation(n)
-        left = pca(rows[order[:half]], k).components
-        right = pca(rows[order[half : 2 * half]], k).components
-        total += np.abs(np.sum(left * right, axis=1))
+        left = pca(rows[order[:half]], width).components
+        right = pca(rows[order[half : 2 * half]], width).components
+        total[:width] += np.abs(np.sum(left * right, axis=1))
     return (total / splits).astype(np.float32)
 
 
@@ -196,12 +201,12 @@ def dequantise(q: np.ndarray, scale: float) -> np.ndarray:
     return (q.astype(np.float32) - 128) / 127 * scale
 
 
-def load_names(path: Path) -> dict[int, str]:
-    """Hand-given component names, 1-based index → name."""
+def load_names(path: Path, table: str = "names") -> dict[int, str]:
+    """Hand-given component names for one basis, 1-based index → name."""
     if not path.exists():
         return {}
-    table = tomllib.loads(path.read_text()).get("names", {})
-    return {int(i): name for i, name in table.items()}
+    entries = tomllib.loads(path.read_text()).get(table, {})
+    return {int(i): name for i, name in entries.items()}
 
 
 def load_pixels(files: list[Path], side: int) -> np.ndarray:
@@ -220,9 +225,9 @@ def text_scores(
     None when `analyze` has not embedded the whole corpus yet: the supervised
     axis is then simply left out rather than holding up the rest of the sheet.
     """
-    from .analyzer import embed_text, load_embeddings
+    from .analyzer import ATLAS_CLIP, cache_path, embed_text, load_embeddings
 
-    embeddings = load_embeddings(settings.embeddings_path)
+    embeddings = load_embeddings(cache_path(settings, ATLAS_CLIP))
     stems = [key.rsplit(".", 1)[0] for key in keys]
     missing = [stem for stem in stems if stem not in embeddings]
     if missing:

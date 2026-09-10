@@ -1,13 +1,18 @@
-"""Upload the optimized tree (AVIF, Opus, AAC, atlas sprite) to the public Tigris bucket.
+"""Upload the corpus and the derived renders to the public Tigris bucket.
 
 Pattern cribbed from slop-university's ops/bucket-sync.py: boto3 against the
-Tigris S3 endpoint, immutable cache-control (safe: keys embed the pinned model
-version's content — regenerated content lands at new paths), parallel uploads.
-Credentials come from the untracked mise [env] block (CRUNGUS_S3_*), never the
-repo.
+Tigris S3 endpoint, immutable cache-control, parallel uploads. Credentials come
+from the untracked mise [env] block (CRUNGUS_S3_*), never the repo.
+
+Two roots, and the difference between them is what may be cached forever. A
+corpus key embeds the pinned model version that produced it, so its content can
+never change and it ships immutable. Everything derived — the atlas sheets, the
+eigencrungi, Kandinsky's filmstrips — is recomputed wholesale whenever the
+corpus grows, lands back at the same key, and so must not be.
 """
 
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from pathlib import Path
 
 from loguru import logger
@@ -15,9 +20,8 @@ from loguru import logger
 from .config import Settings
 
 CACHE_CONTROL = "public, max-age=31536000, immutable"
-# the sprite index/sheet change per corpus regeneration, so they get a short
-# cache instead of immutable
 MUTABLE_CACHE_CONTROL = "public, max-age=300"
+# within the corpus tree, the atlas and eigencrungi outputs
 MUTABLE_SUFFIXES = {".webp", ".json"}
 CONTENT_TYPES = {
     ".avif": "image/avif",
@@ -29,8 +33,36 @@ CONTENT_TYPES = {
 MAX_WORKERS = 8
 
 
+@dataclass(frozen=True)
+class _Upload:
+    path: Path
+    key: str
+    cache: str
+
+
+def upload_plan(settings: Settings) -> list[_Upload]:
+    """Every file both roots offer, with the key and cache policy it ships under."""
+    plan: list[_Upload] = []
+    for root, derived in (
+        (settings.optimized_dir, False),
+        (settings.derived_dir, True),
+    ):
+        for path in sorted(root.rglob("*")):
+            if not path.is_file() or path.suffix not in CONTENT_TYPES:
+                continue
+            mutable = derived or path.suffix in MUTABLE_SUFFIXES
+            plan.append(
+                _Upload(
+                    path,
+                    str(path.relative_to(root)),
+                    MUTABLE_CACHE_CONTROL if mutable else CACHE_CONTROL,
+                )
+            )
+    return plan
+
+
 def sync_optimized(settings: Settings, force: bool = False) -> tuple[int, int]:
-    """Upload data/optimized/** to the bucket. Returns (uploaded, skipped)."""
+    """Upload both roots to the bucket. Returns (uploaded, skipped)."""
     import boto3
 
     if not (settings.s3_access_key_id and settings.s3_secret_access_key):
@@ -69,34 +101,26 @@ def sync_optimized(settings: Settings, force: bool = False) -> tuple[int, int]:
         for obj in page.get("Contents", []):
             existing[obj["Key"]] = obj["Size"]
 
-    files = sorted(
-        p
-        for p in settings.optimized_dir.rglob("*")
-        if p.is_file() and p.suffix in CONTENT_TYPES
-    )
-    pending: list[tuple[Path, str]] = []
-    for path in files:
-        key = str(path.relative_to(settings.optimized_dir))
-        if force or existing.get(key) != path.stat().st_size:
-            pending.append((path, key))
+    files = upload_plan(settings)
+    pending = [
+        item
+        for item in files
+        if force or existing.get(item.key) != item.path.stat().st_size
+    ]
     logger.info(
         "sync: {} to upload, {} already in bucket",
         len(pending),
         len(files) - len(pending),
     )
 
-    def upload(item: tuple[Path, str]) -> None:
-        path, key = item
-        cache = (
-            MUTABLE_CACHE_CONTROL if path.suffix in MUTABLE_SUFFIXES else CACHE_CONTROL
-        )
+    def upload(item: _Upload) -> None:
         s3.upload_file(
-            str(path),
+            str(item.path),
             settings.s3_bucket,
-            key,
+            item.key,
             ExtraArgs={
-                "ContentType": CONTENT_TYPES[path.suffix],
-                "CacheControl": cache,
+                "ContentType": CONTENT_TYPES[item.path.suffix],
+                "CacheControl": item.cache,
             },
         )
 

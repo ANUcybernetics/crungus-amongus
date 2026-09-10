@@ -5,7 +5,10 @@ description = "Batch-generate crungus images and clips across Replicate text-to-
 authors = [{ name = "Ben Swift", email = "ben@benswift.me" }]
 requires-python = ">=3.14"
 dependencies = [
+    # diffusers loads the Kandinsky decoder low-memory only with accelerate
+    "accelerate>=1.0",
     "boto3>=1.43.83",
+    "diffusers>=0.36.0",
     "httpx>=0.28.1",
     "loguru>=0.7.3",
     "numpy>=2.5.2",

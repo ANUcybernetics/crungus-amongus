@@ -1,15 +1,17 @@
 """CLIP/CLAP embeddings → crungus-ness scores and UMAP atlas coordinates.
 
-Local and free: open-clip ViT-B/32 over the images and LAION CLAP over the
-clips, cached in state/embeddings.npz and state/audio-embeddings.npz (keyed
-by relative path sans extension). The crungus-ness score of a (model, prompt)
-set is the mean pairwise cosine similarity of its embeddings — high means the
-model renders a consistent creature (or sound), the defining property of the
-original 2022 crungus. UMAP projects the image embeddings to 2D for the
-atlas, normalised to [0, 1]².
+Local and free: open-clip over the images and LAION CLAP over the clips, cached
+under state/ keyed by relative path sans extension. The crungus-ness score of a
+(model, prompt) set is the mean pairwise cosine similarity of its embeddings —
+high means the model renders a consistent creature (or sound), the defining
+property of the original 2022 crungus. UMAP projects the image embeddings to 2D
+for the atlas, normalised to [0, 1]².
+
+Two image checkpoints, for two jobs: see ATLAS_CLIP and SEMANTIC_CLIP.
 """
 
 import subprocess
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -18,9 +20,31 @@ from pydantic import BaseModel
 
 from .config import Settings
 
-CLIP_MODEL = "ViT-B-32-quickgelu"
-CLIP_PRETRAINED = "openai"
-BATCH_SIZE = 64
+
+@dataclass(frozen=True)
+class ClipSpec:
+    """An open-clip checkpoint and the cache it fills."""
+
+    model: str
+    pretrained: str
+    batch_size: int
+    cache: str
+    normalise: bool
+
+
+# every score on the site: consistency, typicality, the atlas, the supervised
+# pixel axis. Small and quick, and its unit-norm vectors are only ever used for
+# cosines.
+ATLAS_CLIP = ClipSpec("ViT-B-32-quickgelu", "openai", 64, "embeddings.npz", True)
+# the space the semantic eigencrungi are decomposed in, and the space
+# Kandinsky 2.2's decoder conditions on (1280-d). Stored *unnormalised*: the
+# decoder was trained against embeddings at their native scale, and dividing
+# that away is information the renderer cannot get back. Everything that wants
+# a cosine normalises on the way in (see unit_rows).
+SEMANTIC_CLIP = ClipSpec(
+    "ViT-bigG-14", "laion2b_s39b_b160k", 32, "embeddings-bigg.npz", False
+)
+
 CLAP_MODEL = "laion/clap-htsat-unfused"
 CLAP_SAMPLE_RATE = 48000
 # CLAP's native input is 10 s; longer clips are embedded window by window
@@ -40,6 +64,15 @@ def analysis_path(settings: Settings) -> Path:
     return settings.state_dir / "analysis.json"
 
 
+def cache_path(settings: Settings, spec: ClipSpec) -> Path:
+    return settings.state_dir / spec.cache
+
+
+def unit_rows(matrix: np.ndarray) -> np.ndarray:
+    """L2-normalise each row, for a spec whose cache holds raw embeddings."""
+    return matrix / np.linalg.norm(matrix, axis=1, keepdims=True)
+
+
 def load_embeddings(path: Path) -> dict[str, np.ndarray]:
     if not path.exists():
         return {}
@@ -52,35 +85,42 @@ def save_embeddings(path: Path, embeddings: dict[str, np.ndarray]) -> None:
     np.savez_compressed(path, allow_pickle=False, **embeddings)
 
 
-def embed_images(settings: Settings) -> dict[str, np.ndarray]:
-    """Embed every optimized image, reusing cached embeddings.
+def embed_images(
+    settings: Settings, spec: ClipSpec = ATLAS_CLIP
+) -> dict[str, np.ndarray]:
+    """Embed every optimized image with `spec`, reusing its cache.
 
     The optimized tree is the source (not originals): it is guaranteed raster
     (SVG outputs get rasterised by optimize) and Pillow reads AVIF natively.
+    Anything under data/derived/ — Kandinsky's renders of the semantic axes —
+    is deliberately outside that tree and so cannot feed itself back in.
     """
     import open_clip
     import torch
     from PIL import Image
 
-    embeddings = load_embeddings(settings.embeddings_path)
+    path = cache_path(settings, spec)
+    embeddings = load_embeddings(path)
     all_images = sorted(settings.optimized_dir.rglob("*.avif"))
     pending = [
         p
         for p in all_images
         if str(p.relative_to(settings.optimized_dir).with_suffix("")) not in embeddings
     ]
-    logger.info("embeddings: {} cached, {} to compute", len(embeddings), len(pending))
+    logger.info(
+        "{}: {} cached, {} to compute", spec.cache, len(embeddings), len(pending)
+    )
     if not pending:
         return embeddings
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model, _, preprocess = open_clip.create_model_and_transforms(
-        CLIP_MODEL, pretrained=CLIP_PRETRAINED, device=device
+        spec.model, pretrained=spec.pretrained, device=device
     )
     model.eval()
 
-    for start in range(0, len(pending), BATCH_SIZE):
-        batch_paths = pending[start : start + BATCH_SIZE]
+    for start in range(0, len(pending), spec.batch_size):
+        batch_paths = pending[start : start + spec.batch_size]
         tensors = []
         for p in batch_paths:
             with Image.open(p) as img:
@@ -88,33 +128,36 @@ def embed_images(settings: Settings) -> dict[str, np.ndarray]:
         batch = torch.stack(tensors).to(device)
         with torch.no_grad():
             features = model.encode_image(batch)
-            features = features / features.norm(dim=-1, keepdim=True)
+            if spec.normalise:
+                features = features / features.norm(dim=-1, keepdim=True)
         for p, vector in zip(batch_paths, features.cpu().numpy(), strict=True):
             key = str(p.relative_to(settings.optimized_dir).with_suffix(""))
             embeddings[key] = vector.astype(np.float32)
         logger.info(
-            "embedded {}/{}", min(start + BATCH_SIZE, len(pending)), len(pending)
+            "embedded {}/{}", min(start + spec.batch_size, len(pending)), len(pending)
         )
 
-    save_embeddings(settings.embeddings_path, embeddings)
+    save_embeddings(path, embeddings)
     return embeddings
 
 
-def embed_text(prompt: str) -> np.ndarray:
+def embed_text(prompt: str, spec: ClipSpec = ATLAS_CLIP) -> np.ndarray:
     """L2-normalised CLIP text embedding, in the same space as embed_images.
 
-    The supervised eigencrungi axis (see eigen.py) is this vector: a direction
-    fixed by the prompt rather than estimated from the archive.
+    A supervised eigencrungi axis (see eigen.py) starts from this vector: a
+    direction fixed by the prompt rather than estimated from the archive. It is
+    normalised whatever the spec says, because it is only ever used for cosines
+    — the image tower's scale is not the text tower's.
     """
     import open_clip
     import torch
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model, _, _ = open_clip.create_model_and_transforms(
-        CLIP_MODEL, pretrained=CLIP_PRETRAINED, device=device
+        spec.model, pretrained=spec.pretrained, device=device
     )
     model.eval()
-    tokenizer = open_clip.get_tokenizer(CLIP_MODEL)
+    tokenizer = open_clip.get_tokenizer(spec.model)
     with torch.no_grad():
         features = model.encode_text(tokenizer([prompt]).to(device))
         features = features / features.norm(dim=-1, keepdim=True)
