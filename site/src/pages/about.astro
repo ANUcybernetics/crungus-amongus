@@ -22,11 +22,11 @@ const generatedAt = siteData.generated_at.slice(0, 10);
 
     <h2>The word</h2>
     <p>
-      In June 2022, Twitch streamer and comedian Guy Kelly typed
+      In June 2022, Twitch streamer and comedian Guy Kelly typed{" "}
       <em>crungus</em> — a word he made up on the spot — into DALL·E&nbsp;mini
       (later renamed Craiyon) and got back nine pictures of the same snarling,
       hairy goat-demon. A word with no meaning had a consistent referent inside
-      the model. The internet named it the first
+      the model. The internet named it the first{" "}
       <a href="https://en.wikipedia.org/wiki/Crungus">digital cryptid</a>.
       Craiyon v2 shipped in 2023 and the creature vanished from it.
     </p>
@@ -34,9 +34,9 @@ const generatedAt = siteData.generated_at.slice(0, 10);
     <h2>The archive</h2>
     <p>
       This site asks the same question of every text-to-image model that will
-      answer it: the models in Replicate's
+      answer it: the models in Replicate's{" "}
       <a href="https://replicate.com/collections/text-to-image">text-to-image
-      collection</a>, plus a hand-curated set of relics going back to
+      collection</a>, plus a hand-curated set of relics going back to{" "}
       <a href="https://replicate.com/kuprel/min-dalle">min-dalle</a> — the
       PyTorch port of DALL·E&nbsp;mini itself, still running on rented GPUs in
       2026. Each model was asked for ten images of “crungus” and ten of “a
@@ -48,7 +48,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
 
     <h2>The sound</h2>
     <p>
-      The same question, put to the models in Replicate's
+      The same question, put to the models in Replicate's{" "}
       <a href="https://replicate.com/collections/ai-music-generation">music
       collection</a> plus <a href="https://replicate.com/suno-ai/bark">Bark</a>:
       ten clips of “crungus” and ten of “the sound of a crungus”, twenty
@@ -60,7 +60,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
         : " The sound archive is still being recorded."}
       Clips are loudness-normalised so the radio doesn't lurch between
       models, but otherwise untouched. Each model's clips get the same
-      consistency score as the images, computed from
+      consistency score as the images, computed from{" "}
       <a href="https://github.com/LAION-AI/CLAP">CLAP</a> audio embeddings
       instead of CLIP, and it carries the same caveat in its audio form: a
       model with a strong house sound scores high whether or not it has a
@@ -101,7 +101,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       turned as permissive as it goes: 37 of the image models have such a
       control, the rest have none and are asked exactly as before. That makes
       the corpus a record of what these models draw rather than of what their
-      hosts will show. The refusal rates on the model pages are therefore a
+      hosts will show. The refusal rates on the model pages are therefore a{" "}
       <em>dated measurement</em> and not a live statistic: they record what the
       defaults did up to the date shown, and they stop there. The pictures on
       the page are no longer the ones those numbers describe.
@@ -120,7 +120,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       Turk and Pentland's 1991 <em>eigenfaces</em> treated every face photograph
       as one point in pixel space and found, by principal component analysis,
       the directions that a stack of faces varies along most; any face is then
-      a mean face plus a weighted sum of those components. The
+      a mean face plus a weighted sum of those components. The{" "}
       <a href={path("/eigen/")}>eigencrungi</a> page does the same to every
       image in the archive: centre-cropped, shrunk to 128 pixels, and
       decomposed with no alignment step, because there is nothing to align a
@@ -182,7 +182,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       numbers arranged so that two pictures of the same sort of thing land near
       each other, and the principal components of <em>that</em> stack are the
       semantic eigencrungi. Twenty-four of them account for 54% of the
-      variation, and they are what the second mode on the
+      variation, and they are what the second mode on the{" "}
       <a href={path("/eigen/")}>eigencrungi</a> page shows.
     </p>
     <p>
@@ -235,7 +235,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
         Wikipedia
       </li>
       <li>
-        Bruce Sterling's
+        Bruce Sterling's{" "}
         <a href="https://www.flickr.com/photos/brucesterling/albums/72177720324124391/">
         Flickr archive</a> of the original Craiyon screenshots
       </li>
@@ -274,7 +274,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       with numpy · encoded as
       AVIF and Opus
       (with an AAC fallback) · served from Tigris object storage · built with
-      Astro · made by
+      Astro · made by{" "}
       <a href="https://benswift.me">Ben Swift</a> at the ANU School of
       Cybernetics
     </p>
