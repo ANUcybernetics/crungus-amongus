@@ -4,7 +4,7 @@ title: Regenerate the image corpus at 100 outputs per prompt
 status: To Do
 assignee: []
 created_date: '2026-09-09 07:44'
-updated_date: '2026-09-09 10:17'
+updated_date: '2026-09-10 03:32'
 labels:
   - pipeline
 dependencies:
@@ -64,10 +64,10 @@ A mixed corpus is the real methodology violation — scores at n=10 and n=100 ha
 - [x] #1 every one of the 83 image models is confirmed to still resolve at its pinned version before any generation runs, with the result recorded in the task notes
 - [x] #2 OUTPUTS_PER_PROMPT is per-modality: 100 for image, 10 for audio, with the prompt sets themselves unchanged
 - [x] #3 crungus generate was dry-run first and the estimate reported, and no model version pin was bumped
-- [ ] #4 every (image model, prompt) pair has exactly 100 optimized images, with no pair left short and manifest.jsonl only appended to
-- [ ] #5 optimize, analyze, sprite, eigen, sync and publish have all been re-run over the larger corpus and the site builds from it
-- [ ] #6 the recomputed consistency jackknife SE and top-24 subspace overlap are reported in the notes
-- [ ] #7 all pipeline and site checks are green
+- [x] #4 every (image model, prompt) pair has exactly 100 optimized images, with no pair left short and manifest.jsonl only appended to
+- [x] #5 optimize, analyze, sprite, eigen, sync and publish have all been re-run over the larger corpus and the site builds from it
+- [x] #6 the recomputed consistency jackknife SE and top-24 subspace overlap are reported in the notes
+- [x] #7 all pipeline and site checks are green
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -119,4 +119,30 @@ AC #4 as written ("exactly 100, no pair short") is not reachable:
 
 Scaling to 100 per prompt therefore lands a corpus that is uniform in what was
 *asked* but not in what came back. Ben's call.
+
+## Outcome, 2026-09-10
+
+Corpus: 19,344 images, 94 of 97 image models at a full 200. Short: 
+google/gemini-2.5-flash-image 159, pixray/text2image 192, google/nano-banana 196
+— all error-driven flakiness rather than refusal, and not worth further passes.
+
+### AC #6, recomputed
+
+- jackknife SE 0.0083 (was 0.023); between-model sd 0.107, so noise-to-signal
+  0.078 against 0.21 before. 93% of adjacent leaderboard pairs still sit within
+  one SE — each score is 2.7x sharper, but 194 groups in a 0.107 spread means
+  adjacent ranks stay noise. The extremes are what the leaderboard supports.
+- top-24 CLIP subspace overlap 0.970 (was 0.821; the task expected >0.9).
+
+### The task's own premise was wrong
+
+Task-5 recorded that component instability was 'the eigenvalue spectrum, not
+the sample size', and that more images 'cannot manufacture gaps that are not in
+the data'. Ten times the images: components above 0.7 went from 5/24 to 19/24
+and above 0.9 from 2/24 to 13/24. It was sample size. The site copy and
+eigen.py's docstring now say so.
+
+Also corrected: the '46% model identity' figure was measured in CLIP space and
+had been applied to the pixel components on /eigen/. Measured on the pixel
+basis it is 16% mean, 54% for component 1.
 <!-- SECTION:NOTES:END -->

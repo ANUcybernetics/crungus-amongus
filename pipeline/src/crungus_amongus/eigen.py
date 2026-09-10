@@ -14,13 +14,18 @@ range finder never materialises either, so peak memory is the rows themselves
 plus a few narrow blocks, and the top components agree with the exact
 decomposition to about 1e-6 on this archive.
 
-Most of the components are sampling noise, so the sheet ships a reproducibility
-score alongside each one. `stability` splits the archive into disjoint halves,
+Not every component is real, so the sheet ships a reproducibility score
+alongside each one. `stability` splits the archive into disjoint halves,
 decomposes each and takes |cos| between the two bases component by component.
-On the current archive the pixel components hold to 1.00, 0.95, 0.91, 0.91,
-0.82 and then fall off a cliff; past the fifth the eigenvalue gaps are too
-small to fix a direction, so a different draw of the archive would have rotated
-those axes away. Only components above STABILITY_THRESHOLD are given a name.
+Only components above STABILITY_THRESHOLD are given a name.
+
+How many survive turns out to be a question about sample size, not about the
+spectrum. At 1594 images five components cleared 0.7 and the collapse looked
+structural — the eigenvalues past the fifth sit close enough together to leave
+their components free to rotate. At 19 344 images nineteen clear 0.7 and
+thirteen clear 0.9. Ten times the data bought fourteen more real axes, so read
+a low score here as "not enough images yet" before reading it as "no such
+direction".
 
 The basis is deliberately left unrotated. Varimax was measured on the CLIP
 top-24 basis: with optimal matching between halves it lifts mean |cos| from
@@ -29,9 +34,9 @@ from 2 to zero, because it rotates the two reproducible components into the
 mixture. A few strong axes beat a dozen soft ones here, so PCA stands.
 
 Two facts about the unsupervised basis set the terms for the supervised one:
-pixel component 1 correlates with mean image brightness at r = 0.996 (the most
+pixel component 1 correlates with mean image brightness at r = 0.9967 (the most
 reproducible axis in the archive is a light meter), and as an ANOVA over model
-labels the components are about 46% model identity. So the sheet also carries a
+labels it is 54% model identity against 16% across all 24. So the sheet also carries a
 supervised axis: every image projected onto the CLIP *text* embedding of
 "crungus", rendered into pixel space by least squares. That axis is fixed by
 the prompt rather than by the sample, so no amount of resampling can rotate it,

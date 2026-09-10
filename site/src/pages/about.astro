@@ -131,15 +131,22 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       real extremes.
     </p>
     <p>
-      Most of the components are sampling noise, and the page says so. Split
-      the archive into disjoint halves, decompose both and take the cosine
-      between the two versions of a component: five of the twenty-four hold up
-      and nineteen do not. The cause is the eigenvalue spectrum rather than the
-      sample size — past the fifth component the eigenvalues sit close enough
-      together that the components rotate freely between draws, and more images
-      would sharpen the estimates without manufacturing gaps that are not in
-      the data. Only a component that clears 0.7 can be given a hand-name, by
-      a human looking at the extremes; everything below it goes by number. The basis is left
+      How much of a component is real? Split the archive into disjoint halves,
+      decompose both and take the cosine between the two versions: nineteen of
+      the twenty-four hold up above 0.7, and thirteen above 0.9. Only a
+      component that clears 0.7 can be given a hand-name, by a human looking at
+      the extremes; everything below it goes by number.
+    </p>
+    <p>
+      That number used to be five. On the first archive of 1,594 images only
+      five components reproduced, and the obvious reading was that the
+      eigenvalue spectrum was to blame: past the fifth the eigenvalues sit so
+      close together that the components looked free to rotate no matter how
+      much data you threw at them. Ten times the images disproved it. The
+      top-24 subspace overlap went from 0.82 to 0.97 and fourteen more axes
+      became real, so the collapse was sample size all along. It is recorded
+      here because the archive existed to test exactly that sort of claim, and
+      this one was its own. The basis is left
       unrotated: varimax was tried, and on the CLIP basis it lifts the mean
       cosine from 0.61 to 0.71 while dropping the number of axes above 0.9 from
       two to none, because it rotates the reproducible components into the
@@ -148,12 +155,12 @@ const generatedAt = siteData.generated_at.slice(0, 10);
     <p>
       Two things about those components are worth stating plainly. The first
       and most reproducible one is a light meter: its coefficient correlates
-      with a picture's mean brightness at r&nbsp;=&nbsp;0.996. And the
-      components are roughly half model identity — as an analysis of variance
-      over which model drew each image, a mean of 46% of a component's spread
-      is explained by the model label alone. The archive's principal axes of
-      variation are substantially the models, not the creature, which is the
-      same unalignment result seen from another angle.
+      with a picture's mean brightness at r&nbsp;=&nbsp;0.9967. It is also the
+      component that most reflects which model was asked rather than what was
+      asked for — an analysis of variance over the model labels explains 54% of
+      its spread, against 16% averaged over all twenty-four. So the archive's
+      single most reproducible axis is mostly a fact about house style and
+      exposure, which is the unalignment result seen from another angle.
     </p>
     <p>
       So the headline slider is not a component at all. It is every image

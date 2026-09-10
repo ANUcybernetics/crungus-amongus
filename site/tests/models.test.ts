@@ -16,8 +16,9 @@ import {
 } from "../src/lib/models";
 import type { ModelEntry } from "../src/lib/schema";
 
-const IMAGE_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d\.avif$/;
-const OPUS_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d\.opus$/;
+// the index runs to OUTPUTS_PER_PROMPT - 1, so it is not a single digit
+const IMAGE_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d+\.avif$/;
+const OPUS_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d+\.opus$/;
 const OPUS_SUFFIX = /\.opus$/;
 
 describe("dataset integrity", () => {

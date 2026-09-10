@@ -76,26 +76,29 @@ const imageBase = siteData.image_base_url;
       here, mouth there. Nothing aligns a crungus, so the leading components
       describe light, framing and palette before they describe a creature.
       Component 1 is not subtle about it: its coefficient correlates with a
-      picture's mean brightness at r&nbsp;=&nbsp;0.996, which makes the most
-      reproducible axis in the archive a light meter. The components are also
-      about half model identity — as an analysis of variance over which model
-      drew each image, a mean of 46% of a component's spread is explained by
-      the model label alone. These are the archive's principal axes of
-      variation, and the archive is substantially the models.
+      picture's mean brightness at r&nbsp;=&nbsp;0.9967, which makes the most
+      reproducible axis in the archive a light meter. It is also the one most
+      about the models rather than the creature: as an analysis of variance
+      over which model drew each image, 54% of component 1's spread is
+      explained by the model label alone, against 16% averaged across all
+      twenty-four. Which model you asked matters most for how bright the
+      picture came out.
     </p>
     <p>
       <b>Stability</b> beside each slider is how much of the direction survives
       a fresh draw: split the archive into disjoint halves, decompose both, and
       take the cosine between the two versions of that component, averaged over
       eight splits. One means the direction is a property of the archive; near
-      zero means it is a property of this particular sample. Five components
-      clear 0.7 and nineteen do not, because past the fifth the eigenvalues sit
-      too close together to fix a direction — more images would sharpen the
-      estimates but cannot manufacture gaps that are not in the data. Only a
-      component that clears 0.7 can be given a name; everything below it goes
-      by number, however suggestive its extremes look. The crungus-ness axis
-      sidesteps the problem: it is fixed by the prompt rather than estimated
-      from the sample, so resampling cannot move it. More in
+      zero means it is a property of this particular sample. Nineteen of the
+      twenty-four clear 0.7 and thirteen clear 0.9. At a tenth of this many
+      images only five did, and the collapse looked like a property of the
+      spectrum — the eigenvalues past the fifth sit close enough together that
+      the components seemed free to rotate whatever we did. That was wrong: it
+      was sample size, and ten times the images bought fourteen more real axes.
+      Only a component that clears 0.7 can be given a name; everything below it
+      goes by number, however suggestive its extremes look. The crungus-ness
+      axis sidesteps the question entirely — it is fixed by the prompt rather
+      than estimated from the sample, so resampling cannot move it. More in
       <a href={path("/about/")}>about</a>.
     </p>
   </section>
