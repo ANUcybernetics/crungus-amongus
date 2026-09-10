@@ -1,10 +1,10 @@
 ---
 id: TASK-4
 title: Regenerate the image corpus at 100 outputs per prompt
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-09-09 07:44'
-updated_date: '2026-09-10 03:32'
+updated_date: '2026-09-10 04:21'
 labels:
   - pipeline
 dependencies:
