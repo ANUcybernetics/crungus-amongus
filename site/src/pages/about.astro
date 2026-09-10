@@ -173,6 +173,61 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       come from ideogram, the most from recraft's SVG models.
     </p>
 
+    <h2>The semantic eigencrungi</h2>
+    <p>
+      The pixel decomposition has an honest problem: the most reproducible
+      direction in it is a light meter. So the same arithmetic runs a second
+      time, in a space where distance already means something. Every image goes
+      through open-clip's ViT-bigG-14, which describes a picture as 1,280
+      numbers arranged so that two pictures of the same sort of thing land near
+      each other, and the principal components of <em>that</em> stack are the
+      semantic eigencrungi. Twenty-four of them account for 54% of the
+      variation, and they are what the second mode on the
+      <a href={path("/eigen/")}>eigencrungi</a> page shows.
+    </p>
+    <p>
+      They truncate far more cleanly than the pixel ones. Both bases put
+      nineteen components above 0.7 under the same disjoint-half resampling,
+      but the pixel scores are ragged — component 19 reproduces at 0.26 while
+      component 24 manages 0.72 — where the semantic ones fall off a cliff. The
+      first nineteen all sit above 0.89 and the remaining five all below 0.46,
+      so for once there is no judgement to make about where the real axes stop.
+    </p>
+    <p>
+      A direction in 1,280 dimensions is not something you can look at, which
+      is where <a href={path("/model/ai-forever--kandinsky-2-2/")}>Kandinsky
+      2.2</a> comes in. It draws in two halves — a prior that turns words into
+      exactly this kind of CLIP embedding, and a decoder that turns an
+      embedding into pixels — and the second half will accept any embedding at
+      all, including a point on a principal component that no real picture
+      occupies. So each retained axis is walked from −3σ to +3σ in seven steps,
+      and every step is decoded three times under different seeds, keeping the
+      median by how close the render lands to the point it was asked for. The
+      median rather than the best of three: the best flatters the axis, and a
+      filmstrip is meant to show what a direction typically looks like.
+    </p>
+    <p>
+      Two caveats, both load-bearing. The renders are a guess. The decoder will
+      produce a convincing crungus for a point nothing in the archive occupies
+      just as readily as for one that something does, so a filmstrip is
+      evidence about Kandinsky rather than about the archive; the nearest real
+      images shown beside it are the evidence about the archive. And Kandinsky
+      2.2 is itself one of the 97 models here, so the decomposition's
+      illustrator is one of its own subjects.
+    </p>
+    <p>
+      One detail is worth recording because it nearly went unnoticed. The
+      decoder guides each step away from a “negative” embedding, and the
+      obvious negative — a vector of zeros — is not a point any picture maps
+      to. Guiding four times away from it drove every frame out of gamut: the
+      first full set of renders came back magenta, with the green channel at a
+      third of the other two, in double precision exactly as much as in half,
+      which is what ruled out an arithmetic bug. Substituting the negative
+      Kandinsky's own pipeline uses, its prior run on the empty prompt, fixed
+      the colour and also lifted how well a round-tripped archive image matches
+      its original, from 0.75 to 0.85.
+    </p>
+
     <h2>Prior sightings</h2>
     <ul>
       <li>

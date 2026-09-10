@@ -17,6 +17,11 @@ const imageBase = siteData.image_base_url;
 >
   <section class="intro">
     <h1>The eigencrungi</h1>
+    <div class="modes mono" role="group" aria-label="which space to decompose">
+      <button id="mode-pixels" type="button" aria-pressed="true">pixels</button>
+      <button id="mode-semantic" type="button" aria-pressed="false">meaning</button>
+    </div>
+    <div id="intro-pixels">
     <p class="lede">
       In 1991 Turk and Pentland took a stack of face photographs, treated each one
       as a point in pixel space and found the directions the stack varied along
@@ -36,9 +41,29 @@ const imageBase = siteData.image_base_url;
       unsupervised, and most of them are sampling noise: beside each is how well
       it reproduces when the archive is split in half and decomposed twice.
     </p>
+    </div>
+    <div id="intro-semantic" hidden>
+      <p class="lede">
+        The same arithmetic, in a space where distance means something. Every
+        image in the archive is a point in the 1280 numbers open-clip's
+        ViT-bigG-14 uses to describe a picture, and the principal components of
+        <em>that</em> stack are directions in meaning rather than in light.
+      </p>
+      <p class="lede">
+        A direction in a 1280-dimensional space is not a picture, so each one
+        has been rendered. Kandinsky 2.2 splits drawing into a step that turns
+        words into exactly this kind of embedding and a step that turns the
+        embedding into pixels; hand its second half a point on a component and
+        it will show you what it thinks is there. That makes each filmstrip
+        below a <em>guess</em>, and the model guessing is one of the 97 in the
+        archive. The archive answers for itself underneath: whatever the
+        sliders say, the panel on the stage shows the real crungi nearest to
+        that spot.
+      </p>
+    </div>
   </section>
 
-  <div class="lab" hidden>
+  <div id="pixel-lab" class="lab" hidden>
     <div class="stage">
       <div class="pair">
         <figure>
@@ -63,6 +88,35 @@ const imageBase = siteData.image_base_url;
     </div>
   </div>
 
+  <div id="semantic-lab" class="lab" hidden>
+    <div class="stage">
+      <div class="pair">
+        <figure>
+          <img id="s-frame" width="256" height="256" alt="" />
+          <figcaption id="s-caption" class="mono muted" aria-live="polite">
+            the mean crungus
+          </figcaption>
+        </figure>
+        <figure id="s-original" hidden>
+          <img id="s-original-image" alt="" width="256" height="256" />
+          <figcaption class="mono muted">
+            <a id="s-original-link" href="#">the original</a>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="mono controls">
+        <button id="s-reset" type="button">the mean crungus</button>
+        <button id="s-random" type="button">a real crungus</button>
+      </p>
+      <h2 class="mono nearest-heading">the nearest real crungi</h2>
+      <div id="s-nearest" class="nearest"></div>
+    </div>
+    <div class="axes">
+      <div id="s-headline"></div>
+      <ol id="s-components" class="components"></ol>
+    </div>
+  </div>
+
   <p id="loading" class="mono muted">loading the eigencrungi…</p>
   <noscript>
     <p class="muted">
@@ -71,7 +125,7 @@ const imageBase = siteData.image_base_url;
     </p>
   </noscript>
 
-  <section class="notes">
+  <section id="notes-pixels" class="notes">
     <p>
       Faces decompose neatly because they are aligned before the maths: eyes
       here, mouth there. Nothing aligns a crungus, so the leading components
@@ -103,6 +157,36 @@ const imageBase = siteData.image_base_url;
       <a href={path("/about/")}>about</a>.
     </p>
   </section>
+
+  <section id="notes-semantic" class="notes" hidden>
+    <p>
+      <b>One slider drives the filmstrip.</b> A strip is a single component
+      walked from −3σ to +3σ, so it can only ever show you one direction at a
+      time; the frame on the stage is whichever slider you touched last. The
+      nearest real crungi are the opposite — they are the distance from
+      <em>every</em> slider at once to all {imageTotal.toLocaleString("en-AU")}{" "}
+      images, so they move whatever you push.
+    </p>
+    <p>
+      <b>The renders are not evidence.</b> Kandinsky 2.2's decoder was trained
+      to turn a CLIP embedding into a plausible picture, and it will do that for
+      a point no real image occupies just as happily as for one that does. Each
+      frame is the median of three seeds by how close the render lands to the
+      point it was asked for, which stops a single unlucky sample standing for a
+      direction, but it does not make the frame true. Read the strip for the
+      shape of an axis and the nearest images for what is actually in the
+      archive.
+    </p>
+    <p>
+      <b>Stability</b> is measured exactly as it is in pixel space: split the
+      archive in half, decompose both halves, and take the cosine between the
+      two versions of each component. Only a component that clears 0.7 is worth
+      rendering, so the tail below that point has no filmstrip — the sliders
+      still work, and they still move the nearest images, but there is no
+      direction there stable enough to be worth illustrating. More in
+      <a href={path("/about/")}>about</a>.
+    </p>
+  </section>
 </Base>
 
 <script
@@ -114,11 +198,18 @@ const imageBase = siteData.image_base_url;
 
 <script>
   import {
+    clipPositions,
+    clipSliders,
+    clipWeightsFor,
     decodeSheet,
+    frameForSigma,
     modelSlug,
+    nearestKeys,
     reconstruct,
     sliders as sliderAxes,
     weightsFor,
+    type ClipEigenData,
+    type ClipSlider,
     type EigenData,
     type Slider,
   } from "../lib/eigen";
@@ -129,7 +220,7 @@ const imageBase = siteData.image_base_url;
     modelBase: string;
     imageBase: string;
   };
-  const lab = document.querySelector<HTMLElement>(".lab")!;
+  const NEAREST = 6;
   const loading = document.getElementById("loading")!;
   const recon = document.getElementById("recon") as HTMLCanvasElement;
   const stageCaption = document.getElementById("stage-caption")!;
@@ -208,7 +299,7 @@ const imageBase = siteData.image_base_url;
   function setWeight(j: number, value: number) {
     weights[j] = value;
     inputs[j]!.value = String(value);
-    outputs[j]!.value = `${value >= 0 ? "+" : "−"}${Math.abs(value).toFixed(1)}σ`;
+    outputs[j]!.value = sigmaLabel(value);
   }
 
   function showMean() {
@@ -229,7 +320,8 @@ const imageBase = siteData.image_base_url;
     render();
   }
 
-  function thumbnail(key: string): HTMLButtonElement {
+  /** A clickable archive thumbnail, painted from the atlas sprite. */
+  function thumbnail(key: string, onClick: (key: string) => void): HTMLButtonElement {
     const button = document.createElement("button");
     button.type = "button";
     button.setAttribute("aria-label", `load the crungus by ${labelFor(key)}`);
@@ -264,7 +356,7 @@ const imageBase = siteData.image_base_url;
       }
     }
     button.append(canvas);
-    button.addEventListener("click", () => showImage(key));
+    button.addEventListener("click", () => onClick(key));
     return button;
   }
 
@@ -281,8 +373,16 @@ const imageBase = siteData.image_base_url;
     return canvas;
   }
 
+  /** A σ reading with an explicit sign, for a caption or an output. */
+  function sigmaLabel(value: number): string {
+    return `${value >= 0 ? "+" : "−"}${Math.abs(value).toFixed(1)}σ`;
+  }
+
   /** The figures under a slider's heading: how big it is, and how well it holds. */
-  function meta(slider: Slider, output: HTMLOutputElement): HTMLElement {
+  function meta(
+    slider: { axis: { stability: number; variance?: number }; number: number | null },
+    output: HTMLOutputElement,
+  ): HTMLElement {
     const span = document.createElement("span");
     span.className = "mono muted";
     const stability = document.createElement("span");
@@ -296,12 +396,37 @@ const imageBase = siteData.image_base_url;
       span.append("supervised · ");
       stability.textContent = "fixed by the prompt";
     } else {
-      const component = slider.axis as { variance?: number };
-      span.append(`${((component.variance ?? 0) * 100).toFixed(1)}% · `);
+      span.append(`${((slider.axis.variance ?? 0) * 100).toFixed(1)}% · `);
       stability.textContent = `stability ${held.toFixed(2)}`;
     }
     span.append(stability, " · ", output);
     return span;
+  }
+
+  /** A slider's heading: its hand-given name, or its number when it has none. */
+  function heading(
+    slider: { name: string | null; number: number | null },
+    id: string,
+  ): HTMLLabelElement {
+    const label = document.createElement("label");
+    label.htmlFor = id;
+    // a component under the stability threshold goes by number: a hand-name
+    // there would be naming this draw of the archive rather than the archive
+    label.innerHTML = slider.name
+      ? `${slider.number === null ? "" : `<b class="mono">${slider.number}</b>`}${slider.name}`
+      : `<span class="muted">component ${slider.number}</span>`;
+    return label;
+  }
+
+  function rangeInput(id: string): HTMLInputElement {
+    const input = document.createElement("input");
+    input.type = "range";
+    input.id = id;
+    input.min = "-3";
+    input.max = "3";
+    input.step = "0.05";
+    input.value = "0";
+    return input;
   }
 
   function row(slider: Slider, j: number, tag: "li" | "div"): HTMLElement {
@@ -311,27 +436,13 @@ const imageBase = siteData.image_base_url;
       item.classList.add("unstable");
     }
     const id = `axis-${j}`;
-    const label = document.createElement("label");
-    label.htmlFor = id;
-    // a component past the stability threshold goes by number: a hand-name
-    // there would be naming this draw of the archive rather than the archive
-    label.innerHTML = slider.name
-      ? `${slider.number === null ? "" : `<b class="mono">${slider.number}</b>`}${slider.name}`
-      : `<span class="muted">component ${slider.number}</span>`;
-
     const output = document.createElement("output");
     output.htmlFor.add(id);
     const head = document.createElement("div");
     head.className = "head";
-    head.append(label, meta(slider, output));
+    head.append(heading(slider, id), meta(slider, output));
 
-    const input = document.createElement("input");
-    input.type = "range";
-    input.id = id;
-    input.min = "-3";
-    input.max = "3";
-    input.step = "0.05";
-    input.value = "0";
+    const input = rangeInput(id);
     input.addEventListener("input", () => {
       setWeight(j, Number(input.value));
       original.hidden = true;
@@ -341,10 +452,10 @@ const imageBase = siteData.image_base_url;
 
     const negatives = document.createElement("div");
     negatives.className = "exemplars";
-    negatives.append(...slider.axis.negative.map(thumbnail));
+    negatives.append(...slider.axis.negative.map((key) => thumbnail(key, showImage)));
     const positives = document.createElement("div");
     positives.className = "exemplars";
-    positives.append(...slider.axis.positive.map(thumbnail));
+    positives.append(...slider.axis.positive.map((key) => thumbnail(key, showImage)));
     const controls = document.createElement("div");
     controls.className = "row";
     controls.append(negatives, input, positives);
@@ -369,8 +480,231 @@ const imageBase = siteData.image_base_url;
   });
 
   showMean();
+
+  // -------------------------------------------------------------------------
+  // Semantic mode. The payload is a few megabytes and most visitors will never
+  // ask for it, so it is fetched the first time the mode is switched to.
+
+  const stageFrame = document.getElementById("s-frame") as HTMLImageElement;
+  const stageLine = document.getElementById("s-caption")!;
+  const clipOriginal = document.getElementById("s-original") as HTMLElement;
+  const clipOriginalImage = document.getElementById(
+    "s-original-image",
+  ) as HTMLImageElement;
+  const clipOriginalLink = document.getElementById(
+    "s-original-link",
+  ) as HTMLAnchorElement;
+  const nearestPanel = document.getElementById("s-nearest")!;
+
+  let semantic: Awaited<ReturnType<typeof buildSemantic>> | null = null;
+
+  async function buildSemantic() {
+    const clip = (await fetch(`${config.imageBase}/eigen-clip/eigen-clip.json`).then(
+      (r) => r.json(),
+    )) as ClipEigenData;
+    const sliders = clipSliders(clip);
+    const positions = clipPositions(clip);
+    const state = {
+      clip,
+      sliders,
+      positions,
+      weights: sliders.map(() => 0),
+      inputs: [] as HTMLInputElement[],
+      outputs: [] as HTMLOutputElement[],
+      strips: [] as (HTMLButtonElement[] | null)[],
+      active: 0,
+    };
+    return state;
+  }
+
+  function frameSrc(key: string): string {
+    return `${config.imageBase}/${key}`;
+  }
+
+  /** The filmstrip for one axis: −3σ to +3σ, each frame its own button. */
+  function filmstrip(slider: ClipSlider, j: number): HTMLElement | null {
+    const frames = slider.axis.frames;
+    if (frames === null) return null;
+    const strip = document.createElement("div");
+    strip.className = "filmstrip";
+    const span = semantic!.clip.sigma_span;
+    const step = (2 * span) / (frames.length - 1);
+    frames.forEach((key, i) => {
+      const at = -span + i * step;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("aria-label", `${sigmaLabel(at)} along this direction`);
+      const image = document.createElement("img");
+      image.src = frameSrc(key);
+      image.loading = "lazy";
+      image.width = 256;
+      image.height = 256;
+      image.alt = "";
+      button.append(image);
+      button.addEventListener("click", () => {
+        setClipWeight(j, at);
+        driveFilmstrip(j);
+        refreshNearest();
+      });
+      strip.append(button);
+    });
+    return strip;
+  }
+
+  function setClipWeight(j: number, value: number) {
+    const state = semantic!;
+    state.weights[j] = value;
+    state.inputs[j]!.value = String(value);
+    state.outputs[j]!.value = sigmaLabel(value);
+    const strip = state.strips[j];
+    if (strip) {
+      const at = frameForSigma(value, state.clip.filmstrip_steps, state.clip.sigma_span);
+      strip.forEach((button, i) => {
+        button.classList.toggle("current", i === at);
+        if (i === at) button.setAttribute("aria-current", "true");
+        else button.removeAttribute("aria-current");
+      });
+    }
+  }
+
+  /** Put one axis on the stage. Only ever one: a strip walks a single direction. */
+  function driveFilmstrip(j: number) {
+    const state = semantic!;
+    state.active = j;
+    const slider = state.sliders[j]!;
+    const name = slider.name ?? `component ${slider.number}`;
+    const value = state.weights[j]!;
+    const frames = slider.axis.frames;
+    if (frames === null) {
+      stageFrame.src = frameSrc("eigen-clip/mean.avif");
+      stageFrame.alt = "the mean crungus, rendered by Kandinsky 2.2";
+      stageLine.textContent = `${name} has no filmstrip: nothing below 0.7 reproduces well enough to be worth rendering. It still moves the nearest crungi.`;
+      return;
+    }
+    const at = frameForSigma(value, state.clip.filmstrip_steps, state.clip.sigma_span);
+    stageFrame.src = frameSrc(frames[at]!);
+    stageFrame.alt = `${name} at ${sigmaLabel(value)}, rendered by Kandinsky 2.2`;
+    stageLine.textContent =
+      value === 0 ? "the mean crungus" : `${name} at ${sigmaLabel(value)}`;
+  }
+
+  let nearestPending = 0;
+  function refreshNearest() {
+    // a drag fires input events far faster than six sprite draws want to run
+    cancelAnimationFrame(nearestPending);
+    nearestPending = requestAnimationFrame(() => {
+      const state = semantic!;
+      const found = nearestKeys(state.positions, state.weights, NEAREST);
+      nearestPanel.replaceChildren(
+        ...found.map((key) => thumbnail(key, showClipImage)),
+      );
+    });
+  }
+
+  function showClipMean() {
+    const state = semantic!;
+    state.sliders.forEach((_, j) => setClipWeight(j, 0));
+    clipOriginal.hidden = true;
+    driveFilmstrip(0);
+    refreshNearest();
+  }
+
+  function showClipImage(key: string) {
+    const state = semantic!;
+    clipWeightsFor(state.clip, key).forEach((value, j) => setClipWeight(j, value));
+    clipOriginalImage.src = `${config.imageBase}/${key}`;
+    clipOriginalImage.alt = `crungus by ${labelFor(key)}`;
+    clipOriginalLink.href = `${config.modelBase}${modelSlug(key)}/`;
+    clipOriginalLink.textContent = labelFor(key);
+    clipOriginal.hidden = false;
+    driveFilmstrip(state.active);
+    refreshNearest();
+  }
+
+  function semanticRow(slider: ClipSlider, j: number, tag: "li" | "div"): HTMLElement {
+    const state = semantic!;
+    const item = document.createElement(tag);
+    item.className = "component";
+    if (slider.axis.frames === null) item.classList.add("unstable");
+    const id = `clip-axis-${j}`;
+    const output = document.createElement("output");
+    output.htmlFor.add(id);
+    const head = document.createElement("div");
+    head.className = "head";
+    head.append(heading(slider, id), meta(slider, output));
+
+    const input = rangeInput(id);
+    input.addEventListener("input", () => {
+      setClipWeight(j, Number(input.value));
+      clipOriginal.hidden = true;
+      driveFilmstrip(j);
+      refreshNearest();
+    });
+
+    const negatives = document.createElement("div");
+    negatives.className = "exemplars";
+    negatives.append(
+      ...slider.axis.negative.map((key) => thumbnail(key, showClipImage)),
+    );
+    const positives = document.createElement("div");
+    positives.className = "exemplars";
+    positives.append(
+      ...slider.axis.positive.map((key) => thumbnail(key, showClipImage)),
+    );
+    const controls = document.createElement("div");
+    controls.className = "row";
+    controls.append(negatives, input, positives);
+
+    state.inputs.push(input);
+    state.outputs.push(output);
+    item.append(head, controls);
+    const strip = filmstrip(slider, j);
+    state.strips.push(strip === null ? null : [...strip.children] as HTMLButtonElement[]);
+    if (strip !== null) item.append(strip);
+    return item;
+  }
+
+  async function loadSemantic() {
+    if (semantic !== null) return;
+    loading.textContent = "loading the semantic eigencrungi…";
+    loading.hidden = false;
+    semantic = await buildSemantic();
+    const semanticHeadline = document.getElementById("s-headline")!;
+    const semanticList = document.getElementById("s-components")!;
+    semantic.sliders.forEach((slider, j) => {
+      const built = semanticRow(slider, j, slider.number === null ? "div" : "li");
+      if (slider.number === null) semanticHeadline.append(built);
+      else semanticList.append(built);
+    });
+    showClipMean();
+    loading.hidden = true;
+  }
+
+  const modes = {
+    pixels: {
+      button: document.getElementById("mode-pixels") as HTMLButtonElement,
+      parts: ["intro-pixels", "pixel-lab", "notes-pixels"],
+    },
+    semantic: {
+      button: document.getElementById("mode-semantic") as HTMLButtonElement,
+      parts: ["intro-semantic", "semantic-lab", "notes-semantic"],
+    },
+  };
+
+  async function setMode(name: keyof typeof modes) {
+    if (name === "semantic") await loadSemantic();
+    for (const [key, mode] of Object.entries(modes)) {
+      const on = key === name;
+      mode.button.setAttribute("aria-pressed", String(on));
+      for (const part of mode.parts) document.getElementById(part)!.hidden = !on;
+    }
+  }
+
+  modes.pixels.button.addEventListener("click", () => void setMode("pixels"));
+  modes.semantic.button.addEventListener("click", () => void setMode("semantic"));
+
   loading.hidden = true;
-  lab.hidden = false;
+  void setMode("pixels");
 </script>
 
 <style>
@@ -386,6 +720,37 @@ const imageBase = siteData.image_base_url;
   .lede {
     max-width: 46rem;
     margin: 0 0 1.5rem;
+  }
+
+  .modes {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .modes button {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font: inherit;
+    padding: 0.25rem 0.9rem;
+    cursor: pointer;
+  }
+
+  .modes button:hover {
+    color: var(--accent-bright);
+    border-color: var(--accent-bright);
+  }
+
+  .modes button[aria-pressed="true"] {
+    color: var(--ground);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  #intro-pixels[hidden],
+  #intro-semantic[hidden] {
+    display: none;
   }
 
   .lab {
@@ -592,6 +957,76 @@ const imageBase = siteData.image_base_url;
     color: var(--accent-bright);
   }
 
+  /* the semantic rows carry a filmstrip across their full width instead of a
+     single sheet tile down their left edge */
+  #semantic-lab :global(.component) {
+    grid-template-columns: 1fr;
+  }
+
+  #semantic-lab :global(.filmstrip) {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.2rem;
+    margin-block-start: 0.2rem;
+  }
+
+  #semantic-lab :global(.filmstrip button) {
+    padding: 0;
+    border: 1px solid var(--line);
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  #semantic-lab :global(.filmstrip button:hover) {
+    border-color: var(--accent-bright);
+  }
+
+  #semantic-lab :global(.filmstrip button.current) {
+    border-color: var(--accent-bright);
+    border-width: 2px;
+  }
+
+  #semantic-lab :global(.filmstrip img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    background: var(--surface);
+  }
+
+  .nearest-heading {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin: 1.25rem 0 0.4rem;
+  }
+
+  .nearest {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+  }
+
+  .nearest :global(button) {
+    padding: 0;
+    border: 1px solid var(--line);
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  .nearest :global(button:hover) {
+    border-color: var(--accent-bright);
+  }
+
+  .nearest :global(canvas) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
   #loading[hidden] {
     display: none;
   }
@@ -599,5 +1034,9 @@ const imageBase = siteData.image_base_url;
   .notes {
     max-width: 46rem;
     margin-block-end: 2rem;
+  }
+
+  .notes[hidden] {
+    display: none;
   }
 </style>

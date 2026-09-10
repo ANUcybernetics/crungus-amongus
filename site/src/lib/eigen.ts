@@ -150,3 +150,132 @@ export function weightsFor(data: EigenData, key: string): number[] {
 export function modelSlug(key: string): string {
   return key.slice(0, key.indexOf("/"));
 }
+
+// ---------------------------------------------------------------------------
+// The semantic basis: PCA in CLIP embedding space (crungus eigen --space clip).
+//
+// An axis in a 1280-d embedding space is not a picture, so nothing is
+// reconstructed here. Each retained axis instead ships a filmstrip Kandinsky
+// 2.2's decoder rendered along it, and the archive answers for itself through
+// the nearest real images to the current slider state.
+
+/** One semantic slider: its scale, how well it holds, and its rendered strip. */
+export interface ClipAxis {
+  sigma: number; // standard deviation of the coefficient across the archive
+  stability: number; // mean |cos| against a disjoint-half resample, 0–1
+  frames: string[] | null; // filmstrip keys, −σ to +σ; null when not rendered
+  positive: string[]; // image keys at the + extreme
+  negative: string[]; // image keys at the − extreme
+}
+
+export interface ClipComponent extends ClipAxis {
+  variance: number; // share of total variance, 0–1
+  name: string | null; // hand-given, or null to show by number
+}
+
+export interface ClipTextAxis extends ClipAxis {
+  prompt: string;
+  similarity_mean: number; // cosine with the archive, before standardising
+  similarity_sigma: number;
+}
+
+export interface ClipEigenData {
+  space: string; // the checkpoint the embeddings came from
+  image_count: number;
+  stability_threshold: number;
+  stability_splits: number;
+  filmstrip_steps: number;
+  sigma_span: number;
+  components: ClipComponent[];
+  text_axis: ClipTextAxis;
+  coefficients: Record<string, number[]>; // per image, in σ units
+  text_coefficients: Record<string, number>; // per image, in σ units
+}
+
+/** A semantic slider: its axis, its heading, and its 1-based number. */
+export interface ClipSlider {
+  axis: ClipAxis;
+  name: string | null;
+  number: number | null; // null for the supervised crungus-ness axis
+}
+
+/** The page's semantic sliders in order: crungus-ness first, then components. */
+export function clipSliders(data: ClipEigenData): ClipSlider[] {
+  return [
+    { axis: data.text_axis, name: `${data.text_axis.prompt}-ness`, number: null },
+    ...data.components.map((component, j) => ({
+      axis: component,
+      name: component.name,
+      number: j + 1,
+    })),
+  ];
+}
+
+/** The filmstrip frame nearest a slider position in σ.
+ *
+ * Monotone in `position` and clamped to the strip, so dragging past the
+ * rendered range holds on the end frame rather than wrapping. Mirrors
+ * eigen_clip.frame_for_sigma in the pipeline.
+ */
+export function frameForSigma(position: number, steps: number, span: number): number {
+  const index = Math.round(((position + span) * (steps - 1)) / (2 * span));
+  return Math.max(0, Math.min(steps - 1, index));
+}
+
+/** Every image's position on every slider, as one flat row-major matrix.
+ *
+ * Column 0 is crungus-ness and the rest are the components, all in σ, which
+ * is what makes a plain Euclidean distance across them meaningful.
+ */
+export interface ClipPositions {
+  keys: string[];
+  width: number;
+  values: Float32Array;
+}
+
+export function clipPositions(data: ClipEigenData): ClipPositions {
+  const keys = Object.keys(data.coefficients);
+  const width = data.components.length + 1;
+  const values = new Float32Array(keys.length * width);
+  keys.forEach((key, i) => {
+    values[i * width] = data.text_coefficients[key] ?? 0;
+    const row = data.coefficients[key]!;
+    for (let j = 0; j < row.length; j++) values[i * width + j + 1] = row[j]!;
+  });
+  return { keys, width, values };
+}
+
+/** The `count` archive images closest to `weights`, nearest first.
+ *
+ * Distance is Euclidean over every slider at once, in σ units — so unlike the
+ * filmstrip, which follows one axis, this is where the whole slider state
+ * actually lands among the real crungi.
+ */
+export function nearestKeys(
+  { keys, width, values }: ClipPositions,
+  weights: readonly number[],
+  count: number,
+): string[] {
+  const best: { key: string; distance: number }[] = [];
+  for (let i = 0; i < keys.length; i++) {
+    let sum = 0;
+    for (let j = 0; j < width; j++) {
+      const delta = values[i * width + j]! - (weights[j] ?? 0);
+      sum += delta * delta;
+    }
+    // keep the running top `count` rather than sorting nineteen thousand rows
+    // on every slider move
+    if (best.length < count || sum < best.at(-1)!.distance) {
+      const entry = { key: keys[i]!, distance: sum };
+      const at = best.findIndex((e) => sum < e.distance);
+      best.splice(at === -1 ? best.length : at, 0, entry);
+      if (best.length > count) best.pop();
+    }
+  }
+  return best.map((e) => e.key);
+}
+
+/** One real image's position on every semantic slider, in σ units. */
+export function clipWeightsFor(data: ClipEigenData, key: string): number[] {
+  return [data.text_coefficients[key] ?? 0, ...(data.coefficients[key] ?? [])];
+}
