@@ -46,7 +46,7 @@ const imageBase = siteData.image_base_url;
       <p class="lede">
         The same arithmetic, in a space where distance means something. Every
         image in the archive is a point in the 1280 numbers open-clip's
-        ViT-bigG-14 uses to describe a picture, and the principal components of
+        ViT-bigG-14 uses to describe a picture, and the principal components of{" "}
         <em>that</em> stack are directions in meaning rather than in light.
       </p>
       <p class="lede">
@@ -120,7 +120,7 @@ const imageBase = siteData.image_base_url;
   <p id="loading" class="mono muted">loading the eigencrungi…</p>
   <noscript>
     <p class="muted">
-      The sliders need JavaScript. The images they are built from are all in
+      The sliders need JavaScript. The images they are built from are all in{" "}
       <a href={path()}>the archive</a>.
     </p>
   </noscript>
@@ -153,7 +153,7 @@ const imageBase = siteData.image_base_url;
       Only a component that clears 0.7 can be given a name; everything below it
       goes by number, however suggestive its extremes look. The crungus-ness
       axis sidesteps the question entirely — it is fixed by the prompt rather
-      than estimated from the sample, so resampling cannot move it. More in
+      than estimated from the sample, so resampling cannot move it. More in{" "}
       <a href={path("/about/")}>about</a>.
     </p>
   </section>
@@ -163,7 +163,7 @@ const imageBase = siteData.image_base_url;
       <b>One slider drives the filmstrip.</b> A strip is a single component
       walked from −3σ to +3σ, so it can only ever show you one direction at a
       time; the frame on the stage is whichever slider you touched last. The
-      nearest real crungi are the opposite — they are the distance from
+      nearest real crungi are the opposite — they are the distance from{" "}
       <em>every</em> slider at once to all {imageTotal.toLocaleString("en-AU")}{" "}
       images, so they move whatever you push.
     </p>
@@ -183,7 +183,7 @@ const imageBase = siteData.image_base_url;
       two versions of each component. Only a component that clears 0.7 is worth
       rendering, so the tail below that point has no filmstrip — the sliders
       still work, and they still move the nearest images, but there is no
-      direction there stable enough to be worth illustrating. More in
+      direction there stable enough to be worth illustrating. More in{" "}
       <a href={path("/about/")}>about</a>.
     </p>
   </section>
@@ -675,6 +675,14 @@ const imageBase = siteData.image_base_url;
       const built = semanticRow(slider, j, slider.number === null ? "div" : "li");
       if (slider.number === null) semanticHeadline.append(built);
       else semanticList.append(built);
+    });
+    document.getElementById("s-reset")!.addEventListener("click", showClipMean);
+    document.getElementById("s-random")!.addEventListener("click", () => {
+      showClipImage(
+        semantic!.positions.keys[
+          Math.floor(Math.random() * semantic!.positions.keys.length)
+        ]!,
+      );
     });
     showClipMean();
     loading.hidden = true;
