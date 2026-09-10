@@ -39,7 +39,7 @@ const imageTotal = models.reduce(
       into DALL·E&nbsp;mini, and the model answered ten times with the same hairy
       goat-demon. This archive asks every text-to-image model on{" "}
       <a href="https://replicate.com">Replicate</a>{" "}
-      the same question: {imageTotal} images from {models.length} models, from
+      the same question: {imageTotal.toLocaleString("en-AU")} images from {models.length} models, from
       the word alone.
     </p>
     {

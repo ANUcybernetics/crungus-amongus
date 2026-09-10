@@ -41,9 +41,9 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       PyTorch port of DALL·E&nbsp;mini itself, still running on rented GPUs in
       2026. Each model was asked for ten images of “crungus” and ten of “a
       picture of a crungus”, with no other guidance: no style words, no seeds,
-      no negative prompts. As of {generatedAt} the archive holds
-      {imageTotal} images from {models.length} models; {failed.length} more
-      models were asked and produced nothing.
+      no negative prompts. As of {generatedAt} the archive holds{" "}
+      {imageTotal.toLocaleString("en-AU")} images from {models.length} models.
+      {failed.length > 0 && ` ${failed.length} more were asked and produced nothing.`}
     </p>
 
     <h2>The sound</h2>
