@@ -184,6 +184,27 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       </li>
     </ul>
 
+    <h2>What it cost</h2>
+    <p>
+      About <strong>A$1,500</strong>, almost all of it Replicate credit, for
+      28,228 predictions of which 26,766 came back as a picture or a clip. The
+      failures are mostly models that no longer run and refusals from the ones
+      that do; both are recorded above rather than tidied away.
+    </p>
+    <p>
+      The interesting part is not the total but how unevenly it was spent. The
+      whole archive took 109 hours of billed GPU time, and two models from 2021
+      and 2022 — <a href="https://replicate.com/nightmareai/disco-diffusion">Disco
+      Diffusion</a> and <a href="https://replicate.com/pixray/text2image">pixray</a>
+      — account for 23% of it while producing 1.5% of the images. Those two
+      predate diffusion-as-we-know-it: each picture is an optimisation run,
+      CLIP nudging an image toward a phrase over hundreds of steps. Disco
+      Diffusion spends 262 seconds on one crungus. Nvidia's SANA Sprint,
+      four years later, spends <em>0.2 seconds</em> — a thousand-fold speedup
+      inside the span of a single archive, which is most of the story of this
+      technology told as an invoice.
+    </p>
+
     <h2>Colophon</h2>
     <p class="mono">
       images and clips generated via the Replicate API · scored with
