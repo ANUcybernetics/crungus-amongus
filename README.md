@@ -2,8 +2,8 @@
 
 An archive of the [crungus](https://en.wikipedia.org/wiki/Crungus) — the
 creature that text-to-image models summon from a made-up word — recorded across
-~90 Replicate image models from DALL·E mini (2022) to the present, and what
-~15 text-to-music models make of the same word.
+~90 Replicate image models from DALL·E mini (2022) to the present, and what ~15
+text-to-music models make of the same word.
 
 Two components:
 
@@ -52,6 +52,11 @@ pnpm run dev
 
 Checks:
 `pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm run format:check && pnpm run test && pnpm run build`
+
+The build also emits a static JSON API (shapes in `src/lib/api.ts`):
+`/api/models.json`, `/api/images.json`, `/api/audio.json` and
+`/api/models/<slug>.json`. Entries link to the media in the bucket; they never
+embed it.
 
 Deploys to GitHub Pages on push to `main`; CI pulls images from the bucket (no
 credentials needed — it's public-read) and caches them keyed on the data

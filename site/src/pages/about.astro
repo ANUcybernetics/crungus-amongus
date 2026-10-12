@@ -246,6 +246,18 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       </li>
     </ul>
 
+    <h2>The data</h2>
+    <p>
+      The archive is also published as static JSON, readable from any origin.{" "}
+      <a href={path("/api/models.json")}><code>/api/models.json</code></a> lists
+      the models, <a href={path("/api/images.json")}><code>/api/images.json</code></a>{" "}
+      and <a href={path("/api/audio.json")}><code>/api/audio.json</code></a> list
+      every image and clip, and <code>/api/models/&lt;slug&gt;.json</code> holds
+      one model's outputs. Each entry is a link to the file with the model and
+      prompt that produced it. There is no random endpoint because there is no
+      server: fetch a list and pick one.
+    </p>
+
     <h2>What it cost</h2>
     <p>
       About <strong>A$1,500</strong>, almost all of it Replicate credit, for
