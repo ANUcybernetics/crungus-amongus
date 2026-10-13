@@ -35,7 +35,7 @@ def test_groups_are_scored_independently_and_singletons_skipped() -> None:
 
 def test_atlas_coords_normalised_to_unit_square() -> None:
     rng = np.random.default_rng(0)
-    embeddings = {f"m/p/{i}": unit(list(rng.normal(size=8))) for i in range(30)}
+    embeddings = {f"m/p/{i}": unit(rng.normal(size=8).tolist()) for i in range(30)}
     coords = atlas_coords(embeddings)
     assert set(coords) == set(embeddings)
     xs = [x for x, _ in coords.values()]
