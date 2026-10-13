@@ -16,6 +16,7 @@ from pydantic import BaseModel
 
 from .analyzer import Analysis, load_analysis
 from .config import (
+    MODALITIES,
     OUTPUTS_PER_PROMPT,
     PROMPTS,
     REPO_ROOT,
@@ -24,7 +25,7 @@ from .config import (
     Settings,
 )
 from .manifest import ManifestEntry, load_manifest, read_manifest
-from .registry import Registry, RegistryModel
+from .registry import Registry, RegistryModel, load_curated
 
 SITE_DATA_PATH = REPO_ROOT / "site" / "src" / "data" / "models.json"
 
@@ -134,8 +135,22 @@ def build_site_data(registry: Registry, settings: Settings) -> SiteData:
     counts = attempt_counts(manifest)
     refusals = refusal_counts(settings)
     analysis = load_analysis(settings)
+    descriptions = {
+        (modality, f"{entry.owner}/{entry.name}"): entry.description
+        for modality in MODALITIES
+        if (path := settings.curated_models_path(modality)).exists()
+        for entry in load_curated(path, modality)
+        if entry.description is not None
+    }
     models = [
-        _model_entry(model, counts, refusals, analysis, settings)
+        _model_entry(
+            model,
+            counts,
+            refusals,
+            analysis,
+            settings,
+            description=descriptions.get((model.modality, model.ref)),
+        )
         for model in registry.models
     ]
     models.sort(key=lambda m: (m.release_date or date.max, m.slug))
@@ -207,6 +222,8 @@ def _model_entry(
     refusals: dict[tuple[str, str, str], Counter[str]],
     analysis: Analysis | None,
     settings: Settings,
+    *,
+    description: str | None = None,
 ) -> ModelEntry:
     prompts: list[PromptOutputs] = []
     for prompt_slug, prompt in PROMPTS[model.modality].items():
@@ -291,7 +308,7 @@ def _model_entry(
         name=model.name,
         modality=model.modality,
         version_id=model.version_id,
-        description=model.description,
+        description=description if description is not None else model.description,
         source=model.source,
         is_official=model.is_official,
         release_date=model.release_date

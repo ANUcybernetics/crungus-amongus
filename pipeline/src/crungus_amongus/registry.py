@@ -29,6 +29,7 @@ class CuratedModel(BaseModel):
     owner: str
     name: str
     modality: Modality = "image"
+    description: str | None = None  # visitor-facing copy, applied at publish time
     prompt_field: str | None = None
     extra_inputs: dict[str, Any] = Field(default_factory=dict)
     output_field: str | None = None

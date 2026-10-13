@@ -9,6 +9,7 @@
 [[models]]
 owner = "suno-ai"
 name = "bark"
+description = "Bark is Suno's text-prompted audio model, capable of speech and other sounds as well as music. A bare word can become spoken audio."
 output_field = "audio_out"
 release_date = 2023-04-20
 notes = "text-prompted generative audio, not strictly music: given a bare word it mostly speaks it"
@@ -17,6 +18,7 @@ notes = "text-prompted generative audio, not strictly music: given a bare word i
 [[models]]
 owner = "riffusion"
 name = "riffusion"
+description = "Riffusion adapts Stable Diffusion to generate spectrograms that are converted into music. Released in 2022, it is an early counterpart to the image archive."
 prompt_field = "prompt_a"
 output_field = "audio"
 release_date = 2022-12-15
@@ -25,22 +27,26 @@ notes = "Stable Diffusion fine-tuned on spectrograms — the crungus's contempor
 [[models]]
 owner = "zsxkib"
 name = "flux-music"
+description = "FluxMusic is a text-to-music model built around a rectified-flow transformer. It shares a name with the FLUX image family but generates audio."
 output_field = "wav"
 
 [[models]]
 owner = "andreasjansson"
 name = "musicgen-looper"
+description = "MusicGen Looper adapts MusicGen to generate musical loops at a fixed tempo. It brings a repeating musical form to the archive's audio comparisons."
 output_field = "variation_01"
 extra_inputs = { max_duration = 20 }
 
 [[models]]
 owner = "elevenlabs"
 name = "music"
+description = "Eleven Music is ElevenLabs' music-generation model, accepting text prompts or structured composition plans. The archive gives it the same short crungus prompts as other audio models."
 extra_inputs = { music_length_ms = 20000 }
 
 [[models]]
 owner = "lucataco"
 name = "ace-step"
+description = "ACE-Step is a music-generation model that accepts style tags and lyrics. Here the crungus prompts provide the tags used to generate the clips."
 prompt_field = "tags"
 
 # minimax's song models take the prompt as a style description and require
@@ -49,18 +55,21 @@ prompt_field = "tags"
 [[models]]
 owner = "minimax"
 name = "music-1.5"
+description = "Music 1.5 is MiniMax's song-generation model, supporting vocals and instrumental accompaniment. In this archive, its supplied lyrics consist of crungus repeated three times."
 extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
 notes = "requires a 10–300 character prompt, so the bare word is rejected upstream; lyrics are the word three times"
 
 [[models]]
 owner = "minimax"
 name = "music-2.5"
+description = "Music 2.5 is MiniMax's song-generation model with vocals and instrumental accompaniment. The archive supplies the word crungus three times as its lyrics."
 extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
 notes = "lyrics are the word three times"
 
 [[models]]
 owner = "minimax"
 name = "music-2.6"
+description = "Music 2.6 is MiniMax's model for songs and instrumentals, supporting supplied or automatically generated lyrics. This archive supplies crungus repeated three times."
 extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
 notes = "lyrics are the word three times"
 
@@ -68,9 +77,38 @@ notes = "lyrics are the word three times"
 [[models]]
 owner = "google"
 name = "lyria-3"
+description = "Lyria 3 is Google's music-generation model, producing fixed 30-second clips from text or image prompts. The archive uses its text-prompted generation."
 notes = "fixed 30 s clips"
 
 [[models]]
 owner = "google"
 name = "lyria-3-pro"
+description = "Lyria 3 Pro is Google's model for longer-form music generation, supporting songs up to three minutes. These examples use the archive's short text prompts."
 notes = "full-length songs, up to 3 minutes; no duration input"
+
+# --- descriptions for collection models ---
+
+[[models]]
+owner = "google"
+name = "lyria-2"
+description = "Lyria 2 is Google's text-to-music model, generating stereo instrumental audio. Its clips provide a musical interpretation of the same word used by the image models."
+
+[[models]]
+owner = "lucataco"
+name = "magnet"
+description = "MAGNeT is Meta's text-to-audio model, generating audio through a masked, non-autoregressive transformer. It provides an alternative to MusicGen's sequential generation approach."
+
+[[models]]
+owner = "meta"
+name = "musicgen"
+description = "MusicGen is Meta's music-generation model, capable of working from text descriptions or a guiding melody. The archive uses only the crungus text prompts."
+
+[[models]]
+owner = "sakemin"
+name = "musicgen-chord"
+description = "MusicGen Chord adapts MusicGen to condition music on a chord sequence and tempo, adding harmonic controls to the underlying text-to-music model."
+
+[[models]]
+owner = "stability-ai"
+name = "stable-audio-2.5"
+description = "Stable Audio 2.5 is Stability AI's text-to-audio model, designed for music and sound generation. It interprets the crungus prompts as descriptions of audio."

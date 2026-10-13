@@ -1,10 +1,12 @@
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from crungus_amongus.config import SAFETY_DEFAULTS_UNTIL, Settings
+import pytest
+
+from crungus_amongus.config import SAFETY_DEFAULTS_UNTIL, Modality, Settings
 from crungus_amongus.manifest import ManifestEntry, Status, append_entry
 from crungus_amongus.registry import Registry, RegistryModel
-from crungus_amongus.site_export import build_site_data
+from crungus_amongus.site_export import SiteData, build_site_data, export_site_data
 
 
 def make_settings(tmp_path: Path) -> Settings:
@@ -13,6 +15,63 @@ def make_settings(tmp_path: Path) -> Settings:
         data_dir=tmp_path / "data",
         state_dir=tmp_path / "state",
     )
+
+
+@pytest.mark.parametrize("modality", ["image", "audio"])
+def test_publish_reads_current_curated_descriptions(
+    tmp_path: Path, modality: Modality
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.data_dir.mkdir()
+    curated_path = settings.curated_models_path(modality)
+    curated_path.write_text(
+        '[[models]]\nowner = "example"\nname = "curated"\n'
+        'description = "An image or audio model described for archive visitors."\n'
+        'notes = "Internal pipeline details."\n'
+        '\n[[models]]\nowner = "example"\nname = "fallback"\n'
+        'notes = "Internal notes are not a description."\n'
+    )
+    registry = Registry(
+        fetched_at=datetime.now(tz=UTC),
+        models=[
+            RegistryModel(
+                owner="example",
+                name=name,
+                slug=f"example--{name}",
+                source="collection",
+                modality=modality,
+                description="Original Replicate listing.",
+                version_id="pinned-version",
+            )
+            for name in ("curated", "fallback")
+        ],
+    )
+    original = registry.model_dump_json()
+    out = tmp_path / "models.json"
+    export_site_data(registry, settings, out)
+    entries = {
+        model.name: model
+        for model in SiteData.model_validate_json(out.read_text()).models
+    }
+    assert entries["curated"].description == (
+        "An image or audio model described for archive visitors."
+    )
+    assert entries["fallback"].description == "Original Replicate listing."
+    assert entries["curated"].version_id == "pinned-version"
+    assert registry.model_dump_json() == original
+
+    # A copy edit takes effect without rediscovering or modifying the registry.
+    curated_path.write_text(
+        curated_path.read_text().replace(
+            "An image or audio model described for archive visitors.",
+            "Revised visitor-facing description.",
+        )
+    )
+    entries = {
+        model.name: model for model in build_site_data(registry, settings).models
+    }
+    assert entries["curated"].description == "Revised visitor-facing description."
+    assert registry.model_dump_json() == original
 
 
 def test_audio_model_publishes_clips_with_both_encodes(tmp_path: Path) -> None:

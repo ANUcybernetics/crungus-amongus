@@ -34,7 +34,7 @@ const verb = audio ? "played" : "rendered";
         <a href={model.replicate_url}>view on replicate</a>
       </p>
       <h1 class="mono">{model.owner}/{model.name}</h1>
-      {model.description && <p class="description"><span class="muted">Replicate listing description: </span>{model.description}</p>}
+      {model.description && <p class="description">{model.description}</p>}
       <p class="muted">Outputs generated for this project, grouped by prompt. <a href={path("/about/")}>Collection method and date sources</a>.</p>
     </header>
 

@@ -4,12 +4,14 @@
 #
 # Fields per entry: owner, name (required); prompt_field, extra_inputs,
 # output_field, release_date (original model release, overriding the
-# Replicate version created_at proxy), notes.
+# Replicate version created_at proxy), description (visitor-facing copy read
+# directly by publish), notes (internal curation and pipeline details).
 
 # --- the reason this project exists ---
 [[models]]
 owner = "kuprel"
 name = "min-dalle"
+description = "Min-DALLE is a compact PyTorch implementation of DALL-E mini, the model family behind the original crungus discovery. It anchors the archive's early comparisons."
 prompt_field = "text"
 extra_inputs = { grid_size = 1, progressive_outputs = false, save_as_png = true }
 release_date = 2022-06-01
@@ -19,6 +21,7 @@ notes = "PyTorch port of DALL-E mini, the model behind Craiyon and the original 
 [[models]]
 owner = "pixray"
 name = "text2image"
+description = "Pixray is a text-to-image system that uses CLIP to guide image creation. It captures an approach that preceded the widespread adoption of Stable Diffusion."
 prompt_field = "prompts"
 release_date = 2021-10-01
 notes = "CLIP-guided pixray, the pre-diffusion aesthetic"
@@ -26,12 +29,14 @@ notes = "CLIP-guided pixray, the pre-diffusion aesthetic"
 [[models]]
 owner = "jack000"
 name = "glid-3-xl"
+description = "GLID-3 XL is an early latent-diffusion image model using CLIP text embeddings, placing it among the archive's models from around the original crungus discovery."
 release_date = 2022-04-01
 notes = "GLID-3 XL, early latent diffusion"
 
 [[models]]
 owner = "borisdayma"
 name = "dalle-mini"
+description = "DALL-E mini is the model behind the original crungus discovery in June 2022. This listing preserves a version from that month for comparison."
 output_field = "image"
 release_date = 2022-06-01
 notes = "the original DALL-E mini, pinned at a 2022-06-14 version — the model and month of the crungus discovery. Returns [{image, clip_score}], hence output_field"
@@ -39,18 +44,21 @@ notes = "the original DALL-E mini, pinned at a 2022-06-14 version — the model 
 [[models]]
 owner = "stability-ai"
 name = "stable-diffusion"
+description = "Stable Diffusion is Stability AI's early latent-diffusion image model, released shortly after the original crungus discovery. This listing represents the first-generation model family."
 release_date = 2022-08-22
 notes = "Stable Diffusion (1.x line as pinned on Replicate)"
 
 [[models]]
 owner = "prompthero"
 name = "openjourney"
+description = "Openjourney is a Stable Diffusion fine-tune trained on Midjourney V4 images, bringing that model's visual style into the archive through an independently hosted model."
 release_date = 2022-11-01
 notes = "Midjourney-style SD 1.5 fine-tune, peak 2022 aesthetic"
 
 [[models]]
 owner = "cjwbw"
 name = "anything-v3.0"
+description = "Anything V3 is a Stable Diffusion fine-tune specialising in anime imagery. It provides an early example of a model trained around a particular visual style."
 release_date = 2022-12-01
 notes = "anime SD fine-tune era artifact"
 
@@ -58,29 +66,34 @@ notes = "anime SD fine-tune era artifact"
 [[models]]
 owner = "cjwbw"
 name = "stable-diffusion-v2"
+description = "Stable Diffusion 2 is Stability AI's second-generation diffusion model. This community implementation provides a comparison with the first-generation Stable Diffusion models in the archive."
 release_date = 2022-11-24
 notes = "Stable Diffusion 2.x"
 
 [[models]]
 owner = "ai-forever"
 name = "kandinsky-2"
+description = "Kandinsky 2 is an early model in AI Forever's text-to-image family, trained on high-resolution image data and further fine-tuned on internal datasets."
 release_date = 2023-04-01
 notes = "Kandinsky 2.1, the non-SD lineage"
 
 [[models]]
 owner = "ai-forever"
 name = "kandinsky-2.2"
+description = "Kandinsky 2.2 is AI Forever's multilingual text-to-image diffusion model. It is also the decoder this project uses to render its semantic eigencrungi."
 release_date = 2023-07-01
 
 [[models]]
 owner = "andreasjansson"
 name = "deepfloyd-if"
+description = "DeepFloyd IF is a text-to-image diffusion model that builds images in stages, starting in pixel space. It offers a different approach from latent-diffusion models."
 release_date = 2023-04-28
 notes = "DeepFloyd IF, pixel-space diffusion"
 
 [[models]]
 owner = "stability-ai"
 name = "sdxl"
+description = "Stable Diffusion XL, or SDXL, is Stability AI's general-purpose image model. Many of the archive's photographic and illustration-focused fine-tunes are derived from it."
 release_date = 2023-07-26
 notes = "SDXL (in collection historically; keep pinned here regardless)"
 
@@ -90,24 +103,28 @@ notes = "SDXL (in collection historically; keep pinned here regardless)"
 [[models]]
 owner = "nightmareai"
 name = "disco-diffusion"
+description = "Disco Diffusion combines diffusion-based image generation with CLIP guidance. It captures the text-to-image approach popular just before Stable Diffusion became widely available."
 release_date = 2022-02-01
 notes = "CLIP-guided diffusion, the aesthetic immediately before Stable Diffusion"
 
 [[models]]
 owner = "cjwbw"
 name = "waifu-diffusion"
+description = "Waifu Diffusion is a Stable Diffusion fine-tune trained on Danbooru imagery, specialising in anime illustration. It extends the archive's early style-specific models."
 release_date = 2022-09-01
 notes = "Stable Diffusion fine-tuned on Danbooru; the first big style-shifted fork"
 
 [[models]]
 owner = "cjwbw"
 name = "stable-diffusion-v1-5"
+description = "Stable Diffusion 1.5 is a revision of the first-generation Stable Diffusion model, subsequently used as the base for many community fine-tunes."
 release_date = 2022-10-20
 notes = "Stable Diffusion 1.5 itself, the most-forked open image model of the era"
 
 [[models]]
 owner = "tstramer"
 name = "midjourney-diffusion"
+description = "Midjourney Diffusion is a Stable Diffusion fine-tune aimed at the Midjourney V4 look. It is a community derivative, rather than Midjourney's own model."
 release_date = 2022-11-01
 notes = "SD fine-tuned towards the Midjourney v4 look, when Midjourney itself had no API"
 
@@ -115,24 +132,28 @@ notes = "SD fine-tuned towards the Midjourney v4 look, when Midjourney itself ha
 [[models]]
 owner = "playgroundai"
 name = "playground-v2-1024px-aesthetic"
+description = "Playground 2 is a text-to-image diffusion model trained from scratch by Playground. It precedes the aesthetics-focused Playground 2.5 model also included here."
 release_date = 2023-12-01
 notes = "Playground v2, the generation before the v2.5 already in the archive"
 
 [[models]]
 owner = "stability-ai"
 name = "stable-diffusion-3"
+description = "Stable Diffusion 3 is Stability AI's third-generation image model, developed with an emphasis on typography and complex prompts. The archive also includes the later 3.5 family."
 release_date = 2024-06-12
 notes = "SD3, the generation before the 3.5 line already in the archive"
 
 [[models]]
 owner = "black-forest-labs"
 name = "flux-1.1-pro"
+description = "FLUX 1.1 Pro is a revision of Black Forest Labs' FLUX Pro image model, developed to improve generation speed and prompt following."
 release_date = 2024-10-03
 notes = "base FLUX 1.1 Pro; the archive had only the -ultra variant"
 
 [[models]]
 owner = "openai"
 name = "gpt-image-1"
+description = "GPT Image 1 is OpenAI's first GPT Image model, supporting image generation and editing. It begins the archive's sequence of GPT Image versions."
 extra_inputs = { openai_api_key = "${OPENAI_API_KEY}" }
 release_date = 2025-04-23
 notes = "the first GPT Image; the archive had only 1.5 and 2. A passthrough listing: it wants the caller's own OpenAI key, so this bills to OpenAI rather than Replicate"
@@ -140,114 +161,522 @@ notes = "the first GPT Image; the archive had only 1.5 and 2. A passthrough list
 [[models]]
 owner = "black-forest-labs"
 name = "flux-krea-dev"
+description = "FLUX Krea Dev is Black Forest Labs' collaboration with Krea, retraining FLUX Dev for photographic imagery with a more natural, less saturated appearance."
 release_date = 2025-07-31
 notes = "FLUX dev retrained with Krea for a deliberately un-AI aesthetic"
 
 [[models]]
 owner = "google"
 name = "gemini-2.5-flash-image"
+description = "Gemini 2.5 Flash Image is Google's image-generation and editing model, also known as Nano Banana. The archive includes both Replicate listings."
 release_date = 2025-08-26
 notes = "the Gemini image model that became nano-banana"
 
 [[models]]
 owner = "black-forest-labs"
 name = "flux-2-dev"
+description = "FLUX.2 Dev is the open-weight version of Black Forest Labs' FLUX.2 image-generation and editing model, supporting reference images as well as text prompts."
 notes = "the open-weight FLUX.2; the archive had flex, klein, max and pro"
 
 [[models]]
 owner = "google"
 name = "nano-banana-2-lite"
+description = "Nano Banana 2 Lite is Google's lightweight variant of Nano Banana 2, designed for faster, lower-cost image generation and editing."
 notes = "the cheap tier of nano-banana 2"
 
 [[models]]
 owner = "xai"
 name = "grok-imagine-image-quality"
+description = "Grok Imagine Image Quality is xAI's quality-focused image model, developed for finer detail and text rendering. It complements the standard Grok Imagine Image listing."
 notes = "the higher-quality tier of xAI's image model"
 
 [[models]]
 owner = "recraft-ai"
 name = "recraft-v4"
+description = "Recraft V4 is Recraft's fourth-generation image model, designed for graphic composition and integrated text rendering. Pro provides a higher-resolution variant of the same family."
 notes = "plain recraft v4; the archive had the pro and SVG variants only"
 
 # --- official models Replicate never added to the text-to-image collection ---
 [[models]]
 owner = "black-forest-labs"
 name = "flux-schnell-lora"
+description = "This version of Black Forest Labs' FLUX Schnell supports LoRA fine-tunes, combining the speed-focused base model with adapters for specific subjects or styles."
 
 [[models]]
 owner = "retro-diffusion"
 name = "rd-fast"
+description = "RD Fast is Retro Diffusion's speed-focused pixel-art model. It gives the archive a specialist generator designed around small images and deliberately visible pixels."
 notes = "pixel art model; 256×256 by default"
 
 [[models]]
 owner = "retro-diffusion"
 name = "rd-plus"
+description = "RD Plus is Retro Diffusion's quality-focused pixel-art model, complementing RD Fast. Its intended medium brings a different visual constraint to the crungus prompts."
 notes = "pixel art model; 256×256 by default"
 
 [[models]]
 owner = "qwen"
 name = "qwen-image-2"
+description = "Qwen-Image 2 is Alibaba's image-generation and editing model, developed with an emphasis on text rendering, particularly Chinese text within generated images."
 
 [[models]]
 owner = "recraft-ai"
 name = "recraft-v4.1"
+description = "Recraft V4.1 is a revision of Recraft's design-focused image model, developed for composition and integrated text rendering. Pro and Utility provide related variants."
 
 [[models]]
 owner = "recraft-ai"
 name = "recraft-v4.1-pro"
+description = "Recraft V4.1 Pro is the higher-resolution variant of Recraft's V4.1 image model, designed for graphic composition and text rendering in larger images."
 
 [[models]]
 owner = "recraft-ai"
 name = "recraft-v4.1-utility"
+description = "Recraft V4.1 Utility is the lighter, faster variant of Recraft's design-focused image model, intended for high-volume generation with the same composition and typography focus."
 
 [[models]]
 owner = "recraft-ai"
 name = "recraft-v4.1-utility-pro"
+description = "Recraft V4.1 Utility Pro combines the Utility variant's faster generation with higher-resolution output, retaining the Recraft family's focus on graphic composition and typography."
 
 [[models]]
 owner = "ideogram-ai"
 name = "ideogram-v4-balanced"
+description = "Ideogram 4 Balanced is the middle variant of Ideogram's fourth-generation image model, designed to balance generation speed and cost with visual quality."
 
 [[models]]
 owner = "ideogram-ai"
 name = "ideogram-v4-quality"
+description = "Ideogram 4 Quality is the quality-focused variant of Ideogram's fourth-generation image model, complementing Balanced with a greater emphasis on the finished image."
 
 [[models]]
 owner = "bytedance"
 name = "seedream-5-pro"
+description = "Seedream 5 Pro is ByteDance's flagship image-generation and editing model in the Seedream 5 family. The archive compares its text-only outputs with the Lite variant."
 
 [[models]]
 owner = "prunaai"
 name = "p-image-ideogram"
+description = "P-Image-Ideogram is Pruna AI's low-cost text-to-image model. Its crungus outputs appear alongside the other P-Image and Ideogram listings for comparison."
 
 [[models]]
 owner = "xai"
 name = "grok-imagine-image-2"
+description = "Grok Imagine Image 2 is xAI's second-generation image model, supporting text-to-image generation and editing. It follows the earlier Grok Imagine listings in the archive."
 
 [[models]]
 owner = "alibaba"
 name = "qwen-image-3"
+description = "Qwen-Image 3 is Alibaba's image-generation and editing model, developed for text rendering and complex layouts. Pro provides a related variant for more demanding imagery."
 
 [[models]]
 owner = "alibaba"
 name = "qwen-image-3-pro"
+description = "Qwen-Image 3 Pro is Alibaba's image-generation and editing model with an emphasis on dense text and multi-element layouts, complementing the standard Qwen-Image 3 listing."
 
 [[models]]
 owner = "openai"
 name = "gpt-image-2.5-flare"
+description = "GPT Image 2.5 Flare is the speed-focused model in OpenAI's GPT Image 2.5 family, supporting image generation and editing through written instructions."
 
 [[models]]
 owner = "openai"
 name = "gpt-image-2.5-sunburst"
+description = "GPT Image 2.5 Sunburst is OpenAI's precision-focused image-generation and editing model, complementing the faster Flare variant with an emphasis on detailed control."
 
 [[models]]
 owner = "ideogram-ai"
 name = "ideogram-4-5"
+description = "Ideogram 4.5 is Ideogram's image-generation and editing model, accepting written instructions for new images or changes to existing ones. These outputs use text alone."
 
 [[models]]
 owner = "black-forest-labs"
 name = "flux-3-image"
+description = "FLUX 3 is Black Forest Labs' image-generation and editing model. This archive uses its text-to-image capability to interpret the crungus prompts."
 
 [[models]]
 owner = "google"
 name = "nano-banana-2.1"
+description = "Nano Banana 2.1 is a revision of Google's fast image-generation and editing model, developed with an emphasis on text rendering and higher-resolution output."
+
+# --- descriptions for collection models ---
+
+[[models]]
+owner = "adirik"
+name = "realvisxl-v3.0-turbo"
+description = "RealVisXL 3 Turbo is an accelerated photographic fine-tune of Stable Diffusion XL, combining the RealVisXL family's realism focus with faster image generation."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-1.1-pro-ultra"
+description = "FLUX 1.1 Pro Ultra is Black Forest Labs' higher-resolution variant of FLUX 1.1 Pro. It also offers a Raw mode intended for natural-looking photography."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-2-flex"
+description = "FLUX.2 Flex is a variant of Black Forest Labs' image-generation and editing family, supporting reference images and adjustable generation controls."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-2-klein-4b"
+description = "FLUX.2 Klein 4B is a compact, distilled image-generation and editing model from Black Forest Labs, designed to produce images in a few steps."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-2-max"
+description = "FLUX.2 Max is the quality-focused variant of Black Forest Labs' FLUX.2 image family, positioned above Pro for image fidelity."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-2-pro"
+description = "FLUX.2 Pro is Black Forest Labs' image-generation and editing model, supporting multiple reference images. The archive tests its generation from text alone."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-dev"
+description = "FLUX Dev is Black Forest Labs' 12-billion-parameter image model with downloadable weights. It is one of the base models behind the wider FLUX family."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-dev-lora"
+description = "This version of Black Forest Labs' FLUX Dev supports LoRA adapters, small fine-tunes that specialise an image model for particular subjects or styles."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-kontext-max"
+description = "FLUX Kontext Max is the quality-focused variant of Black Forest Labs' Kontext image model, with an emphasis on instruction following and text rendering."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-kontext-pro"
+description = "FLUX Kontext Pro is Black Forest Labs' image-generation and editing model, designed to follow written instructions while preserving subjects across edits."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-pro"
+description = "FLUX Pro is Black Forest Labs' original commercial FLUX image model, designed for detailed imagery and prompt following. Later FLUX generations also appear here."
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-schnell"
+description = "FLUX Schnell is Black Forest Labs' speed-focused image model with downloadable weights, designed for generation in a few steps. Its name is German for fast."
+
+[[models]]
+owner = "bria"
+name = "fibo"
+description = "FIBO is BRIA's open image-generation model trained on licensed data. It uses structured descriptions to give finer control over the content of an image."
+
+[[models]]
+owner = "bria"
+name = "image-3.2"
+description = "BRIA Image 3.2 is a text-to-image model trained on licensed data, designed for commercial imagery with an emphasis on aesthetics and text rendering."
+
+[[models]]
+owner = "bytedance"
+name = "sdxl-lightning-4step"
+description = "SDXL-Lightning is ByteDance's accelerated version of Stable Diffusion XL. This variant generates images in four steps, using distillation to shorten the diffusion process."
+
+[[models]]
+owner = "bytedance"
+name = "seedream-4"
+description = "Seedream 4 is ByteDance's image-generation and editing model, supporting high-resolution output. This archive records its responses to the same short text prompts as other models."
+
+[[models]]
+owner = "bytedance"
+name = "seedream-4.5"
+description = "Seedream 4.5 is a revision of ByteDance's image-generation and editing model, developed with an emphasis on spatial relationships and knowledge of real-world subjects."
+
+[[models]]
+owner = "bytedance"
+name = "seedream-5-lite"
+description = "Seedream 5 Lite is ByteDance's image-generation and editing model with built-in reasoning. It supports reference-based edits, while this archive uses text-only generation."
+
+[[models]]
+owner = "datacte"
+name = "proteus-v0.2"
+description = "Proteus 0.2 is a community image model derived from OpenDalle, developed for prompt following and a range of photographic and illustrated styles."
+
+[[models]]
+owner = "datacte"
+name = "proteus-v0.3"
+description = "Proteus 0.3 is a fine-tuned image model derived from OpenDalle, with additional anime training. It also retains photographic and other illustration styles."
+
+[[models]]
+owner = "fofr"
+name = "latent-consistency-model"
+description = "This Latent Consistency Model implementation accelerates text-to-image generation. It also supports image-based guidance, although the archive supplies only the crungus text prompts."
+
+[[models]]
+owner = "fofr"
+name = "sdxl-emoji"
+description = "SDXL Emoji is a Stable Diffusion XL fine-tune based on Apple emoji imagery, giving the archive a model trained for a specific illustration style."
+
+[[models]]
+owner = "fofr"
+name = "sdxl-multi-controlnet-lora"
+description = "This implementation of Stable Diffusion XL supports reference-image controls and LoRA fine-tunes. The archive uses it as a text-to-image model without reference inputs."
+
+[[models]]
+owner = "fofr"
+name = "sticker-maker"
+description = "Sticker Maker combines an SDXL-based image model with a sticker fine-tune and transparency support, designed to turn text prompts into isolated sticker graphics."
+
+[[models]]
+owner = "google"
+name = "imagen-3"
+description = "Imagen 3 is Google's third-generation Imagen text-to-image model, designed for detailed imagery and natural lighting. A separate Fast variant prioritises generation speed."
+
+[[models]]
+owner = "google"
+name = "imagen-3-fast"
+description = "Imagen 3 Fast is Google's accelerated variant of Imagen 3, designed to reduce generation time and cost at some expense to image quality."
+
+[[models]]
+owner = "google"
+name = "imagen-4"
+description = "Imagen 4 is Google's fourth-generation Imagen text-to-image model. The archive also includes its Fast and Ultra variants, designed for different speed and quality priorities."
+
+[[models]]
+owner = "google"
+name = "imagen-4-fast"
+description = "Imagen 4 Fast is Google's speed-focused variant of Imagen 4. It trades some image quality for faster, cheaper generation within the same family."
+
+[[models]]
+owner = "google"
+name = "imagen-4-ultra"
+description = "Imagen 4 Ultra is Google's quality-focused variant of Imagen 4, designed to favour image detail over the speed of the standard and Fast versions."
+
+[[models]]
+owner = "google"
+name = "nano-banana"
+description = "Nano Banana is Google's Gemini 2.5 image model, capable of generating images and editing them through written instructions. Here it receives text prompts alone."
+
+[[models]]
+owner = "google"
+name = "nano-banana-2"
+description = "Nano Banana 2 is Google's speed-focused image-generation model, supporting conversational edits and the combination of reference images. Here it works from text alone."
+
+[[models]]
+owner = "google"
+name = "nano-banana-pro"
+description = "Nano Banana Pro is Google's quality-focused image-generation and editing model. It belongs to the same family as the faster Nano Banana variants in the archive."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v2"
+description = "Ideogram 2 is Ideogram's second-generation image model, developed with an emphasis on prompt interpretation and text rendering. Turbo provides its accelerated variant."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v2-turbo"
+description = "Ideogram 2 Turbo is the speed-focused variant of Ideogram's second-generation image model, with support for text rendering and editing selected regions of an image."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v2a"
+description = "Ideogram 2a is a revision of Ideogram's second-generation image model, designed to reduce generation time and cost while retaining its text-rendering capabilities."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v2a-turbo"
+description = "Ideogram 2a Turbo is the accelerated version of Ideogram 2a, part of a family designed for image generation and text within images."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v3-balanced"
+description = "Ideogram 3 Balanced is the middle variant of Ideogram's third-generation image model, balancing generation speed and cost with image quality and text rendering."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v3-quality"
+description = "Ideogram 3 Quality is the quality-focused variant of Ideogram's third-generation image model, designed for realistic imagery and graphic design with integrated text."
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v3-turbo"
+description = "Ideogram 3 Turbo is the fastest variant of Ideogram's third-generation image model, designed for lower-cost generation with the family's image and text-rendering capabilities."
+
+[[models]]
+owner = "leonardoai"
+name = "lucid-origin"
+description = "Lucid Origin is Leonardo.Ai's image-generation model, designed for artistic imagery and a range of visual styles, with an emphasis on following text prompts."
+
+[[models]]
+owner = "lucataco"
+name = "dreamshaper-xl-turbo"
+description = "DreamShaper XL Turbo is an accelerated SDXL-based model intended for both photographic and illustrated imagery, including anime, rather than a single specialist style."
+
+[[models]]
+owner = "lucataco"
+name = "open-dalle-v1.1"
+description = "OpenDalle 1.1 is an SDXL-based image model developed for prompt following and varied visual styles. It is a community model independent of OpenAI's DALL-E."
+
+[[models]]
+owner = "lucataco"
+name = "realistic-vision-v5.1"
+description = "Realistic Vision 5.1 is a Stable Diffusion fine-tune designed for photographic imagery. It provides a specialised comparison with the general-purpose models in the archive."
+
+[[models]]
+owner = "lucataco"
+name = "ssd-1b"
+description = "SSD-1B is Segmind's compressed version of Stable Diffusion XL, designed to reduce model size and generation time while retaining general text-to-image capabilities."
+
+[[models]]
+owner = "luma"
+name = "photon"
+description = "Photon is Luma's image-generation model, designed for photographic detail and creative work. Photon Flash provides a faster variant of the same family."
+
+[[models]]
+owner = "luma"
+name = "photon-flash"
+description = "Photon Flash is the accelerated variant of Luma's Photon image model, designed to shorten generation time while retaining the family's visual capabilities."
+
+[[models]]
+owner = "minimax"
+name = "image-01"
+description = "Image-01 is MiniMax's first image-generation model. It also supports character references, although the images here are generated from text alone."
+
+[[models]]
+owner = "nvidia"
+name = "sana"
+description = "SANA is NVIDIA's image-generation model, designed for efficient generation at high resolutions across artistic styles. SANA-Sprint provides a further accelerated member of the family."
+
+[[models]]
+owner = "nvidia"
+name = "sana-sprint-1.6b"
+description = "SANA-Sprint is NVIDIA's accelerated image model, using a distilled version of SANA to generate an image in a single diffusion step."
+
+[[models]]
+owner = "openai"
+name = "gpt-image-1.5"
+description = "GPT Image 1.5 is a revision of OpenAI's GPT Image model, developed to improve instruction following and adherence to image-generation prompts."
+
+[[models]]
+owner = "openai"
+name = "gpt-image-2"
+description = "GPT Image 2 is OpenAI's image-generation and editing model, designed to follow detailed instructions and render text within images. These outputs use text-only prompts."
+
+[[models]]
+owner = "playgroundai"
+name = "playground-v2.5-1024px-aesthetic"
+description = "Playground 2.5 is Playground's image-generation model with an emphasis on visual aesthetics. It follows Playground 2, which is also represented in the archive."
+
+[[models]]
+owner = "prunaai"
+name = "flux-fast"
+description = "FLUX Fast is Pruna AI's accelerated implementation of a FLUX image model, intended to reduce generation time. The archive tests it with the same prompts."
+
+[[models]]
+owner = "prunaai"
+name = "hidream-l1-dev"
+description = "HiDream-I1 Dev is an accelerated version of the HiDream image model, served through Pruna AI's optimised implementation. It sits between Full and Fast."
+
+[[models]]
+owner = "prunaai"
+name = "hidream-l1-fast"
+description = "HiDream-I1 Fast is the speed-focused version of the HiDream image model. This listing uses Pruna AI's optimisation toolkit to accelerate generation."
+
+[[models]]
+owner = "prunaai"
+name = "hidream-l1-full"
+description = "HiDream-I1 Full is the full version of the HiDream image model, served here through Pruna AI's optimised implementation. Dev and Fast provide accelerated variants."
+
+[[models]]
+owner = "prunaai"
+name = "p-image"
+description = "P-Image is Pruna AI's text-to-image model designed for very short generation times. It provides a speed-focused comparison with larger image models in the archive."
+
+[[models]]
+owner = "prunaai"
+name = "p-image-lora"
+description = "P-Image LoRA is Pruna AI's image model with support for small fine-tuned adapters, allowing the base model to specialise in particular subjects or styles."
+
+[[models]]
+owner = "prunaai"
+name = "sdxl-lightning"
+description = "Pruna AI's implementation of SDXL-Lightning accelerates image generation from text. It belongs to the family of distilled models derived from Stable Diffusion XL."
+
+[[models]]
+owner = "prunaai"
+name = "wan-2.2-image"
+description = "Wan 2.2 Image is Pruna AI's image-generation model derived from the Wan 2.2 family, using its optimisation toolkit to shorten generation time."
+
+[[models]]
+owner = "prunaai"
+name = "z-image-turbo"
+description = "Z-Image Turbo is Tongyi-MAI's speed-focused text-to-image model with six billion parameters. This listing serves it through Pruna AI's optimised implementation."
+
+[[models]]
+owner = "qwen"
+name = "qwen-image"
+description = "Qwen-Image is an image-generation model from Alibaba's Qwen team, developed with an emphasis on rendering complex text within generated images."
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v3"
+description = "Recraft V3 is a design-focused image model, also known as Red Panda, developed for graphic styles and text within images. Its SVG variant generates vectors."
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v3-svg"
+description = "Recraft V3 SVG generates vector illustrations, including icons and logos, from text prompts. The archive displays rasterised versions alongside images from other models."
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4-pro"
+description = "Recraft V4 Pro is the higher-resolution variant of Recraft's fourth-generation image model, designed for graphic composition and text within images, including print work."
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4-pro-svg"
+description = "Recraft V4 Pro SVG generates vector graphics with finer geometric detail than the standard variant. Its outputs are rasterised for display in this archive."
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4-svg"
+description = "Recraft V4 SVG generates vector graphics as editable shapes and paths. The archive displays rasterised versions so they can be compared with other images."
+
+[[models]]
+owner = "sdxl-based"
+name = "realvisxl-v3-multi-controlnet-lora"
+description = "RealVisXL 3 is a photographic fine-tune of Stable Diffusion XL. This implementation adds reference-image controls and LoRA support; the archive uses text-only generation."
+
+[[models]]
+owner = "stability-ai"
+name = "stable-diffusion-3.5-large"
+description = "Stable Diffusion 3.5 Large is Stability AI's larger general-purpose model in the 3.5 family, supporting image generation across photographic and artistic styles."
+
+[[models]]
+owner = "stability-ai"
+name = "stable-diffusion-3.5-large-turbo"
+description = "Stable Diffusion 3.5 Large Turbo is a distilled version of Stability AI's Large model, designed to generate images with fewer inference steps."
+
+[[models]]
+owner = "stability-ai"
+name = "stable-diffusion-3.5-medium"
+description = "Stable Diffusion 3.5 Medium is the smaller, 2.5-billion-parameter model in Stability AI's 3.5 family, offering general-purpose image generation with lower hardware requirements."
+
+[[models]]
+owner = "tencent"
+name = "hunyuan-image-3"
+description = "HunyuanImage 3 is Tencent's multimodal image-generation model. This Replicate listing uses Pruna AI optimisations, and the archive supplies text prompts without reference images."
+
+[[models]]
+owner = "tstramer"
+name = "material-diffusion"
+description = "Material Diffusion is a Stable Diffusion 1.5 derivative trained to generate tileable textures. It interprets crungus through a model intended for repeating surface patterns."
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.7-image"
+description = "Wan 2.7 Image is an image-generation and editing model from Alibaba's Wan family. Its text-only outputs appear here alongside the Pro variant."
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.7-image-pro"
+description = "Wan 2.7 Image Pro is the higher-resolution variant of Alibaba's Wan image model, supporting image generation and editing with a reasoning mode."
+
+[[models]]
+owner = "xai"
+name = "grok-imagine-image"
+description = "Grok Imagine Image is xAI's image-generation model. The archive also includes its Quality variant and later Image 2 model for comparison."
