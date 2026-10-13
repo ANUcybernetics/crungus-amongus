@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-09-09T22:13:16.041981Z",
+  "fetched_at": "2026-10-12T22:16:55.780196Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -479,6 +479,140 @@
             "minimum": 1,
             "x-order": 6,
             "description": "Output quality (for jpg and webp)"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "google",
+      "name": "imagen-4-fast",
+      "slug": "google--imagen-4-fast",
+      "source": "collection",
+      "modality": "image",
+      "description": "Use this fast version of Imagen 4 when speed and cost are more important than quality",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "a8bdc4df01d1d9a16d1bb6dd1b666bdc11ce7a36addb9d9c2facee463244861e",
+      "version_created_at": "2026-10-01T15:40:26.946089Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 3,
+            "description": "Format of the output image"
+          },
+          "safety_filter_level": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/safety_filter_level"
+              }
+            ],
+            "default": "block_only_high",
+            "x-order": 2,
+            "description": "block_low_and_above is strictest, block_medium_and_above blocks some prompts, block_only_high is most permissive but some prompts will still be blocked"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "google",
+      "name": "imagen-4-ultra",
+      "slug": "google--imagen-4-ultra",
+      "source": "collection",
+      "modality": "image",
+      "description": "Use this ultra version of Imagen 4 when quality matters more than speed and cost",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "f023a0e4a40d8c4f2c40717cc8dc3f95c1245f319afc2a547a7308d953bfae5f",
+      "version_created_at": "2026-10-01T14:32:37.312061Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation"
+          },
+          "image_size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/image_size"
+              }
+            ],
+            "default": "1K",
+            "x-order": 2,
+            "description": "Resolution of the generated image"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 4,
+            "description": "Format of the output image"
+          },
+          "safety_filter_level": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/safety_filter_level"
+              }
+            ],
+            "default": "block_only_high",
+            "x-order": 3,
+            "description": "block_low_and_above is strictest, block_medium_and_above blocks some prompts, block_only_high is most permissive but some prompts will still be blocked"
           }
         }
       },
@@ -1462,6 +1596,78 @@
       "notes": null
     },
     {
+      "owner": "google",
+      "name": "imagen-4",
+      "slug": "google--imagen-4",
+      "source": "collection",
+      "modality": "image",
+      "description": "Google's Imagen 4 flagship model",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "238bcc930d7acb8dfbcd9b4363df1fc4746c1cdb6c3fc657d63df4749ea89471",
+      "version_created_at": "2026-10-01T14:35:21.187627Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation"
+          },
+          "image_size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/image_size"
+              }
+            ],
+            "default": "1K",
+            "x-order": 2,
+            "description": "Resolution of the generated image"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 4,
+            "description": "Format of the output image"
+          },
+          "safety_filter_level": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/safety_filter_level"
+              }
+            ],
+            "default": "block_only_high",
+            "x-order": 3,
+            "description": "block_low_and_above is strictest, block_medium_and_above blocks some prompts, block_only_high is most permissive but some prompts will still be blocked"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
       "owner": "black-forest-labs",
       "name": "flux-kontext-pro",
       "slug": "black-forest-labs--flux-kontext-pro",
@@ -1838,6 +2044,130 @@
             "default": false,
             "x-order": 4,
             "description": "Generate a coherent set of related images from a single prompt (e.g. a character across seasons). When enabled, num_outputs can be up to 12."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "google",
+      "name": "imagen-3",
+      "slug": "google--imagen-3",
+      "source": "collection",
+      "modality": "image",
+      "description": "Google's highest quality text-to-image model, capable of generating images with detail, rich lighting and beauty",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "32cf6ad21e92498b60f18012466be6f7666d0bb06b23d6555ca66f4c299b0a55",
+      "version_created_at": "2026-10-01T14:31:33.207493Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 3,
+            "description": "Format of the output image"
+          },
+          "safety_filter_level": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/safety_filter_level"
+              }
+            ],
+            "default": "block_only_high",
+            "x-order": 2,
+            "description": "block_low_and_above is strictest, block_medium_and_above blocks some prompts, block_only_high is most permissive but some prompts will still be blocked"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "google",
+      "name": "imagen-3-fast",
+      "slug": "google--imagen-3-fast",
+      "source": "collection",
+      "modality": "image",
+      "description": "A faster and cheaper Imagen 3 model, for when price or speed are more important than final image quality",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "49d5eabdf562abf1711663ac4ae7176ea811638ec223075c3dd9c2967ca6e405",
+      "version_created_at": "2026-10-01T14:31:36.061482Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 3,
+            "description": "Format of the output image"
+          },
+          "safety_filter_level": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/safety_filter_level"
+              }
+            ],
+            "default": "block_only_high",
+            "x-order": 2,
+            "description": "block_low_and_above is strictest, block_medium_and_above blocks some prompts, block_only_high is most permissive but some prompts will still be blocked"
           }
         }
       },
@@ -10407,6 +10737,1749 @@
       "notes": "plain recraft v4; the archive had the pro and SVG variants only"
     },
     {
+      "owner": "black-forest-labs",
+      "name": "flux-schnell-lora",
+      "slug": "black-forest-labs--flux-schnell-lora",
+      "source": "legacy",
+      "modality": "image",
+      "description": "The fastest image generation model tailored for fine-tuned use",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "83180e3ae073b7f87cd85b8bb649337412fd006d10db49e04ea5e821e87fbeb3",
+      "version_created_at": "2025-06-24T22:15:35.545471Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 4,
+            "description": "Random seed. Set for reproducible generation"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Prompt for generated image"
+          },
+          "go_fast": {
+            "type": "boolean",
+            "title": "Go Fast",
+            "default": true,
+            "x-order": 8,
+            "description": "Run faster predictions with model optimized for speed (currently fp8 quantized); disable to run in original bf16. Note that outputs will not be deterministic when this is enabled, even if you set a seed."
+          },
+          "lora_scale": {
+            "type": "number",
+            "title": "Lora Scale",
+            "default": 1,
+            "maximum": 3,
+            "minimum": -1,
+            "x-order": 10,
+            "description": "Determines how strongly the main LoRA should be applied. Sane results between 0 and 1 for base inference. For go_fast we apply a 1.5x multiplier to this value; we've generally seen good performance when scaling the base value by that amount. You may still need to experiment to find the best value for your particular lora."
+          },
+          "megapixels": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/megapixels"
+              }
+            ],
+            "default": "1",
+            "x-order": 11,
+            "description": "Approximate number of megapixels for generated image"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "title": "Num Outputs",
+            "default": 1,
+            "maximum": 4,
+            "minimum": 1,
+            "x-order": 2,
+            "description": "Number of outputs to generate"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 1,
+            "description": "Aspect ratio for the generated image"
+          },
+          "lora_weights": {
+            "type": "string",
+            "title": "Lora Weights",
+            "x-order": 9,
+            "description": "Load LoRA weights. Supports Replicate models in the format <owner>/<username> or <owner>/<username>/<version>, HuggingFace URLs in the format huggingface.co/<owner>/<model-name>, CivitAI URLs in the format civitai.com/models/<id>[/<model-name>], or arbitrary .safetensors URLs from the Internet. For example, 'fofr/flux-pixar-cars'"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "webp",
+            "x-order": 5,
+            "description": "Format of the output images"
+          },
+          "output_quality": {
+            "type": "integer",
+            "title": "Output Quality",
+            "default": 80,
+            "maximum": 100,
+            "minimum": 0,
+            "x-order": 6,
+            "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
+          },
+          "num_inference_steps": {
+            "type": "integer",
+            "title": "Num Inference Steps",
+            "default": 4,
+            "maximum": 4,
+            "minimum": 1,
+            "x-order": 3,
+            "description": "Number of denoising steps. 4 is recommended, and lower number of steps produce lower quality outputs, faster."
+          },
+          "disable_safety_checker": {
+            "type": "boolean",
+            "title": "Disable Safety Checker",
+            "default": false,
+            "x-order": 7,
+            "description": "Disable safety checker for generated images."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "retro-diffusion",
+      "name": "rd-fast",
+      "slug": "retro-diffusion--rd-fast",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Fast pixel art image generation",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "067f6cd8a3c5582b4317d462176b75d9cdfae8ae548033220bddd0c19c4a1357",
+      "version_created_at": "2025-11-19T15:20:46.592653Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 12,
+            "nullable": true,
+            "description": "Random seed. Set for reproducible generation"
+          },
+          "style": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/style"
+              }
+            ],
+            "default": "default",
+            "x-order": 1,
+            "description": "Style to apply to the generated image\n\ndefault: Simple clean pixel art, with Anime illustration influences\nsimple: Simple shading with minimalist shapes and designs\ndetailed: Pixel art with lots of shading and details\nretro: A classic arcade game aesthetic inspired by early PC games\ngame_asset: Distinct assets set on a simple background\nportrait: Character portrait focused images with high detail\ntexture: Flat game textures like stones, bricks, or wood\nui: User interface boxes and buttons\nitem_sheet: Sheets of objects placed on a simple background\ncharacter_turnaround: Character sprites viewed from different angles\n1_bit: Two color black and white only images\nlow_res: General low resolution pixel art images\nmc_item: Minecraft-styled items with automatic transparency\nmc_texture: Minecraft-styled flat textures, like grass, stones, or wood\nno_style: Pixel art with no style influence applied"
+          },
+          "width": {
+            "type": "integer",
+            "title": "Width",
+            "default": 256,
+            "maximum": 384,
+            "minimum": 16,
+            "x-order": 2,
+            "description": "Image width"
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height",
+            "default": 256,
+            "maximum": 384,
+            "minimum": 16,
+            "x-order": 3,
+            "description": "Image height"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for generation"
+          },
+          "tile_x": {
+            "type": "boolean",
+            "title": "Tile X",
+            "default": false,
+            "x-order": 9,
+            "description": "Enable seamless tiling on X axis"
+          },
+          "tile_y": {
+            "type": "boolean",
+            "title": "Tile Y",
+            "default": false,
+            "x-order": 10,
+            "description": "Enable seamless tiling on Y axis"
+          },
+          "strength": {
+            "type": "number",
+            "title": "Strength",
+            "default": 0.8,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 6,
+            "nullable": true,
+            "description": "Prompt strength in image-to-image generation. Higher values give closer adherence to the prompt, and lower values use more information from the input image. Only used when input_image is provided."
+          },
+          "remove_bg": {
+            "type": "boolean",
+            "title": "Remove Bg",
+            "default": false,
+            "x-order": 8,
+            "description": "Remove background to create transparent images"
+          },
+          "num_images": {
+            "type": "integer",
+            "title": "Num Images",
+            "default": 1,
+            "maximum": 10,
+            "minimum": 1,
+            "x-order": 4,
+            "description": "Number of images to generate"
+          },
+          "input_image": {
+            "type": "string",
+            "title": "Input Image",
+            "format": "uri",
+            "x-order": 5,
+            "nullable": true,
+            "description": "Input image for image-to-image generation or reference. Will be converted to RGB without transparency."
+          },
+          "input_palette": {
+            "type": "string",
+            "title": "Input Palette",
+            "format": "uri",
+            "x-order": 7,
+            "nullable": true,
+            "description": "Reference palette image to guide color choices"
+          },
+          "bypass_prompt_expansion": {
+            "type": "boolean",
+            "title": "Bypass Prompt Expansion",
+            "default": false,
+            "x-order": 11,
+            "description": "Disable automatic prompt expansion"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": "pixel art model; 256×256 by default"
+    },
+    {
+      "owner": "retro-diffusion",
+      "name": "rd-plus",
+      "slug": "retro-diffusion--rd-plus",
+      "source": "legacy",
+      "modality": "image",
+      "description": "High quality and authentic pixel art image generation",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "60eb48db78cbd38cc6473d309a311db08244ed021567a9234970af971bab0d87",
+      "version_created_at": "2025-11-19T15:20:48.183752Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 12,
+            "nullable": true,
+            "description": "Random seed. Set for reproducible generation"
+          },
+          "style": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/style"
+              }
+            ],
+            "default": "default",
+            "x-order": 1,
+            "description": "Style to apply to the generated image\n\ndefault: Clean pixel art style with bold colors and outlines\nretro: Classic pixel art style inspired by PC98 games\nwatercolor: Pixel art mixed with a watercolor painting aesthetic\ntextured: Semi-realistic pixel art style with lots of shading and texture\ncartoon: Simple shapes and shading, with bold outlines\nui_element: User interface boxes and buttons\nitem_sheet: Sheets of objects placed on a simple background\ncharacter_turnaround: Character sprites viewed from different angles\nenvironment: One-point perspective scenes with outlines and strong shapes\nisometric: 45 degree isometric perspective, with consistent outlines\nisometric_asset: 45 degree isometric objects or assets, on a neutral background\ntopdown_map: Video game map style pixel art with a 3/4 top down perspective\ntopdown_asset: 3/4 top down perspective game assets on a simple background\nclassic: Strongly outlined medium-resolution pixel art with a focus on simple shading and clear design\ntopdown_item: Small 3/4 top down perspective assets with no background\nlow_res: High quality, low resolution pixel art assets and backgrounds\nmc_item: High quality Minecraft-styled items and game assets\nmc_texture: Detailed Minecraft-style flat block textures, with enhanced prompt following\nskill_icon: Video game style skill icons for representing abilities"
+          },
+          "width": {
+            "type": "integer",
+            "title": "Width",
+            "default": 256,
+            "maximum": 384,
+            "minimum": 16,
+            "x-order": 2,
+            "description": "Image width"
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height",
+            "default": 256,
+            "maximum": 384,
+            "minimum": 16,
+            "x-order": 3,
+            "description": "Image height"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for generation"
+          },
+          "tile_x": {
+            "type": "boolean",
+            "title": "Tile X",
+            "default": false,
+            "x-order": 9,
+            "description": "Enable seamless tiling on X axis"
+          },
+          "tile_y": {
+            "type": "boolean",
+            "title": "Tile Y",
+            "default": false,
+            "x-order": 10,
+            "description": "Enable seamless tiling on Y axis"
+          },
+          "strength": {
+            "type": "number",
+            "title": "Strength",
+            "default": 0.8,
+            "maximum": 1,
+            "minimum": 0,
+            "x-order": 6,
+            "nullable": true,
+            "description": "Prompt strength in image-to-image generation. Higher values give closer adherence to the prompt, and lower values use more information from the input image. Only used when input_image is provided."
+          },
+          "remove_bg": {
+            "type": "boolean",
+            "title": "Remove Bg",
+            "default": false,
+            "x-order": 8,
+            "description": "Remove background to create transparent images"
+          },
+          "num_images": {
+            "type": "integer",
+            "title": "Num Images",
+            "default": 1,
+            "maximum": 10,
+            "minimum": 1,
+            "x-order": 4,
+            "description": "Number of images to generate"
+          },
+          "input_image": {
+            "type": "string",
+            "title": "Input Image",
+            "format": "uri",
+            "x-order": 5,
+            "nullable": true,
+            "description": "Input image for image-to-image generation or reference. Will be converted to RGB without transparency."
+          },
+          "input_palette": {
+            "type": "string",
+            "title": "Input Palette",
+            "format": "uri",
+            "x-order": 7,
+            "nullable": true,
+            "description": "Reference palette image to guide color choices"
+          },
+          "bypass_prompt_expansion": {
+            "type": "boolean",
+            "title": "Bypass Prompt Expansion",
+            "default": false,
+            "x-order": 11,
+            "description": "Disable automatic prompt expansion"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": "pixel art model; 256×256 by default"
+    },
+    {
+      "owner": "qwen",
+      "name": "qwen-image-2",
+      "slug": "qwen--qwen-image-2",
+      "source": "legacy",
+      "modality": "image",
+      "description": "A next-generation image generation and editing model from Alibaba's Qwen team. Supports text-to-image and image editing with strong text rendering, especially for Chinese.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "266e594fa007032292c211586354fe193d7aa4e675a1eeb0aef0c6a424468ddd",
+      "version_created_at": "2026-03-04T23:50:02.987149Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 6,
+            "nullable": true,
+            "description": "Random seed for reproducible generation. Range: 0-2147483647"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image",
+            "format": "uri",
+            "x-order": 1,
+            "nullable": true,
+            "description": "Optional reference image for image editing, style transfer, or image-to-image generation"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation or editing"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 3,
+            "description": "Aspect ratio of the generated image"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "default": "",
+            "x-order": 5,
+            "description": "Negative prompt to specify elements to avoid in the generated image"
+          },
+          "match_input_image": {
+            "type": "boolean",
+            "title": "Match Input Image",
+            "default": false,
+            "x-order": 2,
+            "description": "When true and an image is provided, use the input image's aspect ratio and resolution instead of the aspect_ratio parameter"
+          },
+          "enable_prompt_expansion": {
+            "type": "boolean",
+            "title": "Enable Prompt Expansion",
+            "default": true,
+            "x-order": 4,
+            "description": "Automatically expand and optimize the prompt for better results"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "recraft-ai",
+      "name": "recraft-v4.1",
+      "slug": "recraft-ai--recraft-v4-1",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Recraft's latest image generation model, built around design taste. Strong prompt accuracy, art-directed composition, and integrated text rendering. Fast and cost-efficient at standard resolution.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "c7db0c35027a27e3627dad2a9751a38c8b5e0d1c4e96401a9a70e759401ddabe",
+      "version_created_at": "2026-05-11T16:48:03.150599Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/size"
+              }
+            ],
+            "default": "1024x1024",
+            "x-order": 2,
+            "description": "Width and height of the generated image. Size is ignored if an aspect ratio is set."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation (up to 10,000 characters)"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "Not set",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "recraft-ai",
+      "name": "recraft-v4.1-pro",
+      "slug": "recraft-ai--recraft-v4-1-pro",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Recraft's latest image generation model at ~2048px resolution. Same design taste and prompt accuracy as V4.1, with higher resolution for print-ready and large-scale work.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "e39439d38da2e2728e130cc48fffab897fe4aec4b75bf8c8c4f77122a6008923",
+      "version_created_at": "2026-05-11T16:19:01.037223Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/size"
+              }
+            ],
+            "default": "2048x2048",
+            "x-order": 2,
+            "description": "Width and height of the generated image. Size is ignored if an aspect ratio is set."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation (up to 10,000 characters)"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "Not set",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "recraft-ai",
+      "name": "recraft-v4.1-utility",
+      "slug": "recraft-ai--recraft-v4-1-utility",
+      "source": "legacy",
+      "modality": "image",
+      "description": "A faster, lighter Recraft image generation model optimized for high-volume and production pipelines. Same design taste as V4.1, built for speed and throughput.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "558d595249f2106784b4eafddde920abb8c3dff2e970bacb3cfe8c0cdb07129e",
+      "version_created_at": "2026-05-11T16:15:23.558131Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/size"
+              }
+            ],
+            "default": "1024x1024",
+            "x-order": 2,
+            "description": "Width and height of the generated image. Size is ignored if an aspect ratio is set."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation (up to 10,000 characters)"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "Not set",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "recraft-ai",
+      "name": "recraft-v4.1-utility-pro",
+      "slug": "recraft-ai--recraft-v4-1-utility-pro",
+      "source": "legacy",
+      "modality": "image",
+      "description": "A faster, lighter Recraft image generation model at ~2048px resolution, optimized for high-volume production. Design taste and prompt accuracy at high resolution with better throughput.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "e772ba3b6ec1e8fcedfe36bcb4f283b81f08f1a9bf333e21d463cbd666835458",
+      "version_created_at": "2026-05-11T16:18:16.404781Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/size"
+              }
+            ],
+            "default": "2048x2048",
+            "x-order": 2,
+            "description": "Width and height of the generated image. Size is ignored if an aspect ratio is set."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation (up to 10,000 characters)"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "Not set",
+            "x-order": 1,
+            "description": "Aspect ratio of the generated image"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "ideogram-ai",
+      "name": "ideogram-v4-balanced",
+      "slug": "ideogram-ai--ideogram-v4-balanced",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Balance speed, quality and cost. Ideogram v4 creates images with stunning realism, creative designs, and consistent styles",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "2ed1acdf773fa29e36edb7d45dfc2dfc20afbd9313cb73e8206607073528b0cb",
+      "version_created_at": "2026-06-03T14:50:51.124855Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": null,
+            "x-order": 0,
+            "nullable": true,
+            "description": "Natural-language prompt. Enables Ideogram 4.0 Magic Prompt automatically."
+          },
+          "resolution": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/resolution"
+              }
+            ],
+            "default": "None",
+            "x-order": 2,
+            "description": "Output resolution. Omit to let Ideogram 4.0 choose the aspect ratio."
+          },
+          "json_prompt": {
+            "type": "string",
+            "title": "Json Prompt",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "description": "Structured Ideogram 4.0 prompt as a JSON object. Use either prompt or json_prompt, not both."
+          },
+          "enable_copyright_detection": {
+            "type": "boolean",
+            "title": "Enable Copyright Detection",
+            "default": false,
+            "x-order": 3,
+            "description": "Opt into Ideogram 4.0 post-generation copyright detection."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "ideogram-ai",
+      "name": "ideogram-v4-quality",
+      "slug": "ideogram-ai--ideogram-v4-quality",
+      "source": "legacy",
+      "modality": "image",
+      "description": "The highest quality Ideogram v4 model. v4 creates images with stunning realism, creative designs, and consistent styles",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "dfb2da5be029b469e7cd6a5efcf705478bd152d4e5ca5493d1621eec5ebed569",
+      "version_created_at": "2026-06-03T14:49:57.694996Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": null,
+            "x-order": 0,
+            "nullable": true,
+            "description": "Natural-language prompt. Enables Ideogram 4.0 Magic Prompt automatically."
+          },
+          "resolution": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/resolution"
+              }
+            ],
+            "default": "None",
+            "x-order": 2,
+            "description": "Output resolution. Omit to let Ideogram 4.0 choose the aspect ratio."
+          },
+          "json_prompt": {
+            "type": "string",
+            "title": "Json Prompt",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "description": "Structured Ideogram 4.0 prompt as a JSON object. Use either prompt or json_prompt, not both."
+          },
+          "enable_copyright_detection": {
+            "type": "boolean",
+            "title": "Enable Copyright Detection",
+            "default": false,
+            "x-order": 3,
+            "description": "Opt into Ideogram 4.0 post-generation copyright detection."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "bytedance",
+      "name": "seedream-5-pro",
+      "slug": "bytedance--seedream-5-pro",
+      "source": "legacy",
+      "modality": "image",
+      "description": "ByteDance's flagship text-to-image and image editing model, generating sharp 1K and 2K images from text or up to 10 reference images",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "91daad99b90f0bcf3d59f1600b3850a7b60f882ea103d31936b24e3d957b2c79",
+      "version_created_at": "2026-08-25T18:18:33.801462Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/size"
+              }
+            ],
+            "default": "2K",
+            "x-order": 3,
+            "description": "Image resolution. Standard mode supports 1K and 2K. Layer decomposition mode supports 1K, 1.5K, 2K, and auto; auto sizes the base image and layers from the input image."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": "",
+            "x-order": 0,
+            "maxLength": 4000,
+            "description": "Text prompt. In standard mode, describes the image to generate. In layer decomposition mode it is optional: describe which elements to split out, or leave blank to auto-detect all major elements. Maximum 4000 characters."
+          },
+          "image_input": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Image Input",
+            "default": [],
+            "x-order": 1,
+            "description": "Input image(s). In standard mode, 1-10 reference images for image-to-image generation. In layer decomposition mode, exactly one image to decompose."
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "match_input_image",
+            "x-order": 4,
+            "description": "Image aspect ratio (ignored in layer decomposition mode). Use 'match_input_image' to automatically match the input image's aspect ratio."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "png",
+            "x-order": 5,
+            "description": "Output image format. In layer decomposition mode this only controls the base image; layers are always returned as PNG."
+          },
+          "layer_decomposition": {
+            "type": "boolean",
+            "title": "Layer Decomposition",
+            "default": false,
+            "x-order": 2,
+            "description": "Split a single input image into a base image plus separate element layers (up to 16). Requires exactly one input image. Each returned layer includes its stacking order, bounding box, name, and description."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "prunaai",
+      "name": "p-image-ideogram",
+      "slug": "prunaai--p-image-ideogram",
+      "source": "legacy",
+      "modality": "image",
+      "description": "P-Image-Ideogram is Pruna AI’s text-to-image model starting from 0,003$ per generation.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "1962cf4c5b3618d9e116fd92f93a0a0aa650ea6c9592a673e6cb6e41a337c1dc",
+      "version_created_at": "2026-09-24T11:19:50.747904Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "x-order": 7,
+            "nullable": true,
+            "description": "Random seed."
+          },
+          "width": {
+            "type": "integer",
+            "title": "Width",
+            "default": 1024,
+            "maximum": 2560,
+            "minimum": 0,
+            "x-order": 5,
+            "description": "Width when aspect_ratio=custom (rounded to nearest multiple of 16)."
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height",
+            "default": 1024,
+            "maximum": 2560,
+            "minimum": 0,
+            "x-order": 6,
+            "description": "Height when aspect_ratio=custom (rounded to nearest multiple of 16)."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Short text prompt for image generation."
+          },
+          "thinking": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/thinking"
+              }
+            ],
+            "default": "high",
+            "x-order": 1,
+            "description": "the higher the thinking, the higher the quality of the image"
+          },
+          "image_size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/image_size"
+              }
+            ],
+            "default": "1K",
+            "x-order": 4,
+            "description": "Output resolution budget (ignored when aspect_ratio=custom)."
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 3,
+            "description": "Aspect ratio for generation. Use 'custom' to set width/height directly."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 8,
+            "description": "Output image format."
+          },
+          "output_quality": {
+            "type": "integer",
+            "title": "Output Quality",
+            "default": 80,
+            "maximum": 100,
+            "minimum": 0,
+            "x-order": 9,
+            "description": "Output quality (0-100; ignored for png)."
+          },
+          "prompt_upsampling": {
+            "type": "boolean",
+            "title": "Prompt Upsampling",
+            "default": true,
+            "x-order": 2,
+            "description": "Enable prompt enhancement before image generation. Set to false to pass the raw prompt directly to the image model."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "xai",
+      "name": "grok-imagine-image-2",
+      "slug": "xai--grok-imagine-image-2",
+      "source": "legacy",
+      "modality": "image",
+      "description": "xAI's Grok Imagine Image 2.0 — text-to-image generation and editing with a quality control and output up to 2k",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "1ef875bf1bfeb22f6cfb01d52105f8fa773030e57a4b274784c8f14134c7678b",
+      "version_created_at": "2026-08-13T19:29:32.217143Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "title": "Image",
+            "format": "uri",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "description": "Input image for editing. When provided, the model edits this image based on the prompt. Supports jpg, jpeg, png, webp."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation or editing"
+          },
+          "quality": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/quality"
+              }
+            ],
+            "default": "medium",
+            "x-order": 4,
+            "description": "Generation quality. 'medium' produces the best results, 'low' is faster and cheaper."
+          },
+          "resolution": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/resolution"
+              }
+            ],
+            "default": "2k",
+            "x-order": 3,
+            "description": "Resolution of the generated image."
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 2,
+            "description": "Aspect ratio of the generated image. Ignored when editing an image."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "alibaba",
+      "name": "qwen-image-3",
+      "slug": "alibaba--qwen-image-3",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Qwen-Image-3.0 generates and edits images with accurate text rendering, complex layouts, and photographic detail.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "8235a8d30fc32fd33a4e0e91d9cffaae6f2250fc56ff8e5736ca4a9c5b9f9fbc",
+      "version_created_at": "2026-08-21T14:38:34.621195Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": null,
+            "x-order": 6,
+            "nullable": true,
+            "description": "Random seed for reproducible generation. Range: 0-2147483647"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image",
+            "format": "uri",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "description": "Optional reference image for image editing, style transfer, or image-to-image generation"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation or editing"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 3,
+            "description": "Aspect ratio of the generated image"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "default": "",
+            "x-order": 5,
+            "description": "Negative prompt to specify elements to avoid in the generated image"
+          },
+          "match_input_image": {
+            "type": "boolean",
+            "title": "Match Input Image",
+            "default": false,
+            "x-order": 2,
+            "description": "When true and an image is provided, use the input image's aspect ratio and resolution instead of the aspect_ratio parameter"
+          },
+          "enable_prompt_expansion": {
+            "type": "boolean",
+            "title": "Enable Prompt Expansion",
+            "default": true,
+            "x-order": 4,
+            "description": "Automatically expand and optimize the prompt for better results"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "alibaba",
+      "name": "qwen-image-3-pro",
+      "slug": "alibaba--qwen-image-3-pro",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Qwen-Image-3.0-Pro generates and edits images with dense, accurate text rendering, complex multi-element layouts, and photographic detail.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "2d41e651d91e3ff97dfd0f3f85c22ccc45e084f7edf843f701e49895f8398213",
+      "version_created_at": "2026-08-21T12:58:05.945984Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": null,
+            "x-order": 6,
+            "nullable": true,
+            "description": "Random seed for reproducible generation. Range: 0-2147483647"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image",
+            "format": "uri",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "description": "Optional reference image for image editing, style transfer, or image-to-image generation"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt for image generation or editing"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 3,
+            "description": "Aspect ratio of the generated image"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "title": "Negative Prompt",
+            "default": "",
+            "x-order": 5,
+            "description": "Negative prompt to specify elements to avoid in the generated image"
+          },
+          "match_input_image": {
+            "type": "boolean",
+            "title": "Match Input Image",
+            "default": false,
+            "x-order": 2,
+            "description": "When true and an image is provided, use the input image's aspect ratio and resolution instead of the aspect_ratio parameter"
+          },
+          "enable_prompt_expansion": {
+            "type": "boolean",
+            "title": "Enable Prompt Expansion",
+            "default": true,
+            "x-order": 4,
+            "description": "Automatically expand and optimize the prompt for better results"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "openai",
+      "name": "gpt-image-2.5-flare",
+      "slug": "openai--gpt-image-2-5-flare",
+      "source": "legacy",
+      "modality": "image",
+      "description": "OpenAI's fastest model for high-quality, everyday image generation. Generate and edit images from text and image inputs with strong instruction following and sharp text rendering.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "e4c295648290f01249040de186101826e059561590378c02428e643427fa3b16",
+      "version_created_at": "2026-09-22T14:47:41.641196Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "A text description of the desired image"
+          },
+          "quality": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/quality"
+              }
+            ],
+            "default": "auto",
+            "x-order": 5,
+            "description": "The quality of the generated image. Higher quality takes longer and costs more."
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id",
+            "default": null,
+            "x-order": 10,
+            "nullable": true,
+            "description": "An optional unique identifier representing your end-user. This helps OpenAI monitor and detect abuse."
+          },
+          "background": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/background"
+              }
+            ],
+            "default": "auto",
+            "x-order": 6,
+            "description": "Set whether the background is transparent or opaque or choose automatically"
+          },
+          "moderation": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/moderation"
+              }
+            ],
+            "default": "auto",
+            "x-order": 9,
+            "description": "Content moderation level"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 2,
+            "description": "The size of the generated image. Use 'auto' to let the model pick. Sizes above 2560x1440 are experimental and may give more variable results."
+          },
+          "input_images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Input Images",
+            "default": null,
+            "x-order": 3,
+            "nullable": true,
+            "description": "A list of images to use as input for the generation"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "webp",
+            "x-order": 8,
+            "description": "Output format"
+          },
+          "openai_api_key": {
+            "type": "string",
+            "title": "Openai Api Key",
+            "format": "password",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "writeOnly": true,
+            "description": "Your OpenAI API key (optional - uses proxy if not provided)",
+            "x-cog-secret": true
+          },
+          "number_of_images": {
+            "type": "integer",
+            "title": "Number Of Images",
+            "default": 1,
+            "maximum": 10,
+            "minimum": 1,
+            "x-order": 4,
+            "description": "Number of images to generate (1-10)"
+          },
+          "output_compression": {
+            "type": "integer",
+            "title": "Output Compression",
+            "default": 90,
+            "maximum": 100,
+            "minimum": 0,
+            "x-order": 7,
+            "description": "Compression level (0-100%)"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "openai",
+      "name": "gpt-image-2.5-sunburst",
+      "slug": "openai--gpt-image-2-5-sunburst",
+      "source": "legacy",
+      "modality": "image",
+      "description": "OpenAI's most capable image model, built for workflows where editing precision matters most. Generate and edit images from text and image inputs with strong instruction following, sharp text rendering, and detailed control.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "e1204af0d6a06a91cd56d07307495ad0436d11eddf144d0c960c44a82e0e4931",
+      "version_created_at": "2026-09-22T14:47:09.586195Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "A text description of the desired image"
+          },
+          "quality": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/quality"
+              }
+            ],
+            "default": "auto",
+            "x-order": 5,
+            "description": "The quality of the generated image. Higher quality takes longer and costs more."
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id",
+            "default": null,
+            "x-order": 10,
+            "nullable": true,
+            "description": "An optional unique identifier representing your end-user. This helps OpenAI monitor and detect abuse."
+          },
+          "background": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/background"
+              }
+            ],
+            "default": "auto",
+            "x-order": 6,
+            "description": "Set whether the background is transparent or opaque or choose automatically"
+          },
+          "moderation": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/moderation"
+              }
+            ],
+            "default": "auto",
+            "x-order": 9,
+            "description": "Content moderation level"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "1:1",
+            "x-order": 2,
+            "description": "The size of the generated image. Use 'auto' to let the model pick. Sizes above 2560x1440 are experimental and may give more variable results."
+          },
+          "input_images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Input Images",
+            "default": null,
+            "x-order": 3,
+            "nullable": true,
+            "description": "A list of images to use as input for the generation"
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "webp",
+            "x-order": 8,
+            "description": "Output format"
+          },
+          "openai_api_key": {
+            "type": "string",
+            "title": "Openai Api Key",
+            "format": "password",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "writeOnly": true,
+            "description": "Your OpenAI API key (optional - uses proxy if not provided)",
+            "x-cog-secret": true
+          },
+          "number_of_images": {
+            "type": "integer",
+            "title": "Number Of Images",
+            "default": 1,
+            "maximum": 10,
+            "minimum": 1,
+            "x-order": 4,
+            "description": "Number of images to generate (1-10)"
+          },
+          "output_compression": {
+            "type": "integer",
+            "title": "Output Compression",
+            "default": 90,
+            "maximum": 100,
+            "minimum": 0,
+            "x-order": 7,
+            "description": "Compression level (0-100%)"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "ideogram-ai",
+      "name": "ideogram-4-5",
+      "slug": "ideogram-ai--ideogram-4-5",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Generate and edit images with Ideogram 4.5, the latest for precise image generation.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "55db50149a984b49171ea031aa5c7b34b3ece5fb35a20e017856347edc321bf1",
+      "version_created_at": "2026-09-30T19:12:47.717275Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "mask": {
+            "type": "string",
+            "title": "Mask",
+            "format": "uri",
+            "default": null,
+            "x-order": 2,
+            "nullable": true,
+            "description": "Optional black and white mask for editing. Black pixels are edited, white pixels are preserved. Only used when at least one source image is provided. When a mask is used, the output matches the source size and the size input is ignored."
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": null,
+            "maximum": 2147483647,
+            "x-order": 6,
+            "nullable": true,
+            "description": "Random seed. Set for reproducible generation."
+          },
+          "size": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/size"
+              }
+            ],
+            "default": "source",
+            "x-order": 3,
+            "description": "Output size. 'source' preserves the source image proportions. Ignored when a mask is provided."
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Images",
+            "default": null,
+            "x-order": 1,
+            "nullable": true,
+            "description": "Up to 5 source images to edit. Omit for text-to-image generation. When a mask is provided, the first image is edited and the rest are used as references."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt. Describe the image to generate, or the edit to apply to the source images."
+          },
+          "quality": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/quality"
+              }
+            ],
+            "default": "medium",
+            "x-order": 4,
+            "description": "Edit quality. Higher quality is slower and more expensive."
+          },
+          "num_images": {
+            "type": "integer",
+            "title": "Num Images",
+            "default": 1,
+            "maximum": 8,
+            "minimum": 1,
+            "x-order": 5,
+            "description": "Number of images to generate."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "black-forest-labs",
+      "name": "flux-3-image",
+      "slug": "black-forest-labs--flux-3-image",
+      "source": "legacy",
+      "modality": "image",
+      "description": "FLUX 3 is Black Forest Labs' text-to-image and image-editing model. Generate images from a prompt, or edit with up to 10 reference images.",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "ec84b8fbf178998c3d5a2c3a32b4fdd850caac711a5145a1ede36e307ade7ca9",
+      "version_created_at": "2026-10-01T15:46:16.868681Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Images",
+            "default": [],
+            "x-order": 1,
+            "description": "Up to 10 reference images the prompt edits or draws from. When present, the request runs as an edit and the first image drives 'auto' aspect ratio. Each image must be at least 256x256 px and at most 16 MP. Must be jpeg, png, gif, or webp."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text description of the image to generate, or of the edit to apply to the reference images."
+          },
+          "grounding": {
+            "type": "boolean",
+            "title": "Grounding",
+            "default": true,
+            "x-order": 4,
+            "description": "Let the model research the prompt with web search and image search before generating."
+          },
+          "resolution": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/resolution"
+              }
+            ],
+            "default": "1k",
+            "x-order": 3,
+            "description": "Resolution of the output image. Input images are resized to the closest bin, up to 2k."
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "auto",
+            "x-order": 2,
+            "description": "Aspect ratio of the generated image. 'auto' picks the ratio from the prompt and the first reference image."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "webp",
+            "x-order": 6,
+            "description": "Format of the output images."
+          },
+          "output_quality": {
+            "type": "integer",
+            "title": "Output Quality",
+            "default": 80,
+            "maximum": 100,
+            "minimum": 0,
+            "x-order": 7,
+            "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
+          },
+          "safety_tolerance": {
+            "type": "integer",
+            "title": "Safety Tolerance",
+            "default": 2,
+            "maximum": 4,
+            "minimum": 0,
+            "x-order": 5,
+            "description": "Moderation tolerance for inputs and outputs. 0 is the strictest, 4 is the most permissive."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
+      "owner": "google",
+      "name": "nano-banana-2.1",
+      "slug": "google--nano-banana-2-1",
+      "source": "legacy",
+      "modality": "image",
+      "description": "Google's latest fast image generation model with sharp text rendering, conversational editing, multi-image fusion, and up to 4K output",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "157dff0de6db8f9a2613eefdcceab8767c86c1d50dcfea43e8fdf7a2a016b8cf",
+      "version_created_at": "2026-10-06T16:29:19.047028Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "A text description of the image you want to generate"
+          },
+          "resolution": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/resolution"
+              }
+            ],
+            "default": "1K",
+            "x-order": 3,
+            "description": "Resolution of the generated image. Higher resolutions take longer to generate."
+          },
+          "image_input": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Image Input",
+            "default": [],
+            "x-order": 1,
+            "description": "Input images to transform or use as reference (supports up to 14 images)"
+          },
+          "aspect_ratio": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/aspect_ratio"
+              }
+            ],
+            "default": "match_input_image",
+            "x-order": 2,
+            "description": "Aspect ratio of the generated image"
+          },
+          "image_search": {
+            "type": "boolean",
+            "title": "Image Search",
+            "default": false,
+            "x-order": 5,
+            "description": "Use Google Image Search grounding to find web images as visual context for generation. When enabled, web search is also used automatically."
+          },
+          "google_search": {
+            "type": "boolean",
+            "title": "Google Search",
+            "default": false,
+            "x-order": 4,
+            "description": "Use Google Web Search grounding to generate images based on real-time information (e.g. weather, sports scores, recent events)."
+          },
+          "output_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/output_format"
+              }
+            ],
+            "default": "jpg",
+            "x-order": 6,
+            "description": "Format of the output image"
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": null
+    },
+    {
       "owner": "zsxkib",
       "name": "flux-music",
       "slug": "zsxkib--flux-music",
@@ -11757,6 +13830,191 @@
       "output_field": "audio_out",
       "release_date": "2023-04-20",
       "notes": "text-prompted generative audio, not strictly music: given a bare word it mostly speaks it"
+    },
+    {
+      "owner": "minimax",
+      "name": "music-2.6",
+      "slug": "minimax--music-2-6",
+      "source": "legacy",
+      "modality": "audio",
+      "description": "Generate full-length songs or instrumentals from a text prompt, with optional auto-generated lyrics",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "dcd69b2c83c63ed612af65fc9842781fd7cf86db555e0b12ded7c6292bff8b7a",
+      "version_created_at": "2026-04-09T23:40:05.577004Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "properties": {
+          "lyrics": {
+            "type": "string",
+            "title": "Lyrics",
+            "default": "",
+            "x-order": 0,
+            "description": "Lyrics for the song. Use \\n to separate lines. You can add structure tags like [Intro], [Verse], [Pre Chorus], [Chorus], [Interlude], [Bridge], [Outro], [Post Chorus], [Transition], [Break], [Hook], [Build Up], [Inst], [Solo] to control the arrangement. 1-3500 characters. Not required when is_instrumental is true."
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "default": "",
+            "x-order": 1,
+            "description": "A description of the music style, mood, and scenario. For example: 'Pop, melancholic, perfect for a rainy night'. 0-2000 characters. Required when is_instrumental is true."
+          },
+          "bitrate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/bitrate"
+              }
+            ],
+            "default": 256000,
+            "x-order": 5,
+            "description": "Bitrate for the generated music"
+          },
+          "sample_rate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/sample_rate"
+              }
+            ],
+            "default": 44100,
+            "x-order": 4,
+            "description": "Sample rate for the generated music"
+          },
+          "audio_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/audio_format"
+              }
+            ],
+            "default": "mp3",
+            "x-order": 6,
+            "description": "Audio format for the output"
+          },
+          "is_instrumental": {
+            "type": "boolean",
+            "title": "Is Instrumental",
+            "default": false,
+            "x-order": 2,
+            "description": "Generate instrumental music without vocals. When true, prompt is required and lyrics are not needed."
+          },
+          "lyrics_optimizer": {
+            "type": "boolean",
+            "title": "Lyrics Optimizer",
+            "default": false,
+            "x-order": 3,
+            "description": "Automatically generate lyrics from the prompt when lyrics are empty."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {
+        "lyrics": "crungus\ncrungus\ncrungus"
+      },
+      "output_field": null,
+      "release_date": null,
+      "notes": "lyrics are the word three times"
+    },
+    {
+      "owner": "google",
+      "name": "lyria-3",
+      "slug": "google--lyria-3",
+      "source": "legacy",
+      "modality": "audio",
+      "description": "Generate 30-second music clips from text prompts or images with Lyria 3, Google's music generation model",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "d21615d0cd8b418e80268533307745e90044b4ba15df423fdb489be6bc594a88",
+      "version_created_at": "2026-06-19T09:26:37.114571Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": null,
+            "x-order": 2,
+            "nullable": true,
+            "description": "Random seed for generation. Set to a specific value for more \"\n            \"reproducible results, though exact determinism is not guaranteed."
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Images",
+            "default": [],
+            "x-order": 1,
+            "description": "Input images to inspire the music composition (up to 10 images)"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt describing the music to generate. Be specific \"\n            \"about genre, instruments, mood, tempo, and style for best results."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": "fixed 30 s clips"
+    },
+    {
+      "owner": "google",
+      "name": "lyria-3-pro",
+      "slug": "google--lyria-3-pro",
+      "source": "legacy",
+      "modality": "audio",
+      "description": "Generate full-length songs up to 3 minutes from text prompts or images with Lyria 3 Pro, Google's most capable music generation model",
+      "is_official": true,
+      "availability": "ok",
+      "version_id": "a8d2354eecd7e455f66655250a72d9284a961a8bedb8c035e9cd758e6d7fbab5",
+      "version_created_at": "2026-06-19T09:26:50.172718Z",
+      "input_schema": {
+        "type": "object",
+        "title": "Input",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": null,
+            "x-order": 2,
+            "nullable": true,
+            "description": "Random seed for generation. Set to a specific value for more \"\n            \"reproducible results, though exact determinism is not guaranteed."
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "title": "Images",
+            "default": [],
+            "x-order": 1,
+            "description": "Input images to inspire the music composition (up to 10 images)"
+          },
+          "prompt": {
+            "type": "string",
+            "title": "Prompt",
+            "x-order": 0,
+            "description": "Text prompt describing the song to generate. Include details \"\n            \"like genre, instruments, mood, tempo, lyrics, and song structure \"\n            \"(e.g. [Verse], [Chorus], [Bridge]) for best results. You can also \"\n            \"use timestamps like [0:00 - 0:30] to control timing."
+          }
+        }
+      },
+      "prompt_field": null,
+      "extra_inputs": {},
+      "output_field": null,
+      "release_date": null,
+      "notes": "full-length songs, up to 3 minutes; no duration input"
     }
   ]
 }

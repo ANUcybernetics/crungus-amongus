@@ -57,3 +57,20 @@ owner = "minimax"
 name = "music-2.5"
 extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
 notes = "lyrics are the word three times"
+
+[[models]]
+owner = "minimax"
+name = "music-2.6"
+extra_inputs = { lyrics = "crungus\ncrungus\ncrungus" }
+notes = "lyrics are the word three times"
+
+# --- official models Replicate never added to the ai-music-generation collection ---
+[[models]]
+owner = "google"
+name = "lyria-3"
+notes = "fixed 30 s clips"
+
+[[models]]
+owner = "google"
+name = "lyria-3-pro"
+notes = "full-length songs, up to 3 minutes; no duration input"

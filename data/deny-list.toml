@@ -37,31 +37,6 @@ name = "music-01"
 reason = "audio2audio: requires a reference song, voice or instrumental file"
 
 [[models]]
-owner = "google"
-name = "imagen-3"
-reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
-
-[[models]]
-owner = "google"
-name = "imagen-3-fast"
-reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
-
-[[models]]
-owner = "google"
-name = "imagen-4"
-reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
-
-[[models]]
-owner = "google"
-name = "imagen-4-fast"
-reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
-
-[[models]]
-owner = "google"
-name = "imagen-4-ultra"
-reason = "dead on Replicate: the upstream Vertex endpoint 404s (retired by Google)"
-
-[[models]]
 owner = "quiverai"
 name = "arrow-1.1"
 reason = "every prediction fails with ModelError E001; 95 lifetime runs on Replicate"
@@ -80,3 +55,13 @@ reason = "HTTP 410 on every prediction: Replicate no longer runs this version, t
 owner = "bytedance"
 name = "seedream-3"
 reason = "every prediction returns \"Service is temporarily unavailable (E004)\"; unchanged across two runs months apart"
+
+[[models]]
+owner = "bytedance"
+name = "dreamina-3.1"
+reason = "every prediction fails with ModelError E002, whatever the prompt"
+
+[[models]]
+owner = "wavespeedai"
+name = "qwen-image"
+reason = "every prediction fails with ModelError E002, whatever the prompt"

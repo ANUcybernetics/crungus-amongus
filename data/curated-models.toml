@@ -168,3 +168,86 @@ notes = "the higher-quality tier of xAI's image model"
 owner = "recraft-ai"
 name = "recraft-v4"
 notes = "plain recraft v4; the archive had the pro and SVG variants only"
+
+# --- official models Replicate never added to the text-to-image collection ---
+[[models]]
+owner = "black-forest-labs"
+name = "flux-schnell-lora"
+
+[[models]]
+owner = "retro-diffusion"
+name = "rd-fast"
+notes = "pixel art model; 256×256 by default"
+
+[[models]]
+owner = "retro-diffusion"
+name = "rd-plus"
+notes = "pixel art model; 256×256 by default"
+
+[[models]]
+owner = "qwen"
+name = "qwen-image-2"
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4.1"
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4.1-pro"
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4.1-utility"
+
+[[models]]
+owner = "recraft-ai"
+name = "recraft-v4.1-utility-pro"
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v4-balanced"
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-v4-quality"
+
+[[models]]
+owner = "bytedance"
+name = "seedream-5-pro"
+
+[[models]]
+owner = "prunaai"
+name = "p-image-ideogram"
+
+[[models]]
+owner = "xai"
+name = "grok-imagine-image-2"
+
+[[models]]
+owner = "alibaba"
+name = "qwen-image-3"
+
+[[models]]
+owner = "alibaba"
+name = "qwen-image-3-pro"
+
+[[models]]
+owner = "openai"
+name = "gpt-image-2.5-flare"
+
+[[models]]
+owner = "openai"
+name = "gpt-image-2.5-sunburst"
+
+[[models]]
+owner = "ideogram-ai"
+name = "ideogram-4-5"
+
+[[models]]
+owner = "black-forest-labs"
+name = "flux-3-image"
+
+[[models]]
+owner = "google"
+name = "nano-banana-2.1"
