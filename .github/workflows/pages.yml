@@ -34,7 +34,8 @@ jobs:
           path: |
             site/src/assets/crungus
             site/node_modules/.astro
-          key: crungus-images-${{ hashFiles('site/src/data/models.json') }}
+          key: crungus-images-avif-${{ hashFiles('site/src/data/models.json') }}
+          restore-keys: crungus-images-avif-
 
       - name: Sync images from bucket
         working-directory: site
