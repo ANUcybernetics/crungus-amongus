@@ -17,7 +17,7 @@ const { title, description } = Astro.props;
 const nav = [
   { href: path(), label: "archive" },
   { href: path("/atlas/"), label: "atlas" },
-  { href: path("/eigen/"), label: "eigen" },
+  { href: path("/eigen/"), label: "eigencrungi" },
   { href: path("/sound/"), label: "sound" },
   { href: path("/radio/"), label: "radio" },
   { href: path("/about/"), label: "about" },
@@ -45,7 +45,7 @@ const nav = [
     </main>
     <footer>
       <p class="mono muted">
-        an archive of a word that means nothing and summons something ·
+        images and sounds generated from crungus prompts ·
         <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
       </p>
     </footer>
@@ -78,6 +78,7 @@ const nav = [
 
   nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 1.25rem;
   }
 

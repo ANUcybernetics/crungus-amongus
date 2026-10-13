@@ -28,15 +28,14 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 
 <Base
   title="Atlas — Crungus Amongus"
-  description="Every crungus in the archive, placed by visual similarity. Clusters are creatures; the goat-demon lives in one of them."
+  description="Explore archive images arranged by CLIP similarity in an interactive UMAP projection."
 >
   <section class="intro">
     <h1>The atlas</h1>
     <p class="lede">
-      Every image in the archive, placed by visual similarity (CLIP embeddings,
-      projected with UMAP). Clusters are creatures: where many models agree, a
-      crungus exists. Drag to pan, scroll to zoom, click an image to visit its
-      model.
+      The atlas arranges images using CLIP similarity and a two-dimensional UMAP projection.
+      Nearby images can share subjects, colours or composition. Apparent clusters depend on the projection and need closer inspection.
+      Colours identify model release years. Drag to pan, scroll to zoom, and select an image to visit its model.
     </p>
     <p class="mono legend" aria-hidden="true">
       {years.map((year, i) => (

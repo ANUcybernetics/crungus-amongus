@@ -1,8 +1,6 @@
 ---
-// Crungus-ness: mean pairwise CLIP (images) or CLAP (clips) similarity of
-// the model's ten outputs. High = the model summons one stable creature;
-// low = ten unrelated guesses. The low/high bands are set per modality from
-// the spread of the archive's own scores.
+// Mean pairwise embedding similarity. Bands are set per modality from
+// the spread of the archive's scores.
 import type { Modality } from "../lib/schema";
 
 interface Props {
@@ -20,7 +18,7 @@ const embedding = modality === "audio" ? "CLAP" : "CLIP";
   value !== null && (
     <span
       class="consistency mono"
-      title={`mean pairwise ${embedding} similarity of this model's outputs`}
+      title={`consistency: mean pairwise ${embedding} similarity within a prompt; archive cards show the higher prompt score`}
     >
       <span class="muted">{label}</span>
       <meter min="0" max="1" low={bands.low} high={bands.high} optimum={0.99} value={value} />

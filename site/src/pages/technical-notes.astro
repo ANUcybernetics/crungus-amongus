@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+import { path } from "../lib/paths";
+---
+
+<Base title="Technical notes — Crungus Amongus" description="Historical experiments with sample size, component rotation and Kandinsky rendering.">
+  <article>
+    <h1>Technical notes</h1>
+    <p>These observations were recorded in the site's methodology before the October 2026 corpus expansion. They describe earlier runs; they are not measurements of the current archive. See <a href={path("/about/")}>About</a> for the collection method and <a href={path("/eigen/")}>eigencrungi</a> for the current component scores.</p>
+    <h2>Sample size and component stability</h2>
+    <p>In the initial archive of 1,594 images, five pixel components exceeded the 0.7 resampling stability threshold. After a roughly tenfold expansion, nineteen exceeded it. The overlap between the top-24 subspaces increased from 0.82 to 0.97. These results suggested that limited sample size contributed to the earlier instability.</p>
+    <p>The earlier analysis also compared a varimax rotation of the CLIP basis with the unrotated components. Rotation increased mean stability from 0.61 to 0.71, but reduced the number of components above 0.9 from two to zero. The site retained the unrotated basis to preserve those individually reproducible directions.</p>
+    <h2>Brightness and model differences</h2>
+    <p>In that earlier pixel analysis, component 1 correlated with mean image brightness at r = 0.9967. Grouping images by model explained 54% of its variance, compared with 16% averaged across the twenty-four components. Model grouping also explained 46% of the variance in the CLIP text-similarity score for “crungus”. These associations describe differences among the sampled outputs; they do not isolate the causes of those differences.</p>
+    <h2>Kandinsky decoder configuration</h2>
+    <p>Using a zero vector as the decoder's negative embedding produced magenta renders, with the green channel at roughly a third of the other channels. The effect persisted in both half and double precision. Replacing the zero vector with the embedding produced by Kandinsky's prior for an empty prompt corrected the colour cast. In the recorded round-trip check, embedding similarity between decoded archive images and their originals increased from 0.75 to 0.85.</p>
+    <h2>Generation costs</h2>
+    <p>An earlier accounting recorded approximately A$1,500 in costs, mostly Replicate credit, across 28,228 predictions. Of these, 26,766 returned an image or clip. These are cumulative prediction figures, including earlier runs, rather than counts of files in the current archive.</p>
+    <p>The same accounting recorded 109 hours of billed GPU time. Disco Diffusion and pixray accounted for 23% of that time and 1.5% of the images. Recorded per-image runtimes were 262 seconds for Disco Diffusion and 0.2 seconds for SANA Sprint. Hardware, settings and outputs differ between endpoints, so these figures describe the cost of these runs rather than a controlled speed benchmark.</p>
+  </article>
+</Base>
+
+<style>
+  article { max-width: 46rem; padding-block: 2rem 3rem; }
+  h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin: 0 0 1rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 0.5rem; }
+</style>

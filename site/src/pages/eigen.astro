@@ -13,52 +13,35 @@ const imageBase = siteData.image_base_url;
 
 <Base
   title="Eigencrungi — Crungus Amongus"
-  description="The archive decomposed eigenfaces-style: a mean crungus and the components it varies along, each on a slider."
+  description="Explore variation in archive images with pixel and CLIP feature sliders, reconstructions and generated previews."
 >
   <section class="intro">
     <h1>The eigencrungi</h1>
     <div class="modes mono" role="group" aria-label="which space to decompose">
       <button id="mode-pixels" type="button" aria-pressed="true">pixels</button>
-      <button id="mode-semantic" type="button" aria-pressed="false">meaning</button>
+      <button id="mode-semantic" type="button" aria-pressed="false">CLIP features</button>
     </div>
     <div id="intro-pixels">
-    <p class="lede">
-      In 1991 Turk and Pentland took a stack of face photographs, treated each one
-      as a point in pixel space and found the directions the stack varied along
-      most: the <em>eigenfaces</em>, from which any face could be rebuilt as a
-      weighted sum. Here the same arithmetic is done to the archive:{" "}
-      {imageTotal.toLocaleString("en-AU")}{" "}
-      crungi, centre-cropped and shrunk to 128 pixels, no alignment. The stage
-      starts on the mean crungus. Each slider is one direction, shown beside the
-      archive's images at its two extremes; push it and see what it carries. Click
-      any image to load its coefficients and see how much of it survives.
-    </p>
-    <p class="lede">
-      The first slider is the odd one out. Rather than a direction the archive
-      happened to vary along, it is the archive projected onto CLIP's reading of
-      the word <em>crungus</em> — the one axis here that means what a
-      crungus-ness slider should mean. The numbered components below it are
-      unsupervised, and most of them are sampling noise: beside each is how well
-      it reproduces when the archive is split in half and decomposed twice.
-    </p>
+      <p class="lede">
+        Move the sliders to combine patterns of variation across {imageTotal.toLocaleString("en-AU")} archive images.
+        The display starts with their mean image. Select an archive thumbnail to compare its reconstruction with the original.
+        Images are centre-cropped and resized to 128 × 128 pixels before analysis.
+      </p>
+      <p class="lede">
+        Numbered sliders are principal components fitted to the image pixels. Their stability scores describe how closely they reproduce across subsets of the archive.
+        The separate “crungus-ness” slider follows similarity to CLIP's text embedding of “crungus”, with a pixel visualisation fitted from the archive.
+      </p>
     </div>
     <div id="intro-semantic" hidden>
       <p class="lede">
-        The same arithmetic, in a space where distance means something. Every
-        image in the archive is a point in the 1280 numbers open-clip's
-        ViT-bigG-14 uses to describe a picture, and the principal components of{" "}
-        <em>that</em> stack are directions in meaning rather than in light.
+        These sliders explore variation in CLIP image features, which can reflect subjects and visual style.
+        Each filmstrip shows Kandinsky 2.2's interpretations of positions along one direction.
+        Compare those generated previews with the nearest archive images below the main display.
       </p>
       <p class="lede">
-        A direction in a 1280-dimensional space is not a picture, so each one
-        has been rendered. Kandinsky 2.2 splits drawing into a step that turns
-        words into exactly this kind of embedding and a step that turns the
-        embedding into pixels; hand its second half a point on a component and
-        it will show you what it thinks is there. That makes each filmstrip
-        below a <em>guess</em>, and the model guessing is one of the 97 in the
-        archive. The archive answers for itself underneath: whatever the
-        sliders say, the panel on the stage shows the real crungi nearest to
-        that spot.
+        The preview follows the last slider you moved; it does not combine sliders.
+        The nearest archive images respond to all slider positions together.
+        Kandinsky is also one of the {models.length} image models in this collection.
       </p>
     </div>
   </section>
@@ -78,8 +61,8 @@ const imageBase = siteData.image_base_url;
         </figure>
       </div>
       <p class="mono controls">
-        <button id="reset" type="button">the mean crungus</button>
-        <button id="random" type="button">a real crungus</button>
+        <button id="reset" type="button">reset sliders</button>
+        <button id="random" type="button">random archive image</button>
       </p>
     </div>
     <div class="axes">
@@ -105,10 +88,10 @@ const imageBase = siteData.image_base_url;
         </figure>
       </div>
       <p class="mono controls">
-        <button id="s-reset" type="button">the mean crungus</button>
-        <button id="s-random" type="button">a real crungus</button>
+        <button id="s-reset" type="button">reset sliders</button>
+        <button id="s-random" type="button">random archive image</button>
       </p>
-      <h2 class="mono nearest-heading">the nearest real crungi</h2>
+      <h2 class="mono nearest-heading">nearest archive images</h2>
       <div id="s-nearest" class="nearest"></div>
     </div>
     <div class="axes">
@@ -127,64 +110,34 @@ const imageBase = siteData.image_base_url;
 
   <section id="notes-pixels" class="notes">
     <p>
-      Faces decompose neatly because they are aligned before the maths: eyes
-      here, mouth there. Nothing aligns a crungus, so the leading components
-      describe light, framing and palette before they describe a creature.
-      Component 1 is not subtle about it: its coefficient correlates with a
-      picture's mean brightness at r&nbsp;=&nbsp;0.9967, which makes the most
-      reproducible axis in the archive a light meter. It is also the one most
-      about the models rather than the creature: as an analysis of variance
-      over which model drew each image, 54% of component 1's spread is
-      explained by the model label alone, against 16% averaged across all
-      twenty-four. Which model you asked matters most for how bright the
-      picture came out.
+      This experiment adapts the eigenfaces approach introduced by Turk and Pentland in 1991:
+      represent images as a mean plus weighted principal components.
+      Here, subjects are not aligned before analysis, so components capture differences in brightness and framing as well as depicted subjects.
+      Retaining a limited number of components produces an approximation of each image.
     </p>
     <p>
-      <b>Stability</b> beside each slider is how much of the direction survives
-      a fresh draw: split the archive into disjoint halves, decompose both, and
-      take the cosine between the two versions of that component, averaged over
-      eight splits. One means the direction is a property of the archive; near
-      zero means it is a property of this particular sample. Nineteen of the
-      twenty-four clear 0.7 and thirteen clear 0.9. At a tenth of this many
-      images only five did, and the collapse looked like a property of the
-      spectrum — the eigenvalues past the fifth sit close enough together that
-      the components seemed free to rotate whatever we did. That was wrong: it
-      was sample size, and ten times the images bought fourteen more real axes.
-      Only a component that clears 0.7 can be given a name; everything below it
-      goes by number, however suggestive its extremes look. The crungus-ness
-      axis sidesteps the question entirely — it is fixed by the prompt rather
-      than estimated from the sample, so resampling cannot move it. More in{" "}
-      <a href={path("/about/")}>about</a>.
+      Stability is the cosine similarity between corresponding components fitted to disjoint halves of the archive, averaged over eight splits.
+      Higher scores indicate closer agreement across those splits. We name components only when their score exceeds our chosen threshold of 0.7.
+      Scores below that threshold indicate less reproducible directions, which remain available to explore.
+      <a href={path("/about/")}>Read about the method</a> or see the <a href={path("/technical-notes/")}>historical experiments</a>.
     </p>
   </section>
-
   <section id="notes-semantic" class="notes" hidden>
     <p>
-      <b>One slider drives the filmstrip.</b> A strip is a single component
-      walked from −3σ to +3σ, so it can only ever show you one direction at a
-      time; the frame on the stage is whichever slider you touched last. The
-      nearest real crungi are the opposite — they are the distance from{" "}
-      <em>every</em> slider at once to all {imageTotal.toLocaleString("en-AU")}{" "}
-      images, so they move whatever you push.
+      Each image is represented by 1,280 features from open-clip's ViT-bigG-14 model.
+      Principal component analysis finds directions of variation in these features.
+      Stability is measured across eight disjoint-half splits, using the same procedure as the pixel analysis.
     </p>
     <p>
-      <b>The renders are not evidence.</b> Kandinsky 2.2's decoder was trained
-      to turn a CLIP embedding into a plausible picture, and it will do that for
-      a point no real image occupies just as happily as for one that does. Each
-      frame is the median of three seeds by how close the render lands to the
-      point it was asked for, which stops a single unlucky sample standing for a
-      direction, but it does not make the frame true. Read the strip for the
-      shape of an axis and the nearest images for what is actually in the
-      archive.
+      Filmstrips sample a single direction at seven positions between −3 and +3 standard deviations.
+      At each position, Kandinsky renders three candidates; we retain the middle candidate ranked by embedding similarity to the target.
+      These are decoder interpretations of positions in feature space, including positions no archive image occupies.
+      The adjacent thumbnails show collected outputs for comparison.
     </p>
     <p>
-      <b>Stability</b> is measured exactly as it is in pixel space: split the
-      archive in half, decompose both halves, and take the cosine between the
-      two versions of each component. Only a component that clears 0.7 is worth
-      rendering, so the tail below that point has no filmstrip — the sliders
-      still work, and they still move the nearest images, but there is no
-      direction there stable enough to be worth illustrating. More in{" "}
-      <a href={path("/about/")}>about</a>.
+      We render filmstrips for components whose stability exceeds 0.7. Other sliders still affect the nearest-image results.
+      The text-similarity slider uses CLIP's association with “crungus”; it is distinct from the consistency scores on model pages.
+      <a href={path("/about/")}>Read about the method</a> or see the <a href={path("/technical-notes/")}>decoder configuration notes</a>.
     </p>
   </section>
 </Base>
@@ -316,7 +269,7 @@ const imageBase = siteData.image_base_url;
     originalLink.href = `${config.modelBase}${modelSlug(key)}/`;
     originalLink.textContent = labelFor(key);
     original.hidden = false;
-    stageCaption.textContent = `the same crungus as ${axes.length} numbers`;
+    stageCaption.textContent = `reconstruction using ${axes.length} coefficients`;
     render();
   }
 
@@ -391,10 +344,10 @@ const imageBase = siteData.image_base_url;
     stability.title =
       held > threshold
         ? "this direction reproduces when the archive is resampled"
-        : "a different draw of the archive would have rotated this direction away";
+        : "this direction falls below the chosen resampling stability threshold";
     if (slider.number === null) {
-      span.append("supervised · ");
-      stability.textContent = "fixed by the prompt";
+      span.append("text similarity · ");
+      stability.textContent = "CLIP association with crungus";
     } else {
       span.append(`${((slider.axis.variance ?? 0) * 100).toFixed(1)}% · `);
       stability.textContent = `stability ${held.toFixed(2)}`;
@@ -446,7 +399,7 @@ const imageBase = siteData.image_base_url;
     input.addEventListener("input", () => {
       setWeight(j, Number(input.value));
       original.hidden = true;
-      stageCaption.textContent = "a crungus that never was";
+      stageCaption.textContent = "pixel reconstruction from slider settings";
       render();
     });
 
@@ -577,15 +530,15 @@ const imageBase = siteData.image_base_url;
     const frames = slider.axis.frames;
     if (frames === null) {
       stageFrame.src = frameSrc("eigen-clip/mean.avif");
-      stageFrame.alt = "the mean crungus, rendered by Kandinsky 2.2";
-      stageLine.textContent = `${name} has no filmstrip: nothing below 0.7 reproduces well enough to be worth rendering. It still moves the nearest crungi.`;
+      stageFrame.alt = "mean embedding rendered by Kandinsky 2.2";
+      stageLine.textContent = `${name} falls below the filmstrip stability threshold. Showing the mean embedding rendered by Kandinsky; nearest archive images still respond to this slider.`;
       return;
     }
     const at = frameForSigma(value, state.clip.filmstrip_steps, state.clip.sigma_span);
     stageFrame.src = frameSrc(frames[at]!);
     stageFrame.alt = `${name} at ${sigmaLabel(value)}, rendered by Kandinsky 2.2`;
     stageLine.textContent =
-      value === 0 ? "the mean crungus" : `${name} at ${sigmaLabel(value)}`;
+      value === 0 ? "mean embedding rendered by Kandinsky 2.2" : `${name} at ${sigmaLabel(value)}, rendered by Kandinsky 2.2`;
   }
 
   let nearestPending = 0;

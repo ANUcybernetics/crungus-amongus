@@ -14,15 +14,15 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
 
 <Base
   title="Sound — Crungus Amongus"
-  description="What text-to-music models make of a word that means nothing: crungus, as played by every music model on Replicate."
+  description="Compare audio generated from crungus prompts by music and speech models available through Replicate."
 >
   <section class="hero">
     <h1>The sound of crungus</h1>
     <p class="lede">
-      The image models were asked what a crungus looks like. These models were
-      asked what it sounds like: every text-to-music model in Replicate's{" "}
-      <a href="https://replicate.com/collections/ai-music-generation">music
-      collection</a>, plus Bark, given the word alone and twenty seconds.
+      Music and speech models from Replicate's <a href="https://replicate.com/collections/ai-music-generation">music collection</a>
+      and a curated selection were given “crungus” and “the sound of a crungus”.
+      We request twenty-second clips where supported; duration otherwise depends on the endpoint.
+      Clips are loudness-normalised for playback. <a href={path("/about/#consistency")}>Audio consistency</a> measures similarity within each model's clips using CLAP.
       {clipTotal > 0 && ` ${clipTotal} clips from ${models.length} models.`}
     </p>
     {
@@ -87,7 +87,7 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
                 {model.owner}/{model.name}
               </a>
               <span class="muted"> — {model.status}</span>
-              {model.notes && <span class="muted"> · {model.notes}</span>}
+
             </li>
           ))}
         </ul>

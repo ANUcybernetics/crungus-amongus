@@ -29,13 +29,13 @@ const verb = audio ? "played" : "rendered";
   <article>
     <header>
       <p class="mono muted eyebrow">
-        {releaseYear(model)} · {model.source === "legacy" ? "curated relic" : "collection"} ·{" "}
+        {dated ? `release year ${releaseYear(model)}` : "release date unknown"} · {model.source === "legacy" ? "curated selection" : "Replicate collection"} ·{" "}
         <a href={audio ? path("/sound/") : path()}>{audio ? "sound" : "image"}</a> ·{" "}
         <a href={model.replicate_url}>view on replicate</a>
       </p>
       <h1 class="mono">{model.owner}/{model.name}</h1>
-      {model.description && <p class="description">{model.description}</p>}
-      {model.notes && <p class="muted notes">{model.notes}</p>}
+      {model.description && <p class="description"><span class="muted">Replicate listing description: </span>{model.description}</p>}
+      <p class="muted">Outputs generated for this project, grouped by prompt. <a href={path("/about/")}>Collection method and date sources</a>.</p>
     </header>
 
     {
@@ -54,11 +54,10 @@ const verb = audio ? "played" : "rendered";
               (refusalRate(prompt) ?? 0) > 0 && (
                 <p class="mono refusals">
                   <b>{Math.round(refusalRate(prompt)! * 100)}%</b> refused under the
-                  default filters — {prompt.refusals.refused} of {prompt.refusals.asked}{" "}
-                  asks came back blocked rather than as a picture, measured up to{" "}
-                  {prompt.refusals.measured_until.slice(0, 10)}. The archive is now
-                  generated with this model's safety controls turned off, so the
-                  pictures above are not the ones that number describes.
+                  default filters: {prompt.refusals.refused} of {prompt.refusals.asked}{" "}
+                  requests were blocked, measured up to {prompt.refusals.measured_until.slice(0, 10)}.
+                  Later runs use the most permissive safety settings exposed by this endpoint.
+                  This historical rate does not describe the images on this page.
                 </p>
               )
             }
