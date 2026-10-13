@@ -6,6 +6,13 @@ export default defineConfig({
   compressHTML: true,
   site: "https://crungusamong.us",
   output: "static",
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+      // sharp's default effort (4) takes ~5x longer for files ~2% smaller
+      config: { avif: { effort: 2 } },
+    },
+  },
   vite: {
     css: { transformer: "lightningcss" },
     build: { cssMinify: "lightningcss" },

@@ -24,6 +24,7 @@ const score = crungusness(model);
         <Image
           src={image}
           alt={`crungus as rendered by ${model.owner}/${model.name}`}
+          format="avif"
           widths={[240, 480]}
           sizes="(max-width: 40rem) 44vw, 240px"
           style={`view-transition-name: cover-${model.slug}`}

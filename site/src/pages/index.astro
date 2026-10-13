@@ -60,6 +60,7 @@ const imageTotal = models.reduce(
                     <Image
                       src={image}
                       alt={`representative output from a model released in ${sample.year}, by ${sample.model.owner}/${sample.model.name}`}
+                      format="avif"
                       widths={[160, 320]}
                       sizes="160px"
                     />

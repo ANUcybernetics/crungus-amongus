@@ -88,6 +88,7 @@ const verb = audio ? "played" : "rendered";
                         <Image
                           src={local}
                           alt={`crungus ${i + 1} of ${prompt.images.length} for “${prompt.prompt}”`}
+                          format="avif"
                           widths={[240, 480]}
                           sizes="(max-width: 40rem) 44vw, 240px"
                           style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
