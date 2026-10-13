@@ -65,3 +65,8 @@ reason = "every prediction fails with ModelError E002, whatever the prompt"
 owner = "wavespeedai"
 name = "qwen-image"
 reason = "every prediction fails with ModelError E002, whatever the prompt"
+
+[[models]]
+owner = "sakemin"
+name = "musicgen-stereo-chord"
+reason = "every prediction fails with \"cuFFT error: CUFFT_INTERNAL_ERROR\" at its only version (2023-11-28)"
