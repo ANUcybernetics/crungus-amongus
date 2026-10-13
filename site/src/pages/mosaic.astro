@@ -1,0 +1,440 @@
+---
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { generatedModels } from "../lib/models";
+import { path } from "../lib/paths";
+
+const models = generatedModels(siteData, "image");
+---
+
+<Base
+  title="Mosaic — Crungus Amongus"
+  description="A wall of crungus images from across the archive, one tile changing every second, with crungus radio playing over it on request."
+>
+  <section class="intro">
+    <h1>Crungus mosaic</h1>
+    <p class="lede">
+      A wall of images drawn at random from the <a href={path()}>archive</a>, or from a single model,
+      with one tile replaced every second. Turn on the radio to hear every clip in the
+      <a href={path("/sound/")}>sound archive</a>, shuffled and played end to end.
+    </p>
+  </section>
+
+  <div
+    class="stage"
+    id="stage"
+    tabindex="-1"
+    data-tiles={path("/mosaic/tiles.json")}
+    data-audio={path("/api/audio.json")}
+    data-models={path("/api/models.json")}
+    data-model-base={path("/model/")}
+  >
+    <div class="wall" id="wall"></div>
+    <div class="bar">
+      <p class="mono" id="now-playing" aria-live="polite"></p>
+      <p class="controls mono">
+        <select id="model" aria-label="models shown">
+          <option value="">all models</option>
+          {models.map((m) => <option value={m.slug}>{m.owner}/{m.name}</option>)}
+        </select>
+        <button id="radio" type="button" aria-pressed="false">radio</button>
+        <button id="skip" type="button" hidden>next</button>
+        <button id="full" type="button" hidden>fullscreen</button>
+      </p>
+    </div>
+    <audio id="player" preload="none"></audio>
+  </div>
+  <noscript>
+    <p class="muted">
+      The mosaic needs JavaScript. Every image is also in the <a href={path()}>archive</a>.
+    </p>
+  </noscript>
+  <p class="mono muted keys">
+    f fullscreen · r radio · n next clip · add <code>?model=…</code>, <code>?radio</code> or
+    <code>?kiosk</code> (fill the window) to the address
+  </p>
+</Base>
+
+<script>
+  import { gridShape, shuffleBag, tilesFor } from "../lib/mosaic";
+  import type { MosaicData, Tile } from "../lib/mosaic";
+  import type { ApiClip } from "../lib/api";
+
+  const SWAP_MS = 1000;
+  const FADE_MS = 600;
+  const IDLE_MS = 2500;
+
+  async function hang(stage: HTMLElement): Promise<void> {
+    const wall = document.getElementById("wall")!;
+    const bar = stage.querySelector<HTMLElement>(".bar")!;
+    const picker = document.getElementById("model") as HTMLSelectElement;
+    const radio = document.getElementById("radio") as HTMLButtonElement;
+    const skip = document.getElementById("skip") as HTMLButtonElement;
+    const full = document.getElementById("full") as HTMLButtonElement;
+    const player = document.getElementById("player") as HTMLAudioElement;
+    const nowPlaying = document.getElementById("now-playing")!;
+    const { tiles: tilesUrl, audio: audioUrl, models: modelsUrl, modelBase } = stage.dataset;
+
+    const params = new URLSearchParams(location.search);
+    if (params.has("kiosk")) stage.classList.add("kiosk");
+    const still = matchMedia("(prefers-reduced-motion: reduce)");
+
+    const data = (await (await fetch(tilesUrl!)).json()) as MosaicData;
+    if (data.models.length === 0) return;
+
+    // --- the wall
+    picker.value = params.get("model") ?? "";
+    let nextTile = shuffleBag(tilesFor(data, picker.value));
+    let nextSlot: (() => HTMLAnchorElement) | undefined;
+
+    // the incoming image decodes off-screen, then fades in over the old one
+    async function show(slot: HTMLAnchorElement, tile: Tile): Promise<void> {
+      const image = new Image();
+      image.alt = "";
+      image.src = tile.src;
+      try {
+        await image.decode();
+      } catch {
+        return; // a missing image just holds the current one
+      }
+      const caption = document.createElement("span");
+      caption.className = "caption mono";
+      const name = document.createElement("span");
+      name.textContent = tile.model.name;
+      const prompt = document.createElement("span");
+      prompt.textContent = tile.prompt;
+      caption.append(name, prompt);
+
+      slot.href = `${modelBase}${tile.model.slug}/`;
+      slot.querySelector(".caption")?.remove();
+      slot.append(image, caption);
+      await image.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: still.matches ? 0 : FADE_MS,
+      }).finished;
+      while (image.previousElementSibling) image.previousElementSibling.remove();
+    }
+
+    function layOut(): void {
+      const { cols, rows } = gridShape(wall.clientWidth, wall.clientHeight);
+      const count = cols * rows;
+      wall.style.setProperty("--cols", String(cols));
+      wall.style.setProperty("--rows", String(rows));
+      if (count === wall.childElementCount) return;
+      while (wall.childElementCount > count) wall.lastElementChild!.remove();
+      while (wall.childElementCount < count) {
+        const slot = document.createElement("a");
+        slot.className = "tile";
+        wall.append(slot);
+        void show(slot, nextTile());
+      }
+      nextSlot = shuffleBag([...wall.children] as HTMLAnchorElement[]);
+    }
+
+    new ResizeObserver(layOut).observe(wall);
+    window.setInterval(() => {
+      if (!document.hidden && nextSlot) void show(nextSlot(), nextTile());
+    }, SWAP_MS);
+
+    // --- the address carries the setup, so a display can be pointed straight at it
+    let onAir = false;
+    function writeAddress(): void {
+      const url = new URL(location.href);
+      if (picker.value) url.searchParams.set("model", picker.value);
+      else url.searchParams.delete("model");
+      if (onAir) url.searchParams.set("radio", "");
+      else url.searchParams.delete("radio");
+      history.replaceState(null, "", url);
+    }
+
+    picker.addEventListener("change", () => {
+      nextTile = shuffleBag(tilesFor(data, picker.value));
+      for (const slot of wall.children) void show(slot as HTMLAnchorElement, nextTile());
+      writeAddress();
+    });
+
+    // --- radio: fetched from the JSON API the first time it is switched on
+    let nextClip: (() => ApiClip) | undefined;
+    let clipCount = 0;
+    let labels = new Map<string, string>();
+    // opus everywhere it plays; Safari on macOS gets the AAC fallback
+    const canOpus = player.canPlayType('audio/ogg; codecs="opus"') !== "";
+
+    function setOnAir(on: boolean): void {
+      onAir = on;
+      radio.setAttribute("aria-pressed", String(on));
+      skip.hidden = !on;
+      if (!on) nowPlaying.textContent = "";
+    }
+
+    function play(clip: ApiClip): void {
+      const label = labels.get(clip.model) ?? clip.model;
+      player.src = canOpus ? clip.opus : clip.m4a;
+      player.play().catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "NotAllowedError") awaitGesture();
+      });
+      nowPlaying.replaceChildren("now playing · ");
+      const link = document.createElement("a");
+      link.href = `${modelBase}${clip.model}/`;
+      link.textContent = label;
+      nowPlaying.append(link, ` · “${clip.prompt}”`);
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: `“${clip.prompt}”`,
+          artist: label,
+          album: "crungus radio",
+        });
+      }
+    }
+
+    // a browser that refuses to start sound unprompted gets it on the first
+    // click or key press instead; the address keeps asking for the radio
+    function awaitGesture(): void {
+      setOnAir(false);
+      nowPlaying.textContent = "click anywhere to start the radio";
+      const start = (event: Event): void => {
+        document.removeEventListener("click", start, true);
+        document.removeEventListener("keydown", start);
+        if (onAir || event.target === radio) return;
+        // that click starts the radio rather than following a tile's link
+        if (event.type === "click" && wall.contains(event.target as Node)) event.preventDefault();
+        void tuneIn();
+      };
+      document.addEventListener("click", start, true);
+      document.addEventListener("keydown", start);
+    }
+
+    async function tuneIn(): Promise<void> {
+      setOnAir(true);
+      if (!nextClip) {
+        const [audio, index] = (await Promise.all(
+          [audioUrl!, modelsUrl!].map(async (url) => (await fetch(url)).json()),
+        )) as [{ clips: ApiClip[] }, { models: { slug: string; owner: string; name: string }[] }];
+        if (audio.clips.length === 0) {
+          setOnAir(false);
+          radio.hidden = true;
+          return;
+        }
+        labels = new Map(index.models.map((m) => [m.slug, `${m.owner}/${m.name}`]));
+        clipCount = audio.clips.length;
+        nextClip = shuffleBag(audio.clips);
+      }
+      if (onAir) play(nextClip());
+    }
+    function toggleRadio(): void {
+      if (onAir) {
+        player.pause();
+        setOnAir(false);
+      } else void tuneIn();
+      writeAddress();
+    }
+    function skipClip(): void {
+      if (onAir && nextClip) play(nextClip());
+    }
+
+    let failures = 0;
+    player.addEventListener("ended", () => {
+      failures = 0;
+      skipClip();
+    });
+    player.addEventListener("error", () => {
+      // skip a clip that won't load, but don't spin forever if none will
+      failures += 1;
+      if (failures < clipCount) skipClip();
+      else setOnAir(false);
+    });
+
+    radio.addEventListener("click", toggleRadio);
+    skip.addEventListener("click", skipClip);
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("nexttrack", skipClip);
+    }
+
+    // --- fullscreen
+    function toggleFullscreen(): void {
+      if (document.fullscreenElement) void document.exitFullscreen();
+      else void stage.requestFullscreen().catch(() => {});
+    }
+    full.hidden = !document.fullscreenEnabled;
+    full.addEventListener("click", toggleFullscreen);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.target instanceof HTMLSelectElement) return; // the picker's type-ahead
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === "f") toggleFullscreen();
+      else if (event.key === "r") toggleRadio();
+      else if (event.key === "n") skipClip();
+    });
+
+    // the bar fades once the pointer has been still for a while
+    let idleTimer: number | undefined;
+    function wake(): void {
+      stage.classList.remove("idle");
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => stage.classList.add("idle"), IDLE_MS);
+    }
+    stage.addEventListener("pointermove", wake);
+    bar.addEventListener("focusin", wake);
+    wake();
+
+    if (params.has("radio")) void tuneIn();
+  }
+
+  const stage = document.getElementById("stage");
+  if (stage) void hang(stage);
+</script>
+
+<style>
+  .intro {
+    padding-block: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    max-height: 85vh;
+    background: #000;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    outline: none;
+  }
+
+  @media (orientation: portrait) {
+    .stage {
+      aspect-ratio: 3 / 4;
+    }
+  }
+
+  .stage:fullscreen,
+  .stage.kiosk {
+    border: none;
+    aspect-ratio: auto;
+    max-height: none;
+  }
+
+  .stage.kiosk {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .stage.idle:is(:fullscreen, .kiosk) {
+    cursor: none;
+  }
+
+  .wall {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 16), 1fr);
+    grid-template-rows: repeat(var(--rows, 9), 1fr);
+  }
+
+  /* tiles are built by the script, so they carry no scope attribute */
+  .wall :global(.tile) {
+    position: relative;
+    display: block;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    container-type: inline-size;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .wall :global(.tile img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .wall :global(.caption) {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    padding: 12cqw 4cqw 3cqw;
+    font-size: clamp(0.4rem, 6cqw, 0.9rem);
+    line-height: 1.25;
+    background: linear-gradient(transparent, rgb(0 0 0 / 70%));
+  }
+
+  .wall :global(.caption span) {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .wall :global(.caption span + span) {
+    opacity: 0.7;
+  }
+
+  .bar {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 2.5rem 1rem 0.9rem;
+    background: linear-gradient(transparent, rgb(0 0 0 / 85%));
+    transition: opacity 0.4s ease;
+  }
+
+  .stage.idle .bar:not(:focus-within) {
+    opacity: 0;
+  }
+
+  .bar p {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+  }
+
+  .controls :is(button, select) {
+    background: rgb(0 0 0 / 55%);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font: inherit;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+  }
+
+  .controls select {
+    max-width: 16rem;
+  }
+
+  .controls :is(button, select):hover {
+    color: var(--accent-bright);
+    border-color: var(--accent);
+  }
+
+  .controls button[aria-pressed="true"] {
+    color: var(--ground);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .keys {
+    margin: 0.6rem 0 2rem;
+  }
+</style>

@@ -28,7 +28,7 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
     {
       clipTotal > 0 && (
         <p class="tune mono">
-          <a href={path("/radio/")}>tune in to crungus radio →</a>
+          <a href={path("/mosaic/?radio")}>tune in to crungus radio →</a>
           <span class="muted"> every clip, shuffled, over every image</span>
         </p>
       )

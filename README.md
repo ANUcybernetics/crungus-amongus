@@ -15,7 +15,8 @@ Two components:
   bucket, and emits the site's data contract
 - **`site/`** — an Astro static site that presents the archive, per-model pages,
   the pan/zoom embedding atlas, the eigencrungi sliders, the sound archive, and
-  crungus radio (every clip shuffled over every image)
+  the mosaic (a full-screen wall of images for a gallery display, with crungus
+  radio shuffling every clip over it on `?radio`)
 
 ## Pipeline
 
