@@ -7,12 +7,13 @@ them with `mise exec --`.
 
 ## Constraints
 
-- `crungus generate` spends real money. Never run it unless asked; always
-  `--dry-run` first and report the estimate.
+- `crungus generate` and `crungus mesh` spend real money. Never run either
+  unless asked; always `--dry-run` first and report the estimate.
 - Model version pins in `state/models.json` are sticky: a bump orphans that
   model's outputs and implies re-spend. Only `discover --refresh-versions` may
   bump them, and only when asked.
-- `state/manifest.jsonl` is append-only provenance. Never edit or squash it.
+- `state/manifest.jsonl` and `state/meshes.jsonl` are append-only provenance.
+  Never edit or squash them.
 - Generated media never goes in git. It lives under `data/` and in the public
   Tigris bucket. Corpus keys embed the pinned model version and are served
   immutable-cached, so changed content needs a new key, not an overwrite;
