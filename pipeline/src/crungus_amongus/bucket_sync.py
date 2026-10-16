@@ -1,14 +1,15 @@
-"""Upload the corpus and the derived renders to the public Tigris bucket.
+"""Upload the corpus, the derived renders and the meshes to the public bucket.
 
 Pattern cribbed from slop-university's ops/bucket-sync.py: boto3 against the
 Tigris S3 endpoint, immutable cache-control, parallel uploads. Credentials come
 from the untracked mise [env] block (CRUNGUS_S3_*), never the repo.
 
-Two roots, and the difference between them is what may be cached forever. A
+Three roots, and the difference between them is what may be cached forever. A
 corpus key embeds the pinned model version that produced it, so its content can
 never change and it ships immutable. Everything derived — the atlas sheets, the
 eigencrungi, Kandinsky's filmstrips — is recomputed wholesale whenever the
-corpus grows, lands back at the same key, and so must not be.
+corpus grows, lands back at the same key, and so must not be. A mesh key embeds
+its Meshy task and encoding revision, so it ships immutable too.
 """
 
 from concurrent.futures import ThreadPoolExecutor
@@ -17,7 +18,7 @@ from pathlib import Path
 
 from loguru import logger
 
-from .config import Settings
+from .config import MESH_KEY_PREFIX, Settings
 
 CACHE_CONTROL = "public, max-age=31536000, immutable"
 MUTABLE_CACHE_CONTROL = "public, max-age=300"
@@ -29,6 +30,7 @@ CONTENT_TYPES = {
     ".json": "application/json",
     ".opus": "audio/ogg",
     ".m4a": "audio/mp4",
+    ".glb": "model/gltf-binary",
 }
 MAX_WORKERS = 8
 
@@ -41,20 +43,23 @@ class _Upload:
 
 
 def upload_plan(settings: Settings) -> list[_Upload]:
-    """Every file both roots offer, with the key and cache policy it ships under."""
+    """Every file the roots offer, with the key and cache policy it ships under."""
     plan: list[_Upload] = []
-    for root, derived in (
-        (settings.optimized_dir, False),
-        (settings.derived_dir, True),
+    for root, prefix, derived in (
+        (settings.optimized_dir, "", False),
+        (settings.derived_dir, "", True),
+        (settings.meshes_dir, MESH_KEY_PREFIX, False),
     ):
         for path in sorted(root.rglob("*")):
             if not path.is_file() or path.suffix not in CONTENT_TYPES:
                 continue
-            mutable = derived or path.suffix in MUTABLE_SUFFIXES
+            mutable = derived or (
+                root == settings.optimized_dir and path.suffix in MUTABLE_SUFFIXES
+            )
             plan.append(
                 _Upload(
                     path,
-                    str(path.relative_to(root)),
+                    prefix + str(path.relative_to(root)),
                     MUTABLE_CACHE_CONTROL if mutable else CACHE_CONTROL,
                 )
             )

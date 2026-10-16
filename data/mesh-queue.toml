@@ -1,0 +1,4 @@
+# Archive images for `crungus mesh` to send to Meshy, in order. Keys as the
+# site and API give them ("<model-slug>/<prompt-slug>/<index>.avif"); Meshy
+# reads a single full-bodied creature on a plain ground best.
+images = []

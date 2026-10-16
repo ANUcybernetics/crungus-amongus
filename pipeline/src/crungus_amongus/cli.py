@@ -164,10 +164,62 @@ def generate(
 
 
 @app.command()
+def mesh(
+    retry_failed: bool = typer.Option(
+        False, help="also resubmit images whose Meshy task failed"
+    ),
+    max_meshes: int = typer.Option(
+        None, "--max-meshes", help="cap on new Meshy tasks this run"
+    ),
+    concurrency: int = typer.Option(4, help="max tasks in flight"),
+    timeout: float = typer.Option(
+        1200.0, help="per-task polling deadline (s); an unfinished task resumes later"
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run", help="plan and estimate only"),
+) -> None:
+    """Turn the images in data/mesh-queue.toml into meshes with Meshy (spends credits)."""
+    from .mesher import (
+        ASSUMED_CREDITS,
+        POLL_INTERVAL_S,
+        MeshyClient,
+        plan_meshes,
+        run_meshes,
+    )
+
+    settings = Settings()
+    jobs = plan_meshes(settings, retry_failed=retry_failed)
+    resumes = [j for j in jobs if j.task_id is not None]
+    fresh = [j for j in jobs if j.task_id is None]
+    if max_meshes is not None:
+        fresh = fresh[:max_meshes]
+    logger.info(
+        "pending: {} new meshes (~{} credits), {} tasks to resume",
+        len(fresh),
+        len(fresh) * ASSUMED_CREDITS,
+        len(resumes),
+    )
+    jobs = resumes + fresh
+    if dry_run or not jobs:
+        return
+    if not settings.meshy_api_key:
+        logger.error("MESHY_API_KEY not set (add it to the mise [env] block)")
+        raise typer.Exit(1)
+
+    async def run() -> dict[str, int]:
+        async with httpx.AsyncClient(timeout=120.0, follow_redirects=True) as http:
+            client = MeshyClient(http, settings.meshy_api_key or "", POLL_INTERVAL_S)
+            return await run_meshes(
+                jobs, settings, client, concurrency=concurrency, timeout_s=timeout
+            )
+
+    logger.info("mesh run complete: {}", asyncio.run(run()))
+
+
+@app.command()
 def optimize(
     force: bool = typer.Option(False, help="re-encode even if up to date"),
 ) -> None:
-    """Encode originals (images → AVIF, audio → Opus + AAC) under data/optimized/."""
+    """Encode originals (images → AVIF, audio → Opus + AAC, meshes → compressed GLB)."""
     from .optimizer import optimize_all
 
     optimize_all(Settings(), force=force)
@@ -185,7 +237,7 @@ def analyze() -> None:
 def sync(
     force: bool = typer.Option(False, help="re-upload everything"),
 ) -> None:
-    """Upload the optimized tree to the Tigris bucket."""
+    """Upload the optimized, derived and mesh trees to the Tigris bucket."""
     from .bucket_sync import sync_optimized
 
     sync_optimized(Settings(), force=force)

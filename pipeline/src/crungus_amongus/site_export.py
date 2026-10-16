@@ -1,8 +1,8 @@
 """Assemble the site data contract (site/src/data/models.json).
 
-Built from registry + manifest + analysis + what actually exists under
-data/optimized/, so the site never links an image that didn't survive the
-whole pipeline.
+Built from registry + manifests + analysis + what actually exists under
+data/optimized/ and data/meshes/, so the site never links an image or a mesh
+that didn't survive the whole pipeline.
 """
 
 import re
@@ -12,10 +12,11 @@ from pathlib import Path
 from typing import Literal
 
 from loguru import logger
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .analyzer import Analysis, load_analysis
 from .config import (
+    MESH_KEY_PREFIX,
     MODALITIES,
     OUTPUTS_PER_PROMPT,
     PROMPTS,
@@ -25,6 +26,8 @@ from .config import (
     Settings,
 )
 from .manifest import ManifestEntry, load_manifest, read_manifest
+from .mesher import load_mesh_manifest
+from .optimizer import mesh_relpath
 from .registry import Registry, RegistryModel, load_curated
 
 SITE_DATA_PATH = REPO_ROOT / "site" / "src" / "data" / "models.json"
@@ -34,6 +37,9 @@ class ImageRef(BaseModel):
     key: str  # "<slug>/<prompt_slug>/<index>.avif", relative to image_base_url
     atlas: tuple[float, float] | None = None
     typicality: float | None = None  # mean cos sim to the release year's images
+    # "meshes/<slug>/<prompt_slug>/<index>/<task>-<encoding>.glb"; omitted
+    # rather than null, since all but a handful of images have none
+    mesh: str | None = Field(None, exclude_if=lambda v: v is None)
 
 
 class ClipRef(BaseModel):
@@ -135,6 +141,7 @@ def build_site_data(registry: Registry, settings: Settings) -> SiteData:
     counts = attempt_counts(manifest)
     refusals = refusal_counts(settings)
     analysis = load_analysis(settings)
+    meshes = mesh_keys(settings)
     descriptions = {
         (modality, f"{entry.owner}/{entry.name}"): entry.description
         for modality in MODALITIES
@@ -148,6 +155,7 @@ def build_site_data(registry: Registry, settings: Settings) -> SiteData:
             counts,
             refusals,
             analysis,
+            meshes,
             settings,
             description=descriptions.get((model.modality, model.ref)),
         )
@@ -159,6 +167,16 @@ def build_site_data(registry: Registry, settings: Settings) -> SiteData:
         image_base_url=settings.image_base_url,
         models=models,
     )
+
+
+def mesh_keys(settings: Settings) -> dict[str, str]:
+    """Bucket key of each image's mesh, by corpus stem, for those encoded."""
+    keys: dict[str, str] = {}
+    for stem, entry in load_mesh_manifest(settings.mesh_manifest_path).items():
+        relpath = mesh_relpath(stem, entry.task_id)
+        if entry.status == "succeeded" and (settings.meshes_dir / relpath).exists():
+            keys[stem] = MESH_KEY_PREFIX + relpath
+    return keys
 
 
 _NUMBER = re.compile(r"-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?")
@@ -205,11 +223,15 @@ def export_site_data(registry: Registry, settings: Settings, out: Path) -> SiteD
     ok = sum(1 for m in data.models if m.status == "ok")
     total_images = sum(len(p.images) for m in data.models for p in m.prompts)
     total_clips = sum(len(p.clips) for m in data.models for p in m.prompts)
+    total_meshes = sum(
+        1 for m in data.models for p in m.prompts for i in p.images if i.mesh
+    )
     logger.info(
-        "site data: {} models ({} complete), {} images, {} clips → {}",
+        "site data: {} models ({} complete), {} images ({} meshed), {} clips → {}",
         len(data.models),
         ok,
         total_images,
+        total_meshes,
         total_clips,
         out,
     )
@@ -221,6 +243,7 @@ def _model_entry(
     counts: dict[tuple[str, str, str, str], Counter[str]],
     refusals: dict[tuple[str, str, str], Counter[str]],
     analysis: Analysis | None,
+    meshes: dict[str, str],
     settings: Settings,
     *,
     description: str | None = None,
@@ -241,7 +264,12 @@ def _model_entry(
             atlas = analysis.atlas.get(stem) if analysis else None
             typicality = analysis.year_typicality.get(stem) if analysis else None
             images.append(
-                ImageRef(key=f"{stem}.avif", atlas=atlas, typicality=typicality)
+                ImageRef(
+                    key=f"{stem}.avif",
+                    atlas=atlas,
+                    typicality=typicality,
+                    mesh=meshes.get(stem),
+                )
             )
         consistency = (
             analysis.consistency.get(f"{model.slug}/{prompt_slug}")

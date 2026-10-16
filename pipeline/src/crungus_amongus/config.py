@@ -53,10 +53,16 @@ SAFETY_DEFAULTS_UNTIL = datetime(2026, 9, 9, 22, 35, 55, tzinfo=UTC)
 ASSUMED_COST: dict[Modality, float] = {"image": 0.03, "audio": 0.10}
 
 
+# meshes_dir is synced under this prefix, beside the corpus keys
+MESH_KEY_PREFIX = "meshes/"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(extra="ignore")
 
     replicate_api_token: str
+    # only `crungus mesh` needs it, and only to spend
+    meshy_api_key: str | None = None
 
     # Tigris bucket (credentials live in the untracked mise [env] block)
     s3_endpoint: str = Field(
@@ -112,12 +118,35 @@ class Settings(BaseSettings):
         return self.data_dir / "derived"
 
     @property
+    def mesh_queue_path(self) -> Path:
+        return self.data_dir / "mesh-queue.toml"
+
+    @property
+    def mesh_originals_dir(self) -> Path:
+        """Meshy's GLBs as delivered, kept like the image originals."""
+        return self.data_dir / "mesh-originals"
+
+    @property
+    def meshes_dir(self) -> Path:
+        """Compressed GLBs for the web, synced under the bucket's meshes/ prefix.
+
+        Its own root rather than part of optimized_dir or derived_dir: a mesh
+        is neither corpus nor something recomputed at a stable key, and its
+        key embeds the Meshy task that made it, so it ships immutable.
+        """
+        return self.data_dir / "meshes"
+
+    @property
     def registry_path(self) -> Path:
         return self.state_dir / "models.json"
 
     @property
     def manifest_path(self) -> Path:
         return self.state_dir / "manifest.jsonl"
+
+    @property
+    def mesh_manifest_path(self) -> Path:
+        return self.state_dir / "meshes.jsonl"
 
     @property
     def audio_embeddings_path(self) -> Path:

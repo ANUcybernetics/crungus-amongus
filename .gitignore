@@ -2,6 +2,8 @@
 /data/originals/
 /data/optimized/
 /data/derived/
+/data/mesh-originals/
+/data/meshes/
 /state/embeddings.npz
 /state/embeddings-bigg.npz
 /state/audio-embeddings.npz
