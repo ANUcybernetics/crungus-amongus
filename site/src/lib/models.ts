@@ -1,6 +1,6 @@
 // Pure helpers over the site data contract. Keep side-effect-free so tests
 // and scripts can reuse them; the data-binding layer (data.ts) imports the JSON.
-import type { ClipRef, Modality, ModelEntry, PromptOutputs, SiteData } from "./schema";
+import type { ClipRef, ImageRef, Modality, ModelEntry, PromptOutputs, SiteData } from "./schema";
 
 /** Models that produced at least one output, in timeline order; optionally one modality. */
 export function generatedModels(data: SiteData, modality?: Modality): ModelEntry[] {
@@ -128,4 +128,21 @@ export function timelineSample(models: ModelEntry[]): YearSample[] {
     samples.push({ year, model: best.model, key: best.key });
   }
   return samples;
+}
+
+export interface MeshedImage {
+  model: ModelEntry;
+  prompt: PromptOutputs;
+  image: ImageRef & { mesh: string };
+}
+
+/** Every image with a mesh, in timeline order. */
+export function meshedImages(data: SiteData): MeshedImage[] {
+  return generatedModels(data, "image").flatMap((model) =>
+    model.prompts.flatMap((prompt) =>
+      prompt.images
+        .filter((image): image is MeshedImage["image"] => image.mesh !== undefined)
+        .map((image) => ({ model, prompt, image })),
+    ),
+  );
 }

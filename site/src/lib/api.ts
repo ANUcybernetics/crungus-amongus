@@ -1,11 +1,19 @@
 // Shapes of the static JSON API under /api/. Unlike models.json (the internal
 // contract, keyed relative to the bucket) these are for outside consumers, so
 // every URL is absolute and each item carries its model and prompt.
-import { clipCount, generatedModels, imageCount } from "./models";
+import { clipCount, generatedModels, imageCount, meshedImages } from "./models";
 import type { ModelEntry, SiteData } from "./schema";
 
 export interface ApiImage {
   url: string;
+  model: string;
+  prompt: string;
+  mesh?: string; // GLB, only for the images Meshy has reconstructed
+}
+
+export interface ApiMesh {
+  url: string; // GLB: meshopt geometry, WebP textures
+  image: string; // the archive image it was reconstructed from
   model: string;
   prompt: string;
 }
@@ -33,7 +41,12 @@ export function apiBase(data: SiteData, site: URL | undefined, basePath: string)
 
 export function modelImages(model: ModelEntry, base: ApiBase): ApiImage[] {
   return model.prompts.flatMap((p) =>
-    p.images.map((i) => ({ url: `${base.media}/${i.key}`, model: model.slug, prompt: p.prompt })),
+    p.images.map((i) => ({
+      url: `${base.media}/${i.key}`,
+      model: model.slug,
+      prompt: p.prompt,
+      ...(i.mesh !== undefined && { mesh: `${base.media}/${i.mesh}` }),
+    })),
   );
 }
 
@@ -90,4 +103,15 @@ export function imagesIndex(data: SiteData, base: ApiBase) {
 export function audioIndex(data: SiteData, base: ApiBase) {
   const clips = generatedModels(data, "audio").flatMap((m) => modelClips(m, base));
   return { generated_at: data.generated_at, count: clips.length, clips };
+}
+
+/** /api/meshes.json: every mesh, with the image it was made from. */
+export function meshesIndex(data: SiteData, base: ApiBase) {
+  const meshes: ApiMesh[] = meshedImages(data).map(({ model, prompt, image }) => ({
+    url: `${base.media}/${image.mesh}`,
+    image: `${base.media}/${image.key}`,
+    model: model.slug,
+    prompt: prompt.prompt,
+  }));
+  return { generated_at: data.generated_at, count: meshes.length, meshes };
 }

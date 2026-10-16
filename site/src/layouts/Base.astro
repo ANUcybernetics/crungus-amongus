@@ -6,6 +6,8 @@ import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "../styles/global.css";
+import { siteData } from "../lib/data";
+import { meshedImages } from "../lib/models";
 import { path } from "../lib/paths";
 
 interface Props {
@@ -19,6 +21,8 @@ const nav = [
   { href: path("/atlas/"), label: "atlas" },
   { href: path("/eigen/"), label: "eigencrungi" },
   { href: path("/sound/"), label: "sound" },
+  // only once there is something to show
+  ...(meshedImages(siteData).length > 0 ? [{ href: path("/meshes/"), label: "meshes" }] : []),
   { href: path("/mosaic/"), label: "mosaic" },
   { href: path("/about/"), label: "about" },
 ];

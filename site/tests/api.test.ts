@@ -1,8 +1,16 @@
 import { describe, expect, it } from "vitest";
 
-import { apiBase, audioIndex, imagesIndex, modelDetail, modelsIndex } from "../src/lib/api";
+import {
+  apiBase,
+  audioIndex,
+  imagesIndex,
+  meshesIndex,
+  modelDetail,
+  modelsIndex,
+} from "../src/lib/api";
 import { siteData } from "../src/lib/data";
 import { clipCount, generatedModels, imageCount } from "../src/lib/models";
+import type { SiteData } from "../src/lib/schema";
 
 const base = apiBase(siteData, new URL("https://example.test"), "/");
 
@@ -42,5 +50,34 @@ describe("JSON API", () => {
     expect(modelsIndex(siteData, sub).models[0]!.items).toContain(
       "https://example.test/crungus/api/models/",
     );
+  });
+});
+
+describe("meshes in the JSON API", () => {
+  // the archive has (almost) no meshes yet, so give one image a mesh
+  const meshed: SiteData = structuredClone(siteData);
+  const model = generatedModels(meshed, "image")[0]!;
+  const image = model.prompts.find((p) => p.images.length > 0)!.images[0]!;
+  const mesh = `meshes/${image.key.slice(0, -".avif".length)}/task-1-e1.glb`;
+  image.mesh = mesh;
+
+  it("lists each mesh with its source image", () => {
+    const { meshes, count } = meshesIndex(meshed, base);
+    expect(count).toBe(1);
+    expect(meshes[0]).toMatchObject({
+      url: `${meshed.image_base_url}/${mesh}`,
+      image: `${meshed.image_base_url}/${image.key}`,
+      model: model.slug,
+    });
+  });
+
+  it("links the mesh from its image entry, and only there", () => {
+    const images = imagesIndex(meshed, base).images.filter((i) => "mesh" in i);
+    expect(images).toEqual([
+      expect.objectContaining({
+        url: `${meshed.image_base_url}/${image.key}`,
+        mesh: `${meshed.image_base_url}/${mesh}`,
+      }),
+    ]);
   });
 });

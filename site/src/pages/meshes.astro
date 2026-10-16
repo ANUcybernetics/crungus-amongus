@@ -1,0 +1,100 @@
+---
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { bucketUrl } from "../lib/images";
+import { meshedImages } from "../lib/models";
+import { path } from "../lib/paths";
+
+const meshes = meshedImages(siteData);
+---
+
+<Base
+  title="Meshes — Crungus Amongus"
+  description="Archive crungus images reconstructed as textured 3D meshes with Meshy's image-to-3D model."
+>
+  <section class="hero">
+    <h1>Crungi in the round</h1>
+    <p class="lede">
+      A handful of archive images, chosen by hand, given to <a href="https://www.meshy.ai/">Meshy</a>'s image-to-3D model.
+      It has one picture to go on, so everything the image does not show (the back, the far side, the underside) is Meshy's guess.
+      Each mesh is listed with its source image in <a href={path("/api/meshes.json")}>the JSON API</a>.
+    </p>
+  </section>
+
+  {
+    meshes.length === 0 ? (
+      <p class="muted">No meshes yet.</p>
+    ) : (
+      <ul class="meshes">
+        {meshes.map(({ model, prompt, image }) => (
+          <li>
+            <model-viewer
+              src={bucketUrl(image.mesh)}
+              poster={bucketUrl(image.key)}
+              alt={`3D mesh of a crungus by ${model.owner}/${model.name} for “${prompt.prompt}”`}
+              loading="lazy"
+              camera-controls
+              touch-action="pan-y"
+              shadow-intensity="1"
+            />
+            <p class="mono">
+              <a href={path(`/model/${model.slug}/`)}>{model.owner}/{model.name}</a>
+              <span class="muted">“{prompt.prompt}”</span>
+              <a href={bucketUrl(image.key)}>image</a> · <a href={bucketUrl(image.mesh)} download>glb</a>
+            </p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Base>
+
+<script>
+  import { loadModelViewer } from "../lib/mesh-viewer";
+
+  if (document.querySelector("model-viewer")) void loadModelViewer();
+</script>
+
+<style>
+  .hero {
+    padding-block: 2.5rem 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    font-size: 1.1rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .meshes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
+    gap: 1.5rem;
+  }
+
+  model-viewer {
+    display: block;
+    width: 100%;
+    /* the element's own :host style fixes a 150px height */
+    height: auto;
+    aspect-ratio: 1;
+    background: var(--surface);
+  }
+
+  li p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    margin: 0.5rem 0 0;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+  }
+</style>

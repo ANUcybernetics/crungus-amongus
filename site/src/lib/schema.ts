@@ -7,6 +7,9 @@ export const imageRefSchema = z.object({
   key: z.string(), // "<model-slug>/<prompt-slug>/<index>.avif", relative to imageBaseUrl
   atlas: z.tuple([z.number(), z.number()]).nullable(),
   typicality: z.number().nullable(), // mean cos sim to the release year's images
+  // "meshes/<model-slug>/<prompt-slug>/<index>/<task>-<encoding>.glb", only on
+  // the images Meshy has reconstructed in 3D
+  mesh: z.string().optional(),
 });
 
 // both relative to imageBaseUrl; opus where the browser can play it, m4a otherwise
