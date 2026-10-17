@@ -54,8 +54,9 @@ describe("JSON API", () => {
 });
 
 describe("meshes in the JSON API", () => {
-  // the archive has (almost) no meshes yet, so give one image a mesh
+  // exactly one meshed image, whatever the archive currently holds
   const meshed: SiteData = structuredClone(siteData);
+  for (const m of meshed.models) for (const p of m.prompts) for (const i of p.images) delete i.mesh;
   const model = generatedModels(meshed, "image")[0]!;
   const image = model.prompts.find((p) => p.images.length > 0)!.images[0]!;
   const mesh = `meshes/${image.key.slice(0, -".avif".length)}/task-1-e1.glb`;
