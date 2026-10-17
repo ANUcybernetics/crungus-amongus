@@ -11,6 +11,7 @@ from typing import Any
 
 import httpx
 from loguru import logger
+from pydantic import BaseModel
 
 from .config import REPLICATE_API_BASE
 from .exceptions import (
@@ -30,6 +31,20 @@ INVALID_INPUT_MARKERS = ("input was invalid", "must be between")
 TRANSIENT_MARKERS = ("temporarily unavailable", "try again", "director:")
 
 
+class PredictionMetrics(BaseModel):
+    predict_time: float | None = None
+
+
+class Prediction(BaseModel):
+    """The fields of a Replicate prediction this pipeline reads."""
+
+    id: str
+    status: str
+    output: Any = None  # shape varies by model; see output_normalizer
+    error: object = None  # usually a string, but not promised
+    metrics: PredictionMetrics | None = None
+
+
 class ReplicateClient:
     def __init__(self, client: httpx.AsyncClient) -> None:
         self._client = client
@@ -43,7 +58,7 @@ class ReplicateClient:
         is_official: bool,
         payload: dict[str, Any],
         timeout_s: float,
-    ) -> dict[str, Any]:
+    ) -> Prediction:
         """Create a prediction, wait for a terminal state, and classify failures.
 
         Returns the terminal prediction object on success. Raises
@@ -55,7 +70,7 @@ class ReplicateClient:
                 prediction = await self._create(
                     owner, name, version_id, is_official, payload
                 )
-                prediction_id = prediction.get("id")
+                prediction_id = prediction.id
                 prediction = await self._wait(prediction)
         except TimeoutError:
             if prediction_id:
@@ -70,9 +85,9 @@ class ReplicateClient:
                 await self._cancel(prediction_id)
             raise RetryablePredictionError(f"{type(exc).__name__}: {exc}") from exc
 
-        if prediction["status"] == "succeeded":
+        if prediction.status == "succeeded":
             return prediction
-        error = str(prediction.get("error") or f"status {prediction['status']}")
+        error = str(prediction.error or f"status {prediction.status}")
         lowered = error.lower()
         if any(marker in lowered for marker in NSFW_MARKERS):
             raise NsfwBlockedError(error)
@@ -89,7 +104,7 @@ class ReplicateClient:
         version_id: str,
         is_official: bool,
         payload: dict[str, Any],
-    ) -> dict[str, Any]:
+    ) -> Prediction:
         body = {"input": payload}
         headers = {"Prefer": "wait=60"}
         # official models are routed by Replicate and must use the
@@ -121,11 +136,11 @@ class ReplicateClient:
             )
         return self._checked(response)
 
-    async def _wait(self, prediction: dict[str, Any]) -> dict[str, Any]:
-        while prediction["status"] not in TERMINAL_STATUSES:
+    async def _wait(self, prediction: Prediction) -> Prediction:
+        while prediction.status not in TERMINAL_STATUSES:
             await asyncio.sleep(POLL_INTERVAL_S)
             response = await self._client.get(
-                f"{REPLICATE_API_BASE}/predictions/{prediction['id']}"
+                f"{REPLICATE_API_BASE}/predictions/{prediction.id}"
             )
             prediction = self._checked(response)
         return prediction
@@ -138,7 +153,7 @@ class ReplicateClient:
         except httpx.HTTPError:
             logger.warning("failed to cancel prediction {}", prediction_id)
 
-    def _checked(self, response: httpx.Response) -> dict[str, Any]:
+    def _checked(self, response: httpx.Response) -> Prediction:
         if response.status_code == 429 or response.status_code >= 500:
             raise RetryablePredictionError(
                 f"HTTP {response.status_code}: {response.text[:200]}"
@@ -150,7 +165,7 @@ class ReplicateClient:
             raise PermanentPredictionError(
                 f"HTTP {response.status_code}: {response.text[:200]}"
             )
-        return response.json()
+        return Prediction.model_validate_json(response.content)
 
 
 async def download(client: httpx.AsyncClient, url: str) -> bytes:

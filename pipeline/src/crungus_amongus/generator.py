@@ -194,15 +194,15 @@ async def _run_one(
                     payload=payload,
                     timeout_s=policy.timeout_s,
                 )
-                urls = output_urls(model, prediction.get("output"))
+                urls = output_urls(model, prediction.output)
                 output_bytes = await download(download_http, urls[0])
                 entry.output_path = _save_original(
                     item, output_bytes, urls[0], settings
                 )
                 entry.status = "succeeded"
-                entry.prediction_id = prediction.get("id")
-                metrics = prediction.get("metrics") or {}
-                entry.predict_time_s = metrics.get("predict_time")
+                entry.prediction_id = prediction.id
+                if prediction.metrics:
+                    entry.predict_time_s = prediction.metrics.predict_time
                 break
             except RetryablePredictionError as exc:
                 entry.status = (

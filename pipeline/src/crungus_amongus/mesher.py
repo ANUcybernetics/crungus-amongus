@@ -24,7 +24,7 @@ from typing import Any, Literal
 import httpx
 from loguru import logger
 from PIL import Image, UnidentifiedImageError
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 from .config import Settings
 from .manifest import redact
@@ -74,6 +74,24 @@ class MeshEntry(BaseModel):
     params: dict[str, Any] | None = None  # the request, on `submitted` rows
 
     _redact_error = field_validator("error")(lambda cls, v: redact(v))
+
+
+class TaskError(BaseModel):
+    message: str = ""
+
+
+class ModelUrls(BaseModel):
+    glb: str | None = None
+
+
+class MeshyTask(BaseModel):
+    """The fields of a Meshy image-to-3D task this pipeline reads."""
+
+    status: str
+    progress: int = 0
+    model_urls: ModelUrls = Field(default_factory=ModelUrls)
+    consumed_credits: int | None = None
+    task_error: TaskError | None = None
 
 
 def append_mesh_entry(path: Path, entry: MeshEntry) -> None:
@@ -195,19 +213,19 @@ class MeshyClient:
         response.raise_for_status()
         return response.json()["result"]
 
-    async def wait(self, task_id: str) -> dict[str, Any]:
+    async def wait(self, task_id: str) -> MeshyTask:
         last: tuple[str, int] | None = None
         while True:
             response = await self._http.get(
                 f"{MESHY_API_BASE}/image-to-3d/{task_id}", headers=self._auth
             )
             response.raise_for_status()
-            task = response.json()
-            state = (task["status"], task.get("progress", 0))
+            task = MeshyTask.model_validate_json(response.content)
+            state = (task.status, task.progress)
             if state != last:
                 logger.debug("meshy {}: {} {}%", task_id, *state)
                 last = state
-            if task["status"] in TERMINAL_STATUSES:
+            if task.status in TERMINAL_STATUSES:
                 return task
             await asyncio.sleep(self._poll_interval_s)
 
@@ -284,8 +302,11 @@ async def _run_one(
         return "pending"
 
     completed_at = datetime.now(tz=UTC)
-    if task["status"] != "SUCCEEDED":
-        error = (task.get("task_error") or {}).get("message") or task["status"]
+    if task.status != "SUCCEEDED" or task.model_urls.glb is None:
+        message = task.task_error.message if task.task_error else ""
+        error = message or (
+            "succeeded without a GLB" if task.status == "SUCCEEDED" else task.status
+        )
         append_mesh_entry(
             path,
             MeshEntry(
@@ -294,7 +315,7 @@ async def _run_one(
                 status="failed",
                 created_at=completed_at,
                 completed_at=completed_at,
-                consumed_credits=task.get("consumed_credits"),
+                consumed_credits=task.consumed_credits,
                 error=error,
             ),
         )
@@ -302,7 +323,7 @@ async def _run_one(
         return "failed"
 
     await client.download(
-        task["model_urls"]["glb"], mesh_original(settings, job.stem, task_id)
+        task.model_urls.glb, mesh_original(settings, job.stem, task_id)
     )
     append_mesh_entry(
         path,
@@ -312,10 +333,8 @@ async def _run_one(
             status="succeeded",
             created_at=completed_at,
             completed_at=completed_at,
-            consumed_credits=task.get("consumed_credits"),
+            consumed_credits=task.consumed_credits,
         ),
     )
-    logger.info(
-        "{}: mesh ready ({} credits)", job.stem, task.get("consumed_credits", "?")
-    )
+    logger.info("{}: mesh ready ({} credits)", job.stem, task.consumed_credits)
     return "succeeded"
