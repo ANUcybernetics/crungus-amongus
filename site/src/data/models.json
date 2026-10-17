@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-17T03:26:08.471181Z",
+  "generated_at": "2026-10-17T04:03:59.833811Z",
   "image_base_url": "https://images.crungusamong.us",
   "models": [
     {
@@ -14265,7 +14265,8 @@
             {
               "key": "ai-forever--kandinsky-2/crungus/79.avif",
               "atlas": [0.3828, 0.0516],
-              "typicality": 0.5604
+              "typicality": 0.5604,
+              "mesh": "meshes/ai-forever--kandinsky-2/crungus/79/01a14800-9ccf-77fb-9129-30974825ab62-e1.glb"
             },
             {
               "key": "ai-forever--kandinsky-2/crungus/80.avif",
@@ -16271,7 +16272,8 @@
             {
               "key": "ai-forever--kandinsky-2-2/crungus/5.avif",
               "atlas": [0.3191, 0.0502],
-              "typicality": 0.6061
+              "typicality": 0.6061,
+              "mesh": "meshes/ai-forever--kandinsky-2-2/crungus/5/01a147fd-93fe-7099-9ee4-dd98b46fec90-e1.glb"
             },
             {
               "key": "ai-forever--kandinsky-2-2/crungus/6.avif",
@@ -35135,7 +35137,8 @@
             {
               "key": "black-forest-labs--flux-1-1-pro/crungus/87.avif",
               "atlas": [0.5112, 0.5624],
-              "typicality": 0.6648
+              "typicality": 0.6648,
+              "mesh": "meshes/black-forest-labs--flux-1-1-pro/crungus/87/01a147fc-7fc8-714d-bbee-3e6cbf63b282-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-1-1-pro/crungus/88.avif",
@@ -36868,7 +36871,8 @@
             {
               "key": "nvidia--sana/crungus/12.avif",
               "atlas": [0.4703, 0.48],
-              "typicality": 0.6699
+              "typicality": 0.6699,
+              "mesh": "meshes/nvidia--sana/crungus/12/01a147ff-d2e3-75b7-9c4b-13c6b0a925b7-e1.glb"
             },
             {
               "key": "nvidia--sana/crungus/13.avif",
@@ -42328,7 +42332,8 @@
             {
               "key": "black-forest-labs--flux-dev/crungus/23.avif",
               "atlas": [0.5476, 0.511],
-              "typicality": 0.6286
+              "typicality": 0.6286,
+              "mesh": "meshes/black-forest-labs--flux-dev/crungus/23/01a14804-a61e-7268-b085-2dfcffc08520-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-dev/crungus/24.avif",
@@ -42598,7 +42603,8 @@
             {
               "key": "black-forest-labs--flux-dev/crungus/77.avif",
               "atlas": [0.5331, 0.5487],
-              "typicality": 0.6412
+              "typicality": 0.6412,
+              "mesh": "meshes/black-forest-labs--flux-dev/crungus/77/01a14804-ee95-7735-821a-ebf58032d173-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-dev/crungus/78.avif",
@@ -43432,7 +43438,8 @@
             {
               "key": "black-forest-labs--flux-dev-lora/crungus/33.avif",
               "atlas": [0.5368, 0.5346],
-              "typicality": 0.6725
+              "typicality": 0.6725,
+              "mesh": "meshes/black-forest-labs--flux-dev-lora/crungus/33/01a147fa-dc52-7119-a609-c9b58a491550-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-dev-lora/crungus/34.avif",
@@ -48582,7 +48589,8 @@
             {
               "key": "nvidia--sana-sprint-1-6b/crungus/9.avif",
               "atlas": [0.4836, 0.5161],
-              "typicality": 0.6752
+              "typicality": 0.6752,
+              "mesh": "meshes/nvidia--sana-sprint-1-6b/crungus/9/01a147f9-23db-7075-83ef-da18f3d7ccac-e1.glb"
             },
             {
               "key": "nvidia--sana-sprint-1-6b/crungus/10.avif",
@@ -48592,7 +48600,8 @@
             {
               "key": "nvidia--sana-sprint-1-6b/crungus/11.avif",
               "atlas": [0.4819, 0.5187],
-              "typicality": 0.6711
+              "typicality": 0.6711,
+              "mesh": "meshes/nvidia--sana-sprint-1-6b/crungus/11/01a147fc-1c1f-7089-a8a0-b0201e71ff7d-e1.glb"
             },
             {
               "key": "nvidia--sana-sprint-1-6b/crungus/12.avif",
@@ -49027,7 +49036,8 @@
             {
               "key": "nvidia--sana-sprint-1-6b/crungus/98.avif",
               "atlas": [0.4855, 0.515],
-              "typicality": 0.6648
+              "typicality": 0.6648,
+              "mesh": "meshes/nvidia--sana-sprint-1-6b/crungus/98/01a147f9-23ea-74be-92d2-fb78be0e750c-e1.glb"
             },
             {
               "key": "nvidia--sana-sprint-1-6b/crungus/99.avif",
@@ -67945,7 +67955,8 @@
             {
               "key": "prunaai--flux-fast/crungus/15.avif",
               "atlas": [0.5489, 0.5316],
-              "typicality": 0.652
+              "typicality": 0.652,
+              "mesh": "meshes/prunaai--flux-fast/crungus/15/01a147f9-23e0-7616-a5fc-7815734757a9-e1.glb"
             },
             {
               "key": "prunaai--flux-fast/crungus/16.avif",
@@ -68025,7 +68036,8 @@
             {
               "key": "prunaai--flux-fast/crungus/31.avif",
               "atlas": [0.5521, 0.5444],
-              "typicality": 0.6153
+              "typicality": 0.6153,
+              "mesh": "meshes/prunaai--flux-fast/crungus/31/01a14804-d2f3-72eb-88ec-3bf9e0aae17d-e1.glb"
             },
             {
               "key": "prunaai--flux-fast/crungus/32.avif",
@@ -68250,7 +68262,8 @@
             {
               "key": "prunaai--flux-fast/crungus/76.avif",
               "atlas": [0.5484, 0.5072],
-              "typicality": 0.6442
+              "typicality": 0.6442,
+              "mesh": "meshes/prunaai--flux-fast/crungus/76/01a147fa-98ec-7066-b552-7c65fea1414e-e1.glb"
             },
             {
               "key": "prunaai--flux-fast/crungus/77.avif",
@@ -76622,7 +76635,8 @@
             {
               "key": "black-forest-labs--flux-2-klein-4b/crungus/37.avif",
               "atlas": [0.4786, 0.5314],
-              "typicality": 0.6469
+              "typicality": 0.6469,
+              "mesh": "meshes/black-forest-labs--flux-2-klein-4b/crungus/37/01a147fd-a6a1-7058-91e0-2aa2e229bd4e-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-2-klein-4b/crungus/38.avif",
@@ -79739,7 +79753,8 @@
             {
               "key": "bria--fibo/crungus/28.avif",
               "atlas": [0.522, 0.3759],
-              "typicality": 0.7059
+              "typicality": 0.7059,
+              "mesh": "meshes/bria--fibo/crungus/28/01a14800-6ada-7253-8b31-8a06103a8094-e1.glb"
             },
             {
               "key": "bria--fibo/crungus/29.avif",
@@ -79939,7 +79954,8 @@
             {
               "key": "bria--fibo/crungus/68.avif",
               "atlas": [0.5234, 0.3768],
-              "typicality": 0.673
+              "typicality": 0.673,
+              "mesh": "meshes/bria--fibo/crungus/68/01a14802-75ff-7348-b6cc-a2869e113285-e1.glb"
             },
             {
               "key": "bria--fibo/crungus/69.avif",
@@ -83905,7 +83921,8 @@
             {
               "key": "recraft-ai--recraft-v4/crungus/18.avif",
               "atlas": [0.278, 0.586],
-              "typicality": 0.6669
+              "typicality": 0.6669,
+              "mesh": "meshes/recraft-ai--recraft-v4/crungus/18/01a147f9-23da-71b8-9ff8-d22fa78f6e7c-e1.glb"
             },
             {
               "key": "recraft-ai--recraft-v4/crungus/19.avif",
@@ -84170,7 +84187,8 @@
             {
               "key": "recraft-ai--recraft-v4/crungus/71.avif",
               "atlas": [0.3024, 0.5953],
-              "typicality": 0.6222
+              "typicality": 0.6222,
+              "mesh": "meshes/recraft-ai--recraft-v4/crungus/71/01a147ff-e8dd-74e5-8873-da8ba4da4579-e1.glb"
             },
             {
               "key": "recraft-ai--recraft-v4/crungus/72.avif",
@@ -85349,7 +85367,8 @@
             {
               "key": "recraft-ai--recraft-v4-pro/crungus/96.avif",
               "atlas": [0.3049, 0.5963],
-              "typicality": 0.5705
+              "typicality": 0.5705,
+              "mesh": "meshes/recraft-ai--recraft-v4-pro/crungus/96/01a147fd-4434-70d0-ac6d-415c92b120e8-e1.glb"
             },
             {
               "key": "recraft-ai--recraft-v4-pro/crungus/97.avif",
@@ -89250,7 +89269,8 @@
             {
               "key": "qwen--qwen-image-2/crungus/33.avif",
               "atlas": [0.5698, 0.5015],
-              "typicality": 0.6736
+              "typicality": 0.6736,
+              "mesh": "meshes/qwen--qwen-image-2/crungus/33/01a14803-baf8-757a-8184-1deaef8cddbb-e1.glb"
             },
             {
               "key": "qwen--qwen-image-2/crungus/34.avif",
@@ -97072,7 +97092,8 @@
             {
               "key": "black-forest-labs--flux-2-flex/crungus/68.avif",
               "atlas": [0.1478, 0.4003],
-              "typicality": 0.6648
+              "typicality": 0.6648,
+              "mesh": "meshes/black-forest-labs--flux-2-flex/crungus/68/01a14802-a10a-7298-ba0c-5e24baf74931-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-2-flex/crungus/69.avif",
@@ -97127,7 +97148,8 @@
             {
               "key": "black-forest-labs--flux-2-flex/crungus/79.avif",
               "atlas": [0.1403, 0.3883],
-              "typicality": 0.6547
+              "typicality": 0.6547,
+              "mesh": "meshes/black-forest-labs--flux-2-flex/crungus/79/01a147fe-5b5f-72f9-88f1-5cb854c5f963-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-2-flex/crungus/80.avif",
@@ -99990,7 +100012,8 @@
             {
               "key": "recraft-ai--recraft-v4-1-pro/crungus/19.avif",
               "atlas": [0.2715, 0.5928],
-              "typicality": 0.6175
+              "typicality": 0.6175,
+              "mesh": "meshes/recraft-ai--recraft-v4-1-pro/crungus/19/01a147fe-ea75-765f-b8f6-dd9c3a641c4d-e1.glb"
             },
             {
               "key": "recraft-ai--recraft-v4-1-pro/crungus/20.avif",
@@ -100125,7 +100148,8 @@
             {
               "key": "recraft-ai--recraft-v4-1-pro/crungus/46.avif",
               "atlas": [0.2769, 0.5817],
-              "typicality": 0.6159
+              "typicality": 0.6159,
+              "mesh": "meshes/recraft-ai--recraft-v4-1-pro/crungus/46/01a14802-0284-70a1-8fd7-d6227587708d-e1.glb"
             },
             {
               "key": "recraft-ai--recraft-v4-1-pro/crungus/47.avif",
@@ -127963,7 +127987,8 @@
             {
               "key": "google--imagen-4-fast/crungus/79.avif",
               "atlas": [0.3866, 0.2257],
-              "typicality": 0.6733
+              "typicality": 0.6733,
+              "mesh": "meshes/google--imagen-4-fast/crungus/79/01a14801-4c5c-73a0-a0e1-dc5c7fe41477-e1.glb"
             },
             {
               "key": "google--imagen-4-fast/crungus/80.avif",
