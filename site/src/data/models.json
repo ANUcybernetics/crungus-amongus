@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T21:35:51.021867Z",
+  "generated_at": "2026-10-17T03:26:08.471181Z",
   "image_base_url": "https://images.crungusamong.us",
   "models": [
     {
@@ -38237,7 +38237,8 @@
             {
               "key": "bytedance--sdxl-lightning-4step/crungus/75.avif",
               "atlas": [0.554, 0.5501],
-              "typicality": 0.6313
+              "typicality": 0.6313,
+              "mesh": "meshes/bytedance--sdxl-lightning-4step/crungus/75/01a147de-1a0c-730a-a10e-02911662f923-e1.glb"
             },
             {
               "key": "bytedance--sdxl-lightning-4step/crungus/76.avif",
@@ -75642,7 +75643,8 @@
             {
               "key": "black-forest-labs--flux-2-dev/crungus/79.avif",
               "atlas": [0.5013, 0.5153],
-              "typicality": 0.6642
+              "typicality": 0.6642,
+              "mesh": "meshes/black-forest-labs--flux-2-dev/crungus/79/01a147de-19f4-77b7-8f09-069dd7d8f52b-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-2-dev/crungus/80.avif",
@@ -96110,7 +96112,8 @@
             {
               "key": "black-forest-labs--flux-1-1-pro-ultra/crungus/87.avif",
               "atlas": [0.5062, 0.565],
-              "typicality": 0.6509
+              "typicality": 0.6509,
+              "mesh": "meshes/black-forest-labs--flux-1-1-pro-ultra/crungus/87/01a147de-19f3-741e-8ac3-4e60f533a453-e1.glb"
             },
             {
               "key": "black-forest-labs--flux-1-1-pro-ultra/crungus/88.avif",
@@ -98058,7 +98061,8 @@
             {
               "key": "xai--grok-imagine-image-quality/crungus/55.avif",
               "atlas": [0.7447, 0.2608],
-              "typicality": 0.5863
+              "typicality": 0.5863,
+              "mesh": "meshes/xai--grok-imagine-image-quality/crungus/55/01a147de-19f5-7571-9ffe-3c71faacee58-e1.glb"
             },
             {
               "key": "xai--grok-imagine-image-quality/crungus/56.avif",
@@ -118432,7 +118436,8 @@
             {
               "key": "bytedance--seedream-5-pro/crungus/71.avif",
               "atlas": [0.5134, 0.4424],
-              "typicality": 0.6638
+              "typicality": 0.6638,
+              "mesh": "meshes/bytedance--seedream-5-pro/crungus/71/01a147e0-3a68-7496-942c-73481c65e272-e1.glb"
             },
             {
               "key": "bytedance--seedream-5-pro/crungus/72.avif",

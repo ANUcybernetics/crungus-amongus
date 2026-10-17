@@ -1,4 +1,10 @@
 # Archive images for `crungus mesh` to send to Meshy, in order. Keys as the
 # site and API give them ("<model-slug>/<prompt-slug>/<index>.avif"); Meshy
 # reads a single full-bodied creature on a plain ground best.
-images = []
+images = [
+  "bytedance--sdxl-lightning-4step/crungus/75.avif",
+  "xai--grok-imagine-image-quality/crungus/55.avif",
+  "black-forest-labs--flux-1-1-pro-ultra/crungus/87.avif",
+  "black-forest-labs--flux-2-dev/crungus/79.avif",
+  "bytedance--seedream-5-pro/crungus/71.avif",
+]
