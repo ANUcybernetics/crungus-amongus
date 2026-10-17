@@ -102,6 +102,14 @@ def test_queue_takes_site_keys_and_rejects_unknown_images(tmp_path: Path) -> Non
     with pytest.raises(ValueError, match="nobody/crungus/0"):
         load_queue(settings)
 
+    # an SVG model's original: a .png suffix over SVG text
+    svg = settings.originals_dir / "owner--model-svg/crungus/0.png"
+    svg.parent.mkdir(parents=True)
+    svg.write_text('<svg xmlns="http://www.w3.org/2000/svg"/>')
+    settings.mesh_queue_path.write_text('images = ["owner--model-svg/crungus/0"]\n')
+    with pytest.raises(ValueError, match="no PNG, JPEG or WebP"):
+        load_queue(settings)
+
 
 def test_a_mesh_is_submitted_collected_and_recorded(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)

@@ -23,6 +23,7 @@ from typing import Any, Literal
 
 import httpx
 from loguru import logger
+from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel, field_validator
 
 from .config import Settings
@@ -50,7 +51,9 @@ TASK_PARAMS: dict[str, Any] = {
 ASSUMED_CREDITS = 30
 # Meshy's limit on the image itself (before base64)
 MAX_IMAGE_BYTES = 20 * 1024 * 1024
-IMAGE_MIME = {".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp"}
+ORIGINAL_SUFFIXES = (".png", ".jpg", ".webp")
+# by content: the SVG models' originals carry a .png suffix over SVG text
+IMAGE_MIME = {"PNG": "image/png", "JPEG": "image/jpeg", "WEBP": "image/webp"}
 
 POLL_INTERVAL_S = 5.0
 TERMINAL_STATUSES = {"SUCCEEDED", "FAILED", "CANCELED"}
@@ -111,11 +114,24 @@ def load_queue(settings: Settings) -> list[str]:
     missing = [s for s in stems if find_original(settings, s) is None]
     if missing:
         raise ValueError(f"{path.name}: no original image for {missing}")
+    unreadable = [s for s in stems if image_mime(find_original(settings, s)) is None]
+    if unreadable:
+        raise ValueError(f"{path.name}: no PNG, JPEG or WebP original for {unreadable}")
     return stems
 
 
+def image_mime(path: Path | None) -> str | None:
+    if path is None:
+        return None
+    try:
+        with Image.open(path) as image:
+            return IMAGE_MIME.get(image.format or "")
+    except UnidentifiedImageError:
+        return None
+
+
 def find_original(settings: Settings, stem: str) -> Path | None:
-    for suffix in IMAGE_MIME:
+    for suffix in ORIGINAL_SUFFIXES:
         path = settings.originals_dir / f"{stem}{suffix}"
         if path.exists():
             return path
@@ -153,7 +169,7 @@ def task_payload(original: Path) -> dict[str, Any]:
         raise ValueError(f"{original} is over Meshy's 20 MB limit")
     encoded = base64.b64encode(data).decode()
     return {
-        "image_url": f"data:{IMAGE_MIME[original.suffix]};base64,{encoded}",
+        "image_url": f"data:{image_mime(original)};base64,{encoded}",
         **TASK_PARAMS,
     }
 
