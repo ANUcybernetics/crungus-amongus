@@ -1,12 +1,17 @@
 // Pure pieces of the mosaic wall (pages/mosaic.astro): the tile payload the
-// page fetches, the grid shape for a given stage, and the shuffle bag that
-// orders images, tiles and clips.
+// page fetches and the shuffle bag that orders images, tiles and clips. The
+// grid's shape is the stylesheet's job.
 import { generatedModels } from "./models";
 import type { SiteData } from "./schema";
 
+export interface MosaicImage {
+  srcset: string; // the built thumbnails, for a grid tile
+  full: string; // the bucket original, for single mode
+}
+
 export interface MosaicPrompt {
   prompt: string;
-  thumbs: string[]; // site-relative URLs of the built thumbnails
+  images: MosaicImage[];
 }
 
 export interface MosaicModel {
@@ -21,14 +26,13 @@ export interface MosaicData {
   models: MosaicModel[];
 }
 
-export interface Tile {
-  src: string;
+export interface Tile extends MosaicImage {
   model: MosaicModel;
   prompt: string;
 }
 
-/** Group every synced image's thumbnail under its model and prompt. */
-export function mosaicData(data: SiteData, thumb: (key: string) => string | null): MosaicData {
+/** Group every synced image under its model and prompt. */
+export function mosaicData(data: SiteData, image: (key: string) => MosaicImage | null): MosaicData {
   const models = generatedModels(data, "image")
     .map((m) => ({
       slug: m.slug,
@@ -37,9 +41,9 @@ export function mosaicData(data: SiteData, thumb: (key: string) => string | null
       prompts: m.prompts
         .map((p) => ({
           prompt: p.prompt,
-          thumbs: p.images.map((i) => thumb(i.key)).filter((url): url is string => url !== null),
+          images: p.images.map((i) => image(i.key)).filter((i): i is MosaicImage => i !== null),
         }))
-        .filter((p) => p.thumbs.length > 0),
+        .filter((p) => p.images.length > 0),
     }))
     .filter((m) => m.prompts.length > 0);
   return { models };
@@ -49,20 +53,8 @@ export function mosaicData(data: SiteData, thumb: (key: string) => string | null
 export function tilesFor(data: MosaicData, slug?: string): Tile[] {
   const chosen = data.models.filter((m) => m.slug === slug);
   return (chosen.length > 0 ? chosen : data.models).flatMap((model) =>
-    model.prompts.flatMap((p) => p.thumbs.map((src) => ({ src, model, prompt: p.prompt }))),
+    model.prompts.flatMap((p) => p.images.map((image) => ({ ...image, model, prompt: p.prompt }))),
   );
-}
-
-const MAX_COLS = 16;
-const MIN_COLS = 3;
-const MIN_TILE_PX = 100;
-
-/** Rows and columns of near-square tiles that fill a stage: 16 × 9 on any
- * 16:9 panel from HD up, fewer and larger tiles as the stage narrows. */
-export function gridShape(width: number, height: number): { cols: number; rows: number } {
-  const cols = Math.min(MAX_COLS, Math.max(MIN_COLS, Math.floor(width / MIN_TILE_PX)));
-  const rows = Math.max(1, Math.round(height / (width / cols)));
-  return { cols, rows };
 }
 
 /** Endless draws from `items` in shuffled order: every item once before any repeats. */

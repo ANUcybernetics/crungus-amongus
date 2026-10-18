@@ -2,9 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import { siteData } from "../src/lib/data";
 import { generatedModels, imageCount } from "../src/lib/models";
-import { gridShape, mosaicData, shuffleBag, tilesFor } from "../src/lib/mosaic";
+import { mosaicData, shuffleBag, tilesFor } from "../src/lib/mosaic";
 
-const data = mosaicData(siteData, (key) => `/thumb/${key}`);
+const data = mosaicData(siteData, (key) => ({
+  srcset: `/thumb/${key} 240w`,
+  full: `/full/${key}`,
+}));
 
 describe("mosaic tiles", () => {
   it("offers every image in the archive, labelled with its model and prompt", () => {
@@ -12,7 +15,8 @@ describe("mosaic tiles", () => {
     const tiles = tilesFor(data);
     expect(tiles.length).toBe(models.reduce((n, m) => n + imageCount(m), 0));
     for (const tile of tiles) {
-      expect(tile.src.startsWith(`/thumb/${tile.model.slug}/`)).toBe(true);
+      expect(tile.srcset.startsWith(`/thumb/${tile.model.slug}/`)).toBe(true);
+      expect(tile.full.startsWith(`/full/${tile.model.slug}/`)).toBe(true);
       expect(tile.prompt).not.toBe("");
     }
   });
@@ -27,20 +31,10 @@ describe("mosaic tiles", () => {
 
   it("leaves out images that are not synced, and models left with none", () => {
     const first = data.models[0]!.slug;
-    const partial = mosaicData(siteData, (key) => (key.startsWith(`${first}/`) ? null : key));
+    const partial = mosaicData(siteData, (key) =>
+      key.startsWith(`${first}/`) ? null : { srcset: key, full: key },
+    );
     expect(partial.models.map((m) => m.slug)).toEqual(data.models.slice(1).map((m) => m.slug));
-  });
-});
-
-describe("mosaic grid", () => {
-  it("is 16 × 9 on a 16:9 panel from HD up", () => {
-    expect(gridShape(1920, 1080)).toEqual({ cols: 16, rows: 9 });
-    expect(gridShape(3840, 2160)).toEqual({ cols: 16, rows: 9 });
-  });
-
-  it("uses fewer, larger tiles on a narrow stage", () => {
-    expect(gridShape(390, 520)).toEqual({ cols: 3, rows: 4 });
-    expect(gridShape(1152, 648)).toEqual({ cols: 11, rows: 6 });
   });
 });
 

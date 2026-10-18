@@ -9,14 +9,15 @@ const models = generatedModels(siteData, "image");
 
 <Base
   title="Mosaic — Crungus Amongus"
-  description="A wall of crungus images from across the archive, one tile changing every second, with crungus radio playing over it on request."
+  description="A wall of crungus images from across the archive, or one at a time, with crungus radio playing over it on request."
 >
   <section class="intro">
     <h1>Crungus mosaic</h1>
     <p class="lede">
       A wall of images drawn at random from the <a href={path()}>archive</a>, or from a single model,
-      with one tile replaced every second. Turn on the radio to hear every clip in the
-      <a href={path("/sound/")}>sound archive</a>, shuffled and played end to end.
+      with one tile replaced every second, or one image at a time in single mode. Turn on the radio
+      to hear every clip in the <a href={path("/sound/")}>sound archive</a>, shuffled and played end
+      to end.
     </p>
   </section>
 
@@ -37,6 +38,7 @@ const models = generatedModels(siteData, "image");
           <option value="">all models</option>
           {models.map((m) => <option value={m.slug}>{m.owner}/{m.name}</option>)}
         </select>
+        <button id="single" type="button" aria-pressed="false">single</button>
         <button id="radio" type="button" aria-pressed="false">radio</button>
         <button id="skip" type="button" hidden>next</button>
         <button id="full" type="button" hidden>fullscreen</button>
@@ -50,24 +52,29 @@ const models = generatedModels(siteData, "image");
     </p>
   </noscript>
   <p class="mono muted keys">
-    f fullscreen · r radio · n next clip · add <code>?model=…</code>, <code>?radio</code> or
-    <code>?kiosk</code> (fill the window) to the address
+    f fullscreen · s single/grid · + − tile size · r radio · n next clip · add
+    <code>?model=…</code>, <code>?single</code>, <code>?tile=…</code> (pixels), <code>?radio</code>
+    or <code>?kiosk</code> (fill the window) to the address
   </p>
 </Base>
 
 <script>
-  import { gridShape, shuffleBag, tilesFor } from "../lib/mosaic";
+  import { shuffleBag, tilesFor } from "../lib/mosaic";
   import type { MosaicData, Tile } from "../lib/mosaic";
   import type { ApiClip } from "../lib/api";
 
   const SWAP_MS = 1000;
+  const SINGLE_MS = 7000;
   const FADE_MS = 600;
   const IDLE_MS = 2500;
+  const TILE_STEP = 1.25;
+  const MIN_TILE_PX = 60;
 
   async function hang(stage: HTMLElement): Promise<void> {
     const wall = document.getElementById("wall")!;
     const bar = stage.querySelector<HTMLElement>(".bar")!;
     const picker = document.getElementById("model") as HTMLSelectElement;
+    const singleButton = document.getElementById("single") as HTMLButtonElement;
     const radio = document.getElementById("radio") as HTMLButtonElement;
     const skip = document.getElementById("skip") as HTMLButtonElement;
     const full = document.getElementById("full") as HTMLButtonElement;
@@ -86,16 +93,38 @@ const models = generatedModels(siteData, "image");
     picker.value = params.get("model") ?? "";
     let nextTile = shuffleBag(tilesFor(data, picker.value));
     let nextSlot: (() => HTMLAnchorElement) | undefined;
+    let single = params.has("single");
+    const tileParam = Number(params.get("tile"));
+    let tilePx = tileParam >= MIN_TILE_PX ? tileParam : undefined;
 
     // the incoming image decodes off-screen, then fades in over the old one
     async function show(slot: HTMLAnchorElement, tile: Tile): Promise<void> {
+      const wasSingle = single;
       const image = new Image();
       image.alt = "";
-      image.src = tile.src;
+      if (single) image.src = tile.full;
+      else {
+        // the browser picks the thumbnail that suits the tile and the display's density
+        image.sizes = `${slot.clientWidth}px`;
+        image.srcset = tile.srcset;
+      }
       try {
         await image.decode();
       } catch {
         return; // a missing image just holds the current one
+      }
+      // the mode changed while it was loading, and the slot with it
+      if (single !== wasSingle || !slot.isConnected) return;
+      const frame = document.createElement("span");
+      frame.className = "frame";
+      if (single) {
+        // the same image, blurred, fills whatever the letterbox leaves
+        const backdrop = new Image();
+        backdrop.alt = "";
+        backdrop.className = "backdrop";
+        backdrop.sizes = "240px";
+        backdrop.srcset = tile.srcset;
+        frame.append(backdrop);
       }
       const caption = document.createElement("span");
       caption.className = "caption mono";
@@ -105,20 +134,23 @@ const models = generatedModels(siteData, "image");
       prompt.textContent = tile.prompt;
       caption.append(name, prompt);
 
+      frame.append(image, caption);
       slot.href = `${modelBase}${tile.model.slug}/`;
-      slot.querySelector(".caption")?.remove();
-      slot.append(image, caption);
-      await image.animate([{ opacity: 0 }, { opacity: 1 }], {
+      slot.append(frame);
+      await frame.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: still.matches ? 0 : FADE_MS,
       }).finished;
-      while (image.previousElementSibling) image.previousElementSibling.remove();
+      while (frame.previousElementSibling) frame.previousElementSibling.remove();
     }
 
+    // the stylesheet chooses the grid; this fills however many cells it made.
+    // Surplus tiles spill into implicit rows, which the resolved value lists
+    // too, so those rows are zero-height and left out of the count
     function layOut(): void {
-      const { cols, rows } = gridShape(wall.clientWidth, wall.clientHeight);
+      const style = getComputedStyle(wall);
+      const cols = style.gridTemplateColumns.split(" ").length;
+      const rows = style.gridTemplateRows.split(" ").filter((track) => track !== "0px").length;
       const count = cols * rows;
-      wall.style.setProperty("--cols", String(cols));
-      wall.style.setProperty("--rows", String(rows));
       if (count === wall.childElementCount) return;
       while (wall.childElementCount > count) wall.lastElementChild!.remove();
       while (wall.childElementCount < count) {
@@ -130,10 +162,42 @@ const models = generatedModels(siteData, "image");
       nextSlot = shuffleBag([...wall.children] as HTMLAnchorElement[]);
     }
 
-    new ResizeObserver(layOut).observe(wall);
-    window.setInterval(() => {
+    let swapTimer: number | undefined;
+    function swap(): void {
       if (!document.hidden && nextSlot) void show(nextSlot(), nextTile());
-    }, SWAP_MS);
+      swapTimer = window.setTimeout(swap, single ? SINGLE_MS : SWAP_MS);
+    }
+
+    function setSingle(on: boolean): void {
+      single = on;
+      wall.classList.toggle("single", on);
+      singleButton.setAttribute("aria-pressed", String(on));
+      wall.replaceChildren();
+      layOut();
+      window.clearTimeout(swapTimer);
+      swapTimer = window.setTimeout(swap, single ? SINGLE_MS : SWAP_MS);
+    }
+
+    function setTile(px: number | undefined): void {
+      tilePx = px;
+      if (px) wall.style.setProperty("--tile", `${px}px`);
+      else wall.style.removeProperty("--tile");
+      layOut();
+    }
+
+    // bigger or smaller by a step from the tiles as they are, never past one
+    // tile filling the stage's short side
+    function stepTile(factor: number): void {
+      if (single) return;
+      const current = tilePx ?? (wall.firstElementChild as HTMLElement).clientWidth;
+      const limit = Math.min(wall.clientWidth, wall.clientHeight);
+      setTile(Math.round(Math.min(limit, Math.max(MIN_TILE_PX, current * factor))));
+      writeAddress();
+    }
+
+    setTile(tilePx);
+    setSingle(single);
+    new ResizeObserver(layOut).observe(wall);
 
     // --- the address carries the setup, so a display can be pointed straight at it
     let onAir = false;
@@ -141,6 +205,10 @@ const models = generatedModels(siteData, "image");
       const url = new URL(location.href);
       if (picker.value) url.searchParams.set("model", picker.value);
       else url.searchParams.delete("model");
+      if (single) url.searchParams.set("single", "");
+      else url.searchParams.delete("single");
+      if (tilePx) url.searchParams.set("tile", String(tilePx));
+      else url.searchParams.delete("tile");
       if (onAir) url.searchParams.set("radio", "");
       else url.searchParams.delete("radio");
       history.replaceState(null, "", url);
@@ -243,6 +311,11 @@ const models = generatedModels(siteData, "image");
       else setOnAir(false);
     });
 
+    function toggleSingle(): void {
+      setSingle(!single);
+      writeAddress();
+    }
+    singleButton.addEventListener("click", toggleSingle);
     radio.addEventListener("click", toggleRadio);
     skip.addEventListener("click", skipClip);
     if ("mediaSession" in navigator) {
@@ -263,6 +336,9 @@ const models = generatedModels(siteData, "image");
       if (event.key === "f") toggleFullscreen();
       else if (event.key === "r") toggleRadio();
       else if (event.key === "n") skipClip();
+      else if (event.key === "s") toggleSingle();
+      else if (event.key === "+" || event.key === "=") stepTile(TILE_STEP);
+      else if (event.key === "-") stepTile(1 / TILE_STEP);
     });
 
     // the bar fades once the pointer has been still for a while
@@ -306,6 +382,7 @@ const models = generatedModels(siteData, "image");
     border: 1px solid var(--line);
     overflow: hidden;
     outline: none;
+    container-type: size;
   }
 
   @media (orientation: portrait) {
@@ -331,12 +408,22 @@ const models = generatedModels(siteData, "image");
     cursor: none;
   }
 
+  /* as many tiles of about --tile as fit each way, stretched to fill the stage:
+   * 200px by default, but never more than nine or fewer than two across its
+   * short side, so a 4K panel at 1x gets 16 × 9 and a phone gets 2 × 4 */
   .wall {
+    --track: minmax(var(--tile, clamp(100cqmin / 9, 200px, 100cqmin / 2)), 1fr);
+
     position: absolute;
     inset: 0;
     display: grid;
-    grid-template-columns: repeat(var(--cols, 16), 1fr);
-    grid-template-rows: repeat(var(--rows, 9), 1fr);
+    grid-template-columns: repeat(auto-fill, var(--track));
+    grid-template-rows: repeat(auto-fill, var(--track));
+    grid-auto-rows: 0;
+  }
+
+  .wall.single {
+    grid-template: 1fr / 1fr;
   }
 
   /* tiles are built by the script, so they carry no scope attribute */
@@ -351,12 +438,21 @@ const models = generatedModels(siteData, "image");
     text-decoration: none;
   }
 
-  .wall :global(.tile img) {
+  .wall :global(:is(.frame, .tile img)) {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .wall.single :global(.frame img:not(.backdrop)) {
+    object-fit: contain;
+  }
+
+  .wall :global(.backdrop) {
+    filter: blur(2rem) brightness(0.5);
+    scale: 1.15;
   }
 
   .wall :global(.caption) {
@@ -367,6 +463,14 @@ const models = generatedModels(siteData, "image");
     font-size: clamp(0.4rem, 6cqw, 0.9rem);
     line-height: 1.25;
     background: linear-gradient(transparent, rgb(0 0 0 / 70%));
+  }
+
+  /* at the top, clear of the control bar */
+  .wall.single :global(.caption) {
+    inset-block: 0 auto;
+    padding: 1.5rem 2rem 4rem;
+    font-size: clamp(0.9rem, 1.5cqw, 2rem);
+    background: linear-gradient(rgb(0 0 0 / 70%), transparent);
   }
 
   .wall :global(.caption span) {
