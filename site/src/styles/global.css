@@ -96,3 +96,53 @@ img {
 .muted {
   color: var(--muted);
 }
+
+/* a permalink's share button reads as a link, in the utility voice */
+.share {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent-bright);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.share:hover {
+  color: var(--text);
+}
+
+/* set by lib/share.ts after copying a link; at the top, clear of the
+   lightbox's and the display's controls */
+.toast {
+  position: fixed;
+  inset-block-start: 1.5rem;
+  inset-inline-start: 50%;
+  z-index: 10;
+  margin: 0;
+  padding: 0.45rem 0.9rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--accent);
+  color: var(--text);
+  opacity: 0;
+  translate: -50% -0.5rem;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    translate 0.2s ease;
+}
+
+.toast.shown {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none;
+  }
+}

@@ -4,6 +4,7 @@ import { siteData } from "../lib/data";
 import { bucketUrl } from "../lib/images";
 import { meshedImages } from "../lib/models";
 import { path } from "../lib/paths";
+import { itemNumber, itemPath } from "../lib/permalink";
 
 const meshes = meshedImages(siteData);
 ---
@@ -40,7 +41,15 @@ const meshes = meshedImages(siteData);
             <p class="mono">
               <a href={path(`/model/${model.slug}/`)}>{model.owner}/{model.name}</a>
               <span class="muted">“{prompt.prompt}”</span>
-              <a href={bucketUrl(image.key)}>image</a> · <a href={bucketUrl(image.mesh)} download>glb</a>
+              <a href={bucketUrl(image.key)}>image</a> · <a href={bucketUrl(image.mesh)} download>glb</a> ·{" "}
+              <button
+                type="button"
+                class="share"
+                data-share={itemPath(image.key)}
+                data-title={`“${prompt.prompt}” #${itemNumber(image.key)} by ${model.owner}/${model.name}, in 3D — Crungus Amongus`}
+              >
+                share
+              </button>
             </p>
           </li>
         ))}
@@ -51,6 +60,9 @@ const meshes = meshedImages(siteData);
 
 <script>
   import { loadModelViewer } from "../lib/mesh-viewer";
+  import { bindShareButtons } from "../lib/share";
+
+  bindShareButtons();
 
   if (document.querySelector("model-viewer")) void loadModelViewer();
 </script>
