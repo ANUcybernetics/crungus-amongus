@@ -7,6 +7,7 @@ import type { SiteData } from "./schema";
 export interface MosaicImage {
   srcset: string; // the built thumbnails, for a grid tile
   full: string; // the bucket original, for single mode
+  page: string; // the image's permalink, which a tile links to
 }
 
 export interface MosaicPrompt {

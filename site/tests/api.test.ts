@@ -27,6 +27,11 @@ describe("JSON API", () => {
     for (const clip of clips) {
       expect(clip.opus.startsWith(`${siteData.image_base_url}/${clip.model}/`)).toBe(true);
     }
+    for (const item of [...images, ...clips]) {
+      expect(item.page).toMatch(
+        new RegExp(`^https://example\\.test/model/${item.model}/#.+-\\d+$`),
+      );
+    }
   });
 
   it("the per-model files partition the full lists", () => {
@@ -68,6 +73,8 @@ describe("meshes in the JSON API", () => {
     expect(meshes[0]).toMatchObject({
       url: `${meshed.image_base_url}/${mesh}`,
       image: `${meshed.image_base_url}/${image.key}`,
+      // the image's own permalink, whose lightbox shows the mesh
+      page: imagesIndex(meshed, base).images.find((i) => "mesh" in i)!.page,
       model: model.slug,
     });
   });

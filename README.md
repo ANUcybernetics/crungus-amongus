@@ -59,8 +59,9 @@ Checks:
 
 The build also emits a static JSON API (shapes in `src/lib/api.ts`):
 `/api/models.json`, `/api/images.json`, `/api/audio.json`, `/api/meshes.json`
-and `/api/models/<slug>.json`. Entries link to the media in the bucket; they never
-embed it.
+and `/api/models/<slug>.json`. Entries link to the media in the bucket (they never
+embed it) and to the item's permalink, an anchor on its model page
+(`src/lib/permalink.ts`).
 
 Deploys to GitHub Pages on push to `main`; CI pulls images from the bucket (no
 credentials needed — it's public-read) and caches them keyed on the data

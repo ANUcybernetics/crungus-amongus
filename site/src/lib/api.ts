@@ -2,10 +2,12 @@
 // contract, keyed relative to the bucket) these are for outside consumers, so
 // every URL is absolute and each item carries its model and prompt.
 import { clipCount, generatedModels, imageCount, meshedImages } from "./models";
+import { itemRoute } from "./permalink";
 import type { ModelEntry, SiteData } from "./schema";
 
 export interface ApiImage {
   url: string;
+  page: string; // its permalink on the site
   model: string;
   prompt: string;
   mesh?: string; // GLB, only for the images Meshy has reconstructed
@@ -14,6 +16,7 @@ export interface ApiImage {
 export interface ApiMesh {
   url: string; // GLB: meshopt geometry, WebP textures
   image: string; // the archive image it was reconstructed from
+  page: string; // the image's permalink, which opens the mesh
   model: string;
   prompt: string;
 }
@@ -21,6 +24,7 @@ export interface ApiMesh {
 export interface ApiClip {
   opus: string;
   m4a: string;
+  page: string;
   model: string;
   prompt: string;
 }
@@ -39,10 +43,15 @@ export function apiBase(data: SiteData, site: URL | undefined, basePath: string)
   };
 }
 
+function itemPage(key: string, base: ApiBase): string {
+  return new URL(itemRoute(key), base.site).href;
+}
+
 export function modelImages(model: ModelEntry, base: ApiBase): ApiImage[] {
   return model.prompts.flatMap((p) =>
     p.images.map((i) => ({
       url: `${base.media}/${i.key}`,
+      page: itemPage(i.key, base),
       model: model.slug,
       prompt: p.prompt,
       ...(i.mesh !== undefined && { mesh: `${base.media}/${i.mesh}` }),
@@ -55,6 +64,7 @@ export function modelClips(model: ModelEntry, base: ApiBase): ApiClip[] {
     p.clips.map((c) => ({
       opus: `${base.media}/${c.opus}`,
       m4a: `${base.media}/${c.m4a}`,
+      page: itemPage(c.opus, base),
       model: model.slug,
       prompt: p.prompt,
     })),
@@ -110,6 +120,7 @@ export function meshesIndex(data: SiteData, base: ApiBase) {
   const meshes: ApiMesh[] = meshedImages(data).map(({ model, prompt, image }) => ({
     url: `${base.media}/${image.mesh}`,
     image: `${base.media}/${image.key}`,
+    page: itemPage(image.key, base),
     model: model.slug,
     prompt: prompt.prompt,
   }));

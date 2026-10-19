@@ -7,6 +7,7 @@ import { mosaicData, shuffleBag, tilesFor } from "../src/lib/mosaic";
 const data = mosaicData(siteData, (key) => ({
   srcset: `/thumb/${key} 240w`,
   full: `/full/${key}`,
+  page: `/page/${key}`,
 }));
 
 describe("mosaic tiles", () => {
@@ -32,7 +33,7 @@ describe("mosaic tiles", () => {
   it("leaves out images that are not synced, and models left with none", () => {
     const first = data.models[0]!.slug;
     const partial = mosaicData(siteData, (key) =>
-      key.startsWith(`${first}/`) ? null : { srcset: key, full: key },
+      key.startsWith(`${first}/`) ? null : { srcset: key, full: key, page: key },
     );
     expect(partial.models.map((m) => m.slug)).toEqual(data.models.slice(1).map((m) => m.slug));
   });

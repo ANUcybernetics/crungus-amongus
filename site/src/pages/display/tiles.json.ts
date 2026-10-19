@@ -5,6 +5,7 @@ import { siteData } from "../../lib/data";
 import { bucketUrl, localImage } from "../../lib/images";
 import { generatedModels } from "../../lib/models";
 import { mosaicData } from "../../lib/mosaic";
+import { itemPath } from "../../lib/permalink";
 import type { MosaicImage } from "../../lib/mosaic";
 
 // the same transform the model pages ask for, so the wall reuses their
@@ -15,7 +16,7 @@ async function mosaicImage(key: string): Promise<MosaicImage | null> {
   const src = localImage(key);
   if (!src) return null;
   const image = await getImage({ src, format: "avif", widths: WIDTHS });
-  return { srcset: image.srcSet.attribute, full: bucketUrl(key) };
+  return { srcset: image.srcSet.attribute, full: bucketUrl(key), page: itemPath(key) };
 }
 
 export const GET: APIRoute = async () => {
