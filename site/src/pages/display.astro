@@ -59,6 +59,7 @@ const models = generatedModels(siteData, "image");
       </p>
       <p class="mono"><a href={path("/about/")}>about the project</a></p>
     </div>
+    <div class="progress" id="progress" aria-hidden="true" hidden><span></span></div>
     <audio class="player" preload="none"></audio>
     <audio class="player" preload="none"></audio>
   </div>
@@ -87,6 +88,7 @@ const models = generatedModels(siteData, "image");
     const full = document.getElementById("full") as HTMLButtonElement;
     const players = [...stage.querySelectorAll<HTMLAudioElement>(".player")];
     const nowPlaying = document.getElementById("now-playing")!;
+    const progress = document.getElementById("progress")!;
     const { tiles: tilesUrl, audio: audioUrl, models: modelsUrl, modelBase } = stage.dataset;
 
     const params = new URLSearchParams(location.search);
@@ -141,7 +143,7 @@ const models = generatedModels(siteData, "image");
       caption.append(name, prompt);
 
       frame.append(image, caption);
-      slot.href = `${modelBase}${tile.model.slug}/`;
+      slot.href = tile.page;
       slot.append(frame);
       await frame.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: still.matches ? 0 : FADE_MS,
@@ -263,8 +265,20 @@ const models = generatedModels(siteData, "image");
       }
     }
 
+    // a line along the foot of the stage, outlasting the bar when it fades,
+    // shows how far through the current clip the radio is
+    function trackProgress(): void {
+      progress.hidden = !onAir;
+      if (!onAir) return;
+      const done = player.duration > 0 ? player.currentTime / player.duration : 0;
+      progress.style.setProperty("--done", String(done));
+      requestAnimationFrame(trackProgress);
+    }
+
     function setOnAir(on: boolean): void {
+      const starting = on && !onAir;
       onAir = on;
+      if (starting) requestAnimationFrame(trackProgress);
       radio.setAttribute("aria-pressed", String(on));
       skip.hidden = !on;
       if (!on) nowPlaying.textContent = "";
@@ -283,10 +297,15 @@ const models = generatedModels(siteData, "image");
         if (error instanceof DOMException && error.name === "NotAllowedError") awaitGesture();
       });
       nowPlaying.replaceChildren("now playing · ");
+      const model = document.createElement("a");
+      model.href = `${modelBase}${clip.model}/`;
+      model.textContent = label;
+      // the clip's own permalink, kept on this host so it works off the live site too
+      const page = new URL(clip.page);
       const link = document.createElement("a");
-      link.href = `${modelBase}${clip.model}/`;
-      link.textContent = label;
-      nowPlaying.append(link, ` · “${clip.prompt}”`);
+      link.href = page.pathname + page.hash;
+      link.textContent = `“${clip.prompt}” #${page.hash.split("-").at(-1)}`;
+      nowPlaying.append(model, " · ", link);
       if ("mediaSession" in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: `“${clip.prompt}”`,
@@ -517,6 +536,26 @@ const models = generatedModels(siteData, "image");
     padding: 2.5rem 1rem 0.9rem;
     background: linear-gradient(transparent, rgb(0 0 0 / 85%));
     transition: opacity 0.4s ease;
+  }
+
+  .progress {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: 3px;
+    background: rgb(255 255 255 / 12%);
+  }
+
+  .progress[hidden] {
+    display: none;
+  }
+
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(var(--done, 0));
+    transform-origin: left;
   }
 
   .stage.idle .bar:not(:focus-within) {
