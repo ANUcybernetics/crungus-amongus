@@ -98,7 +98,7 @@ const section =
           <nav aria-label="Site">
             {nav.map((item) => (
               <a
-                class:list={["mono", { display: item.section === "display" }]}
+                class="mono"
                 href={item.href}
                 aria-current={item.section === section ? (here(item.href) ? "page" : "true") : undefined}
               >
@@ -176,11 +176,6 @@ const section =
 
   nav a[aria-current] {
     color: var(--text);
-  }
-
-  /* a mode for a screen, not another part of the archive */
-  nav a.display {
-    color: var(--accent);
   }
 
   .views {
