@@ -42,7 +42,7 @@ const nav: { href: string; label: string; section: Section }[] = [
   ...(meshedImages(siteData).length > 0
     ? [{ href: path("/meshes/"), label: "meshes", section: "meshes" as const }]
     : []),
-  { href: path("/mosaic/"), label: "display", section: "display" },
+  { href: path("/display/"), label: "display", section: "display" },
   { href: path("/about/"), label: "about", section: "about" },
 ];
 const section =

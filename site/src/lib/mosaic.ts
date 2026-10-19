@@ -1,4 +1,4 @@
-// Pure pieces of the mosaic wall (pages/mosaic.astro): the tile payload the
+// Pure pieces of the mosaic wall (pages/display.astro): the tile payload the
 // page fetches and the shuffle bag that orders images, tiles and clips. The
 // grid's shape is the stylesheet's job.
 import { generatedModels } from "./models";
@@ -21,7 +21,7 @@ export interface MosaicModel {
   prompts: MosaicPrompt[];
 }
 
-/** /mosaic/tiles.json: every image model with the thumbnails it can show. */
+/** /display/tiles.json: every image model with the thumbnails it can show. */
 export interface MosaicData {
   models: MosaicModel[];
 }

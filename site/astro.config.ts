@@ -6,7 +6,7 @@ export default defineConfig({
   compressHTML: true,
   site: "https://crungusamong.us",
   output: "static",
-  redirects: { "/radio": "/mosaic/?radio" },
+  redirects: { "/radio": "/display/?radio" },
   image: {
     service: {
       entrypoint: "astro/assets/services/sharp",
