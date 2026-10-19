@@ -59,7 +59,8 @@ const models = generatedModels(siteData, "image");
       </p>
       <p class="mono"><a href={path("/about/")}>about the project</a></p>
     </div>
-    <audio id="player" preload="none"></audio>
+    <audio class="player" preload="none"></audio>
+    <audio class="player" preload="none"></audio>
   </div>
 </Base>
 
@@ -71,6 +72,7 @@ const models = generatedModels(siteData, "image");
   const SWAP_MS = 1000;
   const SINGLE_MS = 7000;
   const FADE_MS = 600;
+  const CROSSFADE_MS = 1000;
   const IDLE_MS = 2500;
   const TILE_STEP = 1.25;
   const MIN_TILE_PX = 60;
@@ -83,7 +85,7 @@ const models = generatedModels(siteData, "image");
     const radio = document.getElementById("radio") as HTMLButtonElement;
     const skip = document.getElementById("skip") as HTMLButtonElement;
     const full = document.getElementById("full") as HTMLButtonElement;
-    const player = document.getElementById("player") as HTMLAudioElement;
+    const players = [...stage.querySelectorAll<HTMLAudioElement>(".player")];
     const nowPlaying = document.getElementById("now-playing")!;
     const { tiles: tilesUrl, audio: audioUrl, models: modelsUrl, modelBase } = stage.dataset;
 
@@ -229,7 +231,37 @@ const models = generatedModels(siteData, "image");
     let clipCount = 0;
     let labels = new Map<string, string>();
     // opus everywhere it plays; Safari on macOS gets the AAC fallback
-    const canOpus = player.canPlayType('audio/ogg; codecs="opus"') !== "";
+    const canOpus = players[0].canPlayType('audio/ogg; codecs="opus"') !== "";
+    // the two players take turns: each clip starts on the idle one and fades
+    // in as the other fades out. Volume is read-only on iOS, where the two
+    // just overlap for the crossfade
+    let player = players[0];
+    let fading = false;
+    const fades = new Map<HTMLAudioElement, number>();
+
+    function fade(element: HTMLAudioElement, to: number, then?: () => void): void {
+      window.clearInterval(fades.get(element));
+      const from = element.volume;
+      const start = performance.now();
+      const duration = still.matches ? 0 : CROSSFADE_MS;
+      fades.set(
+        element,
+        window.setInterval(() => {
+          const t = duration ? Math.min(1, (performance.now() - start) / duration) : 1;
+          element.volume = from + (to - from) * t;
+          if (t < 1) return;
+          window.clearInterval(fades.get(element));
+          then?.();
+        }, 20),
+      );
+    }
+
+    function silence(): void {
+      for (const element of players) {
+        window.clearInterval(fades.get(element));
+        element.pause();
+      }
+    }
 
     function setOnAir(on: boolean): void {
       onAir = on;
@@ -240,7 +272,13 @@ const models = generatedModels(siteData, "image");
 
     function play(clip: ApiClip): void {
       const label = labels.get(clip.model) ?? clip.model;
+      const outgoing = player;
+      player = players.find((element) => element !== outgoing)!;
+      fading = false;
+      fade(outgoing, 0, () => outgoing.pause());
+      player.volume = 0;
       player.src = canOpus ? clip.opus : clip.m4a;
+      fade(player, 1);
       player.play().catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "NotAllowedError") awaitGesture();
       });
@@ -294,7 +332,7 @@ const models = generatedModels(siteData, "image");
     }
     function toggleRadio(): void {
       if (onAir) {
-        player.pause();
+        silence();
         setOnAir(false);
       } else void tuneIn();
       writeAddress();
@@ -303,17 +341,31 @@ const models = generatedModels(siteData, "image");
       if (onAir && nextClip) play(nextClip());
     }
 
+    // the next clip starts a crossfade before this one ends; "ended" covers a
+    // clip too short to fade or one whose duration never resolved
     let failures = 0;
-    player.addEventListener("ended", () => {
-      failures = 0;
-      skipClip();
-    });
-    player.addEventListener("error", () => {
-      // skip a clip that won't load, but don't spin forever if none will
-      failures += 1;
-      if (failures < clipCount) skipClip();
-      else setOnAir(false);
-    });
+    for (const element of players) {
+      element.addEventListener("timeupdate", () => {
+        const lead = CROSSFADE_MS / 1000;
+        if (element !== player || fading || !(element.duration > 2 * lead)) return;
+        if (element.duration - element.currentTime > lead) return;
+        fading = true;
+        failures = 0;
+        skipClip();
+      });
+      element.addEventListener("ended", () => {
+        if (element !== player) return;
+        failures = 0;
+        skipClip();
+      });
+      element.addEventListener("error", () => {
+        if (element !== player) return;
+        // skip a clip that won't load, but don't spin forever if none will
+        failures += 1;
+        if (failures < clipCount) skipClip();
+        else setOnAir(false);
+      });
+    }
 
     function toggleSingle(): void {
       setSingle(!single);
