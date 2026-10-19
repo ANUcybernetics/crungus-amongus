@@ -6,7 +6,7 @@ import ConsistencyMeter from "../../components/ConsistencyMeter.astro";
 import Base from "../../layouts/Base.astro";
 import { siteData } from "../../lib/data";
 import { bucketUrl, localImage } from "../../lib/images";
-import { generatedModels, refusalRate, releaseYear } from "../../lib/models";
+import { coverImage, generatedModels, refusalRate, releaseYear } from "../../lib/models";
 import { path } from "../../lib/paths";
 import { itemAnchor, itemNumber, itemPath } from "../../lib/permalink";
 
@@ -27,6 +27,7 @@ const shareTitle = (prompt: string, key: string) =>
 
 <Base
   section={audio ? "sound" : "images"}
+  image={audio ? null : coverImage(model)}
   title={`${model.owner}/${model.name} — Crungus Amongus`}
   description={`The crungus as ${verb} by ${model.owner}/${model.name}${dated ? ` (${releaseYear(model)})` : ""}.`}
 >

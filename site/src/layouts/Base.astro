@@ -6,8 +6,11 @@ import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "../styles/global.css";
+import { getImage } from "astro:assets";
+
 import { siteData } from "../lib/data";
-import { meshedImages } from "../lib/models";
+import { localImage } from "../lib/images";
+import { generatedModels, meshedImages, timelineSample } from "../lib/models";
 import { path } from "../lib/paths";
 
 const TRAILING_SLASH = /\/$/;
@@ -21,9 +24,18 @@ interface Props {
   section?: Section;
   // no header or footer: the page has the whole window
   bare?: boolean;
+  // corpus key of the image a shared link previews with
+  image?: string | null;
 }
 
 const { title, description, bare = false } = Astro.props;
+
+// link previews: the page's own image, else the newest year's most typical
+// crungus. JPEG, since the services that unfurl links don't all read AVIF
+const previewKey = Astro.props.image ?? timelineSample(generatedModels(siteData, "image")).at(-1)?.key;
+const previewSource = previewKey ? localImage(previewKey) : null;
+const preview = previewSource && (await getImage({ src: previewSource, format: "jpeg", width: Math.min(1200, previewSource.width) }));
+const canonical = new URL(Astro.url.pathname, Astro.site);
 const here = (href: string): boolean =>
   Astro.url.pathname.replace(TRAILING_SLASH, "") === href.replace(TRAILING_SLASH, "");
 
@@ -58,6 +70,23 @@ const section =
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Crungus Amongus" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {
+      preview && (
+        <>
+          <meta property="og:image" content={new URL(preview.src, Astro.site)} />
+          <meta property="og:image:width" content={String(preview.attributes.width)} />
+          <meta property="og:image:height" content={String(preview.attributes.height)} />
+          <meta property="og:image:alt" content="a crungus" />
+          <meta name="twitter:card" content="summary_large_image" />
+        </>
+      )
+    }
   </head>
   <body>
     {
