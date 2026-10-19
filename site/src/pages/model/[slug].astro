@@ -23,6 +23,7 @@ const verb = audio ? "played" : "rendered";
 ---
 
 <Base
+  section={audio ? "sound" : "images"}
   title={`${model.owner}/${model.name} — Crungus Amongus`}
   description={`The crungus as ${verb} by ${model.owner}/${model.name}${dated ? ` (${releaseYear(model)})` : ""}.`}
 >

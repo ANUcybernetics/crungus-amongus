@@ -8,19 +8,10 @@ const models = generatedModels(siteData, "image");
 ---
 
 <Base
-  title="Mosaic — Crungus Amongus"
+  title="Display — Crungus Amongus"
   description="A wall of crungus images from across the archive, or one at a time, with crungus radio playing over it on request."
+  bare
 >
-  <section class="intro">
-    <h1>Crungus mosaic</h1>
-    <p class="lede">
-      A wall of images drawn at random from the <a href={path()}>archive</a>, or from a single model,
-      with one tile replaced every second, or one image at a time in single mode. Turn on the radio
-      to hear every clip in the <a href={path("/sound/")}>sound archive</a>, shuffled and played end
-      to end.
-    </p>
-  </section>
-
   <div
     class="stage"
     id="stage"
@@ -31,8 +22,16 @@ const models = generatedModels(siteData, "image");
     data-model-base={path("/model/")}
   >
     <div class="wall" id="wall"></div>
+    <noscript>
+      <p class="mono">
+        The display needs JavaScript. Every image is also in the <a href={path()}>archive</a>.
+      </p>
+    </noscript>
     <div class="bar">
-      <p class="mono" id="now-playing" aria-live="polite"></p>
+      <div class="status mono">
+        <a class="home" href={path()}>crungus amongus</a>
+        <p id="now-playing" aria-live="polite"></p>
+      </div>
       <p class="controls mono">
         <select id="model" aria-label="models shown">
           <option value="">all models</option>
@@ -42,20 +41,26 @@ const models = generatedModels(siteData, "image");
         <button id="radio" type="button" aria-pressed="false">radio</button>
         <button id="skip" type="button" hidden>next</button>
         <button id="full" type="button" hidden>fullscreen</button>
+        <button type="button" popovertarget="help" aria-label="about the display">?</button>
       </p>
+    </div>
+    <div id="help" class="help" popover>
+      <h1>Crungus display</h1>
+      <p>
+        A wall of images drawn at random from the <a href={path()}>archive</a>, or from a single
+        model, with one tile replaced every second, or one image at a time in single mode. Turn on
+        the radio to hear every clip in the <a href={path("/sound/")}>sound archive</a>, shuffled
+        and played end to end.
+      </p>
+      <p class="mono muted">
+        f fullscreen · s single/grid · + − tile size · r radio · n next clip · add
+        <code>?model=…</code>, <code>?single</code>, <code>?tile=…</code> (pixels) or
+        <code>?radio</code> to the address to set the display up from it
+      </p>
+      <p class="mono"><a href={path("/about/")}>about the project</a></p>
     </div>
     <audio id="player" preload="none"></audio>
   </div>
-  <noscript>
-    <p class="muted">
-      The mosaic needs JavaScript. Every image is also in the <a href={path()}>archive</a>.
-    </p>
-  </noscript>
-  <p class="mono muted keys">
-    f fullscreen · s single/grid · + − tile size · r radio · n next clip · add
-    <code>?model=…</code>, <code>?single</code>, <code>?tile=…</code> (pixels), <code>?radio</code>
-    or <code>?kiosk</code> (fill the window) to the address
-  </p>
 </Base>
 
 <script>
@@ -83,7 +88,6 @@ const models = generatedModels(siteData, "image");
     const { tiles: tilesUrl, audio: audioUrl, models: modelsUrl, modelBase } = stage.dataset;
 
     const params = new URLSearchParams(location.search);
-    if (params.has("kiosk")) stage.classList.add("kiosk");
     const still = matchMedia("(prefers-reduced-motion: reduce)");
 
     const data = (await (await fetch(tilesUrl!)).json()) as MosaicData;
@@ -360,51 +364,16 @@ const models = generatedModels(siteData, "image");
 </script>
 
 <style>
-  .intro {
-    padding-block: 2rem 1rem;
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 2.8rem);
-    margin: 0 0 0.75rem;
-  }
-
-  .lede {
-    max-width: 46rem;
-    margin: 0 0 1.25rem;
-  }
-
   .stage {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    max-height: 85vh;
+    position: fixed;
+    inset: 0;
     background: #000;
-    border: 1px solid var(--line);
     overflow: hidden;
     outline: none;
     container-type: size;
   }
 
-  @media (orientation: portrait) {
-    .stage {
-      aspect-ratio: 3 / 4;
-    }
-  }
-
-  .stage:fullscreen,
-  .stage.kiosk {
-    border: none;
-    aspect-ratio: auto;
-    max-height: none;
-  }
-
-  .stage.kiosk {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-  }
-
-  .stage.idle:is(:fullscreen, .kiosk) {
+  .stage.idle {
     cursor: none;
   }
 
@@ -507,6 +476,23 @@ const models = generatedModels(siteData, "image");
     color: var(--text);
   }
 
+  .status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    align-items: baseline;
+  }
+
+  .home {
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .home:hover {
+    color: var(--accent-bright);
+  }
+
   .controls {
     display: flex;
     flex-wrap: wrap;
@@ -538,7 +524,26 @@ const models = generatedModels(siteData, "image");
     border-color: var(--accent);
   }
 
-  .keys {
-    margin: 0.6rem 0 2rem;
+  .help {
+    max-width: min(40rem, 100% - 2rem);
+    padding: 1.5rem 1.75rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+
+  .help::backdrop {
+    background: rgb(0 0 0 / 50%);
+  }
+
+  .help h1 {
+    font-size: 1.6rem;
+    margin: 0 0 0.75rem;
+  }
+
+  noscript p {
+    position: absolute;
+    inset: 40% 1rem auto;
+    text-align: center;
   }
 </style>

@@ -10,22 +10,44 @@ import { siteData } from "../lib/data";
 import { meshedImages } from "../lib/models";
 import { path } from "../lib/paths";
 
+const TRAILING_SLASH = /\/$/;
+
+type Section = "images" | "sound" | "meshes" | "display" | "about";
+
 interface Props {
   title: string;
   description: string;
+  // for pages whose address doesn't say, like a model's
+  section?: Section;
+  // no header or footer: the page has the whole window
+  bare?: boolean;
 }
 
-const { title, description } = Astro.props;
-const nav = [
-  { href: path(), label: "archive" },
+const { title, description, bare = false } = Astro.props;
+const here = (href: string): boolean =>
+  Astro.url.pathname.replace(TRAILING_SLASH, "") === href.replace(TRAILING_SLASH, "");
+
+// the image section's three ways of looking at the same corpus
+const views = [
+  { href: path(), label: "by model" },
   { href: path("/atlas/"), label: "atlas" },
   { href: path("/eigen/"), label: "eigencrungi" },
-  { href: path("/sound/"), label: "sound" },
-  // only once there is something to show
-  ...(meshedImages(siteData).length > 0 ? [{ href: path("/meshes/"), label: "meshes" }] : []),
-  { href: path("/mosaic/"), label: "mosaic" },
-  { href: path("/about/"), label: "about" },
 ];
+const inViews = views.some((view) => here(view.href));
+
+const nav: { href: string; label: string; section: Section }[] = [
+  { href: path(), label: "images", section: "images" },
+  { href: path("/sound/"), label: "sound", section: "sound" },
+  // only once there is something to show
+  ...(meshedImages(siteData).length > 0
+    ? [{ href: path("/meshes/"), label: "meshes", section: "meshes" as const }]
+    : []),
+  { href: path("/mosaic/"), label: "display", section: "display" },
+  { href: path("/about/"), label: "about", section: "about" },
+];
+const section =
+  Astro.props.section ??
+  (inViews ? "images" : here(path("/technical-notes/")) ? "about" : nav.find((item) => here(item.href))?.section);
 ---
 
 <!doctype html>
@@ -38,21 +60,48 @@ const nav = [
     <title>{title}</title>
   </head>
   <body>
-    <header>
-      <a class="wordmark" href={path()}>crungus amongus</a>
-      <nav aria-label="Site">
-        {nav.map((item) => <a class="mono" href={item.href}>{item.label}</a>)}
-      </nav>
-    </header>
-    <main>
+    {
+      !bare && (
+        <header>
+          <a class="wordmark" href={path()}>
+            crungus amongus
+          </a>
+          <nav aria-label="Site">
+            {nav.map((item) => (
+              <a
+                class:list={["mono", { display: item.section === "display" }]}
+                href={item.href}
+                aria-current={item.section === section ? (here(item.href) ? "page" : "true") : undefined}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          {inViews && (
+            <nav class="views" aria-label="Image views">
+              {views.map((view) => (
+                <a class="mono" href={view.href} aria-current={here(view.href) ? "page" : undefined}>
+                  {view.label}
+                </a>
+              ))}
+            </nav>
+          )}
+        </header>
+      )
+    }
+    <main class:list={{ bare }}>
       <slot />
     </main>
-    <footer>
-      <p class="mono muted">
-        images and sounds generated from crungus prompts ·
-        <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
-      </p>
-    </footer>
+    {
+      !bare && (
+        <footer>
+          <p class="mono muted">
+            images and sounds generated from crungus prompts ·
+            <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
+          </p>
+        </footer>
+      )
+    }
   </body>
 </html>
 
@@ -94,6 +143,36 @@ const nav = [
 
   nav a:hover {
     color: var(--accent-bright);
+  }
+
+  nav a[aria-current] {
+    color: var(--text);
+  }
+
+  /* a mode for a screen, not another part of the archive */
+  nav a.display {
+    color: var(--accent);
+  }
+
+  .views {
+    flex-basis: 100%;
+    gap: 1.5rem;
+    border-block-end: 1px solid var(--line);
+  }
+
+  .views a {
+    padding-block: 0.3rem;
+    margin-block-end: -1px;
+    border-block-end: 2px solid transparent;
+    text-transform: none;
+  }
+
+  .views a[aria-current] {
+    border-block-end-color: var(--accent);
+  }
+
+  main.bare {
+    width: 100%;
   }
 
   footer {
