@@ -7,12 +7,12 @@ archive.
 ## Where things live
 
 - `video.toml`: read by the skill's `scripts/video.py` (its docstring lists the
-  commands and keys). It sets a scratch voice for timing only (see "Sound") and
-  no music prompt: the bed is cut from the archive.
+  commands and keys) for `mix`, `render` and `stills`. It sets no voice and no
+  music prompt: the soundtrack is cut from the archive (see "Sound").
 - `scripts/<slug>.md`: each video's brief, key idea, one example and script,
   with a `_Visual:_` direction and a `_Reads:_` list per stretch of picture. Ben
-  owns the brief and every spoken or shown line, and approves the reads; a read
-  still marked `(draft)` is not approved.
+  owns the brief and every on-screen line, and approves the reads; a read still
+  marked `(draft)` is not approved.
 - `<slug>/`: the HyperFrames project: `index.html`, `<slug>.js` (the `build`),
   `timing.json` and `captions.vtt`, `clips.json` (which archive key each shot
   uses, and its in and out points), `assets/` (fetched footage, audio and
@@ -75,8 +75,10 @@ archive.
   file to an image sequence (three.js, rotation a pure function of frame
   number), then placed as footage. No live WebGL in a composition.
 - **Square corners**, hairline rules, no shadows, gradients or glow effects.
-- **Captions** sit in the stage's band and are always on: the display is often
-  muted. With no narrator, the band carries the script's lines.
+- **The script is on-screen text**, one line at a time in the stage's caption
+  band, in IBM Plex Sans. There is no voice, so the text is the only place the
+  words are, and it must also work with the sound off (the display is often
+  muted).
 - **It closes on the URL and the lockup**: the site's address on screen, then
   the School of Cybernetics lockup from astro-theme-anu, with the rules drawn in
   the site's ochre.
@@ -86,12 +88,17 @@ archive.
 
 ## Sound
 
+The audio archive is the narration, in the sense of what leads: there is no
+voice, and the soundtrack is edited first, with the picture cut to it as it
+would be to a voice-over. A beat starts on a sound (Bark's word, a clip coming
+in), not on a round number.
+
 The soundtrack is cut only from the audio archive (`/sound/`), by key, with in
 and out points in `clips.json`; the clip's catalogue line appears when it first
 sounds, as footage gets one. Video clips play muted, including those with their
 own soundtrack. Bark saying "crungus" is the nearest thing to a voice.
 
-There is no narrator. `video.py voice` still runs a scratch ElevenLabs read of
-the lines so that each caption gets a reading time in `timing.json`, but that
-voice never reaches the mix. The bed goes in `assets/music.mp3` for `mix`,
-mastered to −14 LUFS.
+`timing.json` comes from the soundtrack edit, not from `video.py voice`: each
+line's start is the sound its beat starts on, and it holds for at least its
+reading time (about 0.3 s a word plus 1 s). The edit goes in `assets/music.mp3`
+for `mix`, mastered to −14 LUFS.

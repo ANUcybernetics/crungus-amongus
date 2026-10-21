@@ -30,8 +30,8 @@ that gets printed.
 ## Beats (proposal)
 
 Times are approximate (60 s total). The stage strip along the top lights each
-stage as its beat starts. Ben writes a line or two per beat; until then the
-captions are empty.
+stage as its beat starts. There is no voice: Ben writes a line or two of
+on-screen text per beat, and the soundtrack leads the cut.
 
 ### 1. The word (0--5 s)
 
@@ -134,17 +134,15 @@ _Reads (draft):_ 1. where to find it.
 
 ## Soundtrack (proposal)
 
-All from `/sound/`, keys in `clips.json`. Bark ("crungus") opens and closes. One
-music clip of "the sound of a crungus" carries the bed from beat 2, chosen by
-Ben from a shortlist of four or five; in beat 3 several other music clips stack
-over it, one per few video clips, and fall away to the bed as the camera finds
-the followed crungus. Video clips are silent.
+The soundtrack does the work a voice-over would: it is edited first and the
+beats are cut to it. All from `/sound/`, keys in `clips.json`. Bark ("crungus")
+opens and closes. One music clip of "the sound of a crungus" carries the bed
+from beat 2, chosen by Ben from a shortlist of four or five; in beat 3 several
+other music clips stack over it, one per few video clips, and fall away to the
+bed as the camera finds the followed crungus. Video clips are silent.
 
 ## Open questions for Ben
 
-- **Narration.** This draft assumes no voice, as the acceptance criteria limit
-  the soundtrack to the audio archive; the captions carry your lines. A recorded
-  voice-over of yours would change the timing gate and the mix.
 - **The print.** Nothing in the archive has been printed yet. Beat 9 needs one
   printed model and footage of it (a slow turntable, top-lit on a dark ground,
   shot at 24 or 48 fps, ideally 4K).
