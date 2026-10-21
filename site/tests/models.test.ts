@@ -8,7 +8,6 @@ import {
   coverClip,
   coverImage,
   crungusness,
-  failedModels,
   generatedModels,
   imageCount,
   modelRefusals,
@@ -129,13 +128,12 @@ describe("helpers", () => {
     expect(coverImage(fakeModel({}))).toBe("test--model/crungus/0.avif");
   });
 
-  it("generated/failed partition is by image count and pending is excluded", () => {
+  it("generatedModels keeps only models with outputs", () => {
     const generated = fakeModel({});
     const failed = fakeModel({ slug: "b", status: "failed", prompts: [] });
     const pending = fakeModel({ slug: "c", status: "pending", prompts: [] });
     const data = { ...siteData, models: [generated, failed, pending] };
     expect(generatedModels(data).map((m) => m.slug)).toEqual(["test--model"]);
-    expect(failedModels(data).map((m) => m.slug)).toEqual(["b"]);
     expect(imageCount(generated)).toBe(1);
   });
 
@@ -160,7 +158,6 @@ describe("helpers", () => {
     const data = { ...siteData, models: [fakeModel({}), sound] };
     expect(generatedModels(data).map((m) => m.slug)).toEqual(["test--model", "s--m"]);
     expect(generatedModels(data, "audio").map((m) => m.slug)).toEqual(["s--m"]);
-    expect(failedModels(data, "audio")).toEqual([]);
     expect(clipCount(sound)).toBe(1);
     expect(coverClip(sound)).toEqual(clip);
     expect(coverClip(fakeModel({}))).toBeNull();

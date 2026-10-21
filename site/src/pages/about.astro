@@ -1,17 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
-import { clipCount, failedModels, generatedModels, imageCount, videoCount } from "../lib/models";
+import { clipCount, generatedModels, imageCount, videoCount } from "../lib/models";
 import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "image");
-const failed = failedModels(siteData, "image");
 const imageTotal = models.reduce((n, m) => n + imageCount(m), 0);
 const soundModels = generatedModels(siteData, "audio");
-const soundFailed = failedModels(siteData, "audio");
 const clipTotal = soundModels.reduce((n, m) => n + clipCount(m), 0);
 const videoModels = generatedModels(siteData, "video");
-const videoFailed = failedModels(siteData, "video");
 const videoTotal = videoModels.reduce((n, m) => n + videoCount(m), 0);
 const generatedAt = siteData.generated_at.slice(0, 10);
 ---
@@ -51,7 +48,6 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       We supply no stylistic instructions or fixed seeds. Endpoint defaults and required inputs vary between models.
       Where an endpoint exposes safety controls, we use the most permissive settings available.
       As of {generatedAt}, the archive holds {imageTotal.toLocaleString("en-AU")} images from {models.length} models.
-      {failed.length > 0 && ` ${failed.length} additional models were attempted without producing an image.`}
     </p>
     <p>
       Timeline years identify model releases, using curated dates where available and Replicate version dates as a fallback.
@@ -66,7 +62,6 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       Required lyrics use “crungus”, repeated where necessary to meet input constraints.
       Clips are encoded and loudness-normalised for playback.
       {clipTotal > 0 ? ` The archive holds ${clipTotal} clips from ${soundModels.length} models.` : " The sound archive is still being recorded."}
-      {soundFailed.length > 0 && ` ${soundFailed.length} additional models were attempted without producing a clip.`}
     </p>
     <h2>The video</h2>
     <p>
@@ -75,7 +70,6 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       Where a model can generate its own soundtrack, it is asked to, and that soundtrack is loudness-normalised like the audio archive.
       Video has no consistency score.
       {videoTotal > 0 ? ` The archive holds ${videoTotal} clips from ${videoModels.length} models.` : " The video archive is still being filmed."}
-      {videoFailed.length > 0 && ` ${videoFailed.length} additional models were attempted without producing a clip.`}
     </p>
     <h2 id="consistency">Consistency</h2>
     <p>

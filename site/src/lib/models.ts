@@ -17,16 +17,6 @@ export function generatedModels(data: SiteData, modality?: Modality): ModelEntry
   );
 }
 
-/** Models that were attempted but produced nothing — part of the story. */
-export function failedModels(data: SiteData, modality?: Modality): ModelEntry[] {
-  return data.models.filter(
-    (m) =>
-      outputCount(m) === 0 &&
-      m.status !== "pending" &&
-      (modality === undefined || m.modality === modality),
-  );
-}
-
 export function imageCount(model: ModelEntry): number {
   return model.prompts.reduce((n, p) => n + p.images.length, 0);
 }

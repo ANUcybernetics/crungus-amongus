@@ -9,7 +9,6 @@ import {
   byCrungusness,
   byYear,
   clipCount,
-  failedModels,
   generatedModels,
   timelineSample,
   videoCount,
@@ -17,7 +16,6 @@ import {
 import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "image");
-const failed = failedModels(siteData, "image");
 const soundModels = generatedModels(siteData, "audio");
 const clipTotal = soundModels.reduce((n, m) => n + clipCount(m), 0);
 const videoModels = generatedModels(siteData, "video");
@@ -154,27 +152,6 @@ const imageTotal = models.reduce(
       <a href={path("/eigen/")}>the eigencrungi</a>.
     </p>
   </section>
-
-  {
-    failed.length > 0 && (
-      <section class="failed" aria-labelledby="failed-heading">
-        <h2 id="failed-heading">Did not answer</h2>
-        <p class="muted">
-          These models were attempted without producing an image. Availability, input requirements and provider restrictions can prevent generation.
-        </p>
-        <ul class="mono">
-          {failed.map((model) => (
-            <li>
-              <a href={model.replicate_url}>
-                {model.owner}/{model.name}
-              </a>
-              <span class="muted"> — {model.status}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
 </Base>
 
 <script>
@@ -292,19 +269,9 @@ const imageTotal = models.reduce(
   }
 
   .listen,
-  .failed {
-    margin-block-start: 3.5rem;
-  }
 
   .listen p {
     max-width: 46rem;
     margin: 0;
-  }
-
-  .failed ul {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: 0.35rem;
   }
 </style>

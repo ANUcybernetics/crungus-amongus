@@ -2,11 +2,10 @@
 import SoundCard from "../components/SoundCard.astro";
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
-import { byCrungusness, byYear, clipCount, failedModels, generatedModels } from "../lib/models";
+import { byCrungusness, byYear, clipCount, generatedModels } from "../lib/models";
 import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "audio");
-const failed = failedModels(siteData, "audio");
 const years = byYear(models);
 const scored = byCrungusness(models);
 const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
@@ -71,26 +70,6 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
             ))}
           </div>
         </div>
-      </section>
-    )
-  }
-
-  {
-    failed.length > 0 && (
-      <section class="failed" aria-labelledby="failed-heading">
-        <h2 id="failed-heading">Did not answer</h2>
-        <p class="muted">These models were asked and produced nothing.</p>
-        <ul class="mono">
-          {failed.map((model) => (
-            <li>
-              <a href={model.replicate_url}>
-                {model.owner}/{model.name}
-              </a>
-              <span class="muted"> — {model.status}</span>
-
-            </li>
-          ))}
-        </ul>
       </section>
     )
   }
@@ -182,16 +161,5 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
     gap: 1rem;
-  }
-
-  .failed {
-    margin-block-start: 3.5rem;
-  }
-
-  .failed ul {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: 0.35rem;
   }
 </style>
