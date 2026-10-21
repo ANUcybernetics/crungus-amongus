@@ -5,8 +5,12 @@ ops/encode-images.py). Audio: ffmpeg to Opus (the modern, efficient choice)
 plus an AAC fallback, because Safari on macOS only plays Opus inside a CAF
 container; the site picks whichever the browser can play. Both audio encodes
 apply EBU R128 loudness normalisation so the radio doesn't lurch between
-models mastered at wildly different levels. Meshes: gltf-transform, meshopt
-geometry and WebP textures, which takes a ~24 MB Meshy GLB to ~2.6 MB.
+models mastered at wildly different levels. Video: ffmpeg to H.264 MP4 (fitted
+inside 1920 px, its soundtrack loudness-normalised the same way) plus a JPEG
+poster of the first frame. The poster is deliberately not AVIF: analyze, sprite
+and eigen glob the optimized tree for AVIF, and a poster there would join the
+image corpus. Meshes: gltf-transform, meshopt geometry and WebP textures, which
+takes a ~24 MB Meshy GLB to ~2.6 MB.
 """
 
 import os
@@ -22,6 +26,7 @@ from PIL import Image, UnidentifiedImageError
 
 from .config import Settings
 from .output_normalizer import AUDIO_EXTENSIONS
+from .registry import load_registry
 
 MAX_DIM = 1536
 # Encoding is one avifenc/ffmpeg process per file, so it parallelises cleanly:
@@ -66,6 +71,23 @@ AUDIO_ENCODES: dict[str, list[str]] = {
     ".opus": ["-c:a", "libopus", "-b:a", "64k", "-vbr", "on"],
     ".m4a": ["-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart"],
 }
+VIDEO_SCALE = (
+    "scale=w='min(iw,1920)':h='min(ih,1920)'"
+    ":force_original_aspect_ratio=decrease:force_divisible_by=2"
+)
+VIDEO_ARGS = [
+    "-c:v",
+    "libx264",
+    "-preset",
+    "slow",
+    "-crf",
+    "23",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+]
+VIDEO_AUDIO_ARGS = ["-af", LOUDNORM, "-ar", SAMPLE_RATE, "-c:a", "aac", "-b:a", "128k"]
 
 
 def mesh_relpath(stem: str, task_id: str) -> str:
@@ -82,10 +104,20 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
     skipped, never fatal — publish only advertises outputs that exist
     post-optimisation.
     """
+    # a video model may return a GIF, so video is told apart by its model,
+    # not by its extension
+    registry = load_registry(settings.registry_path)
+    video_slugs = {
+        m.slug for m in (registry.models if registry else []) if m.modality == "video"
+    }
     jobs: list[_Encode] = []
     originals = sorted(p for p in settings.originals_dir.rglob("*") if p.is_file())
     for source in originals:
         relative = source.relative_to(settings.originals_dir)
+        if relative.parts[0] in video_slugs:
+            dest = settings.optimized_dir / relative.with_suffix(".mp4")
+            jobs.append(_Encode(source, dest, "video"))
+            continue
         is_audio = source.suffix.lower() in AUDIO_EXTENSIONS
         for suffix in list(AUDIO_ENCODES) if is_audio else [".avif"]:
             dest = settings.optimized_dir / relative.with_suffix(suffix)
@@ -124,7 +156,7 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
 class _Encode:
     source: Path
     dest: Path
-    kind: Literal["image", "audio", "mesh"]
+    kind: Literal["image", "audio", "video", "mesh"]
 
 
 def _encode_one(job: _Encode) -> bool:
@@ -133,6 +165,8 @@ def _encode_one(job: _Encode) -> bool:
         match job.kind:
             case "audio":
                 encode_audio(job.source, job.dest)
+            case "video":
+                encode_video(job.source, job.dest)
             case "mesh":
                 encode_glb(job.source, job.dest)
             case "image":
@@ -197,6 +231,67 @@ def encode_audio(source: Path, dest: Path) -> None:
         check=True,
         capture_output=True,
     )
+
+
+def encode_video(source: Path, dest: Path) -> None:
+    """The MP4, then its poster (the .jpg beside it) from the encoded first frame."""
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    audio = VIDEO_AUDIO_ARGS if _has_audio(source) else ["-an"]
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-loglevel",
+            "error",
+            "-i",
+            str(source),
+            "-vf",
+            VIDEO_SCALE,
+            *VIDEO_ARGS,
+            *audio,
+            str(dest),
+        ],
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-loglevel",
+            "error",
+            "-i",
+            str(dest),
+            "-frames:v",
+            "1",
+            "-q:v",
+            "3",
+            str(dest.with_suffix(".jpg")),
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+
+def _has_audio(source: Path) -> bool:
+    probe = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-select_streams",
+            "a",
+            "-show_entries",
+            "stream=index",
+            "-of",
+            "csv=p=0",
+            str(source),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return bool(probe.stdout.strip())
 
 
 def encode_glb(source: Path, dest: Path) -> None:

@@ -72,3 +72,60 @@ def test_avifenc_is_available() -> None:
     """The encode path shells out; a missing binary should fail loudly here."""
     result = subprocess.run(["avifenc", "--version"], capture_output=True, check=False)
     assert result.returncode == 0
+
+
+def test_video_encodes_to_mp4_and_poster_and_stays_out_of_the_image_corpus(
+    tmp_path: Path,
+) -> None:
+    from datetime import UTC, datetime
+
+    from crungus_amongus.registry import Registry, RegistryModel, save_registry
+
+    settings = make_settings(tmp_path)
+    save_registry(
+        Registry(
+            fetched_at=datetime.now(tz=UTC),
+            models=[
+                RegistryModel(
+                    owner="owner",
+                    name="video-model",
+                    slug="owner--video-model",
+                    source="collection",
+                    modality="video",
+                    version_id="v1",
+                )
+            ],
+        ),
+        settings.registry_path,
+    )
+    clips = settings.originals_dir / "owner--video-model" / "crungus"
+    clips.mkdir(parents=True)
+    lavfi = ["ffmpeg", "-loglevel", "error", "-f", "lavfi", "-i"]
+    subprocess.run(
+        [*lavfi, "testsrc=size=320x240:duration=1", "-f", "lavfi", "-i"]
+        + ["sine=duration=1", "-shortest", str(clips / "0.mp4")],
+        check=True,
+    )
+    # a GIF from a video model is a clip, not an image
+    subprocess.run(
+        [*lavfi, "testsrc=size=64x48:duration=1", str(clips / "1.gif")], check=True
+    )
+
+    assert optimize_all(settings) == (2, 0, 0)
+
+    out = settings.optimized_dir / "owner--video-model" / "crungus"
+    assert sorted(p.name for p in out.iterdir()) == ["0.jpg", "0.mp4", "1.jpg", "1.mp4"]
+    assert not list(settings.optimized_dir.rglob("*.avif"))
+
+    def streams(path: Path) -> list[str]:
+        probe = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "stream=codec_name"]
+            + ["-of", "csv=p=0", str(path)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return probe.stdout.split()
+
+    assert streams(out / "0.mp4") == ["h264", "aac"]
+    assert streams(out / "1.mp4") == ["h264"]

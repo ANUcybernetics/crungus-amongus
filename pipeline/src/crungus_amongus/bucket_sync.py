@@ -30,6 +30,8 @@ CONTENT_TYPES = {
     ".json": "application/json",
     ".opus": "audio/ogg",
     ".m4a": "audio/mp4",
+    ".mp4": "video/mp4",
+    ".jpg": "image/jpeg",
     ".glb": "model/gltf-binary",
 }
 MAX_WORKERS = 8
