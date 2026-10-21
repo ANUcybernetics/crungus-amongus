@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-21T03:13:42.611351Z",
+  "fetched_at": "2026-10-21T03:40:07.564038Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -14002,12 +14002,6 @@
             "description": "Text prompt for image generation"
           },
           "fast_mode": {
-            "enum": [
-              "Off",
-              "Balanced",
-              "Fast"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/fast_mode"
@@ -14026,11 +14020,6 @@
             "description": "Determines how strongly the main LoRA should be applied. Sane results between 0 and 1 for base inference. You may still need to experiment to find the best value for your particular lora."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -14142,15 +14131,6 @@
             "description": "Image to use for the first frame of the video"
           },
           "style": {
-            "enum": [
-              "None",
-              "anime",
-              "3d_animation",
-              "clay",
-              "cyberpunk",
-              "comic"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/style"
@@ -14161,25 +14141,6 @@
             "description": "Style of the video"
           },
           "effect": {
-            "enum": [
-              "None",
-              "Let's YMCA!",
-              "Subject 3 Fever",
-              "Ghibli Live!",
-              "Suit Swagger",
-              "Muscle Surge",
-              "360° Microwave",
-              "Warmth of Jesus",
-              "Emergency Beat",
-              "Anything, Robot",
-              "Kungfu Club",
-              "Mint in Box",
-              "Retro Anime Pop",
-              "Vogue Walk",
-              "Mega Dive",
-              "Evil Trigger"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/effect"
@@ -14196,13 +14157,6 @@
             "description": "Text prompt for video generation"
           },
           "quality": {
-            "enum": [
-              "360p",
-              "540p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/quality"
@@ -14213,11 +14167,6 @@
             "description": "Resolution of the video. 360p and 540p cost the same, but 720p and 1080p cost more. See the README for details."
           },
           "duration": {
-            "enum": [
-              5,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -14228,11 +14177,6 @@
             "description": "Duration of the video in seconds. 8 second videos cost twice as much as 5 second videos. (1080p does not support 8 second duration)"
           },
           "motion_mode": {
-            "enum": [
-              "normal",
-              "smooth"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/motion_mode"
@@ -14243,12 +14187,6 @@
             "description": "Motion mode for the video. Smooth videos generate more frames, so they cost twice as much. (smooth is only available when using a 5 second duration, 1080p does not support smooth motion)"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -14325,19 +14263,6 @@
             "description": "Text prompt for generation"
           },
           "vibe_style": {
-            "enum": [
-              "None",
-              "clay",
-              "color_sketch",
-              "logo",
-              "papercraft",
-              "pro_photo",
-              "sci_fi",
-              "sketch",
-              "stock_footage",
-              "streetshot"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/vibe_style"
@@ -14348,13 +14273,6 @@
             "description": "Style for the overall vibe of the video. Ignored if image is provided."
           },
           "aspect_ratio": {
-            "enum": [
-              "9:16",
-              "16:9",
-              "2:3",
-              "4:5"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -14365,25 +14283,6 @@
             "description": "Aspect ratio of the output video. Ignored if image is provided."
           },
           "lighting_style": {
-            "enum": [
-              "None",
-              "backlight",
-              "candle_lit",
-              "chiaroscuro",
-              "film_haze",
-              "foggy",
-              "golden_hour",
-              "hardlight",
-              "lens_flare",
-              "light_art",
-              "low_key",
-              "luminous",
-              "mystical",
-              "rainy",
-              "soft_light",
-              "volumetric"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/lighting_style"
@@ -14406,16 +14305,6 @@
             "description": "The negative prompt used for the video generation"
           },
           "shot_type_style": {
-            "enum": [
-              "None",
-              "bokeh",
-              "cinematic",
-              "close_up",
-              "overhead",
-              "spiritual",
-              "spooky"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/shot_type_style"
@@ -14426,23 +14315,6 @@
             "description": "Style for the shot type of the video. Ignored if image is provided."
           },
           "color_theme_style": {
-            "enum": [
-              "None",
-              "autumn",
-              "complimentary",
-              "cool",
-              "dark",
-              "earthy",
-              "electric",
-              "iridescent",
-              "pastel",
-              "split",
-              "terracotta_teal",
-              "ultraviolet",
-              "vibrant",
-              "warm"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/color_theme_style"
@@ -14497,14 +14369,6 @@
             "description": "Text prompt describing what you want to generate"
           },
           "frame_num": {
-            "enum": [
-              17,
-              33,
-              49,
-              65,
-              81
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/frame_num"
@@ -14515,10 +14379,6 @@
             "description": "Video duration in frames (based on standard 16fps playback)"
           },
           "resolution": {
-            "enum": [
-              "480p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -14529,11 +14389,6 @@
             "description": "Video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -14612,15 +14467,6 @@
             "description": "Image to use for the first frame of the video"
           },
           "style": {
-            "enum": [
-              "None",
-              "anime",
-              "3d_animation",
-              "clay",
-              "cyberpunk",
-              "comic"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/style"
@@ -14631,25 +14477,6 @@
             "description": "Style of the video"
           },
           "effect": {
-            "enum": [
-              "None",
-              "Let's YMCA!",
-              "Subject 3 Fever",
-              "Ghibli Live!",
-              "Suit Swagger",
-              "Muscle Surge",
-              "360° Microwave",
-              "Warmth of Jesus",
-              "Emergency Beat",
-              "Anything, Robot",
-              "Kungfu Club",
-              "Mint in Box",
-              "Retro Anime Pop",
-              "Vogue Walk",
-              "Mega Dive",
-              "Evil Trigger"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/effect"
@@ -14666,13 +14493,6 @@
             "description": "Text prompt for video generation"
           },
           "quality": {
-            "enum": [
-              "360p",
-              "540p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/quality"
@@ -14683,11 +14503,6 @@
             "description": "Resolution of the video. 360p and 540p cost the same, but 720p and 1080p cost more. See the README for details."
           },
           "duration": {
-            "enum": [
-              5,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -14698,11 +14513,6 @@
             "description": "Duration of the video in seconds. 8 second videos cost twice as much as 5 second videos. (1080p does not support 8 second duration)"
           },
           "motion_mode": {
-            "enum": [
-              "normal",
-              "smooth"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/motion_mode"
@@ -14713,12 +14523,6 @@
             "description": "Motion mode for the video. Smooth videos generate more frames, so they cost twice as much. (smooth is only available when using a 5 second duration, 1080p does not support smooth motion)"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -14805,12 +14609,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              4,
-              6,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -14821,11 +14619,6 @@
             "description": "Video duration in seconds"
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -14836,11 +14629,6 @@
             "description": "Resolution of the generated video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -14904,12 +14692,6 @@
             "description": "Text prompt for image generation"
           },
           "fast_mode": {
-            "enum": [
-              "Off",
-              "Balanced",
-              "Fast"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/fast_mode"
@@ -14929,11 +14711,6 @@
             "description": "Determines how strongly the main LoRA should be applied. Sane results between 0 and 1 for base inference. You may still need to experiment to find the best value for your particular lora."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15037,13 +14814,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              6,
-              7,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -15054,11 +14824,6 @@
             "description": "Video duration in seconds"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15100,11 +14865,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -15121,12 +14881,6 @@
             "description": "First frame of the video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15190,13 +14944,6 @@
             "description": "Text prompt for video generation"
           },
           "quality": {
-            "enum": [
-              "360p",
-              "540p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/quality"
@@ -15207,12 +14954,6 @@
             "description": "Resolution of the video. Higher resolutions cost more. See pricing for details."
           },
           "duration": {
-            "enum": [
-              5,
-              8,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -15223,12 +14964,6 @@
             "description": "Duration of the video in seconds. 10 second videos are only available for 360p, 540p, and 720p."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15239,12 +14974,6 @@
             "description": "Aspect ratio of the video"
           },
           "thinking_type": {
-            "enum": [
-              "disabled",
-              "enabled",
-              "auto"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/thinking_type"
@@ -15303,10 +15032,6 @@
         ],
         "properties": {
           "fps": {
-            "enum": [
-              24
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/fps"
@@ -15343,12 +15068,6 @@
             "description": "Video duration in seconds"
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -15359,16 +15078,6 @@
             "description": "Video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16",
-              "21:9",
-              "9:21"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15458,11 +15167,6 @@
             "description": "Number of video frames. 81 frames give the best results"
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -15473,11 +15177,6 @@
             "description": "Resolution of video. 16:9 corresponds to 832x480px, and 9:16 is 480x832px"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15557,10 +15256,12 @@
         }
       },
       "prompt_field": null,
-      "extra_inputs": {},
+      "extra_inputs": {
+        "num_frames": 121
+      },
       "output_field": null,
       "release_date": null,
-      "notes": null
+      "notes": "priced per clip, so it gets its longest clip: 121 frames (7.5 s at its default 16 fps) rather than 81"
     },
     {
       "owner": "kwaivgi",
@@ -15586,11 +15287,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -15615,12 +15311,6 @@
             "description": "First frame of the video (optional)"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15711,11 +15401,6 @@
             "description": "Text prompt for generation"
           },
           "duration": {
-            "enum": [
-              6,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -15726,12 +15411,6 @@
             "description": "Duration of the video in seconds. 10 seconds is only available for 768p resolution."
           },
           "resolution": {
-            "enum": [
-              "512p",
-              "768p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -15807,12 +15486,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              4,
-              6,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -15823,11 +15496,6 @@
             "description": "Video duration in seconds"
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -15838,11 +15506,6 @@
             "description": "Resolution of the generated video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -15893,10 +15556,6 @@
         ],
         "properties": {
           "fps": {
-            "enum": [
-              24
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/fps"
@@ -15933,12 +15592,6 @@
             "description": "Video duration in seconds"
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -15949,16 +15602,6 @@
             "description": "Video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16",
-              "21:9",
-              "9:21"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16040,12 +15683,6 @@
             "description": "Duration of the generated video in seconds"
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -16056,15 +15693,6 @@
             "description": "Output video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "adaptive",
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16122,13 +15750,6 @@
             "description": "Random seed for reproducible generation"
           },
           "size": {
-            "enum": [
-              "1280*720",
-              "720*1280",
-              "1920*1080",
-              "1080*1920"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/size"
@@ -16153,11 +15774,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -16214,11 +15830,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -16236,12 +15847,6 @@
             "description": "First frame of the video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16312,11 +15917,6 @@
             "description": "Text prompt describing the video. Be specific about subject, motion, camera movement, lighting, and pacing."
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -16343,12 +15943,6 @@
             "description": "Export an EXR file alongside the MP4 for professional colour-grading workflows. Requires hdr=true."
           },
           "resolution": {
-            "enum": [
-              "540p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -16368,15 +15962,6 @@
             "description": "Optional first frame of the video. Only valid with 5s duration."
           },
           "aspect_ratio": {
-            "enum": [
-              "9:16",
-              "3:4",
-              "1:1",
-              "4:3",
-              "16:9",
-              "21:9"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16434,13 +16019,6 @@
             "description": "Text prompt for video generation"
           },
           "quality": {
-            "enum": [
-              "360p",
-              "540p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/quality"
@@ -16451,13 +16029,6 @@
             "description": "Resolution of the video. Higher resolutions cost more. See pricing for details."
           },
           "duration": {
-            "enum": [
-              5,
-              8,
-              10,
-              15
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -16468,12 +16039,6 @@
             "description": "Duration of the video in seconds. Billing is per second."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16545,12 +16110,6 @@
             "description": "A text description of the video to generate"
           },
           "seconds": {
-            "enum": [
-              4,
-              8,
-              12
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/seconds"
@@ -16561,11 +16120,6 @@
             "description": "Duration of the video in seconds"
           },
           "aspect_ratio": {
-            "enum": [
-              "portrait",
-              "landscape"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16626,12 +16180,6 @@
             "description": "A text description of the video to generate"
           },
           "seconds": {
-            "enum": [
-              4,
-              8,
-              12
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/seconds"
@@ -16642,11 +16190,6 @@
             "description": "Duration of the video in seconds"
           },
           "resolution": {
-            "enum": [
-              "standard",
-              "high"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -16657,11 +16200,6 @@
             "description": "Resolution quality. Standard is 720p (1280x720 landscape, 720x1280 portrait). High is 1024p (1792x1024 landscape, 1024x1792 portrait)."
           },
           "aspect_ratio": {
-            "enum": [
-              "portrait",
-              "landscape"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16746,11 +16284,6 @@
             "description": "Video duration in seconds. Set to -1 for intelligent duration (model picks the best length)."
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -16761,17 +16294,6 @@
             "description": "Video resolution."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16",
-              "21:9",
-              "9:21",
-              "adaptive"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16875,22 +16397,6 @@
             "description": "Text prompt for video generation. Optional when an image is provided."
           },
           "duration": {
-            "enum": [
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11,
-              12,
-              13,
-              14,
-              15
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -16901,11 +16407,6 @@
             "description": "Duration of the generated video in seconds"
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -16916,14 +16417,6 @@
             "description": "Output video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -16983,22 +16476,6 @@
             "description": "Text prompt for video generation. Optional when a single image is provided (image-to-video). Required for text-to-video and reference-to-video. When providing multiple reference images, refer to them in the prompt as [Image 1], [Image 2], etc."
           },
           "duration": {
-            "enum": [
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11,
-              12,
-              13,
-              14,
-              15
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17009,11 +16486,6 @@
             "description": "Duration of the generated video in seconds"
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -17024,14 +16496,6 @@
             "description": "Output video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1",
-              "4:3",
-              "3:4"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -17083,25 +16547,6 @@
             "description": "Image to use for the first frame of the video"
           },
           "effect": {
-            "enum": [
-              "None",
-              "Let's YMCA!",
-              "Subject 3 Fever",
-              "Ghibli Live!",
-              "Suit Swagger",
-              "Muscle Surge",
-              "360° Microwave",
-              "Warmth of Jesus",
-              "Emergency Beat",
-              "Anything, Robot",
-              "Kungfu Club",
-              "Mint in Box",
-              "Retro Anime Pop",
-              "Vogue Walk",
-              "Mega Dive",
-              "Evil Trigger"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/effect"
@@ -17118,13 +16563,6 @@
             "description": "Text prompt for video generation"
           },
           "quality": {
-            "enum": [
-              "360p",
-              "540p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/quality"
@@ -17135,11 +16573,6 @@
             "description": "Resolution of the video. 360p and 540p cost the same, but 720p and 1080p cost more. V5 supports 1080p with 8 second duration."
           },
           "duration": {
-            "enum": [
-              5,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17150,12 +16583,6 @@
             "description": "Duration of the video in seconds. 8 second videos cost twice as much as 5 second videos. V5 supports 1080p with 8 second duration."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -17214,15 +16641,6 @@
             "description": "Random seed for reproducible generation"
           },
           "size": {
-            "enum": [
-              "832*480",
-              "480*832",
-              "1280*720",
-              "720*1280",
-              "1920*1080",
-              "1080*1920"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/size"
@@ -17247,11 +16665,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17317,11 +16730,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17348,12 +16756,6 @@
             "description": "First frame of the video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -17405,10 +16807,6 @@
         ],
         "properties": {
           "fps": {
-            "enum": [
-              24
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/fps"
@@ -17445,12 +16843,6 @@
             "description": "Video duration in seconds"
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -17461,16 +16853,6 @@
             "description": "Video resolution"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16",
-              "21:9",
-              "9:21"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -17518,11 +16900,6 @@
             "description": "Text prompt for generation"
           },
           "duration": {
-            "enum": [
-              6,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17533,11 +16910,6 @@
             "description": "Duration of the video in seconds. 10 seconds is only available for 768p resolution."
           },
           "resolution": {
-            "enum": [
-              "768p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -17607,12 +16979,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              4,
-              6,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17631,11 +16997,6 @@
             "description": "Ending image for interpolation. When provided with an input image, creates a transition between the two images."
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -17646,11 +17007,6 @@
             "description": "Resolution of the generated video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -17722,12 +17078,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              4,
-              6,
-              8
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -17746,11 +17096,6 @@
             "description": "Ending image for interpolation. When provided with an input image, creates a transition between the two images."
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -17761,11 +17106,6 @@
             "description": "Resolution of the generated video"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -17827,11 +17167,6 @@
         ],
         "properties": {
           "fps": {
-            "enum": [
-              24,
-              48
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/fps"
@@ -17894,11 +17229,6 @@
             "description": "Duration of the video in seconds (1-20). Ignored when audio is provided."
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "1080p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -17916,16 +17246,6 @@
             "description": "Save the video with audio."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "4:3",
-              "3:4",
-              "3:2",
-              "2:3",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18017,13 +17337,6 @@
             "description": "Video duration in seconds. Set to -1 for intelligent duration (model picks the best length)."
           },
           "resolution": {
-            "enum": [
-              "480p",
-              "720p",
-              "1080p",
-              "4k"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -18034,17 +17347,6 @@
             "description": "Video resolution. 4K outputs 10-bit H.265/HEVC at high bitrate."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "4:3",
-              "1:1",
-              "3:4",
-              "9:16",
-              "21:9",
-              "9:21",
-              "adaptive"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18151,11 +17453,6 @@
             "description": "Text prompt for video generation"
           },
           "duration": {
-            "enum": [
-              5,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -18166,15 +17463,6 @@
             "description": "Duration of the output video in seconds"
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "4:3",
-              "3:4",
-              "1:1",
-              "21:9"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18211,12 +17499,6 @@
         ],
         "properties": {
           "mode": {
-            "enum": [
-              "standard",
-              "pro",
-              "4k"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/mode"
@@ -18258,12 +17540,6 @@
             "description": "First frame image. Supports .jpg/.jpeg/.png, max 10MB, min 300px, aspect ratio 1:2.5 to 2.5:1."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18321,12 +17597,6 @@
         ],
         "properties": {
           "mode": {
-            "enum": [
-              "standard",
-              "pro",
-              "4k"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/mode"
@@ -18368,12 +17638,6 @@
             "description": "First frame image. Supports .jpg/.jpeg/.png, max 10MB, min 300px, aspect ratio 1:2.5 to 2.5:1."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18424,11 +17688,6 @@
             "description": "Keep original sound from reference video."
           },
           "video_reference_type": {
-            "enum": [
-              "feature",
-              "base"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/video_reference_type"
@@ -18465,11 +17724,6 @@
         ],
         "properties": {
           "mode": {
-            "enum": [
-              "std",
-              "pro"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/mode"
@@ -18486,17 +17740,6 @@
             "description": "Text prompt for video generation. Can include references like <<<image_1>>>, <<<video_1>>> to reference inputs."
           },
           "duration": {
-            "enum": [
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/duration"
@@ -18521,12 +17764,6 @@
             "description": "First frame image for the video. Supports .jpg/.jpeg/.png, max 10MB."
           },
           "aspect_ratio": {
-            "enum": [
-              "16:9",
-              "9:16",
-              "1:1"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18561,11 +17798,6 @@
             "description": "Whether to keep the original sound from the reference video."
           },
           "video_reference_type": {
-            "enum": [
-              "feature",
-              "base"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/video_reference_type"
@@ -18635,11 +17867,6 @@
             "description": "Duration of the video in seconds (1-15). Ignored when editing a video."
           },
           "resolution": {
-            "enum": [
-              "720p",
-              "480p"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/resolution"
@@ -18650,17 +17877,6 @@
             "description": "Resolution of the video. Ignored when editing a video."
           },
           "aspect_ratio": {
-            "enum": [
-              "auto",
-              "16:9",
-              "4:3",
-              "1:1",
-              "9:16",
-              "3:4",
-              "3:2",
-              "2:3"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -18716,23 +17932,6 @@
             "description": "Number of denoising steps"
           },
           "width": {
-            "enum": [
-              256,
-              320,
-              384,
-              448,
-              512,
-              576,
-              640,
-              672,
-              704,
-              768,
-              832,
-              896,
-              960,
-              1024
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/width"
@@ -18743,23 +17942,6 @@
             "description": "Width of the output"
           },
           "height": {
-            "enum": [
-              256,
-              320,
-              384,
-              448,
-              512,
-              576,
-              640,
-              672,
-              704,
-              768,
-              832,
-              896,
-              960,
-              1024
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/height"
@@ -18777,16 +17959,6 @@
             "description": "Input prompt"
           },
           "scheduler": {
-            "enum": [
-              "DDIMScheduler",
-              "DPMSolverMultistepScheduler",
-              "HeunDiscreteScheduler",
-              "KarrasDPM",
-              "EulerAncestralDiscreteScheduler",
-              "EulerDiscreteScheduler",
-              "PNDMScheduler"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/scheduler"
@@ -18849,11 +18021,6 @@
             "description": "Optional input image to use as the starting frame"
           },
           "model": {
-            "enum": [
-              "0.9.1",
-              "0.9"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/model"
@@ -18873,15 +18040,6 @@
             "description": "Number of steps"
           },
           "length": {
-            "enum": [
-              97,
-              129,
-              161,
-              193,
-              225,
-              257
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/length"
@@ -18899,18 +18057,6 @@
             "description": "Text prompt for the video. This model needs long descriptive prompts, if the prompt is too short the quality won't be good."
           },
           "target_size": {
-            "enum": [
-              512,
-              576,
-              640,
-              704,
-              768,
-              832,
-              896,
-              960,
-              1024
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/target_size"
@@ -18921,22 +18067,6 @@
             "description": "Target size for the output video"
           },
           "aspect_ratio": {
-            "enum": [
-              "1:1",
-              "1:2",
-              "2:1",
-              "2:3",
-              "3:2",
-              "3:4",
-              "4:3",
-              "4:5",
-              "5:4",
-              "9:16",
-              "16:9",
-              "9:21",
-              "21:9"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/aspect_ratio"
@@ -19114,11 +18244,6 @@
             "description": "Guidance Scale for text-to-video generation"
           },
           "frames_per_second": {
-            "enum": [
-              8,
-              24
-            ],
-            "type": "integer",
             "allOf": [
               {
                 "$ref": "#/components/schemas/frames_per_second"
@@ -19175,13 +18300,6 @@
             "description": "Random seed. Leave blank to randomize the seed"
           },
           "model": {
-            "enum": [
-              "xl",
-              "576w",
-              "potat1",
-              "animov-512x"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/model"
@@ -19408,14 +18526,6 @@
         "title": "Input",
         "properties": {
           "path": {
-            "enum": [
-              "toonyou_beta3.safetensors",
-              "lyriel_v16.safetensors",
-              "rcnzCartoon3d_v10.safetensors",
-              "majicmixRealistic_v5Preview.safetensors",
-              "realisticVisionV40_v20Novae.safetensors"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/path"
@@ -19455,12 +18565,6 @@
             "description": "Negative prompt"
           },
           "motion_module": {
-            "enum": [
-              "mm_sd_v14",
-              "mm_sd_v15",
-              "mm_sd_v15_v2"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/motion_module"
@@ -19519,11 +18623,6 @@
             "description": "Number of iterations of pasting the image in it's center and inpainting the boarders"
           },
           "output_format": {
-            "enum": [
-              "mp4",
-              "gif"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/output_format"
@@ -19731,14 +18830,6 @@
             "x-order": 0
           },
           "base_model": {
-            "enum": [
-              "realisticVisionV20_v20",
-              "lyriel_v16",
-              "majicmixRealistic_v5Preview",
-              "rcnzCartoon3d_v10",
-              "toonyou_beta3"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/base_model"
@@ -19749,11 +18840,6 @@
             "description": "Select a base model (DreamBooth checkpoint)"
           },
           "output_format": {
-            "enum": [
-              "mp4",
-              "gif"
-            ],
-            "type": "string",
             "allOf": [
               {
                 "$ref": "#/components/schemas/output_format"

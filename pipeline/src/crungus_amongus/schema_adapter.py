@@ -6,9 +6,10 @@ the cog convention says an omitted seed randomises, but some models ship a
 fixed default and returned ten identical images. Force any output-count field
 to 1 so one prediction = one output. Audio models get the fixed clip length
 where the schema has a `duration` (clamped to its bounds); differently-named
-length fields are set per model in the curated file. Video models get the
-fixed clip length the same way (snapped to the lengths a choice field allows)
-and their soundtrack switched on wherever they can make one. No confident prompt
+length fields are set per model in the curated file. Video models keep their
+default clip length (nearly all price by the second, and the default is the
+length they are built for) and get their soundtrack switched on wherever they
+can make one. No confident prompt
 field → SchemaIncompatibleError; never guess-and-spend.
 """
 
@@ -17,13 +18,12 @@ import random
 import re
 from typing import Any
 
-from .config import AUDIO_DURATION_S, VIDEO_DURATION_S
+from .config import AUDIO_DURATION_S
 from .exceptions import SchemaIncompatibleError
 from .registry import RegistryModel
 
 COUNT_FIELDS = ("num_outputs", "num_images", "number_of_images", "variations")
 SEED_MAX = 2**31 - 1
-VIDEO_DURATION_FIELDS = ("duration", "seconds")
 # boolean switches for a video model's own soundtrack (an `audio` string field
 # is an input track to lip-sync to, and is left alone)
 VIDEO_AUDIO_FIELDS = ("generate_audio", "generate_audio_switch", "with_audio")
@@ -110,36 +110,17 @@ def build_input(model: RegistryModel, prompt: str) -> dict[str, Any]:
     if model.modality == "audio" and "duration" in props:
         payload["duration"] = _clamp(AUDIO_DURATION_S, props["duration"])
     if model.modality == "video":
-        payload.update(_video_inputs(props))
+        payload.update(
+            {
+                field: True
+                for field in VIDEO_AUDIO_FIELDS
+                if props.get(field, {}).get("type") == "boolean"
+            }
+        )
     payload.update(
         {k: resolve_env(v, model.ref) for k, v in model.extra_inputs.items()}
     )
     return payload
-
-
-def _video_inputs(props: dict[str, Any]) -> dict[str, Any]:
-    payload: dict[str, Any] = {
-        field: True
-        for field in VIDEO_AUDIO_FIELDS
-        if props.get(field, {}).get("type") == "boolean"
-    }
-    for field in VIDEO_DURATION_FIELDS:
-        if field not in props:
-            continue
-        choices = props[field].get("enum")
-        if choices is None:
-            payload[field] = _clamp(VIDEO_DURATION_S, props[field])
-        elif all(isinstance(c, int) for c in choices):
-            payload[field] = _snap(VIDEO_DURATION_S, choices)
-        # a choice of strings ("5s") is left at the model's default
-        break
-    return payload
-
-
-def _snap(value: int, choices: list[int]) -> int:
-    """The longest choice at or under value, else the shortest."""
-    under = [c for c in choices if c <= value]
-    return max(under) if under else min(choices)
 
 
 def _clamp(value: int, field: dict[str, Any]) -> int:

@@ -1,5 +1,12 @@
 # Hand-curated video models: text-prompted video models absent from Replicate's
 # text-to-video collection, plus per-model overrides for models that ARE in the
 # collection (matched by owner/name; an override never duplicates). Same fields
-# as curated-models.toml. The pipeline sets the clip length and switches on the
-# soundtrack itself (see schema_adapter); frame-count fields stay at defaults.
+# as curated-models.toml. Clip length stays at each model's default unless a
+# longer clip costs no more; the pipeline switches the soundtrack on itself.
+
+# --- overrides for collection models ---
+[[models]]
+owner = "wan-video"
+name = "wan-2.2-t2v-fast"
+extra_inputs = { num_frames = 121 }
+notes = "priced per clip, so it gets its longest clip: 121 frames (7.5 s at its default 16 fps) rather than 81"

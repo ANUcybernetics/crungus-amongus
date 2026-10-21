@@ -33,29 +33,6 @@ def no_legacy(owner: str, name: str) -> dict[str, Any] | None:
     raise AssertionError(f"unexpected legacy fetch: {owner}/{name}")
 
 
-def test_choice_enums_are_inlined_into_the_stored_schema() -> None:
-    payload = collection_payload("google", "veo-3")
-    payload["latest_version"]["openapi_schema"]["components"]["schemas"] |= {
-        "duration": {"type": "integer", "enum": [4, 6, 8]},
-    }
-    payload["latest_version"]["openapi_schema"]["components"]["schemas"]["Input"][
-        "properties"
-    ]["duration"] = {"allOf": [{"$ref": "#/components/schemas/duration"}], "default": 8}
-
-    registry = build_registry(
-        collection_payloads=[payload],
-        curated=[],
-        deny=[],
-        existing=None,
-        fetch_legacy=no_legacy,
-        modality="video",
-    )
-
-    schema = registry.models[0].input_schema or {}
-    assert schema["properties"]["duration"]["enum"] == [4, 6, 8]
-    assert schema["properties"]["duration"]["default"] == 8
-
-
 def test_collection_and_legacy_merge_with_overrides() -> None:
     collection = [collection_payload("stability-ai", "sdxl")]
     curated = [

@@ -79,22 +79,6 @@ def test_audio_duration_is_fixed_and_clamped() -> None:
     assert "duration" not in build_input(image, "crungus")
 
 
-def test_video_duration_snaps_to_the_allowed_lengths() -> None:
-    def duration(spec: dict[str, Any], field: str = "duration") -> Any:
-        model = make_model(
-            {"prompt": {"type": "string"}, field: spec}, modality="video"
-        )
-        return build_input(model, "crungus").get(field)
-
-    assert duration({"enum": [4, 6, 8], "default": 8}) == 4
-    assert duration({"enum": [5, 10]}) == 5
-    assert duration({"enum": [6, 10]}) == 6
-    assert duration({"enum": [4, 8, 12]}, field="seconds") == 4
-    assert duration({"type": "integer", "minimum": -1, "maximum": 15}) == 5
-    assert duration({"type": "integer", "minimum": 6}) == 6
-    assert duration({"enum": ["5s", "10s"]}) is None
-
-
 def test_video_soundtrack_switched_on_where_offered() -> None:
     model = make_model(
         {

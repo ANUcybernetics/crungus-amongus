@@ -49,9 +49,6 @@ PROMPTS: dict[Modality, dict[str, str]] = {
 OUTPUTS_PER_PROMPT: dict[Modality, int] = {"image": 100, "audio": 10, "video": 10}
 # clip length requested from audio models that expose a duration input
 AUDIO_DURATION_S = 20
-# clip length requested from video models: the longest allowed length at or
-# under this, else the shortest (video models price by the second)
-VIDEO_DURATION_S = 5
 # Until this moment every prediction was made with the provider's default
 # safety filters; after it, schema_adapter.relax_safety turns off every control
 # a model exposes. The refusal figures the site reports are the measurement
