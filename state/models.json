@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-10-21T03:40:07.564038Z",
+  "fetched_at": "2026-10-21T03:56:28.442111Z",
   "models": [
     {
       "owner": "ideogram-ai",
@@ -14076,7 +14076,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-02-25",
       "notes": null
     },
     {
@@ -14230,8 +14230,8 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
-      "notes": null
+      "release_date": "2025-02-01",
+      "notes": "release date: only the month (February 2025) is known"
     },
     {
       "owner": "leonardoai",
@@ -14335,8 +14335,8 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
-      "notes": null
+      "release_date": "2025-03-01",
+      "notes": "release date is a guess: no launch announcement found"
     },
     {
       "owner": "wan-video",
@@ -14430,7 +14430,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-02-25",
       "notes": null
     },
     {
@@ -14566,7 +14566,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-05-13",
       "notes": null
     },
     {
@@ -14657,7 +14657,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-05-20",
       "notes": null
     },
     {
@@ -14773,7 +14773,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-02-25",
       "notes": null
     },
     {
@@ -14838,7 +14838,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-12-16",
       "notes": null
     },
     {
@@ -14901,7 +14901,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-05-29",
       "notes": null
     },
     {
@@ -15010,7 +15010,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-01-26",
       "notes": null
     },
     {
@@ -15116,7 +15116,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-06-11",
       "notes": null
     },
     {
@@ -15260,7 +15260,7 @@
         "num_frames": 121
       },
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-07-28",
       "notes": "priced per clip, so it gets its longest clip: 121 frames (7.5 s at its default 16 fps) rather than 81"
     },
     {
@@ -15331,7 +15331,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-04-15",
       "notes": null
     },
     {
@@ -15374,7 +15374,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-03-03",
       "notes": null
     },
     {
@@ -15443,7 +15443,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-06-18",
       "notes": null
     },
     {
@@ -15534,7 +15534,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-07-17",
       "notes": null
     },
     {
@@ -15629,7 +15629,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-06-11",
       "notes": null
     },
     {
@@ -15721,7 +15721,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-08-06",
       "notes": null
     },
     {
@@ -15802,7 +15802,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-09-23",
       "notes": null
     },
     {
@@ -15875,7 +15875,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-12-03",
       "notes": null
     },
     {
@@ -15976,7 +15976,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-06-09",
       "notes": null
     },
     {
@@ -16082,7 +16082,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-03-30",
       "notes": null
     },
     {
@@ -16152,7 +16152,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-09-30",
       "notes": null
     },
     {
@@ -16232,7 +16232,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-09-30",
       "notes": null
     },
     {
@@ -16356,7 +16356,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-02-12",
       "notes": null
     },
     {
@@ -16431,7 +16431,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-04-27",
       "notes": null
     },
     {
@@ -16510,7 +16510,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-06-22",
       "notes": null
     },
     {
@@ -16612,7 +16612,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-08-28",
       "notes": null
     },
     {
@@ -16693,7 +16693,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-09-23",
       "notes": null
     },
     {
@@ -16785,7 +16785,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-09-23",
       "notes": null
     },
     {
@@ -16873,8 +16873,8 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
-      "notes": null
+      "release_date": "2025-06-11",
+      "notes": "release date is its parent Seedance 1.0 Pro's; no separate launch found"
     },
     {
       "owner": "minimax",
@@ -16936,7 +16936,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-10-28",
       "notes": null
     },
     {
@@ -17035,7 +17035,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-10-15",
       "notes": null
     },
     {
@@ -17145,7 +17145,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-10-15",
       "notes": null
     },
     {
@@ -17282,7 +17282,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-02-26",
       "notes": null
     },
     {
@@ -17410,7 +17410,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-02-12",
       "notes": null
     },
     {
@@ -17477,7 +17477,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-12-01",
       "notes": null
     },
     {
@@ -17575,7 +17575,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-02-05",
       "notes": null
     },
     {
@@ -17702,7 +17702,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-02-05",
       "notes": null
     },
     {
@@ -17812,7 +17812,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2025-12-01",
       "notes": null
     },
     {
@@ -17891,7 +17891,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2026-01-28",
       "notes": null
     },
     {
@@ -17980,7 +17980,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2023-10-03",
       "notes": null
     },
     {
@@ -18097,7 +18097,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-11-22",
       "notes": null
     },
     {
@@ -18191,7 +18191,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2023-03-23",
       "notes": null
     },
     {
@@ -18267,7 +18267,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-10-08",
       "notes": null
     },
     {
@@ -18399,7 +18399,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2023-06-23",
       "notes": null
     },
     {
@@ -18448,7 +18448,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-08-31",
       "notes": null
     },
     {
@@ -18507,7 +18507,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2023-03-19",
       "notes": null
     },
     {
@@ -18588,7 +18588,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2023-07-10",
       "notes": null
     },
     {
@@ -18637,8 +18637,8 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
-      "notes": null
+      "release_date": "2022-10-20",
+      "notes": "release date is that of the SD 1.5 inpainting weights it builds on"
     },
     {
       "owner": "genmoai",
@@ -18709,7 +18709,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-10-22",
       "notes": null
     },
     {
@@ -18766,7 +18766,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-01-17",
       "notes": null
     },
     {
@@ -18941,7 +18941,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2023-07-10",
       "notes": null
     },
     {
@@ -19029,7 +19029,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-12-03",
       "notes": null
     },
     {
@@ -19100,7 +19100,7 @@
       "prompt_field": null,
       "extra_inputs": {},
       "output_field": null,
-      "release_date": null,
+      "release_date": "2024-08-27",
       "notes": null
     }
   ]

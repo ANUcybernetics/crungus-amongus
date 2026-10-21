@@ -3,10 +3,288 @@
 # collection (matched by owner/name; an override never duplicates). Same fields
 # as curated-models.toml. Clip length stays at each model's default unless a
 # longer clip costs no more; the pipeline switches the soundtrack on itself.
+#
+# Release dates are each model's first public release (paper, repo or vendor
+# launch), researched 2026-10-21; a Replicate endpoint variant ("fast", "480p")
+# without a launch of its own takes its parent's date.
 
-# --- overrides for collection models ---
+[[models]]
+owner = "arielreplicate"
+name = "stable_diffusion_infinite_zoom"
+release_date = 2022-10-20
+notes = "release date is that of the SD 1.5 inpainting weights it builds on"
+
+[[models]]
+owner = "cjwbw"
+name = "damo-text-to-video"
+release_date = 2023-03-19
+
+[[models]]
+owner = "cjwbw"
+name = "text2video-zero"
+release_date = 2023-03-23
+
+[[models]]
+owner = "anotherjesse"
+name = "zeroscope-v2-xl"
+release_date = 2023-06-23
+
+[[models]]
+owner = "lucataco"
+name = "animate-diff"
+release_date = 2023-07-10
+
+[[models]]
+owner = "zsxkib"
+name = "animate-diff"
+release_date = 2023-07-10
+
+[[models]]
+owner = "lucataco"
+name = "hotshot-xl"
+release_date = 2023-10-03
+
+[[models]]
+owner = "cjwbw"
+name = "videocrafter"
+release_date = 2024-01-17
+
+[[models]]
+owner = "cuuupid"
+name = "cogvideox-5b"
+release_date = 2024-08-27
+
+[[models]]
+owner = "minimax"
+name = "video-01"
+release_date = 2024-08-31
+
+[[models]]
+owner = "zsxkib"
+name = "pyramid-flow"
+release_date = 2024-10-08
+
+[[models]]
+owner = "genmoai"
+name = "mochi-1"
+release_date = 2024-10-22
+
+[[models]]
+owner = "lightricks"
+name = "ltx-video"
+release_date = 2024-11-22
+
+[[models]]
+owner = "tencent"
+name = "hunyuan-video"
+release_date = 2024-12-03
+
+[[models]]
+owner = "google"
+name = "veo-2"
+release_date = 2024-12-16
+
+[[models]]
+owner = "pixverse"
+name = "pixverse-v4"
+release_date = 2025-02-01
+notes = "release date: only the month (February 2025) is known"
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.1-1.3b"
+release_date = 2025-02-25
+
+[[models]]
+owner = "wavespeedai"
+name = "wan-2.1-t2v-480p"
+release_date = 2025-02-25
+
+[[models]]
+owner = "wavespeedai"
+name = "wan-2.1-t2v-720p"
+release_date = 2025-02-25
+
+[[models]]
+owner = "leonardoai"
+name = "motion-2.0"
+release_date = 2025-03-01
+notes = "release date is a guess: no launch announcement found"
+
+[[models]]
+owner = "minimax"
+name = "video-01-director"
+release_date = 2025-03-03
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.0"
+release_date = 2025-04-15
+
+[[models]]
+owner = "pixverse"
+name = "pixverse-v4.5"
+release_date = 2025-05-13
+
+[[models]]
+owner = "google"
+name = "veo-3"
+release_date = 2025-05-20
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.1-master"
+release_date = 2025-05-29
+
+[[models]]
+owner = "bytedance"
+name = "seedance-1-lite"
+release_date = 2025-06-11
+
+[[models]]
+owner = "bytedance"
+name = "seedance-1-pro"
+release_date = 2025-06-11
+
+[[models]]
+owner = "bytedance"
+name = "seedance-1-pro-fast"
+release_date = 2025-06-11
+notes = "release date is its parent Seedance 1.0 Pro's; no separate launch found"
+
+[[models]]
+owner = "minimax"
+name = "hailuo-02"
+release_date = 2025-06-18
+
+[[models]]
+owner = "google"
+name = "veo-3-fast"
+release_date = 2025-07-17
+
 [[models]]
 owner = "wan-video"
 name = "wan-2.2-t2v-fast"
+release_date = 2025-07-28
 extra_inputs = { num_frames = 121 }
 notes = "priced per clip, so it gets its longest clip: 121 frames (7.5 s at its default 16 fps) rather than 81"
+
+[[models]]
+owner = "pixverse"
+name = "pixverse-v5"
+release_date = 2025-08-28
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.5-turbo-pro"
+release_date = 2025-09-23
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.5-t2v"
+release_date = 2025-09-23
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.5-t2v-fast"
+release_date = 2025-09-23
+
+[[models]]
+owner = "openai"
+name = "sora-2"
+release_date = 2025-09-30
+
+[[models]]
+owner = "openai"
+name = "sora-2-pro"
+release_date = 2025-09-30
+
+[[models]]
+owner = "google"
+name = "veo-3.1"
+release_date = 2025-10-15
+
+[[models]]
+owner = "google"
+name = "veo-3.1-fast"
+release_date = 2025-10-15
+
+[[models]]
+owner = "minimax"
+name = "hailuo-2.3"
+release_date = 2025-10-28
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-o1"
+release_date = 2025-12-01
+
+[[models]]
+owner = "runwayml"
+name = "gen-4.5"
+release_date = 2025-12-01
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.6"
+release_date = 2025-12-03
+
+[[models]]
+owner = "pixverse"
+name = "pixverse-v5.6"
+release_date = 2026-01-26
+
+[[models]]
+owner = "xai"
+name = "grok-imagine-video"
+release_date = 2026-01-28
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v3-omni-video"
+release_date = 2026-02-05
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v3-video"
+release_date = 2026-02-05
+
+[[models]]
+owner = "bytedance"
+name = "seedance-2.0"
+release_date = 2026-02-12
+
+[[models]]
+owner = "bytedance"
+name = "seedance-2.0-fast"
+release_date = 2026-02-12
+
+[[models]]
+owner = "prunaai"
+name = "p-video"
+release_date = 2026-02-26
+
+[[models]]
+owner = "pixverse"
+name = "pixverse-v6"
+release_date = 2026-03-30
+
+[[models]]
+owner = "alibaba"
+name = "happyhorse-1.0"
+release_date = 2026-04-27
+
+[[models]]
+owner = "luma"
+name = "ray-3.2"
+release_date = 2026-06-09
+
+[[models]]
+owner = "alibaba"
+name = "happyhorse-1.1"
+release_date = 2026-06-22
+
+[[models]]
+owner = "alibaba"
+name = "wan-3"
+release_date = 2026-08-06
