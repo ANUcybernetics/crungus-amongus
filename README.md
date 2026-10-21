@@ -16,15 +16,15 @@ Two components:
   emits the site's data contract
 - **`site/`** — an Astro static site that presents the archive, per-model pages,
   the pan/zoom embedding atlas, the eigencrungi sliders, the sound archive, the
-  mesh viewer, and
-  the display (a full-screen wall of images, or one at a time, for a gallery
-  screen, with crungus radio shuffling every clip over it on `?radio`)
+  mesh viewer, and the display (a full-screen wall of images, or one at a time,
+  for a gallery screen, with crungus radio shuffling every clip over it on
+  `?radio`)
 
 ## Pipeline
 
 Requires `REPLICATE_API_TOKEN`, `MESHY_API_KEY` for `mesh`, and `CRUNGUS_S3_*`
-credentials for `sync` (all provided via the untracked mise `[env]` block). Stages are sequential,
-idempotent, and resumable:
+credentials for `sync` (all provided via the untracked mise `[env]` block).
+Stages are sequential, idempotent, and resumable:
 
 ```sh
 cd pipeline
@@ -59,8 +59,8 @@ Checks:
 
 The build also emits a static JSON API (shapes in `src/lib/api.ts`):
 `/api/models.json`, `/api/images.json`, `/api/audio.json`, `/api/meshes.json`
-and `/api/models/<slug>.json`. Entries link to the media in the bucket (they never
-embed it) and to the item's permalink, an anchor on its model page
+and `/api/models/<slug>.json`. Entries link to the media in the bucket (they
+never embed it) and to the item's permalink, an anchor on its model page
 (`src/lib/permalink.ts`).
 
 Deploys to GitHub Pages on push to `main`; CI pulls images from the bucket (no
