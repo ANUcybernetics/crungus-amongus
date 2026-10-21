@@ -9,13 +9,19 @@ from .registry import RegistryModel
 
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"}
 AUDIO_EXTENSIONS = {".wav", ".mp3", ".flac", ".ogg", ".opus", ".m4a", ".aac", ".webm"}
+VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov", ".gif"}
 EXTENSIONS: dict[Modality, set[str]] = {
     "image": IMAGE_EXTENSIONS,
     "audio": AUDIO_EXTENSIONS,
+    "video": VIDEO_EXTENSIONS,
 }
 # an extensionless URL is saved with the modality's most common container;
 # the optimizer sniffs the real format anyway
-DEFAULT_EXTENSION: dict[Modality, str] = {"image": ".png", "audio": ".wav"}
+DEFAULT_EXTENSION: dict[Modality, str] = {
+    "image": ".png",
+    "audio": ".wav",
+    "video": ".mp4",
+}
 
 
 def output_urls(model: RegistryModel, output: Any) -> list[str]:

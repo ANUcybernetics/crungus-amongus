@@ -110,11 +110,34 @@ def save_registry(registry: Registry, path: Path) -> None:
 
 
 def _extract_input_schema(model_payload: dict[str, Any]) -> dict[str, Any] | None:
+    """The version's Input schema, with each choice field's enum inlined.
+
+    Cog declares a choice as `allOf: [{$ref: "#/components/schemas/x"}]`, and
+    only the Input schema is stored, so the allowed values (a video model's
+    durations, say) would otherwise be lost with the rest of the components.
+    """
     version = model_payload.get("latest_version")
     if not version:
         return None
     schema = version.get("openapi_schema") or {}
-    return schema.get("components", {}).get("schemas", {}).get("Input")
+    components = schema.get("components", {}).get("schemas", {})
+    input_schema = components.get("Input")
+    if input_schema is None:
+        return None
+    properties = {
+        field: _inline_ref(spec, components)
+        for field, spec in input_schema.get("properties", {}).items()
+    }
+    return input_schema | {"properties": properties}
+
+
+def _inline_ref(spec: dict[str, Any], components: dict[str, Any]) -> dict[str, Any]:
+    match spec.get("allOf"):
+        case [{"$ref": str(ref)}]:
+            target = components.get(ref.rsplit("/", 1)[-1], {})
+            return {k: v for k, v in target.items() if k in ("type", "enum")} | spec
+        case _:
+            return spec
 
 
 def _version_fields(

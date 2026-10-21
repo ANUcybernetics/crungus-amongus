@@ -70,3 +70,150 @@ reason = "every prediction fails with ModelError E002, whatever the prompt"
 owner = "sakemin"
 name = "musicgen-stereo-chord"
 reason = "every prediction fails with \"cuFFT error: CUFFT_INTERNAL_ERROR\" at its only version (2023-11-28)"
+
+# --- text-to-video collection: not text-to-video, or not one prompt ---
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.2-i2v-a14b"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "open-mmlab"
+name = "pia"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "minimax"
+name = "video-01-live"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "wavespeedai"
+name = "wan-2.1-i2v-720p"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "wavespeedai"
+name = "wan-2.1-i2v-480p"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.1"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.2-i2v-fast"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.5-i2v"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "minimax"
+name = "hailuo-2.3-fast"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.5-i2v-fast"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "xai"
+name = "grok-imagine-video-1.5"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "ali-vilab"
+name = "i2vgen-xl"
+reason = "image-to-video: requires an input image"
+
+[[models]]
+owner = "fofr"
+name = "tooncrafter"
+reason = "image interpolation: requires two or more input images"
+
+[[models]]
+owner = "fofr"
+name = "video-morpher"
+reason = "image interpolation: requires two or more input images"
+
+[[models]]
+owner = "veed"
+name = "fabric-1.0"
+reason = "animates a supplied image or video, not text-to-video"
+
+[[models]]
+owner = "prunaai"
+name = "p-video-animate"
+reason = "animates a supplied image or video, not text-to-video"
+
+[[models]]
+owner = "bytedance"
+name = "dreamactor-m2.0"
+reason = "animates a supplied image or video, not text-to-video"
+
+[[models]]
+owner = "meta"
+name = "sam-2-video"
+reason = "video-to-video tool: requires an input video"
+
+[[models]]
+owner = "zsxkib"
+name = "hunyuan-video2video"
+reason = "video-to-video tool: requires an input video"
+
+[[models]]
+owner = "arielreplicate"
+name = "deoldify_video"
+reason = "video-to-video tool: requires an input video"
+
+[[models]]
+owner = "cjwbw"
+name = "controlvideo"
+reason = "video-to-video tool: requires an input video"
+
+[[models]]
+owner = "arielreplicate"
+name = "robust_video_matting"
+reason = "video-to-video tool: requires an input video"
+
+[[models]]
+owner = "pollinations"
+name = "real-basicvsr-video-superresolution"
+reason = "video-to-video tool: requires an input video"
+
+[[models]]
+owner = "andreasjansson"
+name = "tile-morph"
+reason = "interpolates between two prompts (prompt_start, prompt_end), not one"
+
+[[models]]
+owner = "andreasjansson"
+name = "stable-diffusion-animation"
+reason = "interpolates between two prompts (prompt_start, prompt_end), not one"
+
+[[models]]
+owner = "deforum"
+name = "deforum_stable_diffusion"
+reason = "no single prompt field: takes a frame-keyed prompt schedule"
+
+[[models]]
+owner = "zsxkib"
+name = "animatediff-prompt-travel"
+reason = "no single prompt field: takes a frame-keyed prompt schedule"
+
+[[models]]
+owner = "zsxkib"
+name = "animatediff-illusions"
+reason = "no single prompt field: takes a frame-keyed prompt schedule"
+
+[[models]]
+owner = "fofr"
+name = "not-real"
+reason = "wrapper that steers every prompt towards realistic footage, not a model"

@@ -1,0 +1,5 @@
+# Hand-curated video models: text-prompted video models absent from Replicate's
+# text-to-video collection, plus per-model overrides for models that ARE in the
+# collection (matched by owner/name; an override never duplicates). Same fields
+# as curated-models.toml. The pipeline sets the clip length and switches on the
+# soundtrack itself (see schema_adapter); frame-count fields stay at defaults.

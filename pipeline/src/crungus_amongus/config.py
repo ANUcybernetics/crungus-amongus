@@ -18,11 +18,12 @@ REPLICATE_API_BASE = "https://api.replicate.com/v1"
 
 # the archive has one experiment per modality: a Replicate collection plus a
 # curated list, a fixed prompt set, a fixed sample count
-type Modality = Literal["image", "audio"]
-MODALITIES: tuple[Modality, ...] = ("image", "audio")
+type Modality = Literal["image", "audio", "video"]
+MODALITIES: tuple[Modality, ...] = ("image", "audio", "video")
 COLLECTIONS: dict[Modality, str] = {
     "image": "text-to-image",
     "audio": "ai-music-generation",
+    "video": "text-to-video",
 }
 PROMPTS: dict[Modality, dict[str, str]] = {
     "image": {
@@ -33,16 +34,24 @@ PROMPTS: dict[Modality, dict[str, str]] = {
         "crungus": "crungus",
         "the-sound-of-a-crungus": "the sound of a crungus",
     },
+    "video": {
+        "crungus": "crungus",
+        "a-video-of-a-crungus": "a video of a crungus",
+    },
 }
 # samples per (model, prompt). Images went to 100 because at 10 the consistency
 # scores are mostly noise (jackknife SE 0.023 against a between-model spread of
 # 0.106) and 98% of adjacent pairs in the leaderboard sit within one standard
 # error; at 100 the SE falls to about 0.007. Audio stays at 10: nothing
 # downstream needs the precision, and 100 twenty-second clips per model is a
-# far heavier job for no gain.
-OUTPUTS_PER_PROMPT: dict[Modality, int] = {"image": 100, "audio": 10}
+# far heavier job for no gain. Video stays at 10 for the same reason, and
+# because a clip costs up to a hundred times an image.
+OUTPUTS_PER_PROMPT: dict[Modality, int] = {"image": 100, "audio": 10, "video": 10}
 # clip length requested from audio models that expose a duration input
 AUDIO_DURATION_S = 20
+# clip length requested from video models: the longest allowed length at or
+# under this, else the shortest (video models price by the second)
+VIDEO_DURATION_S = 5
 # Until this moment every prediction was made with the provider's default
 # safety filters; after it, schema_adapter.relax_safety turns off every control
 # a model exposes. The refusal figures the site reports are the measurement
@@ -50,7 +59,7 @@ AUDIO_DURATION_S = 20
 # did, not what the corpus now contains. Moving this line rewrites history.
 SAFETY_DEFAULTS_UNTIL = datetime(2026, 9, 9, 22, 35, 55, tzinfo=UTC)
 # flat per-output estimates for --dry-run (the dashboard is billing truth)
-ASSUMED_COST: dict[Modality, float] = {"image": 0.03, "audio": 0.10}
+ASSUMED_COST: dict[Modality, float] = {"image": 0.03, "audio": 0.10, "video": 0.60}
 
 
 # meshes_dir is synced under this prefix, beside the corpus keys
