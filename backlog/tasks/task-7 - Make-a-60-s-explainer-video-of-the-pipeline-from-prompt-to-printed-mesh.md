@@ -1,9 +1,10 @@
 ---
 id: TASK-7
 title: 'Make a 60 s explainer video of the pipeline, from prompt to printed mesh'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-21 11:32'
+updated_date: '2026-10-21 20:13'
 labels:
   - video
   - explainer

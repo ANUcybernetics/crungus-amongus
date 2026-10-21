@@ -5,6 +5,10 @@ plus the Astro site that presents them. `README.md` has the layout, the
 stage-by-stage pipeline commands and the check commands for both halves; run
 them with `mise exec --`.
 
+## Video style
+
+Make videos with the `ben:styled-video` skill. Style guide: `video/STYLE.md`.
+
 ## Constraints
 
 - `crungus generate` and `crungus mesh` spend real money. Never run either
@@ -20,7 +24,7 @@ them with `mise exec --`.
   anything recomputed at a stable key ships with a short cache instead (see
   `bucket_sync.upload_plan`).
 - `analyze`, `sprite` and `eigen` all glob `data/optimized/**.avif`, so an image
-  the pipeline *renders* and stores there silently joins the corpus it was
+  the pipeline _renders_ and stores there silently joins the corpus it was
   derived from. Renders go in `data/derived/`, the sync's second root.
 - `site/src/data/models.json` is the contract between the halves: written by
   `crungus publish` (pydantic), parsed by `site/src/lib/schema.ts` (zod). Change
