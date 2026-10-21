@@ -12,7 +12,8 @@
 owner = "arielreplicate"
 name = "stable_diffusion_infinite_zoom"
 release_date = 2022-10-20
-notes = "release date is that of the SD 1.5 inpainting weights it builds on"
+output_field = "mp4"
+notes = "release date is that of the SD 1.5 inpainting weights it builds on. Returns {gif, mp4}, hence output_field"
 
 [[models]]
 owner = "cjwbw"

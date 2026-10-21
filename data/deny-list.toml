@@ -217,3 +217,65 @@ reason = "no single prompt field: takes a frame-keyed prompt schedule"
 owner = "fofr"
 name = "not-real"
 reason = "wrapper that steers every prompt towards realistic footage, not a model"
+
+# --- text-to-video collection: dead upstream ---
+
+[[models]]
+owner = "wavespeedai"
+name = "wan-2.1-t2v-480p"
+reason = "every prediction fails with \"An error occurred while processing your request (E002)\""
+
+[[models]]
+owner = "wavespeedai"
+name = "wan-2.1-t2v-720p"
+reason = "every prediction fails with \"An error occurred while processing your request (E002)\""
+
+[[models]]
+owner = "wan-video"
+name = "wan-2.5-t2v-fast"
+reason = "every prediction fails with \"An error occurred while processing your request (E002)\""
+
+[[models]]
+owner = "google"
+name = "veo-2"
+reason = "every prediction fails with a 404 from Google's Vertex AI endpoint behind it"
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.0"
+reason = "every prediction fails: Kling has discontinued kling-v2-master (error 1203)"
+
+[[models]]
+owner = "kwaivgi"
+name = "kling-v2.1-master"
+reason = "every prediction fails: Kling has discontinued the model behind it (error 1203)"
+
+[[models]]
+owner = "genmoai"
+name = "mochi-1"
+reason = "every prediction fails with CUDA out of memory on an 80 GB GPU"
+
+[[models]]
+owner = "cuuupid"
+name = "cogvideox-5b"
+reason = "every prediction times out after 20 minutes, three attempts each"
+
+[[models]]
+owner = "google"
+name = "veo-3"
+reason = "every prediction fails with a 404 from Google's Vertex AI endpoint behind it"
+
+[[models]]
+owner = "google"
+name = "veo-3-fast"
+reason = "every prediction fails with a 404 from Google's Vertex AI endpoint behind it"
+
+[[models]]
+owner = "openai"
+name = "sora-2"
+reason = "every prediction fails with \"Failed to create video\" and no detail"
+
+[[models]]
+owner = "openai"
+name = "sora-2-pro"
+reason = "every prediction fails with \"Failed to create video\" and no detail"
