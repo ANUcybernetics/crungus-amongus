@@ -3,6 +3,7 @@ import VideoCard from "../components/VideoCard.astro";
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
 import { byYear, failedModels, generatedModels, videoCount } from "../lib/models";
+import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "video");
 const failed = failedModels(siteData, "video");
@@ -22,6 +23,14 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
       Each clip runs at the model's default length, and carries a soundtrack wherever the model can make one.
       {videoTotal > 0 && ` ${videoTotal} clips from ${models.length} models.`}
     </p>
+    {
+      videoTotal > 0 && (
+        <p class="watch mono">
+          <a href={path("/display/video/")}>watch them all →</a>
+          <span class="muted"> every clip, shuffled, full screen</span>
+        </p>
+      )
+    }
   </section>
 
   {
@@ -77,6 +86,10 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
   .lede {
     max-width: 46rem;
     font-size: 1.1rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .watch {
     margin: 0;
   }
 

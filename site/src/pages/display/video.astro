@@ -1,0 +1,379 @@
+---
+import Base from "../../layouts/Base.astro";
+import { siteData } from "../../lib/data";
+import { generatedModels } from "../../lib/models";
+import { path } from "../../lib/paths";
+
+const models = generatedModels(siteData, "video");
+---
+
+<Base
+  title="Video display — Crungus Amongus"
+  description="Every crungus video clip in the archive, shuffled and played end to end, full screen."
+  section="display"
+  bare
+>
+  <div
+    class="stage"
+    id="stage"
+    tabindex="-1"
+    data-videos={path("/api/videos.json")}
+    data-models={path("/api/models.json")}
+    data-model-base={path("/model/")}
+  >
+    <video class="screen" playsinline preload="auto"></video>
+    <video class="screen" playsinline preload="auto"></video>
+    <noscript>
+      <p class="mono">
+        The display needs JavaScript. Every clip is also in the <a href={path("/video/")}>video archive</a>.
+      </p>
+    </noscript>
+    <div class="bar">
+      <div class="status mono">
+        <a class="home" href={path()}>crungus amongus</a>
+        <p id="now-playing" aria-live="polite"></p>
+      </div>
+      <p class="controls mono">
+        <select id="model" aria-label="models shown">
+          <option value="">all models</option>
+          {models.map((m) => <option value={m.slug}>{m.owner}/{m.name}</option>)}
+        </select>
+        <button id="sound" type="button" aria-pressed="true">sound</button>
+        <button id="skip" type="button">next</button>
+        <button id="full" type="button" hidden>fullscreen</button>
+        <button type="button" popovertarget="help" aria-label="about the display">?</button>
+      </p>
+    </div>
+    <div id="help" class="help" popover>
+      <h1>Crungus video</h1>
+      <p>
+        Every clip in the <a href={path("/video/")}>video archive</a>, or from a single model,
+        shuffled and played end to end, with each model's own soundtrack where it made one.
+      </p>
+      <p class="mono muted">
+        f fullscreen · m sound · n next clip · add <code>?model=…</code> to the address to set the
+        display up from it · the <a href={path("/display/")}>image wall</a>
+      </p>
+      <p class="mono"><a href={path("/about/")}>about the project</a></p>
+    </div>
+    <div class="progress" id="progress" aria-hidden="true"><span></span></div>
+  </div>
+</Base>
+
+<script>
+  import { shuffleBag } from "../../lib/mosaic";
+  import type { ApiVideo } from "../../lib/api";
+
+  const IDLE_MS = 2500;
+
+  async function hang(stage: HTMLElement): Promise<void> {
+    const bar = stage.querySelector<HTMLElement>(".bar")!;
+    const picker = document.getElementById("model") as HTMLSelectElement;
+    const soundButton = document.getElementById("sound") as HTMLButtonElement;
+    const skip = document.getElementById("skip") as HTMLButtonElement;
+    const full = document.getElementById("full") as HTMLButtonElement;
+    const nowPlaying = document.getElementById("now-playing")!;
+    const progress = document.getElementById("progress")!;
+    const { videos: videosUrl, models: modelsUrl, modelBase } = stage.dataset;
+    const params = new URLSearchParams(location.search);
+
+    const [{ videos }, index] = (await Promise.all(
+      [videosUrl!, modelsUrl!].map(async (url) => (await fetch(url)).json()),
+    )) as [{ videos: ApiVideo[] }, { models: { slug: string; owner: string; name: string }[] }];
+    if (videos.length === 0) {
+      nowPlaying.textContent = "nothing showing yet";
+      return;
+    }
+    const labels = new Map(index.models.map((m) => [m.slug, `${m.owner}/${m.name}`]));
+
+    // two screens take turns: the next clip loads on the hidden one while the
+    // current one plays, then fades in over it
+    let [screen, waiting] = [...stage.querySelectorAll<HTMLVideoElement>(".screen")] as [
+      HTMLVideoElement,
+      HTMLVideoElement,
+    ];
+    let sound = true;
+    let failures = 0;
+    let cued: ApiVideo | undefined;
+
+    picker.value = labels.has(params.get("model") ?? "") ? params.get("model")! : "";
+    let nextVideo = shuffleBag(pool());
+
+    function pool(): ApiVideo[] {
+      const chosen = videos.filter((v) => v.model === picker.value);
+      return chosen.length > 0 ? chosen : videos;
+    }
+
+    function cue(video: ApiVideo): void {
+      cued = video;
+      waiting.poster = video.poster;
+      waiting.src = video.mp4;
+      waiting.load();
+    }
+
+    function caption(video: ApiVideo): void {
+      nowPlaying.replaceChildren("now showing · ");
+      const model = document.createElement("a");
+      model.href = `${modelBase}${video.model}/`;
+      model.textContent = labels.get(video.model) ?? video.model;
+      // the clip's own permalink, kept on this host so it works off the live site too
+      const page = new URL(video.page);
+      const link = document.createElement("a");
+      link.href = page.pathname + page.hash;
+      link.textContent = `“${video.prompt}” #${page.hash.split("-").at(-1)}`;
+      nowPlaying.append(model, " · ", link);
+    }
+
+    function setSound(on: boolean): void {
+      sound = on;
+      screen.muted = !on;
+      soundButton.setAttribute("aria-pressed", String(on));
+    }
+
+    // a browser that won't start sound unprompted plays muted, and the
+    // first click or key press brings the sound in
+    function start(element: HTMLVideoElement): void {
+      element.muted = !sound;
+      element.play().catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === "NotAllowedError")) return;
+        setSound(false);
+        void element.play();
+        const unmute = (event: Event): void => {
+          document.removeEventListener("click", unmute, true);
+          document.removeEventListener("keydown", unmute);
+          if (event.target !== soundButton) setSound(true);
+        };
+        document.addEventListener("click", unmute, true);
+        document.addEventListener("keydown", unmute);
+      });
+    }
+
+    function advance(): void {
+      const video = cued ?? nextVideo();
+      if (!cued) cue(video);
+      [screen, waiting] = [waiting, screen];
+      waiting.pause();
+      waiting.classList.remove("on");
+      screen.classList.add("on");
+      screen.currentTime = 0;
+      start(screen);
+      caption(video);
+      cued = undefined;
+      cue(nextVideo());
+    }
+
+    for (const element of [screen, waiting]) {
+      element.addEventListener("ended", () => {
+        if (element !== screen) return;
+        failures = 0;
+        advance();
+      });
+      element.addEventListener("error", () => {
+        if (element !== screen) return;
+        // skip a clip that won't load, but don't spin forever if none will
+        failures += 1;
+        if (failures < pool().length) advance();
+      });
+    }
+
+    function trackProgress(): void {
+      const done = screen.duration > 0 ? screen.currentTime / screen.duration : 0;
+      progress.style.setProperty("--done", String(done));
+      requestAnimationFrame(trackProgress);
+    }
+    requestAnimationFrame(trackProgress);
+
+    // the address names the model on show, so it can be copied straight from the address bar
+    function writeAddress(): void {
+      const next = new URLSearchParams(location.search);
+      if (picker.value) next.set("model", picker.value);
+      else next.delete("model");
+      const query = next.toString();
+      history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}`);
+    }
+
+    picker.addEventListener("change", () => {
+      nextVideo = shuffleBag(pool());
+      cued = undefined;
+      advance();
+      writeAddress();
+    });
+    soundButton.addEventListener("click", () => setSound(!sound));
+    skip.addEventListener("click", advance);
+
+    function toggleFullscreen(): void {
+      if (document.fullscreenElement) void document.exitFullscreen();
+      else void stage.requestFullscreen().catch(() => {});
+    }
+    full.hidden = !document.fullscreenEnabled;
+    full.addEventListener("click", toggleFullscreen);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.target instanceof HTMLSelectElement) return; // the picker's type-ahead
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === "f") toggleFullscreen();
+      else if (event.key === "m") setSound(!sound);
+      else if (event.key === "n") advance();
+    });
+
+    // the bar fades once the pointer has been still for a while
+    let idleTimer: number | undefined;
+    function wake(): void {
+      stage.classList.remove("idle");
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => stage.classList.add("idle"), IDLE_MS);
+    }
+    stage.addEventListener("pointermove", wake);
+    bar.addEventListener("focusin", wake);
+    wake();
+
+    advance();
+  }
+
+  const stage = document.getElementById("stage");
+  if (stage) void hang(stage);
+</script>
+
+<style>
+  .stage {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    overflow: hidden;
+    outline: none;
+  }
+
+  .stage.idle {
+    cursor: none;
+  }
+
+  .screen {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+  }
+
+  .screen.on {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .screen {
+      transition: none;
+    }
+  }
+
+  .bar {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 2.5rem 1rem 0.9rem;
+    background: linear-gradient(transparent, rgb(0 0 0 / 85%));
+    transition: opacity 0.4s ease;
+  }
+
+  .progress {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: 3px;
+    background: rgb(255 255 255 / 12%);
+  }
+
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(var(--done, 0));
+    transform-origin: left;
+  }
+
+  .stage.idle .bar:not(:focus-within) {
+    opacity: 0;
+  }
+
+  .bar p {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    align-items: baseline;
+  }
+
+  .home {
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .home:hover {
+    color: var(--accent-bright);
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+  }
+
+  .controls :is(button, select) {
+    background: rgb(0 0 0 / 55%);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font: inherit;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+  }
+
+  .controls select {
+    max-width: 16rem;
+  }
+
+  .controls :is(button, select):hover {
+    color: var(--accent-bright);
+    border-color: var(--accent);
+  }
+
+  .controls button[aria-pressed="true"] {
+    color: var(--ground);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .help {
+    max-width: min(40rem, 100% - 2rem);
+    padding: 1.5rem 1.75rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+
+  .help::backdrop {
+    background: rgb(0 0 0 / 50%);
+  }
+
+  .help h1 {
+    font-size: 1.6rem;
+    margin: 0 0 0.75rem;
+  }
+
+  noscript p {
+    position: absolute;
+    inset: 40% 1rem auto;
+    text-align: center;
+  }
+</style>
