@@ -9,11 +9,12 @@ Two components:
 
 - **`pipeline/`** — a Python batch tool (`crungus`) that discovers models,
   generates images, sound and video clips, encodes them (AVIF; Opus with an AAC
-  fallback; H.264 with a poster frame), scores each image model's consistency
-  with CLIP, projects an embedding atlas with UMAP, decomposes the images into
-  eigencrungi in both pixel and CLIP space, renders the semantic axes with
-  Kandinsky 2.2, reconstructs a curated handful of images as 3D meshes with
-  Meshy, uploads to a Tigris bucket, and emits the site's data contract
+  fallback; AV1 with an H.264 fallback and a poster frame), scores each image
+  model's consistency with CLIP, projects an embedding atlas with UMAP,
+  decomposes the images into eigencrungi in both pixel and CLIP space, renders
+  the semantic axes with Kandinsky 2.2, reconstructs a curated handful of images
+  as 3D meshes with Meshy, uploads to a Tigris bucket, and emits the site's data
+  contract
 - **`site/`** — an Astro static site that presents the archive, per-model pages,
   the pan/zoom embedding atlas, the eigencrungi sliders, the sound archive, the
   video archive, the mesh viewer, and the display (a full-screen wall of images,
