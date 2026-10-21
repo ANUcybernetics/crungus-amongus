@@ -1,7 +1,7 @@
 // Shapes of the static JSON API under /api/. Unlike models.json (the internal
 // contract, keyed relative to the bucket) these are for outside consumers, so
 // every URL is absolute and each item carries its model and prompt.
-import { clipCount, generatedModels, imageCount, meshedImages } from "./models";
+import { clipCount, generatedModels, imageCount, meshedImages, videoCount } from "./models";
 import { itemRoute } from "./permalink";
 import type { ModelEntry, SiteData } from "./schema";
 
@@ -24,6 +24,14 @@ export interface ApiMesh {
 export interface ApiClip {
   opus: string;
   m4a: string;
+  page: string;
+  model: string;
+  prompt: string;
+}
+
+export interface ApiVideo {
+  mp4: string; // H.264, with the model's soundtrack where it made one
+  poster: string; // JPEG of the first frame
   page: string;
   model: string;
   prompt: string;
@@ -71,6 +79,18 @@ export function modelClips(model: ModelEntry, base: ApiBase): ApiClip[] {
   );
 }
 
+export function modelVideos(model: ModelEntry, base: ApiBase): ApiVideo[] {
+  return model.prompts.flatMap((p) =>
+    p.videos.map((v) => ({
+      mp4: `${base.media}/${v.mp4}`,
+      poster: `${base.media}/${v.poster}`,
+      page: itemPage(v.mp4, base),
+      model: model.slug,
+      prompt: p.prompt,
+    })),
+  );
+}
+
 export function modelSummary(model: ModelEntry, base: ApiBase) {
   return {
     slug: model.slug,
@@ -82,6 +102,7 @@ export function modelSummary(model: ModelEntry, base: ApiBase) {
     replicate_url: model.replicate_url,
     images: imageCount(model),
     clips: clipCount(model),
+    videos: videoCount(model),
     page: new URL(`model/${model.slug}/`, base.site).href,
     items: new URL(`api/models/${model.slug}.json`, base.site).href,
   };
@@ -100,6 +121,7 @@ export function modelDetail(data: SiteData, model: ModelEntry, base: ApiBase) {
     ...modelSummary(model, base),
     images: modelImages(model, base),
     clips: modelClips(model, base),
+    videos: modelVideos(model, base),
   };
 }
 
@@ -113,6 +135,12 @@ export function imagesIndex(data: SiteData, base: ApiBase) {
 export function audioIndex(data: SiteData, base: ApiBase) {
   const clips = generatedModels(data, "audio").flatMap((m) => modelClips(m, base));
   return { generated_at: data.generated_at, count: clips.length, clips };
+}
+
+/** /api/videos.json: every clip in the video archive. */
+export function videosIndex(data: SiteData, base: ApiBase) {
+  const videos = generatedModels(data, "video").flatMap((m) => modelVideos(m, base));
+  return { generated_at: data.generated_at, count: videos.length, videos };
 }
 
 /** /api/meshes.json: every mesh, with the image it was made from. */

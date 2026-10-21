@@ -1,7 +1,7 @@
 // zod mirror of the pipeline's site data contract (pipeline/src/crungus_amongus/site_export.py)
 import { z } from "zod";
 
-export const modalitySchema = z.enum(["image", "audio"]);
+export const modalitySchema = z.enum(["image", "audio", "video"]);
 
 export const imageRefSchema = z.object({
   key: z.string(), // "<model-slug>/<prompt-slug>/<index>.avif", relative to imageBaseUrl
@@ -16,6 +16,12 @@ export const imageRefSchema = z.object({
 export const clipRefSchema = z.object({
   opus: z.string(), // "<model-slug>/<prompt-slug>/<index>.opus"
   m4a: z.string(), // "<model-slug>/<prompt-slug>/<index>.m4a"
+});
+
+// both relative to imageBaseUrl
+export const videoRefSchema = z.object({
+  mp4: z.string(), // "<model-slug>/<prompt-slug>/<index>.mp4", H.264 with any soundtrack
+  poster: z.string(), // "<model-slug>/<prompt-slug>/<index>.jpg", its first frame
 });
 
 // how the asking went for the images the corpus actually holds
@@ -44,6 +50,7 @@ export const promptOutputsSchema = z.object({
   refusals: refusalsSchema,
   images: z.array(imageRefSchema), // image models
   clips: z.array(clipRefSchema), // audio models
+  videos: z.array(videoRefSchema), // video models
 });
 
 export const modelEntrySchema = z.object({
@@ -71,6 +78,7 @@ export const siteDataSchema = z.object({
 export type Modality = z.infer<typeof modalitySchema>;
 export type ImageRef = z.infer<typeof imageRefSchema>;
 export type ClipRef = z.infer<typeof clipRefSchema>;
+export type VideoRef = z.infer<typeof videoRefSchema>;
 export type Attempts = z.infer<typeof attemptsSchema>;
 export type Refusals = z.infer<typeof refusalsSchema>;
 export type PromptOutputs = z.infer<typeof promptOutputsSchema>;

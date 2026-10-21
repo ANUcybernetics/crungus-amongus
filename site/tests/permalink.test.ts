@@ -18,6 +18,7 @@ describe("item permalinks", () => {
       const keys = model.prompts.flatMap((p) => [
         ...p.images.map((i) => i.key),
         ...p.clips.map((c) => c.opus),
+        ...p.videos.map((v) => v.mp4),
       ]);
       const anchors = new Set(keys.map(itemAnchor));
       expect(anchors.size).toBe(keys.length);

@@ -7,9 +7,10 @@ import {
   meshesIndex,
   modelDetail,
   modelsIndex,
+  videosIndex,
 } from "../src/lib/api";
 import { siteData } from "../src/lib/data";
-import { clipCount, generatedModels, imageCount } from "../src/lib/models";
+import { clipCount, generatedModels, imageCount, videoCount } from "../src/lib/models";
 import type { SiteData } from "../src/lib/schema";
 
 const base = apiBase(siteData, new URL("https://example.test"), "/");
@@ -19,15 +20,20 @@ describe("JSON API", () => {
     const models = generatedModels(siteData);
     const { images, count } = imagesIndex(siteData, base);
     const { clips } = audioIndex(siteData, base);
+    const { videos } = videosIndex(siteData, base);
     expect(count).toBe(models.reduce((n, m) => n + imageCount(m), 0));
     expect(clips.length).toBe(models.reduce((n, m) => n + clipCount(m), 0));
+    expect(videos.length).toBe(models.reduce((n, m) => n + videoCount(m), 0));
     for (const image of images) {
       expect(image.url.startsWith(`${siteData.image_base_url}/${image.model}/`)).toBe(true);
     }
     for (const clip of clips) {
       expect(clip.opus.startsWith(`${siteData.image_base_url}/${clip.model}/`)).toBe(true);
     }
-    for (const item of [...images, ...clips]) {
+    for (const video of videos) {
+      expect(video.mp4.startsWith(`${siteData.image_base_url}/${video.model}/`)).toBe(true);
+    }
+    for (const item of [...images, ...clips, ...videos]) {
       expect(item.page).toMatch(
         new RegExp(`^https://example\\.test/model/${item.model}/#.+-\\d+$`),
       );
@@ -38,13 +44,14 @@ describe("JSON API", () => {
     const details = generatedModels(siteData).map((m) => modelDetail(siteData, m, base));
     expect(details.flatMap((d) => d.images)).toEqual(imagesIndex(siteData, base).images);
     expect(details.flatMap((d) => d.clips)).toEqual(audioIndex(siteData, base).clips);
+    expect(details.flatMap((d) => d.videos)).toEqual(videosIndex(siteData, base).videos);
   });
 
   it("the index counts each model's outputs and links to its page and items", () => {
     const { models } = modelsIndex(siteData, base);
     expect(models.map((m) => m.slug)).toEqual(generatedModels(siteData).map((m) => m.slug));
     for (const model of models) {
-      expect(model.images + model.clips).toBeGreaterThan(0);
+      expect(model.images + model.clips + model.videos).toBeGreaterThan(0);
       expect(model.page).toBe(`https://example.test/model/${model.slug}/`);
       expect(model.items).toBe(`https://example.test/api/models/${model.slug}.json`);
     }

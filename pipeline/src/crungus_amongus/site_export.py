@@ -49,6 +49,12 @@ class ClipRef(BaseModel):
     m4a: str  # "<slug>/<prompt_slug>/<index>.m4a"
 
 
+class VideoRef(BaseModel):
+    # both relative to image_base_url
+    mp4: str  # "<slug>/<prompt_slug>/<index>.mp4", H.264 with any soundtrack
+    poster: str  # "<slug>/<prompt_slug>/<index>.jpg", its first frame
+
+
 class Attempts(BaseModel):
     """How the asking went for the images the corpus actually holds.
 
@@ -86,6 +92,7 @@ class PromptOutputs(BaseModel):
     refusals: Refusals
     images: list[ImageRef]  # image models
     clips: list[ClipRef]  # audio models
+    videos: list[VideoRef]  # video models
 
 
 class ModelEntry(BaseModel):
@@ -252,12 +259,17 @@ def _model_entry(
     for prompt_slug, prompt in PROMPTS[model.modality].items():
         images: list[ImageRef] = []
         clips: list[ClipRef] = []
+        videos: list[VideoRef] = []
         for index in range(OUTPUTS_PER_PROMPT[model.modality]):
             stem = f"{model.slug}/{prompt_slug}/{index}"
             optimized = settings.optimized_dir / stem
             if model.modality == "audio":
                 if all(optimized.with_suffix(s).exists() for s in (".opus", ".m4a")):
                     clips.append(ClipRef(opus=f"{stem}.opus", m4a=f"{stem}.m4a"))
+                continue
+            if model.modality == "video":
+                if all(optimized.with_suffix(s).exists() for s in (".mp4", ".jpg")):
+                    videos.append(VideoRef(mp4=f"{stem}.mp4", poster=f"{stem}.jpg"))
                 continue
             if not optimized.with_suffix(".avif").exists():
                 continue
@@ -301,10 +313,11 @@ def _model_entry(
                 ),
                 images=images,
                 clips=clips,
+                videos=videos,
             )
         )
 
-    total = sum(len(p.images) + len(p.clips) for p in prompts)
+    total = sum(len(p.images) + len(p.clips) + len(p.videos) for p in prompts)
     expected = len(PROMPTS[model.modality]) * OUTPUTS_PER_PROMPT[model.modality]
     if model.availability != "ok":
         status: Literal[

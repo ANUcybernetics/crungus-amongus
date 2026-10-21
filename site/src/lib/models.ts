@@ -1,6 +1,14 @@
 // Pure helpers over the site data contract. Keep side-effect-free so tests
 // and scripts can reuse them; the data-binding layer (data.ts) imports the JSON.
-import type { ClipRef, ImageRef, Modality, ModelEntry, PromptOutputs, SiteData } from "./schema";
+import type {
+  ClipRef,
+  ImageRef,
+  Modality,
+  ModelEntry,
+  PromptOutputs,
+  SiteData,
+  VideoRef,
+} from "./schema";
 
 /** Models that produced at least one output, in timeline order; optionally one modality. */
 export function generatedModels(data: SiteData, modality?: Modality): ModelEntry[] {
@@ -27,8 +35,12 @@ export function clipCount(model: ModelEntry): number {
   return model.prompts.reduce((n, p) => n + p.clips.length, 0);
 }
 
+export function videoCount(model: ModelEntry): number {
+  return model.prompts.reduce((n, p) => n + p.videos.length, 0);
+}
+
 export function outputCount(model: ModelEntry): number {
-  return imageCount(model) + clipCount(model);
+  return imageCount(model) + clipCount(model) + videoCount(model);
 }
 
 export function promptBySlug(model: ModelEntry, promptSlug: string): PromptOutputs | undefined {
@@ -76,6 +88,12 @@ export function coverImage(model: ModelEntry): string | null {
 export function coverClip(model: ModelEntry): ClipRef | null {
   const bare = promptBySlug(model, "crungus");
   return bare?.clips[0] ?? model.prompts.flatMap((p) => p.clips)[0] ?? null;
+}
+
+/** A representative video, by the same rule as coverImage. */
+export function coverVideo(model: ModelEntry): VideoRef | null {
+  const bare = promptBySlug(model, "crungus");
+  return bare?.videos[0] ?? model.prompts.flatMap((p) => p.videos)[0] ?? null;
 }
 
 export function byCrungusness(models: ModelEntry[]): ModelEntry[] {

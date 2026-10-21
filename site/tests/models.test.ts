@@ -20,6 +20,8 @@ import type { ModelEntry } from "../src/lib/schema";
 const IMAGE_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d+\.avif$/;
 const OPUS_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d+\.opus$/;
 const OPUS_SUFFIX = /\.opus$/;
+const MP4_KEY = /^[a-z0-9-]+\/[a-z0-9-]+\/\d+\.mp4$/;
+const MP4_SUFFIX = /\.mp4$/;
 
 describe("dataset integrity", () => {
   it("parses the contract (data.ts throws otherwise)", () => {
@@ -49,11 +51,24 @@ describe("dataset integrity", () => {
     }
   });
 
+  it("every video has its poster beside it under its model", () => {
+    for (const model of siteData.models) {
+      for (const prompt of model.prompts) {
+        for (const video of prompt.videos) {
+          expect(video.mp4).toMatch(MP4_KEY);
+          expect(video.poster).toBe(video.mp4.replace(MP4_SUFFIX, ".jpg"));
+          expect(video.mp4.startsWith(model.slug)).toBe(true);
+        }
+      }
+    }
+  });
+
   it("outputs match the model's modality", () => {
     for (const model of siteData.models) {
       for (const prompt of model.prompts) {
-        if (model.modality === "image") expect(prompt.clips).toEqual([]);
-        else expect(prompt.images).toEqual([]);
+        if (model.modality !== "image") expect(prompt.images).toEqual([]);
+        if (model.modality !== "audio") expect(prompt.clips).toEqual([]);
+        if (model.modality !== "video") expect(prompt.videos).toEqual([]);
       }
     }
   });
@@ -87,6 +102,7 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 8, refused: 2 },
         images: [{ key: "test--model/crungus/0.avif", atlas: [0.1, 0.2], typicality: 0.7 }],
         clips: [],
+        videos: [],
       },
       {
         prompt: "a picture of a crungus",
@@ -96,6 +112,7 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 0, refused: 0 },
         images: [],
         clips: [],
+        videos: [],
       },
     ],
     ...overrides,
@@ -135,6 +152,7 @@ describe("helpers", () => {
           refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 1, refused: 0 },
           images: [],
           clips: [clip],
+          videos: [],
         },
       ],
     });
