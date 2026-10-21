@@ -15,7 +15,7 @@ import { path } from "../lib/paths";
 
 const TRAILING_SLASH = /\/$/;
 
-type Section = "images" | "sound" | "meshes" | "display" | "about";
+type Section = "images" | "sound" | "video" | "meshes" | "display" | "about";
 
 interface Props {
   title: string;
@@ -51,6 +51,9 @@ const nav: { href: string; label: string; section: Section }[] = [
   { href: path(), label: "images", section: "images" },
   { href: path("/sound/"), label: "sound", section: "sound" },
   // only once there is something to show
+  ...(generatedModels(siteData, "video").length > 0
+    ? [{ href: path("/video/"), label: "video", section: "video" as const }]
+    : []),
   ...(meshedImages(siteData).length > 0
     ? [{ href: path("/meshes/"), label: "meshes", section: "meshes" as const }]
     : []),

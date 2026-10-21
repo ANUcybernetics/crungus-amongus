@@ -6,7 +6,8 @@ import type { Modality } from "../lib/schema";
 interface Props {
   value: number | null;
   label?: string;
-  modality?: Modality;
+  // video has no consistency score
+  modality?: Exclude<Modality, "video">;
 }
 
 const { value, label = "consistency", modality = "image" } = Astro.props;

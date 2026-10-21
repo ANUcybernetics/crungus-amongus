@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
-import { clipCount, failedModels, generatedModels, imageCount } from "../lib/models";
+import { clipCount, failedModels, generatedModels, imageCount, videoCount } from "../lib/models";
 import { path } from "../lib/paths";
 
 const models = generatedModels(siteData, "image");
@@ -10,6 +10,9 @@ const imageTotal = models.reduce((n, m) => n + imageCount(m), 0);
 const soundModels = generatedModels(siteData, "audio");
 const soundFailed = failedModels(siteData, "audio");
 const clipTotal = soundModels.reduce((n, m) => n + clipCount(m), 0);
+const videoModels = generatedModels(siteData, "video");
+const videoFailed = failedModels(siteData, "video");
+const videoTotal = videoModels.reduce((n, m) => n + videoCount(m), 0);
 const generatedAt = siteData.generated_at.slice(0, 10);
 ---
 
@@ -64,6 +67,15 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       Clips are encoded and loudness-normalised for playback.
       {clipTotal > 0 ? ` The archive holds ${clipTotal} clips from ${soundModels.length} models.` : " The sound archive is still being recorded."}
       {soundFailed.length > 0 && ` ${soundFailed.length} additional models were attempted without producing a clip.`}
+    </p>
+    <h2>The video</h2>
+    <p>
+      The video experiment requests ten outputs for each of “crungus” and “a video of a crungus” from the models in Replicate's <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a>.
+      Each clip runs at the model's default length, since most price by the second and the default is the length a model is built for; the one model priced per clip gets its longest.
+      Where a model can generate its own soundtrack, it is asked to, and that soundtrack is loudness-normalised like the audio archive.
+      Video has no consistency score.
+      {videoTotal > 0 ? ` The archive holds ${videoTotal} clips from ${videoModels.length} models.` : " The video archive is still being filmed."}
+      {videoFailed.length > 0 && ` ${videoFailed.length} additional models were attempted without producing a clip.`}
     </p>
     <h2 id="consistency">Consistency</h2>
     <p>
@@ -139,8 +151,9 @@ const generatedAt = siteData.generated_at.slice(0, 10);
       The archive is also published as static JSON, readable from any origin.{" "}
       <a href={path("/api/models.json")}><code>/api/models.json</code></a> lists
       the models, <a href={path("/api/images.json")}><code>/api/images.json</code></a>{" "}
-      and <a href={path("/api/audio.json")}><code>/api/audio.json</code></a> list
-      every image and clip, and <code>/api/models/&lt;slug&gt;.json</code> holds
+      <a href={path("/api/audio.json")}><code>/api/audio.json</code></a>{" "}
+      and <a href={path("/api/videos.json")}><code>/api/videos.json</code></a> list
+      every image, sound and video clip, and <code>/api/models/&lt;slug&gt;.json</code> holds
       one model's outputs. Each entry is a link to the file with the model and
       prompt that produced it, plus its permalink on this site. To sample an
       output, fetch a list and select an entry.

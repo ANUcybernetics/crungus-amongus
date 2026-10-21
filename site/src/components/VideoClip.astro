@@ -1,0 +1,28 @@
+---
+// Native controls over the first-frame poster; nothing but the poster is
+// fetched until the viewer presses play. Many models made a soundtrack, so it
+// plays with sound like the audio archive does.
+import { bucketUrl } from "../lib/images";
+import type { VideoRef } from "../lib/schema";
+
+interface Props {
+  video: VideoRef;
+  label: string;
+}
+
+const { video, label } = Astro.props;
+---
+
+<video controls playsinline preload="none" poster={bucketUrl(video.poster)} aria-label={label}>
+  <source src={bucketUrl(video.mp4)} type="video/mp4" />
+</video>
+
+<style>
+  video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: var(--surface);
+  }
+</style>

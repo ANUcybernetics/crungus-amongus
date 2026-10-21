@@ -12,6 +12,7 @@ import {
   failedModels,
   generatedModels,
   timelineSample,
+  videoCount,
 } from "../lib/models";
 import { path } from "../lib/paths";
 
@@ -19,6 +20,8 @@ const models = generatedModels(siteData, "image");
 const failed = failedModels(siteData, "image");
 const soundModels = generatedModels(siteData, "audio");
 const clipTotal = soundModels.reduce((n, m) => n + clipCount(m), 0);
+const videoModels = generatedModels(siteData, "video");
+const videoTotal = videoModels.reduce((n, m) => n + videoCount(m), 0);
 const strip = timelineSample(models);
 const years = byYear(models);
 const scored = byCrungusness(models);
@@ -127,6 +130,18 @@ const imageTotal = models.reduce(
           {soundModels.length} models, in the{" "}
           <a href={path("/sound/")}>sound archive</a>, or shuffled end to end on{" "}
           <a href={path("/display/?radio")}>crungus radio</a>.
+        </p>
+      </section>
+    )
+  }
+
+  {
+    videoTotal > 0 && (
+      <section class="listen" aria-labelledby="watch-heading">
+        <h2 id="watch-heading">The crungus in motion</h2>
+        <p>
+          The video collection uses “crungus” and “a video of a crungus”: {videoTotal} clips from{" "}
+          {videoModels.length} models, in the <a href={path("/video/")}>video archive</a>.
         </p>
       </section>
     )

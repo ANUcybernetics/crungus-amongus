@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 
 import AudioClip from "../../components/AudioClip.astro";
 import ConsistencyMeter from "../../components/ConsistencyMeter.astro";
+import VideoClip from "../../components/VideoClip.astro";
 import Base from "../../layouts/Base.astro";
 import { siteData } from "../../lib/data";
 import { bucketUrl, localImage } from "../../lib/images";
@@ -20,14 +21,16 @@ export function getStaticPaths() {
 const { model } = Astro.props;
 const dated = model.release_date !== null;
 const audio = model.modality === "audio";
-const verb = audio ? "played" : "rendered";
+const video = model.modality === "video";
+const verb = audio ? "played" : video ? "filmed" : "rendered";
+const section = audio ? "sound" : video ? "video" : "images";
 const shareTitle = (prompt: string, key: string) =>
   `“${prompt}” #${itemNumber(key)} by ${model.owner}/${model.name} — Crungus Amongus`;
 ---
 
 <Base
-  section={audio ? "sound" : "images"}
-  image={audio ? null : coverImage(model)}
+  section={section}
+  image={audio || video ? null : coverImage(model)}
   title={`${model.owner}/${model.name} — Crungus Amongus`}
   description={`The crungus as ${verb} by ${model.owner}/${model.name}${dated ? ` (${releaseYear(model)})` : ""}.`}
 >
@@ -35,7 +38,7 @@ const shareTitle = (prompt: string, key: string) =>
     <header>
       <p class="mono muted eyebrow">
         {dated ? `release year ${releaseYear(model)}` : "release date unknown"} · {model.source === "legacy" ? "curated selection" : "Replicate collection"} ·{" "}
-        <a href={audio ? path("/sound/") : path()}>{audio ? "sound" : "image"}</a> ·{" "}
+        <a href={audio ? path("/sound/") : video ? path("/video/") : path()}>{audio ? "sound" : video ? "video" : "image"}</a> ·{" "}
         <a href={model.replicate_url}>view on replicate</a>
       </p>
       <h1 class="mono">{model.owner}/{model.name}</h1>
@@ -45,14 +48,14 @@ const shareTitle = (prompt: string, key: string) =>
 
     {
       model.prompts
-        .filter((prompt) => prompt.images.length + prompt.clips.length > 0)
+        .filter((prompt) => prompt.images.length + prompt.clips.length + prompt.videos.length > 0)
         .map((prompt) => (
           <section aria-labelledby={`prompt-${prompt.prompt_slug}`}>
             <div class="prompt-head">
               <h2 id={`prompt-${prompt.prompt_slug}`} class="mono">
                 “{prompt.prompt}”
               </h2>
-              <ConsistencyMeter value={prompt.consistency} modality={model.modality} />
+              {model.modality !== "video" && <ConsistencyMeter value={prompt.consistency} modality={model.modality} />}
             </div>
             {
               // only worth saying when it happened; most models refused nothing
@@ -66,7 +69,30 @@ const shareTitle = (prompt: string, key: string) =>
                 </p>
               )
             }
-            {audio ? (
+            {video ? (
+              <ol class="videos">
+                {prompt.videos.map((clip) => (
+                  <li id={itemAnchor(clip.mp4)}>
+                    <VideoClip
+                      video={clip}
+                      label={`clip ${itemNumber(clip.mp4)} of ${prompt.videos.length} for “${prompt.prompt}”`}
+                    />
+                    <p class="mono muted">
+                      <span>{String(itemNumber(clip.mp4)).padStart(2, "0")}</span>
+                      <button
+                        type="button"
+                        class="share"
+                        data-share={itemPath(clip.mp4)}
+                        data-title={shareTitle(prompt.prompt, clip.mp4)}
+                        aria-label={`share clip ${itemNumber(clip.mp4)} for “${prompt.prompt}”`}
+                      >
+                        share
+                      </button>
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            ) : audio ? (
               <ol class="clips">
                 {prompt.clips.map((clip) => (
                   <li id={itemAnchor(clip.opus)}>
@@ -129,7 +155,7 @@ const shareTitle = (prompt: string, key: string) =>
   </article>
 
   {
-    !audio && (
+    !audio && !video && (
       <dialog id="lightbox" closedby="any" aria-label="full-size image">
         <form method="dialog">
           <img alt="" />
@@ -397,6 +423,34 @@ const shareTitle = (prompt: string, key: string) =>
   .clips li:target {
     background: var(--surface);
     border-color: var(--accent);
+  }
+
+  .videos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(24rem, 100%), 1fr));
+    gap: 1rem 1.5rem;
+  }
+
+  .videos li {
+    padding: 0.4rem;
+    border: 1px solid transparent;
+    scroll-margin-block: 20vh;
+  }
+
+  /* the clip a permalink pointed at */
+  .videos li:target {
+    background: var(--surface);
+    border-color: var(--accent);
+  }
+
+  .videos p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.4rem 0 0;
   }
 
   dialog {

@@ -1,0 +1,112 @@
+---
+import VideoCard from "../components/VideoCard.astro";
+import Base from "../layouts/Base.astro";
+import { siteData } from "../lib/data";
+import { byYear, failedModels, generatedModels, videoCount } from "../lib/models";
+
+const models = generatedModels(siteData, "video");
+const failed = failedModels(siteData, "video");
+const years = byYear(models);
+const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
+---
+
+<Base
+  title="Video — Crungus Amongus"
+  description="Compare video clips generated from crungus prompts by text-to-video models available through Replicate."
+>
+  <section class="hero">
+    <h1>The crungus in motion</h1>
+    <p class="lede">
+      Models from Replicate's <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a>
+      were given “crungus” and “a video of a crungus”.
+      Each clip runs at the model's default length, and carries a soundtrack wherever the model can make one.
+      {videoTotal > 0 && ` ${videoTotal} clips from ${models.length} models.`}
+    </p>
+  </section>
+
+  {
+    videoTotal === 0 ? (
+      <p class="muted">Nothing showing yet: the video archive is still being filmed.</p>
+    ) : (
+      <section aria-labelledby="video-heading">
+        <h2 id="video-heading">The video archive</h2>
+        {years.map(([year, group]) => (
+          <section class="year" aria-label={`models from ${year}`}>
+            <h3 class="mono muted">{year}</h3>
+            <div class="grid">
+              {group.map((model) => (
+                <VideoCard model={model} />
+              ))}
+            </div>
+          </section>
+        ))}
+      </section>
+    )
+  }
+
+  {
+    failed.length > 0 && (
+      <section class="failed" aria-labelledby="failed-heading">
+        <h2 id="failed-heading">Did not answer</h2>
+        <p class="muted">These models were asked and produced nothing.</p>
+        <ul class="mono">
+          {failed.map((model) => (
+            <li>
+              <a href={model.replicate_url}>
+                {model.owner}/{model.name}
+              </a>
+              <span class="muted"> — {model.status}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Base>
+
+<style>
+  .hero {
+    padding-block: 2.5rem 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    margin: 0 0 1rem;
+  }
+
+  .lede {
+    max-width: 46rem;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .year h3 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-block-end: 1px solid var(--line);
+    padding-block-end: 0.4rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .failed {
+    margin-block-start: 3.5rem;
+  }
+
+  .failed ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+</style>
