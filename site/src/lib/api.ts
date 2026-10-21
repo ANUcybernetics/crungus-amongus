@@ -30,7 +30,8 @@ export interface ApiClip {
 }
 
 export interface ApiVideo {
-  mp4: string; // H.264, with the model's soundtrack where it made one
+  av1: string; // AV1, with the model's soundtrack where it made one
+  mp4: string; // H.264 of the same, for browsers without AV1
   poster: string; // JPEG of the first frame
   page: string;
   model: string;
@@ -82,6 +83,7 @@ export function modelClips(model: ModelEntry, base: ApiBase): ApiClip[] {
 export function modelVideos(model: ModelEntry, base: ApiBase): ApiVideo[] {
   return model.prompts.flatMap((p) =>
     p.videos.map((v) => ({
+      av1: `${base.media}/${v.av1}`,
       mp4: `${base.media}/${v.mp4}`,
       poster: `${base.media}/${v.poster}`,
       page: itemPage(v.mp4, base),

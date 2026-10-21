@@ -18,9 +18,10 @@ export const clipRefSchema = z.object({
   m4a: z.string(), // "<model-slug>/<prompt-slug>/<index>.m4a"
 });
 
-// both relative to imageBaseUrl
+// all relative to imageBaseUrl; AV1 where the browser can play it, H.264 otherwise
 export const videoRefSchema = z.object({
-  mp4: z.string(), // "<model-slug>/<prompt-slug>/<index>.mp4", H.264 with any soundtrack
+  av1: z.string(), // "<model-slug>/<prompt-slug>/<index>.av1.mp4", with any soundtrack
+  mp4: z.string(), // "<model-slug>/<prompt-slug>/<index>.mp4", H.264 with the same
   poster: z.string(), // "<model-slug>/<prompt-slug>/<index>.jpg", its first frame
 });
 

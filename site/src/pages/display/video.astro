@@ -95,6 +95,7 @@ const models = generatedModels(siteData, "video");
     let sound = true;
     let failures = 0;
     let cued: ApiVideo | undefined;
+    const canAv1 = screen.canPlayType('video/mp4; codecs="av01.0.08M.08"') !== "";
 
     picker.value = labels.has(params.get("model") ?? "") ? params.get("model")! : "";
     let nextVideo = shuffleBag(pool());
@@ -107,7 +108,7 @@ const models = generatedModels(siteData, "video");
     function cue(video: ApiVideo): void {
       cued = video;
       waiting.poster = video.poster;
-      waiting.src = video.mp4;
+      waiting.src = canAv1 ? video.av1 : video.mp4;
       waiting.load();
     }
 

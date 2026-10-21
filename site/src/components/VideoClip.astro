@@ -14,6 +14,7 @@ const { video, label } = Astro.props;
 ---
 
 <video controls playsinline preload="none" poster={bucketUrl(video.poster)} aria-label={label}>
+  <source src={bucketUrl(video.av1)} type='video/mp4; codecs="av01.0.08M.08"' />
   <source src={bucketUrl(video.mp4)} type="video/mp4" />
 </video>
 

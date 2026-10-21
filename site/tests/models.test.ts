@@ -57,6 +57,7 @@ describe("dataset integrity", () => {
         for (const video of prompt.videos) {
           expect(video.mp4).toMatch(MP4_KEY);
           expect(video.poster).toBe(video.mp4.replace(MP4_SUFFIX, ".jpg"));
+          expect(video.av1).toBe(video.mp4.replace(MP4_SUFFIX, ".av1.mp4"));
           expect(video.mp4.startsWith(model.slug)).toBe(true);
         }
       }

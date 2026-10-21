@@ -31,7 +31,9 @@ describe("JSON API", () => {
       expect(clip.opus.startsWith(`${siteData.image_base_url}/${clip.model}/`)).toBe(true);
     }
     for (const video of videos) {
-      expect(video.mp4.startsWith(`${siteData.image_base_url}/${video.model}/`)).toBe(true);
+      for (const url of [video.av1, video.mp4, video.poster]) {
+        expect(url.startsWith(`${siteData.image_base_url}/${video.model}/`)).toBe(true);
+      }
     }
     for (const item of [...images, ...clips, ...videos]) {
       expect(item.page).toMatch(

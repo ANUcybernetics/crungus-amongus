@@ -51,7 +51,8 @@ class ClipRef(BaseModel):
 
 class VideoRef(BaseModel):
     # both relative to image_base_url
-    mp4: str  # "<slug>/<prompt_slug>/<index>.mp4", H.264 with any soundtrack
+    av1: str  # "<slug>/<prompt_slug>/<index>.av1.mp4", AV1 with any soundtrack
+    mp4: str  # "<slug>/<prompt_slug>/<index>.mp4", the H.264 fallback
     poster: str  # "<slug>/<prompt_slug>/<index>.jpg", its first frame
 
 
@@ -268,8 +269,15 @@ def _model_entry(
                     clips.append(ClipRef(opus=f"{stem}.opus", m4a=f"{stem}.m4a"))
                 continue
             if model.modality == "video":
-                if all(optimized.with_suffix(s).exists() for s in (".mp4", ".jpg")):
-                    videos.append(VideoRef(mp4=f"{stem}.mp4", poster=f"{stem}.jpg"))
+                encodes = (".av1.mp4", ".mp4", ".jpg")
+                if all(optimized.with_suffix(s).exists() for s in encodes):
+                    videos.append(
+                        VideoRef(
+                            av1=f"{stem}.av1.mp4",
+                            mp4=f"{stem}.mp4",
+                            poster=f"{stem}.jpg",
+                        )
+                    )
                 continue
             if not optimized.with_suffix(".avif").exists():
                 continue

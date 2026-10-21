@@ -75,18 +75,14 @@ VIDEO_SCALE = (
     "scale=w='min(iw,1920)':h='min(ih,1920)'"
     ":force_original_aspect_ratio=decrease:force_divisible_by=2"
 )
-VIDEO_ARGS = [
-    "-c:v",
-    "libx264",
-    "-preset",
-    "slow",
-    "-crf",
-    "23",
-    "-pix_fmt",
-    "yuv420p",
-    "-movflags",
-    "+faststart",
-]
+# Every clip ships as AV1 with an H.264 fallback, whatever the model returned.
+# AV1 at CRF 34 matches H.264 at CRF 23 on SSIM at about a third of the size;
+# the H.264 is for Safari on Apple hardware without an AV1 decoder.
+VIDEO_ENCODES: dict[str, list[str]] = {
+    ".mp4": ["-c:v", "libx264", "-preset", "slow", "-crf", "23"],
+    ".av1.mp4": ["-c:v", "libsvtav1", "-preset", "5", "-crf", "34"],
+}
+VIDEO_ARGS = ["-pix_fmt", "yuv420p", "-movflags", "+faststart"]
 VIDEO_AUDIO_ARGS = ["-af", LOUDNORM, "-ar", SAMPLE_RATE, "-c:a", "aac", "-b:a", "128k"]
 
 
@@ -115,8 +111,11 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
     for source in originals:
         relative = source.relative_to(settings.originals_dir)
         if relative.parts[0] in video_slugs:
-            dest = settings.optimized_dir / relative.with_suffix(".mp4")
-            jobs.append(_Encode(source, dest, "video"))
+            for suffix in VIDEO_ENCODES:
+                dest = settings.optimized_dir / relative.with_name(
+                    relative.stem + suffix
+                )
+                jobs.append(_Encode(source, dest, "video"))
             continue
         is_audio = source.suffix.lower() in AUDIO_EXTENSIONS
         for suffix in list(AUDIO_ENCODES) if is_audio else [".avif"]:
@@ -234,8 +233,10 @@ def encode_audio(source: Path, dest: Path) -> None:
 
 
 def encode_video(source: Path, dest: Path) -> None:
-    """The MP4, then its poster (the .jpg beside it) from the encoded first frame."""
+    """One of the clip's encodes (VIDEO_ENCODES, chosen by the dest's suffixes);
+    the H.264 one also makes the poster (the .jpg beside it) from its first frame."""
     dest.parent.mkdir(parents=True, exist_ok=True)
+    suffix = ".av1.mp4" if dest.name.endswith(".av1.mp4") else ".mp4"
     audio = VIDEO_AUDIO_ARGS if _has_audio(source) else ["-an"]
     subprocess.run(
         [
@@ -247,6 +248,7 @@ def encode_video(source: Path, dest: Path) -> None:
             str(source),
             "-vf",
             VIDEO_SCALE,
+            *VIDEO_ENCODES[suffix],
             *VIDEO_ARGS,
             *audio,
             str(dest),
@@ -254,6 +256,8 @@ def encode_video(source: Path, dest: Path) -> None:
         check=True,
         capture_output=True,
     )
+    if suffix != ".mp4":
+        return
     subprocess.run(
         [
             "ffmpeg",

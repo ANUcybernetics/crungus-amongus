@@ -112,9 +112,8 @@ def test_video_model_publishes_clips_with_their_posters(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     clip_dir = settings.optimized_dir / "google--veo-3" / "crungus"
     clip_dir.mkdir(parents=True)
-    (clip_dir / "0.mp4").write_bytes(b"")
-    (clip_dir / "0.jpg").write_bytes(b"")
-    (clip_dir / "1.mp4").write_bytes(b"")  # poster missing: not published
+    for name in ("0.av1.mp4", "0.mp4", "0.jpg", "1.mp4", "1.jpg"):
+        (clip_dir / name).write_bytes(b"")  # 1 has no AV1 encode: not published
     registry = Registry(
         fetched_at=datetime.now(tz=UTC),
         models=[
@@ -133,8 +132,9 @@ def test_video_model_publishes_clips_with_their_posters(tmp_path: Path) -> None:
     assert entry.status == "partial"
     assert [p.prompt_slug for p in entry.prompts] == ["crungus", "a-video-of-a-crungus"]
     videos = entry.prompts[0].videos
-    assert [(v.mp4, v.poster) for v in videos] == [
-        ("google--veo-3/crungus/0.mp4", "google--veo-3/crungus/0.jpg")
+    stem = "google--veo-3/crungus/0"
+    assert [(v.av1, v.mp4, v.poster) for v in videos] == [
+        (f"{stem}.av1.mp4", f"{stem}.mp4", f"{stem}.jpg")
     ]
     assert entry.prompts[0].images == entry.prompts[0].clips == []
 

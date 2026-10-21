@@ -74,7 +74,7 @@ def test_avifenc_is_available() -> None:
     assert result.returncode == 0
 
 
-def test_video_encodes_to_mp4_and_poster_and_stays_out_of_the_image_corpus(
+def test_video_encodes_to_av1_and_h264_with_a_poster_outside_the_image_corpus(
     tmp_path: Path,
 ) -> None:
     from datetime import UTC, datetime
@@ -108,13 +108,16 @@ def test_video_encodes_to_mp4_and_poster_and_stays_out_of_the_image_corpus(
     )
     # a GIF from a video model is a clip, not an image
     subprocess.run(
-        [*lavfi, "testsrc=size=64x48:duration=1", str(clips / "1.gif")], check=True
+        [*lavfi, "testsrc=size=128x96:duration=1", str(clips / "1.gif")], check=True
     )
 
-    assert optimize_all(settings) == (2, 0, 0)
+    assert optimize_all(settings) == (4, 0, 0)
 
     out = settings.optimized_dir / "owner--video-model" / "crungus"
-    assert sorted(p.name for p in out.iterdir()) == ["0.jpg", "0.mp4", "1.jpg", "1.mp4"]
+    assert sorted(p.name for p in out.iterdir()) == [
+        *["0.av1.mp4", "0.jpg", "0.mp4"],
+        *["1.av1.mp4", "1.jpg", "1.mp4"],
+    ]
     assert not list(settings.optimized_dir.rglob("*.avif"))
 
     def streams(path: Path) -> list[str]:
@@ -129,3 +132,5 @@ def test_video_encodes_to_mp4_and_poster_and_stays_out_of_the_image_corpus(
 
     assert streams(out / "0.mp4") == ["h264", "aac"]
     assert streams(out / "1.mp4") == ["h264"]
+    assert streams(out / "0.av1.mp4") == ["av1", "aac"]
+    assert streams(out / "1.av1.mp4") == ["av1"]
