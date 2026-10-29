@@ -8,13 +8,10 @@ importers:
 
   .:
     dependencies:
-      '@fontsource/eczar':
-        specifier: ^5.3.0
-        version: 5.3.0
       '@fontsource/ibm-plex-mono':
         specifier: ^5.3.0
         version: 5.3.0
-      '@fontsource/ibm-plex-sans':
+      '@fontsource/manrope':
         specifier: ^5.3.0
         version: 5.3.0
       '@google/model-viewer':
@@ -504,14 +501,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fontsource/eczar@5.3.0':
-    resolution: {integrity: sha512-HIDqQVs2NhNlm8W0wXABW45H+CGIJ7EhsYZ4iN0/Wz+FByYS+vlxvxGokN4x4A6Bbmru4kAujE7VM0CuoR47ZA==}
-
   '@fontsource/ibm-plex-mono@5.3.0':
     resolution: {integrity: sha512-eTgnZjZEGk1QtD3ZstF+Vclo2HLAni8YMy34/DxllwZvyz1lR/1RF/xTiAquOBO7MvqBx8D2Ig2WCPMVfdZu7Q==}
 
-  '@fontsource/ibm-plex-sans@5.3.0':
-    resolution: {integrity: sha512-CbE4CbbEEZJX860XyUiRpsksXIQR8Rp2XDva2VO53NJox9tVNtusrysd2x5YkUEY3ErQ66W1IiiQL8/wihhw5w==}
+  '@fontsource/manrope@5.3.0':
+    resolution: {integrity: sha512-obJ1Dv3+uCA6HlHgW8u4BGYxJR9In2HW7gjJhlflEvkrj1X1iSEwu0fToL+JYGC/FEKFfIz1sBuPduvcL2gIAA==}
 
   '@google/model-viewer@4.3.1':
     resolution: {integrity: sha512-GP+inXhAtY31E8rILVmByA6z8CZZjdlNajddppyI1/j1eIaSQiZcMRaUqTFe7+jv4mzRzwKIOiKBud0apiv+WQ==}
@@ -2982,11 +2976,9 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@fontsource/eczar@5.3.0': {}
-
   '@fontsource/ibm-plex-mono@5.3.0': {}
 
-  '@fontsource/ibm-plex-sans@5.3.0': {}
+  '@fontsource/manrope@5.3.0': {}
 
   '@google/model-viewer@4.3.1(three@0.183.2)':
     dependencies:

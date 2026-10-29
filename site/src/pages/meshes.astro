@@ -36,20 +36,30 @@ const meshes = meshedImages(siteData);
               loading="lazy"
               camera-controls
               touch-action="pan-y"
-              shadow-intensity="1"
+              interaction-prompt="none"
+              auto-rotate
+              auto-rotate-delay="0"
+              rotation-per-second="7deg"
+              camera-orbit="0deg 82deg auto"
+              tone-mapping="aces"
+              exposure="0.5"
+              shadow-intensity="0.6"
+              shadow-softness="1"
             />
-            <p class="mono">
-              <a href={path(`/model/${model.slug}/`)}>{model.owner}/{model.name}</a>
-              <span class="muted">“{prompt.prompt}”</span>
-              <a href={bucketUrl(image.key)}>image</a> · <a href={bucketUrl(image.mesh)} download>glb</a> ·{" "}
-              <button
-                type="button"
-                class="share"
-                data-share={itemPath(image.key)}
-                data-title={`“${prompt.prompt}” #${itemNumber(image.key)} by ${model.owner}/${model.name}, in 3D — Crungus Amongus`}
-              >
-                share
-              </button>
+            <p class="caption-label">
+              <a href={path(`/model/${model.slug}/`)}>{model.owner}/<wbr />{model.name}</a>
+              <span class="caption-note">“{prompt.prompt}”</span>
+              <span class="actions">
+                <a href={bucketUrl(image.key)}>image</a> · <a href={bucketUrl(image.mesh)} download>glb</a> ·{" "}
+                <button
+                  type="button"
+                  class="share"
+                  data-share={itemPath(image.key)}
+                  data-title={`“${prompt.prompt}” #${itemNumber(image.key)} by ${model.owner}/${model.name}, in 3D — Crungus Amongus`}
+                >
+                  share
+                </button>
+              </span>
             </p>
           </li>
         ))}
@@ -98,7 +108,16 @@ const meshes = meshedImages(siteData);
     /* the element's own :host style fixes a 150px height */
     height: auto;
     aspect-ratio: 1;
-    background: var(--surface);
+    /* the page's own ground, lit from behind by the bestiary's warm glow; the
+       canvas is transparent, so the glow reads through around the creature */
+    background-color: var(--ground);
+    background-image: radial-gradient(
+      ellipse 42% 58% at 50% 50%,
+      rgb(72 58 30 / 70%) 0%,
+      rgb(72 58 30 / 32%) 45%,
+      rgb(72 58 30 / 0%) 100%
+    );
+    background-repeat: no-repeat;
   }
 
   li p {
@@ -106,7 +125,19 @@ const meshes = meshedImages(siteData);
     flex-wrap: wrap;
     gap: 0.25rem 0.75rem;
     margin: 0.5rem 0 0;
-    font-size: 0.85rem;
+    align-items: baseline;
     overflow-wrap: anywhere;
+  }
+
+  /* image · glb · share wrap as one unit */
+  li p .actions {
+    white-space: nowrap;
+  }
+
+  /* the share button takes the caption's label voice, not its own mono one */
+  li p .share {
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
   }
 </style>

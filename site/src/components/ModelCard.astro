@@ -33,10 +33,10 @@ const score = crungusness(model);
         <div class="no-image mono muted">no output</div>
       )
     }
-    <h3 class="mono">{model.owner}/{model.name}</h3>
+    <h3 class="caption-label">{model.owner}/<wbr />{model.name}</h3>
   </a>
   <p class="meta mono muted">
-    <span>{releaseYear(model)}</span>
+    <span class="caption-note">{releaseYear(model)}</span>
     <ConsistencyMeter value={score} label="" />
   </p>
 </article>
@@ -63,14 +63,12 @@ const score = crungusness(model);
   }
 
   .card h3 {
-    font-size: 0.8rem;
-    font-weight: 500;
     margin: 0.5rem 0 0.15rem;
     overflow-wrap: anywhere;
   }
 
   .card a:hover h3 {
-    color: var(--accent-bright);
+    color: var(--hover);
   }
 
   .meta {

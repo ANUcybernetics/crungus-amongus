@@ -2,6 +2,26 @@
    Warm brown-black ground so the specimens glow; bone text; a single
    rust-ochre accent drawn from the creature's own fur. */
 
+/* the bestiary's faces. Archiv Grotesk is the trial cut: one weight, and only
+   A-Z, a-z, 0-9, space, comma, hyphen and full stop, so anything else falls
+   through to the sans fallbacks in --font-display. Manrope Thin is below
+   Fontsource's range (200+), so it's self-hosted; 500 comes from Fontsource */
+@font-face {
+  font-family: "Archiv Grotesk";
+  src: url("../assets/fonts/ArchivGrotesk-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Manrope;
+  src: url("../assets/fonts/Manrope-Thin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --ground: #17140f;
   --surface: #211c14;
@@ -11,12 +31,14 @@
   --muted: #968a7a; /* clears AA on --surface (5.01:1) and --surface-raised (4.56:1); #8d8171 was 4.44 */
   --accent: #c08434;
   --accent-bright: #dfa14e;
+  --hover: #c46a58; /* the bestiary gallery's hover accent */
 
-  --font-display: "Eczar", serif;
-  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "Archiv Grotesk", "Helvetica Neue", arial, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  --content-width: 72rem;
+  /* side margin, as the bestiary gallery: full width less a gutter */
+  --gutter: clamp(16px, 4vw, 56px);
 
   color-scheme: dark;
 }
@@ -35,6 +57,7 @@ html {
   background: var(--ground);
   color: var(--text);
   font-family: var(--font-body);
+  font-weight: 100;
   line-height: 1.55;
   text-size-adjust: 100%;
 }
@@ -47,7 +70,7 @@ body {
 }
 
 main {
-  width: min(var(--content-width), 100% - 2.5rem);
+  width: calc(100% - 2 * var(--gutter));
   margin-inline: auto;
   flex: 1;
 }
@@ -56,19 +79,19 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400; /* Archiv's only weight; anything heavier is faux bold */
   line-height: 1.15;
   text-wrap: balance;
 }
 
 a {
-  color: var(--accent-bright);
+  color: var(--text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
 
 a:hover {
-  color: var(--text);
+  color: var(--hover);
 }
 
 img {
@@ -102,7 +125,7 @@ img {
   background: none;
   border: none;
   padding: 0;
-  color: var(--accent-bright);
+  color: var(--text);
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.02em;
@@ -113,7 +136,27 @@ img {
 }
 
 .share:hover {
-  color: var(--text);
+  color: var(--hover);
+}
+
+/* captions under images and meshes, set like the bestiary gallery's
+   "No. 18 ... 23 October 2026" line: an Archiv label, then a Manrope note */
+.caption-label {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(10px, 0.8vw, 13px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.caption-note {
+  font-family: var(--font-body);
+  font-weight: 100;
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
 }
 
 /* set by lib/share.ts after copying a link; at the top, clear of the
