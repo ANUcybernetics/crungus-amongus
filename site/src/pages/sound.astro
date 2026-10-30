@@ -15,8 +15,8 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
   title="Sound — Crungus Amongus"
   description="Compare audio generated from crungus prompts by music and speech models available through Replicate."
 >
+  <h1 slot="heading">The sound of crungus</h1>
   <section class="hero">
-    <h1>The sound of crungus</h1>
     <p class="lede">
       Music and speech models from Replicate's <a href="https://replicate.com/collections/ai-music-generation">music collection</a>
       and a curated selection were given “crungus” and “the sound of a crungus”.
@@ -40,7 +40,7 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
     ) : (
       <section aria-labelledby="sound-heading">
         <div class="archive-head">
-          <h2 id="sound-heading">The sound archive</h2>
+          <h2 id="sound-heading">The Sound Archive</h2>
           <p class="mono sort" hidden>
             <span class="muted">order by</span>
             <button id="sort-year" aria-pressed="true" type="button">
@@ -107,8 +107,8 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
   }
 
   .lede {
-    max-width: 46rem;
     font-size: 1.1rem;
+    color: var(--title);
     margin: 0 0 1.25rem;
   }
 
@@ -127,6 +127,11 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
   h2 {
     font-size: 1.6rem;
     margin: 0 0 0.75rem;
+  }
+
+  /* the archive's heading, the size of the image archive's */
+  #sound-heading {
+    font-size: 40px;
   }
 
   .sort button {

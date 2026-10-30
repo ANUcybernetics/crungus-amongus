@@ -15,8 +15,8 @@ const imageBase = siteData.image_base_url;
   title="Eigencrungi — Crungus Amongus"
   description="Explore variation in archive images with pixel and CLIP feature sliders, reconstructions and generated previews."
 >
+  <h1 slot="heading">The eigencrungi</h1>
   <section class="intro">
-    <h1>The eigencrungi</h1>
     <div class="modes mono" role="group" aria-label="which space to decompose">
       <button id="mode-pixels" type="button" aria-pressed="true">pixels</button>
       <button id="mode-semantic" type="button" aria-pressed="false">CLIP features</button>
@@ -679,8 +679,8 @@ const imageBase = siteData.image_base_url;
   }
 
   .lede {
-    max-width: 46rem;
     margin: 0 0 1.5rem;
+    color: var(--title);
   }
 
   .modes {
@@ -734,7 +734,7 @@ const imageBase = siteData.image_base_url;
 
   .stage {
     position: sticky;
-    top: 1rem;
+    top: calc(var(--masthead-height, 0px) + 1rem);
   }
 
   .pair {
@@ -995,6 +995,7 @@ const imageBase = siteData.image_base_url;
   .notes {
     max-width: 46rem;
     margin-block-end: 2rem;
+    color: var(--title);
   }
 
   .notes[hidden] {

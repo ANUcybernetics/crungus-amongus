@@ -30,8 +30,8 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   title="Atlas — Crungus Amongus"
   description="Explore archive images arranged by CLIP similarity in an interactive UMAP projection."
 >
+  <h1 slot="heading">The atlas</h1>
   <section class="intro">
-    <h1>The atlas</h1>
     <p class="lede">
       The atlas arranges images using CLIP similarity and a two-dimensional UMAP projection.
       Nearby images can share subjects, colours or composition. Apparent clusters depend on the projection and need closer inspection.
@@ -250,8 +250,8 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   }
 
   .lede {
-    max-width: 46rem;
     margin: 0 0 1rem;
+    color: var(--title);
   }
 
   .legend {

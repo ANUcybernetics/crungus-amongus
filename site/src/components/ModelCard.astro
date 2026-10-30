@@ -71,6 +71,17 @@ const score = crungusness(model);
     color: var(--hover);
   }
 
+  /* held back, as the bestiary gallery holds its plates, and given their
+     colour back on hover */
+  .card img {
+    filter: saturate(0.45) contrast(0.95);
+    transition: filter 0.6s ease;
+  }
+
+  .card a:is(:hover, :focus-visible) img {
+    filter: none;
+  }
+
   .meta {
     display: flex;
     justify-content: space-between;

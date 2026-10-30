@@ -17,8 +17,8 @@ const generatedAt = siteData.generated_at.slice(0, 10);
   title="About — Crungus Amongus"
   description="What the crungus is, how this archive was made, and what the consistency score does and doesn't mean."
 >
+  <h1 slot="heading">About</h1>
   <article>
-    <h1>About</h1>
 
     <p>
       Crungus Amongus combines a comparative study of model outputs with an interactive audiovisual archive.
@@ -171,6 +171,7 @@ const generatedAt = siteData.generated_at.slice(0, 10);
   article {
     max-width: 46rem;
     padding-block: 2rem 3rem;
+    color: var(--title);
   }
 
   h1 {

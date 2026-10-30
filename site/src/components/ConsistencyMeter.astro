@@ -42,12 +42,16 @@ const embedding = modality === "audio" ? "CLAP" : "CLIP";
     /* firefox */
     background: var(--surface-raised);
     border: none;
+
+    /* a capsule: round-ended track, and a round-ended fill inside it */
+    border-radius: 999px;
+    overflow: hidden;
   }
 
   meter::-webkit-meter-bar {
     background: var(--surface-raised);
     border: none;
-    border-radius: 0;
+    border-radius: 999px;
     height: 0.5rem;
   }
 
@@ -55,9 +59,11 @@ const embedding = modality === "audio" ? "CLAP" : "CLIP";
   meter::-webkit-meter-suboptimum-value,
   meter::-webkit-meter-even-less-good-value {
     background: var(--accent);
+    border-radius: 999px;
   }
 
   meter::-moz-meter-bar {
     background: var(--accent);
+    border-radius: 999px;
   }
 </style>

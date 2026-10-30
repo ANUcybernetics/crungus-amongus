@@ -14,8 +14,8 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
   title="Video — Crungus Amongus"
   description="Compare video clips generated from crungus prompts by text-to-video models available through Replicate."
 >
+  <h1 slot="heading">The crungus in motion</h1>
   <section class="hero">
-    <h1>The crungus in motion</h1>
     <p class="lede">
       Models from Replicate's <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a>
       were given “crungus” and “a video of a crungus”.
@@ -37,7 +37,7 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
       <p class="muted">Nothing showing yet: the video archive is still being filmed.</p>
     ) : (
       <section aria-labelledby="video-heading">
-        <h2 id="video-heading">The video archive</h2>
+        <h2 id="video-heading">The Video Archive</h2>
         {years.map(([year, group]) => (
           <section class="year" aria-label={`models from ${year}`}>
             <h3 class="mono muted">{year}</h3>
@@ -64,8 +64,8 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
   }
 
   .lede {
-    max-width: 46rem;
     font-size: 1.1rem;
+    color: var(--title);
     margin: 0 0 1.25rem;
   }
 
@@ -76,6 +76,11 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
   h2 {
     font-size: 1.6rem;
     margin: 0 0 0.75rem;
+  }
+
+  /* the archive's heading, the size of the image archive's */
+  #video-heading {
+    font-size: 40px;
   }
 
   .year h3 {

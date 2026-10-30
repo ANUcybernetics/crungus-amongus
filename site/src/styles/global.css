@@ -28,10 +28,11 @@
   --surface-raised: #2a2418;
   --line: #3a3226;
   --text: #d9cfbf;
+  --title: #ac9f91; /* the pages' titles, their intros and links */
   --muted: #968a7a; /* clears AA on --surface (5.01:1) and --surface-raised (4.56:1); #8d8171 was 4.44 */
   --accent: #c08434;
   --accent-bright: #dfa14e;
-  --hover: #c46a58; /* the bestiary gallery's hover accent */
+  --hover: var(--accent); /* the sort buttons' amber, the o in the name */
 
   --font-display: "Archiv Grotesk", "Helvetica Neue", arial, sans-serif;
   --font-body: "Manrope", system-ui, sans-serif;
@@ -54,6 +55,8 @@
 }
 
 html {
+  /* anchors land below the pinned masthead (set in Base.astro) */
+  scroll-padding-block-start: var(--masthead-height, 0);
   background: var(--ground);
   color: var(--text);
   font-family: var(--font-body);
@@ -85,13 +88,22 @@ h3 {
 }
 
 a {
-  color: var(--text);
+  color: var(--title);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
 
 a:hover {
   color: var(--hover);
+}
+
+/* every hover fades into the accent rather than snapping to it, and back out;
+   descendants too, for links whose hover recolours a heading inside them */
+:is(a, button, select),
+a * {
+  transition-property: color, background-color, border-color, text-decoration-color;
+  transition-duration: 0.35s;
+  transition-timing-function: ease;
 }
 
 img {
@@ -125,7 +137,7 @@ img {
   background: none;
   border: none;
   padding: 0;
-  color: var(--text);
+  color: var(--title);
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.02em;
@@ -137,6 +149,26 @@ img {
 
 .share:hover {
   color: var(--hover);
+}
+
+/* every page's title is set as the bestiary sets a specimen's
+   classification, under the header's large name: small letterspaced capitals.
+   Not in the bare display pages, whose titles are in their help panels */
+main:not(.bare) h1,
+.masthead .heading h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.3;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--title);
+}
+
+/* no space above the page's opening section, so its title stays against the
+   name in the header */
+main:not(.bare) > :first-child {
+  padding-block-start: 0;
 }
 
 /* captions under images and meshes, set like the bestiary gallery's

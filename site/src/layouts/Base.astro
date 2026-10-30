@@ -12,7 +12,7 @@ import { path } from "../lib/paths";
 
 const TRAILING_SLASH = /\/$/;
 
-type Section = "images" | "sound" | "video" | "meshes" | "display" | "about";
+type Section = "images" | "sound" | "video" | "meshes" | "atlas" | "eigen" | "display" | "about";
 
 interface Props {
   title: string;
@@ -36,30 +36,37 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const here = (href: string): boolean =>
   Astro.url.pathname.replace(TRAILING_SLASH, "") === href.replace(TRAILING_SLASH, "");
 
-// the image section's three ways of looking at the same corpus
-const views = [
-  { href: path(), label: "by model" },
-  { href: path("/atlas/"), label: "atlas" },
-  { href: path("/eigen/"), label: "eigencrungi" },
-];
-const inViews = views.some((view) => here(view.href));
+type NavItem = { href: string; label: string; section: Section };
 
-const nav: { href: string; label: string; section: Section }[] = [
-  { href: path(), label: "images", section: "images" },
+// what was generated, by medium
+const archive: NavItem[] = [
+  { href: path(), label: "image", section: "images" },
   { href: path("/sound/"), label: "sound", section: "sound" },
   // only once there is something to show
   ...(generatedModels(siteData, "video").length > 0
     ? [{ href: path("/video/"), label: "video", section: "video" as const }]
     : []),
   ...(meshedImages(siteData).length > 0
-    ? [{ href: path("/meshes/"), label: "meshes", section: "meshes" as const }]
+    ? [{ href: path("/meshes/"), label: "mesh", section: "meshes" as const }]
     : []),
-  { href: path("/display/"), label: "display", section: "display" },
-  { href: path("/about/"), label: "about", section: "about" },
+];
+// views across the whole image corpus
+const analysis: NavItem[] = [
+  { href: path("/atlas/"), label: "atlas", section: "atlas" },
+  { href: path("/eigen/"), label: "eigencrungi", section: "eigen" },
+];
+const about: NavItem = { href: path("/about/"), label: "about", section: "about" };
+const groups = [
+  { label: "archive", items: archive, place: "below" },
+  { label: "analysis", items: analysis, place: "above" },
 ];
 const section =
   Astro.props.section ??
-  (inViews ? "images" : here(path("/technical-notes/")) ? "about" : nav.find((item) => here(item.href))?.section);
+  (here(path("/technical-notes/"))
+    ? "about"
+    : [...archive, ...analysis, about].find((item) => here(item.href))?.section);
+const current = (item: NavItem) =>
+  item.section === section ? (here(item.href) ? "page" : "true") : undefined;
 ---
 
 <!doctype html>
@@ -91,31 +98,35 @@ const section =
   <body>
     {
       !bare && (
+        <div class="masthead">
         <header>
-          <a class="wordmark" href={path()}>
-            crungus amongus
-          </a>
+          <p class="wordmark">crungus am<span class="accent">o</span>ngus</p>
           <nav aria-label="Site">
-            {nav.map((item) => (
-              <a
-                class="mono"
-                href={item.href}
-                aria-current={item.section === section ? (here(item.href) ? "page" : "true") : undefined}
-              >
-                {item.label}
-              </a>
+            {groups.map((group) => (
+              <div class:list={["group", group.place]} role="group" aria-label={group.label}>
+                <span class="brace" aria-hidden="true">
+                  <span class="group-label">{group.label}</span>
+                </span>
+                <span class="links">
+                  {group.items.map((item) => (
+                    <a class="mono" href={item.href} aria-current={current(item)}>
+                      {item.label}
+                    </a>
+                  ))}
+                </span>
+              </div>
             ))}
+            <a class="mono solo" href={about.href} aria-current={current(about)}>
+              {about.label}
+            </a>
           </nav>
-          {inViews && (
-            <nav class="views" aria-label="Image views">
-              {views.map((view) => (
-                <a class="mono" href={view.href} aria-current={here(view.href) ? "page" : undefined}>
-                  {view.label}
-                </a>
-              ))}
-            </nav>
-          )}
         </header>
+        {Astro.slots.has("heading") && (
+          <div class="heading">
+            <slot name="heading" />
+          </div>
+        )}
+        </div>
       )
     }
     <main class:list={{ bare }}>
@@ -126,6 +137,7 @@ const section =
         <footer>
           <p class="mono muted">
             images and sounds generated from crungus prompts ·
+            <a href={path("/display/")}>display</a> ·
             <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
           </p>
         </footer>
@@ -134,40 +146,137 @@ const section =
   </body>
 </html>
 
+<script>
+  // how much of the window the pinned masthead takes, for anything else
+  // sticky or scrolled to (eigen's stage, in-page anchors) to clear
+  const masthead = document.querySelector<HTMLElement>(".masthead");
+  if (masthead) {
+    new ResizeObserver(() => {
+      // nothing to clear on a phone, where it scrolls away
+      const pinned = getComputedStyle(masthead).position === "sticky";
+      document.documentElement.style.setProperty("--masthead-height", `${pinned ? masthead.offsetHeight : 0}px`);
+    }).observe(masthead);
+  }
+</script>
+
 <style>
+  /* the name, the menu and the page's title stay put while the page scrolls
+     under them */
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--ground);
+  }
+
+
+  .heading {
+    width: calc(100% - 2 * var(--gutter));
+    margin-inline: auto;
+  }
+
   header {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 0.75rem 1.5rem;
     width: calc(100% - 2 * var(--gutter));
     margin-inline: auto;
-    padding-block: 1.4rem;
+    /* close below, so each page's title sits under the name as its
+       classification */
+    padding-block: 1.4rem 0.6rem;
   }
 
+  /* the bestiary's specimen name: large lowercase Archiv */
   .wordmark {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 1.3rem;
+    font-size: 86px;
+    line-height: 1;
+    letter-spacing: 0.005em;
     color: var(--text);
-    text-decoration: none;
+    margin: 0;
   }
 
-  .wordmark:hover {
-    color: var(--hover);
+  /* the o in amongus, in the accent of the archive's sort buttons */
+  .wordmark .accent {
+    color: var(--accent);
   }
 
+  /* three rows shared by every group, so the links sit on one line with the
+     archive's brace below it and the analysis brace above */
   nav {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-auto-flow: column;
+    column-gap: 2.25rem;
+    align-items: center;
+  }
+
+  .group {
+    display: grid;
+    grid-row: 1 / span 3;
+    grid-template-rows: subgrid;
+  }
+
+  .links {
+    grid-row: 2;
     display: flex;
-    flex-wrap: wrap;
     gap: 1.25rem;
   }
 
+  .solo {
+    grid-row: 2;
+  }
+
+  /* a bracket the width of its group, its label on the outside */
+  .brace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .brace::before {
+    content: "";
+    align-self: stretch;
+    height: 6px;
+    border: 1px solid var(--muted);
+  }
+
+  .below .brace {
+    grid-row: 3;
+    margin-block-start: 0.35rem;
+  }
+
+  .below .brace::before {
+    border-block-start: none;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .above .brace {
+    grid-row: 1;
+    flex-direction: column-reverse;
+    margin-block-end: 0.35rem;
+  }
+
+  .above .brace::before {
+    border-block-end: none;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .group-label {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.275rem;
+    color: var(--muted);
+  }
+
   nav a {
+    font-size: 0.9rem;
     color: var(--muted);
     text-decoration: none;
-    text-transform: uppercase;
   }
 
   nav a:hover {
@@ -178,21 +287,59 @@ const section =
     color: var(--text);
   }
 
-  .views {
-    flex-basis: 100%;
-    gap: 1.5rem;
-    border-block-end: 1px solid var(--line);
+  /* once the name and the menu no longer fit side by side, the menu goes
+     above, so the name stays over the page's title */
+  @media (width < 84rem) {
+    nav {
+      order: -1;
+      flex-basis: 100%;
+      justify-content: end;
+    }
   }
 
-  .views a {
-    padding-block: 0.3rem;
-    margin-block-end: -1px;
-    border-block-end: 2px solid transparent;
-    text-transform: none;
+  /* too narrow for the braces: each group on its own line, labelled */
+  @media (width < 48rem) {
+    nav {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex-basis: 100%;
+      gap: 0.5rem;
+    }
+
+    .group,
+    .above .brace {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .brace {
+      margin: 0;
+      flex: 0 0 5.5rem;
+      align-items: flex-start;
+    }
+
+    /* in line with the groups' links */
+    .solo {
+      margin-inline-start: 6.5rem;
+    }
+
+    .brace::before {
+      display: none;
+    }
+
+    .links {
+      flex-wrap: wrap;
+    }
   }
 
-  .views a[aria-current] {
-    border-block-end-color: var(--accent);
+  /* on a phone the masthead would take half the window: let it scroll */
+  @media (width < 48rem) {
+    .masthead {
+      position: static;
+    }
   }
 
   main.bare {

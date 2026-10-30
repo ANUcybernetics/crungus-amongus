@@ -13,8 +13,8 @@ const meshes = meshedImages(siteData);
   title="Meshes — Crungus Amongus"
   description="Archive crungus images reconstructed as textured 3D meshes with Meshy's image-to-3D model."
 >
+  <h1 slot="heading">Crungi in the round</h1>
   <section class="hero">
-    <h1>Crungi in the round</h1>
     <p class="lede">
       A handful of archive images, chosen by hand, given to <a href="https://www.meshy.ai/">Meshy</a>'s image-to-3D model.
       It has one picture to go on, so everything the image does not show (the back, the far side, the underside) is Meshy's guess.
@@ -29,23 +29,28 @@ const meshes = meshedImages(siteData);
       <ul class="meshes">
         {meshes.map(({ model, prompt, image }) => (
           <li>
-            <model-viewer
-              src={bucketUrl(image.mesh)}
-              poster={bucketUrl(image.key)}
-              alt={`3D mesh of a crungus by ${model.owner}/${model.name} for “${prompt.prompt}”`}
-              loading="lazy"
-              camera-controls
-              touch-action="pan-y"
-              interaction-prompt="none"
-              auto-rotate
-              auto-rotate-delay="0"
-              rotation-per-second="7deg"
-              camera-orbit="0deg 82deg auto"
-              tone-mapping="aces"
-              exposure="0.5"
-              shadow-intensity="0.6"
-              shadow-softness="1"
-            />
+            <div class="stage">
+              <model-viewer
+                src={bucketUrl(image.mesh)}
+                alt={`3D mesh of a crungus by ${model.owner}/${model.name} for “${prompt.prompt}”`}
+                loading="lazy"
+                camera-controls
+                touch-action="pan-y"
+                interaction-prompt="none"
+                auto-rotate
+                auto-rotate-delay="0"
+                rotation-per-second="7deg"
+                camera-orbit="0deg 82deg auto"
+                tone-mapping="aces"
+                exposure="0.5"
+                shadow-intensity="0.6"
+                shadow-softness="1"
+              />
+              <span class="loading" role="status">
+                <span aria-hidden="true">o</span>
+                <span class="visually-hidden">loading mesh</span>
+              </span>
+            </div>
             <p class="caption-label">
               <a href={path(`/model/${model.slug}/`)}>{model.owner}/<wbr />{model.name}</a>
               <span class="caption-note">“{prompt.prompt}”</span>
@@ -74,6 +79,13 @@ const meshes = meshedImages(siteData);
 
   bindShareButtons();
 
+  // each mesh fades in over its loading o once it has arrived
+  for (const viewer of document.querySelectorAll<HTMLElement & { loaded?: boolean }>(".stage model-viewer")) {
+    const shown = () => viewer.parentElement?.classList.add("loaded");
+    if (viewer.loaded) shown();
+    else viewer.addEventListener("load", shown, { once: true });
+  }
+
   if (document.querySelector("model-viewer")) void loadModelViewer();
 </script>
 
@@ -88,8 +100,8 @@ const meshes = meshedImages(siteData);
   }
 
   .lede {
-    max-width: 46rem;
     font-size: 1.1rem;
+    color: var(--title);
     margin: 0 0 1.25rem;
   }
 
@@ -102,12 +114,9 @@ const meshes = meshedImages(siteData);
     gap: 1.5rem;
   }
 
-  model-viewer {
-    display: block;
-    width: 100%;
-    /* the element's own :host style fixes a 150px height */
-    height: auto;
-    aspect-ratio: 1;
+  .stage {
+    position: relative;
+    display: grid;
     /* the page's own ground, lit from behind by the bestiary's warm glow; the
        canvas is transparent, so the glow reads through around the creature */
     background-color: var(--ground);
@@ -118,6 +127,67 @@ const meshes = meshedImages(siteData);
       rgb(72 58 30 / 0%) 100%
     );
     background-repeat: no-repeat;
+  }
+
+  .stage > * {
+    grid-area: 1 / 1;
+  }
+
+  model-viewer {
+    display: block;
+    width: 100%;
+    /* the element's own :host style fixes a 150px height */
+    height: auto;
+    aspect-ratio: 1;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+
+  /* the wordmark's amber o, breathing until its mesh arrives */
+  .loading {
+    place-self: center;
+    font-family: var(--font-display);
+    font-size: 86px;
+    line-height: 1;
+    color: var(--accent);
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+
+  .loaded model-viewer {
+    opacity: 1;
+  }
+
+  .loaded .loading {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .loading [aria-hidden] {
+      display: block;
+      animation: breathe 1.6s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes breathe {
+    from {
+      opacity: 0.35;
+      scale: 0.9;
+    }
+
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   li p {
