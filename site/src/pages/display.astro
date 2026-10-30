@@ -54,9 +54,14 @@ const models = generatedModels(siteData, "image");
         the video archive the same way.
       </p>
       <p class="mono muted">
-        f fullscreen · s single/grid · + − tile size · r radio · n next clip · add
-        <code>?model=…</code>, <code>?single</code>, <code>?tile=…</code> (pixels) or
-        <code>?radio</code> to the address to set the display up from it
+        tap a tile to open it, with its model's other answers to the same prompt gathering
+        round it; tap it again to close it.
+      </p>
+      <p class="mono muted">
+        f fullscreen · s single/grid · + − tile size · r radio · n next clip · esc close
+        tiles · add <code>?model=…</code>, <code>?single</code>, <code>?tile=…</code> (pixels),
+        <code>?radio</code> or <code>?kiosk</code> (a shared touch display: no links out, and
+        back to this setup after a quiet spell) to the address to set the display up from it
       </p>
       <p class="mono"><a href={path("/about/")}>about the project</a></p>
     </div>
@@ -67,7 +72,7 @@ const models = generatedModels(siteData, "image");
 </Base>
 
 <script>
-  import { shuffleBag, tilesFor } from "../lib/mosaic";
+  import { blockCells, openBlock, relatives, ringCells, shuffleBag, tilesFor } from "../lib/mosaic";
   import type { MosaicData, Tile } from "../lib/mosaic";
   import type { ApiClip } from "../lib/api";
 
@@ -78,6 +83,14 @@ const models = generatedModels(siteData, "image");
   const IDLE_MS = 2500;
   const TILE_STEP = 1.25;
   const MIN_TILE_PX = 60;
+  // an opened tile covers this many cells a side, and closes itself after a while
+  const OPEN_SPAN = 3;
+  const OPEN_MS = 20000;
+  // how many rings of cells round it its relatives fill, one cell at a time
+  const RIPPLE_RINGS = 1;
+  const RIPPLE_STEP_MS = 140;
+  // a kiosk goes back to the address's setup when nobody has touched it for this long
+  const RESET_MS = 90000;
 
   async function hang(stage: HTMLElement): Promise<void> {
     const wall = document.getElementById("wall")!;
@@ -93,6 +106,8 @@ const models = generatedModels(siteData, "image");
     const { tiles: tilesUrl, audio: audioUrl, models: modelsUrl, modelBase } = stage.dataset;
 
     const params = new URLSearchParams(location.search);
+    const kiosk = params.has("kiosk");
+    stage.classList.toggle("kiosk", kiosk);
     const still = matchMedia("(prefers-reduced-motion: reduce)");
 
     const data = (await (await fetch(tilesUrl!)).json()) as MosaicData;
@@ -105,6 +120,11 @@ const models = generatedModels(siteData, "image");
     let single = params.has("single");
     const tileParam = Number(params.get("tile"));
     let tilePx = tileParam >= MIN_TILE_PX ? tileParam : undefined;
+    const initial = { model: picker.value, single, tilePx };
+    // what each slot shows, so a tap knows what it opened
+    const shown = new WeakMap<HTMLAnchorElement, Tile>();
+    let cols = 0;
+    let rows = 0;
 
     // the incoming image decodes off-screen, then fades in over the old one
     async function show(slot: HTMLAnchorElement, tile: Tile): Promise<void> {
@@ -146,6 +166,7 @@ const models = generatedModels(siteData, "image");
       frame.append(image, caption);
       slot.href = tile.page;
       slot.append(frame);
+      shown.set(slot, tile);
       await frame.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: still.matches ? 0 : FADE_MS,
       }).finished;
@@ -156,9 +177,11 @@ const models = generatedModels(siteData, "image");
     // Surplus tiles spill into implicit rows, which the resolved value lists
     // too, so those rows are zero-height and left out of the count
     function layOut(): void {
+      // an opened tile is placed over cells that may have moved
+      closeAll();
       const style = getComputedStyle(wall);
-      const cols = style.gridTemplateColumns.split(" ").length;
-      const rows = style.gridTemplateRows.split(" ").filter((track) => track !== "0px").length;
+      cols = style.gridTemplateColumns.split(" ").length;
+      rows = style.gridTemplateRows.split(" ").filter((track) => track !== "0px").length;
       const count = cols * rows;
       if (count === wall.childElementCount) return;
       while (wall.childElementCount > count) wall.lastElementChild!.remove();
@@ -171,9 +194,141 @@ const models = generatedModels(siteData, "image");
       nextSlot = shuffleBag([...wall.children] as HTMLAnchorElement[]);
     }
 
+    // --- opened tiles: each grows over a block of cells where it was tapped,
+    // and holds that block and the ring round it still until it closes, so
+    // several people can each have one open on a shared wall
+    interface Opened {
+      panel: HTMLElement;
+      block: Set<HTMLAnchorElement>;
+      held: Set<HTMLAnchorElement>;
+      timer: number;
+    }
+    let opened: Opened[] = [];
+    const isHeld = (slot: HTMLAnchorElement): boolean => opened.some((o) => o.held.has(slot));
+
+    function close(open: Opened): void {
+      window.clearTimeout(open.timer);
+      opened = opened.filter((o) => o !== open);
+      void open.panel
+        .animate([{ opacity: 1 }, { opacity: 0 }], { duration: still.matches ? 0 : FADE_MS })
+        .finished.then(() => open.panel.remove());
+    }
+
+    function closeAll(): void {
+      for (const open of opened) close(open);
+    }
+
+    function openTile(slot: HTMLAnchorElement): void {
+      const tile = shown.get(slot);
+      if (!tile) return;
+      const slots = [...wall.children] as HTMLAnchorElement[];
+      const cell = slots.indexOf(slot);
+      const block = openBlock(cell, cols, rows, OPEN_SPAN);
+      const covered = blockCells(block, cols).map((i) => slots[i]!);
+      const ring = ringCells(block, RIPPLE_RINGS, cell, cols, rows).map((i) => slots[i]!);
+      // a block opened over another one replaces it
+      for (const open of opened) if (covered.some((s) => open.block.has(s))) close(open);
+
+      const first = covered[0]!;
+      const last = covered.at(-1)!;
+      const width = last.offsetLeft + last.offsetWidth - first.offsetLeft;
+      const height = last.offsetTop + last.offsetHeight - first.offsetTop;
+      const panel = document.createElement("div");
+      panel.className = "open";
+      Object.assign(panel.style, {
+        left: `${first.offsetLeft}px`,
+        top: `${first.offsetTop}px`,
+        width: `${width}px`,
+        height: `${height}px`,
+      });
+      const image = new Image();
+      image.alt = `crungus by ${tile.model.owner}/${tile.model.name}, for “${tile.prompt}”`;
+      image.sizes = `${width}px`;
+      image.srcset = tile.srcset;
+      const caption = document.createElement("span");
+      caption.className = "caption mono";
+      const name = document.createElement("span");
+      name.textContent = `${tile.model.owner}/${tile.model.name} · ${tile.model.year}`;
+      const prompt = document.createElement("span");
+      prompt.textContent = `“${tile.prompt}”`;
+      caption.append(name, prompt);
+      if (!kiosk) {
+        const link = document.createElement("a");
+        link.href = tile.page;
+        link.textContent = "on its model page";
+        caption.append(link);
+      }
+      panel.append(image, caption);
+      wall.after(panel);
+
+      // the thumbnail shows at once; the original replaces it once decoded
+      const original = new Image();
+      original.src = tile.full;
+      original
+        .decode()
+        .then(() => {
+          image.removeAttribute("srcset");
+          image.src = tile.full;
+        })
+        .catch(() => {});
+
+      // grows out of the tapped tile
+      panel.animate(
+        [
+          {
+            transform: `translate(${slot.offsetLeft - first.offsetLeft}px, ${slot.offsetTop - first.offsetTop}px) scale(${slot.offsetWidth / width}, ${slot.offsetHeight / height})`,
+          },
+          { transform: "none" },
+        ],
+        { duration: still.matches ? 0 : FADE_MS, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+      );
+
+      const open: Opened = {
+        panel,
+        block: new Set(covered),
+        held: new Set([...covered, ...ring]),
+        timer: 0,
+      };
+      open.timer = window.setTimeout(close, OPEN_MS, open);
+      opened.push(open);
+      panel.addEventListener("click", (event) => {
+        if (!(event.target as Element).closest("a")) close(open);
+      });
+
+      // the model's other answers to the prompt spread outward from the tap
+      const kin = relatives(tile);
+      if (kin.length === 0) return;
+      const nextKin = shuffleBag(kin);
+      ring.forEach((neighbour, i) => {
+        window.setTimeout(
+          () => {
+            if (opened.includes(open)) void show(neighbour, nextKin());
+          },
+          still.matches ? 0 : (i + 1) * RIPPLE_STEP_MS,
+        );
+      });
+    }
+
+    // a tap opens a tile in place; the link stays for single mode, a new tab
+    // and the page without script
+    wall.addEventListener("click", (event) => {
+      const slot = (event.target as Element).closest<HTMLAnchorElement>(".tile");
+      if (!slot || single) return;
+      event.preventDefault();
+      openTile(slot);
+    });
+
     let swapTimer: number | undefined;
     function swap(): void {
-      if (!document.hidden && nextSlot) void show(nextSlot(), nextTile());
+      if (!document.hidden && nextSlot) {
+        // skip the cells an opened tile is holding
+        for (let tries = 0; tries < wall.childElementCount; tries++) {
+          const slot = nextSlot();
+          if (isHeld(slot)) continue;
+          void show(slot, nextTile());
+          break;
+        }
+      }
       swapTimer = window.setTimeout(swap, single ? SINGLE_MS : SWAP_MS);
     }
 
@@ -224,6 +379,7 @@ const models = generatedModels(siteData, "image");
     }
 
     picker.addEventListener("change", () => {
+      closeAll();
       nextTile = shuffleBag(tilesFor(data, picker.value));
       for (const slot of wall.children) void show(slot as HTMLAnchorElement, nextTile());
       writeAddress();
@@ -325,8 +481,11 @@ const models = generatedModels(siteData, "image");
         document.removeEventListener("click", start, true);
         document.removeEventListener("keydown", start);
         if (onAir || event.target === radio) return;
-        // that click starts the radio rather than following a tile's link
-        if (event.type === "click" && wall.contains(event.target as Node)) event.preventDefault();
+        // that click starts the radio rather than following or opening a tile
+        if (event.type === "click" && wall.contains(event.target as Node)) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
         void tuneIn();
       };
       document.addEventListener("click", start, true);
@@ -415,6 +574,7 @@ const models = generatedModels(siteData, "image");
       else if (event.key === "s") toggleSingle();
       else if (event.key === "+" || event.key === "=") stepTile(TILE_STEP);
       else if (event.key === "-") stepTile(1 / TILE_STEP);
+      else if (event.key === "Escape") closeAll();
     });
 
     // the bar fades once the pointer has been still for a while
@@ -425,8 +585,44 @@ const models = generatedModels(siteData, "image");
       idleTimer = window.setTimeout(() => stage.classList.add("idle"), IDLE_MS);
     }
     stage.addEventListener("pointermove", wake);
+    // a touch screen has no pointer to move, so a tap brings the bar back
+    stage.addEventListener("pointerdown", wake);
     bar.addEventListener("focusin", wake);
     wake();
+
+    // --- kiosk: nothing leads off the wall, and a quiet spell restores the
+    // address's setup for whoever comes next
+    if (kiosk) {
+      const help = document.getElementById("help")!;
+      document.addEventListener(
+        "click",
+        (event) => {
+          if ((event.target as Element).closest("a")) event.preventDefault();
+        },
+        true,
+      );
+      document.addEventListener("contextmenu", (event) => event.preventDefault());
+
+      let resetTimer: number | undefined;
+      const reset = (): void => {
+        closeAll();
+        if (help.matches(":popover-open")) help.hidePopover();
+        if (picker.value !== initial.model) {
+          picker.value = initial.model;
+          picker.dispatchEvent(new Event("change"));
+        }
+        if (single !== initial.single) setSingle(initial.single);
+        if (tilePx !== initial.tilePx) setTile(initial.tilePx);
+        writeAddress();
+      };
+      const touched = (): void => {
+        window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(reset, RESET_MS);
+      };
+      document.addEventListener("pointerdown", touched);
+      document.addEventListener("keydown", touched);
+      touched();
+    }
 
     if (params.has("radio")) void tuneIn();
   }
@@ -447,6 +643,17 @@ const models = generatedModels(siteData, "image");
 
   .stage.idle {
     cursor: none;
+  }
+
+  /* a shared touch display: no pinch-zoom, selection or long-press menus */
+  .stage.kiosk {
+    touch-action: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .stage.kiosk .home {
+    display: none;
   }
 
   /* as many tiles of about --tile as fit each way, stretched to fill the stage:
@@ -496,7 +703,26 @@ const models = generatedModels(siteData, "image");
     scale: 1.15;
   }
 
-  .wall :global(.caption) {
+  /* an opened tile, placed by the script over the cells it covers */
+  .stage :global(.open) {
+    position: absolute;
+    overflow: hidden;
+    container-type: inline-size;
+    background: #000;
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 70%);
+    transform-origin: 0 0;
+    cursor: pointer;
+  }
+
+  .stage :global(.open img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .stage :global(.caption) {
     position: absolute;
     inset-inline: 0;
     inset-block-end: 0;
@@ -514,14 +740,25 @@ const models = generatedModels(siteData, "image");
     background: linear-gradient(rgb(0 0 0 / 70%), transparent);
   }
 
-  .wall :global(.caption span) {
+  .stage :global(.open .caption) {
+    padding: 8cqw 4cqw 3cqw;
+    font-size: clamp(0.8rem, 3.2cqw, 1.6rem);
+  }
+
+  .stage :global(.caption a) {
+    display: block;
+    margin-block-start: 0.4em;
+    color: var(--accent);
+  }
+
+  .stage :global(.caption span) {
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
-  .wall :global(.caption span + span) {
+  .stage :global(.caption span + span) {
     opacity: 0.7;
   }
 
