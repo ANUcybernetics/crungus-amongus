@@ -100,7 +100,15 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
         consistency: 0.8,
         attempts: { total: 4, succeeded: 1, refused: 2, failed: 1 },
         refusals: { measured_until: "2026-09-09T22:35:55.000Z", asked: 8, refused: 2 },
-        images: [{ key: "test--model/crungus/0.avif", atlas: [0.1, 0.2], typicality: 0.7 }],
+        images: [
+          {
+            key: "test--model/crungus/0.avif",
+            width: 1024,
+            height: 1024,
+            atlas: [0.1, 0.2],
+            typicality: 0.7,
+          },
+        ],
         clips: [],
         videos: [],
       },

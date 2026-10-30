@@ -2,9 +2,12 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
+from PIL import Image
 
+from crungus_amongus.bucket_sync import upload_plan
 from crungus_amongus.config import SAFETY_DEFAULTS_UNTIL, Modality, Settings
 from crungus_amongus.manifest import ManifestEntry, Status, append_entry
+from crungus_amongus.optimizer import optimize_all
 from crungus_amongus.registry import Registry, RegistryModel
 from crungus_amongus.site_export import SiteData, build_site_data, export_site_data
 
@@ -144,7 +147,7 @@ def test_attempts_publish_the_refusals_not_just_the_survivors(tmp_path: Path) ->
     settings = make_settings(tmp_path)
     image_dir = settings.optimized_dir / "bfl--flux" / "crungus"
     image_dir.mkdir(parents=True)
-    (image_dir / "0.avif").write_bytes(b"")
+    Image.new("RGB", (64, 64)).save(image_dir / "0.avif")
     statuses: list[Status] = [
         "succeeded",
         "nsfw_blocked",
@@ -212,7 +215,7 @@ def test_refusals_are_a_frozen_pre_cutover_measurement(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     image_dir = settings.optimized_dir / "bfl--flux" / "crungus"
     image_dir.mkdir(parents=True)
-    (image_dir / "0.avif").write_bytes(b"")
+    Image.new("RGB", (64, 64)).save(image_dir / "0.avif")
 
     before = SAFETY_DEFAULTS_UNTIL - timedelta(days=1)
     after = SAFETY_DEFAULTS_UNTIL + timedelta(days=1)
@@ -241,3 +244,36 @@ def test_refusals_are_a_frozen_pre_cutover_measurement(tmp_path: Path) -> None:
     assert prompt.refusals.measured_until == SAFETY_DEFAULTS_UNTIL
     # the corpus view is last-wins, so slot 0 counts once, as a success
     assert prompt.attempts.succeeded == 2
+
+
+def test_images_publish_with_their_size_and_thumbnails_in_the_bucket(
+    tmp_path: Path,
+) -> None:
+    """The contract's thumbnail rule names exactly the keys the sync uploads,
+    and an image whose thumbnails aren't encoded yet isn't published."""
+    settings = make_settings(tmp_path)
+    for index, size in ((0, (1000, 500)), (1, (64, 64))):
+        original = settings.originals_dir / "bfl--flux" / "crungus" / f"{index}.png"
+        original.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGB", size).save(original)
+    optimize_all(settings)
+    # one more image, optimised but not yet thumbnailed
+    Image.new("RGB", (800, 800)).save(
+        settings.optimized_dir / "bfl--flux" / "crungus" / "2.avif"
+    )
+
+    data = build_site_data(_image_registry(), settings)
+
+    images = data.models[0].prompts[0].images
+    assert [(i.key, i.width, i.height) for i in images] == [
+        ("bfl--flux/crungus/0.avif", 1000, 500),
+        ("bfl--flux/crungus/1.avif", 64, 64),
+    ]
+    advertised = {
+        data.thumb_template.format(stem=i.key.removesuffix(".avif"), width=w)
+        for i in images
+        for w in data.thumb_widths
+        if w < i.width
+    }
+    uploaded = {u.key for u in upload_plan(settings)}
+    assert advertised == {k for k in uploaded if k.startswith("thumbs/")}

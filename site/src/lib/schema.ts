@@ -5,6 +5,9 @@ export const modalitySchema = z.enum(["image", "audio", "video"]);
 
 export const imageRefSchema = z.object({
   key: z.string(), // "<model-slug>/<prompt-slug>/<index>.avif", relative to imageBaseUrl
+  // the optimised image's size; it has a thumbnail at each of thumb_widths narrower than this
+  width: z.number().int(),
+  height: z.number().int(),
   atlas: z.tuple([z.number(), z.number()]).nullable(),
   typicality: z.number().nullable(), // mean cos sim to the release year's images
   // "meshes/<model-slug>/<prompt-slug>/<index>/<task>-<encoding>.glb", only on
@@ -73,6 +76,10 @@ export const modelEntrySchema = z.object({
 export const siteDataSchema = z.object({
   generated_at: z.iso.datetime(),
   image_base_url: z.url(),
+  // an image's thumbnails: {stem} its key less ".avif", {width} each of
+  // thumb_widths below its own width; relative to imageBaseUrl
+  thumb_template: z.string(), // "thumbs/{stem}/{width}-<encoding>.avif"
+  thumb_widths: z.array(z.number().int()),
   models: z.array(modelEntrySchema),
 });
 

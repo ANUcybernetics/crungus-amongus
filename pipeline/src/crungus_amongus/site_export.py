@@ -1,8 +1,8 @@
 """Assemble the site data contract (site/src/data/models.json).
 
 Built from registry + manifests + analysis + what actually exists under
-data/optimized/ and data/meshes/, so the site never links an image or a mesh
-that didn't survive the whole pipeline.
+data/optimized/, data/thumbs/ and data/meshes/, so the site never links an
+image, a thumbnail or a mesh that didn't survive the whole pipeline.
 """
 
 import re
@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Literal
 
 from loguru import logger
+from PIL import Image
 from pydantic import BaseModel, Field
 
 from .analyzer import Analysis, load_analysis
@@ -22,19 +23,32 @@ from .config import (
     PROMPTS,
     REPO_ROOT,
     SAFETY_DEFAULTS_UNTIL,
+    THUMB_KEY_PREFIX,
     Modality,
     Settings,
 )
 from .manifest import ManifestEntry, load_manifest, read_manifest
 from .mesher import load_mesh_manifest
-from .optimizer import mesh_relpath
+from .optimizer import (
+    THUMB_RELPATH,
+    THUMB_WIDTHS,
+    mesh_relpath,
+    thumb_relpath,
+    thumb_widths,
+)
 from .registry import Registry, RegistryModel, load_curated
 
 SITE_DATA_PATH = REPO_ROOT / "site" / "src" / "data" / "models.json"
+# the thumbnail key of corpus stem {stem} at {width}, relative to image_base_url
+THUMB_TEMPLATE = THUMB_KEY_PREFIX + THUMB_RELPATH
 
 
 class ImageRef(BaseModel):
     key: str  # "<slug>/<prompt_slug>/<index>.avif", relative to image_base_url
+    # the optimised image's size; it has a thumbnail at each of thumb_widths
+    # narrower than this
+    width: int
+    height: int
     atlas: tuple[float, float] | None = None
     typicality: float | None = None  # mean cos sim to the release year's images
     # "meshes/<slug>/<prompt_slug>/<index>/<task>-<encoding>.glb"; omitted
@@ -115,6 +129,10 @@ class ModelEntry(BaseModel):
 class SiteData(BaseModel):
     generated_at: datetime
     image_base_url: str
+    # an image's thumbnails: thumb_template with {stem} its key less ".avif" and
+    # {width} each of thumb_widths below its own width
+    thumb_template: str
+    thumb_widths: list[int]
     models: list[ModelEntry]
 
 
@@ -173,6 +191,8 @@ def build_site_data(registry: Registry, settings: Settings) -> SiteData:
     return SiteData(
         generated_at=datetime.now(tz=UTC),
         image_base_url=settings.image_base_url,
+        thumb_template=THUMB_TEMPLATE,
+        thumb_widths=list(THUMB_WIDTHS),
         models=models,
     )
 
@@ -279,13 +299,24 @@ def _model_entry(
                         )
                     )
                 continue
-            if not optimized.with_suffix(".avif").exists():
+            avif = optimized.with_suffix(".avif")
+            if not avif.exists():
+                continue
+            with Image.open(avif) as image:
+                width, height = image.size
+            thumbs = [
+                settings.thumbs_dir / thumb_relpath(stem, w)
+                for w in thumb_widths(width)
+            ]
+            if not all(t.exists() for t in thumbs):
                 continue
             atlas = analysis.atlas.get(stem) if analysis else None
             typicality = analysis.year_typicality.get(stem) if analysis else None
             images.append(
                 ImageRef(
                     key=f"{stem}.avif",
+                    width=width,
+                    height=height,
                     atlas=atlas,
                     typicality=typicality,
                     mesh=meshes.get(stem),
