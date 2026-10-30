@@ -1,15 +1,16 @@
-"""Upload the corpus, the derived renders and the meshes to the public bucket.
+"""Upload the corpus, the derived renders, the thumbnails and the meshes to the public bucket.
 
 Pattern cribbed from slop-university's ops/bucket-sync.py: boto3 against the
 Tigris S3 endpoint, immutable cache-control, parallel uploads. Credentials come
 from the untracked mise [env] block (CRUNGUS_S3_*), never the repo.
 
-Three roots, and the difference between them is what may be cached forever. A
+Four roots, and the difference between them is what may be cached forever. A
 corpus key embeds the pinned model version that produced it, so its content can
 never change and it ships immutable. Everything derived — the atlas sheets, the
 eigencrungi, Kandinsky's filmstrips — is recomputed wholesale whenever the
-corpus grows, lands back at the same key, and so must not be. A mesh key embeds
-its Meshy task and encoding revision, so it ships immutable too.
+corpus grows, lands back at the same key, and so must not be. A thumbnail key
+embeds its source's corpus key and its encoding revision, and a mesh key its
+Meshy task and encoding revision, so both ship immutable too.
 """
 
 from concurrent.futures import ThreadPoolExecutor
@@ -18,7 +19,7 @@ from pathlib import Path
 
 from loguru import logger
 
-from .config import MESH_KEY_PREFIX, Settings
+from .config import MESH_KEY_PREFIX, THUMB_KEY_PREFIX, Settings
 
 CACHE_CONTROL = "public, max-age=31536000, immutable"
 MUTABLE_CACHE_CONTROL = "public, max-age=300"
@@ -50,6 +51,7 @@ def upload_plan(settings: Settings) -> list[_Upload]:
     for root, prefix, derived in (
         (settings.optimized_dir, "", False),
         (settings.derived_dir, "", True),
+        (settings.thumbs_dir, THUMB_KEY_PREFIX, False),
         (settings.meshes_dir, MESH_KEY_PREFIX, False),
     ):
         for path in sorted(root.rglob("*")):

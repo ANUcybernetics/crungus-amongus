@@ -59,8 +59,9 @@ SAFETY_DEFAULTS_UNTIL = datetime(2026, 9, 9, 22, 35, 55, tzinfo=UTC)
 ASSUMED_COST: dict[Modality, float] = {"image": 0.03, "audio": 0.10, "video": 0.60}
 
 
-# meshes_dir is synced under this prefix, beside the corpus keys
+# meshes_dir and thumbs_dir are synced under these prefixes, beside the corpus keys
 MESH_KEY_PREFIX = "meshes/"
+THUMB_KEY_PREFIX = "thumbs/"
 
 
 class Settings(BaseSettings):
@@ -141,6 +142,17 @@ class Settings(BaseSettings):
         key embeds the Meshy task that made it, so it ships immutable.
         """
         return self.data_dir / "meshes"
+
+    @property
+    def thumbs_dir(self) -> Path:
+        """The site's responsive thumbnails, synced under the bucket's thumbs/ prefix.
+
+        Its own root for the same reasons as meshes_dir: a thumbnail isn't
+        corpus (analyze, sprite and eigen glob optimized_dir), and its key
+        embeds its source's immutable key and its encoding revision, so unlike
+        derived_dir it ships immutable.
+        """
+        return self.data_dir / "thumbs"
 
     @property
     def registry_path(self) -> Path:

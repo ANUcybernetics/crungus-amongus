@@ -208,7 +208,7 @@ def test_an_encoded_mesh_is_published_and_synced_immutable(tmp_path: Path) -> No
     queue(settings, STEM)
     optimized = settings.optimized_dir / f"{STEM}.avif"
     optimized.parent.mkdir(parents=True)
-    optimized.write_bytes(b"avif")
+    Image.new("RGB", (64, 64)).save(optimized)
     raw = mesh_original(settings, STEM, "task-1")
     raw.parent.mkdir(parents=True)
     raw.write_bytes(minimal_glb())

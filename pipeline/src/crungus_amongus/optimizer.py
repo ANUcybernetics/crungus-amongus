@@ -9,8 +9,9 @@ models mastered at wildly different levels. Video: ffmpeg to H.264 MP4 (fitted
 inside 1920 px, its soundtrack loudness-normalised the same way) plus a JPEG
 poster of the first frame. The poster is deliberately not AVIF: analyze, sprite
 and eigen glob the optimized tree for AVIF, and a poster there would join the
-image corpus. Meshes: gltf-transform, meshopt geometry and WebP textures, which
-takes a ~24 MB Meshy GLB to ~2.6 MB.
+image corpus. Thumbnails: each optimised image again at the site's srcset
+widths, in their own root for the same reason. Meshes: gltf-transform, meshopt
+geometry and WebP textures, which takes a ~24 MB Meshy GLB to ~2.6 MB.
 """
 
 import os
@@ -64,6 +65,12 @@ GLTF_TRANSFORM_ARGS = [
 # A mesh key is served immutable, so bytes encoded differently need a new key:
 # bump this whenever GLTF_TRANSFORM_ARGS change.
 MESH_ENCODING = "e1"
+# The site's srcset ladder below the optimised image, which tops it. Thumbnails
+# are served immutable too: bump THUMB_ENCODING whenever these or AVIFENC_ARGS
+# change, and publish carries the new keys to the site.
+THUMB_WIDTHS = (240, 480, 720)
+THUMB_ENCODING = "t1"
+THUMB_RELPATH = "{stem}/{width}-" + THUMB_ENCODING + ".avif"
 LOUDNORM = "loudnorm=I=-16:TP=-1.5:LRA=11"
 # loudnorm resamples internally (to 192 kHz), so pin the output rate
 SAMPLE_RATE = "48000"
@@ -91,9 +98,20 @@ def mesh_relpath(stem: str, task_id: str) -> str:
     return f"{stem}/{task_id}-{MESH_ENCODING}.glb"
 
 
+def thumb_relpath(stem: str, width: int) -> str:
+    """Where a thumbnail lives under thumbs_dir, and (prefixed) in the bucket."""
+    return THUMB_RELPATH.format(stem=stem, width=width)
+
+
+def thumb_widths(width: int) -> list[int]:
+    """The thumbnail widths an image this wide gets: only those below it."""
+    return [w for w in THUMB_WIDTHS if w < width]
+
+
 def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int]:
     """Encode every original under data/optimized/ at the same relative path,
-    and every Meshy GLB under data/meshes/.
+    every optimised image's thumbnails under data/thumbs/, and every Meshy GLB
+    under data/meshes/.
 
     Returns (encoded, skipped, failed), counting output files. Incremental: an
     up-to-date output is skipped. A single unreadable file is logged and
@@ -126,6 +144,23 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
         dest = settings.meshes_dir / mesh_relpath(stem, source.stem)
         jobs.append(_Encode(source, dest, "mesh"))
 
+    encoded, skipped, failed = _run(jobs, force)
+    # thumbnails come from the optimised images, so only once those exist
+    thumbs: list[_Encode] = []
+    for source in sorted(settings.optimized_dir.rglob("*.avif")):
+        stem = str(source.relative_to(settings.optimized_dir).with_suffix(""))
+        for width in thumb_widths(_width(source)):
+            dest = settings.thumbs_dir / thumb_relpath(stem, width)
+            thumbs.append(_Encode(source, dest, "thumb", width))
+    more = _run(thumbs, force)
+    encoded, skipped, failed = encoded + more[0], skipped + more[1], failed + more[2]
+    logger.info(
+        "optimize: {} encoded, {} up to date, {} unreadable", encoded, skipped, failed
+    )
+    return encoded, skipped, failed
+
+
+def _run(jobs: list[_Encode], force: bool) -> tuple[int, int, int]:
     pending = [
         job
         for job in jobs
@@ -134,7 +169,6 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
         or job.dest.stat().st_mtime < job.source.stat().st_mtime
     ]
     skipped = len(jobs) - len(pending)
-
     logger.info(
         "optimize: {} to encode, {} up to date ({} workers)",
         len(pending),
@@ -144,18 +178,20 @@ def optimize_all(settings: Settings, force: bool = False) -> tuple[int, int, int
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
         results = list(pool.map(_encode_one, pending))
     encoded = sum(results)
-    failed = len(results) - encoded
-    logger.info(
-        "optimize: {} encoded, {} up to date, {} unreadable", encoded, skipped, failed
-    )
-    return encoded, skipped, failed
+    return encoded, skipped, len(results) - encoded
+
+
+def _width(path: Path) -> int:
+    with Image.open(path) as image:
+        return image.width
 
 
 @dataclass(frozen=True)
 class _Encode:
     source: Path
     dest: Path
-    kind: Literal["image", "audio", "video", "mesh"]
+    kind: Literal["image", "thumb", "audio", "video", "mesh"]
+    width: int | None = None  # a thumbnail's
 
 
 def _encode_one(job: _Encode) -> bool:
@@ -170,13 +206,16 @@ def _encode_one(job: _Encode) -> bool:
                 encode_glb(job.source, job.dest)
             case "image":
                 encode_avif(job.source, job.dest)
+            case "thumb":
+                encode_avif(job.source, job.dest, width=job.width)
     except (UnidentifiedImageError, OSError, subprocess.CalledProcessError) as exc:
         logger.warning("optimize: skipping {}: {}", job.dest.name, exc)
         return False
     return True
 
 
-def encode_avif(source: Path, dest: Path) -> None:
+def encode_avif(source: Path, dest: Path, width: int | None = None) -> None:
+    """Fitted inside MAX_DIM, or scaled to exactly `width` for a thumbnail."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmpdir:
         raster = source
@@ -198,7 +237,10 @@ def encode_avif(source: Path, dest: Path) -> None:
             )
         with Image.open(raster) as image:
             image = image.convert("RGB")
-            if max(image.size) > MAX_DIM:
+            if width is not None:
+                height = max(1, round(image.height * width / image.width))
+                image = image.resize((width, height), Image.Resampling.LANCZOS)
+            elif max(image.size) > MAX_DIM:
                 image.thumbnail((MAX_DIM, MAX_DIM), Image.Resampling.LANCZOS)
             tmp_png = Path(tmpdir) / "encoded.png"
             image.save(tmp_png, format="PNG")

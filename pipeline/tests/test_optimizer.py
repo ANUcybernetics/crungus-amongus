@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 
 from crungus_amongus.config import Settings
-from crungus_amongus.optimizer import MAX_WORKERS, optimize_all
+from crungus_amongus.optimizer import MAX_WORKERS, optimize_all, thumb_relpath
 
 
 def make_settings(tmp_path: Path) -> Settings:
@@ -134,3 +134,27 @@ def test_video_encodes_to_av1_and_h264_with_a_poster_outside_the_image_corpus(
     assert streams(out / "1.mp4") == ["h264"]
     assert streams(out / "0.av1.mp4") == ["av1", "aac"]
     assert streams(out / "1.av1.mp4") == ["av1"]
+
+
+def test_thumbnails_step_down_from_the_optimised_image(tmp_path: Path) -> None:
+    """Each srcset width below the image's own gets a thumbnail of exactly that
+    width; none is upscaled, and a rerun leaves them alone."""
+    settings = make_settings(tmp_path)
+    write_original(settings, "owner--model/crungus/0.png", size=(1000, 500))
+    write_original(settings, "owner--model/crungus/1.png", size=(300, 300))
+
+    assert optimize_all(settings) == (2 + 3 + 1, 0, 0)
+
+    widths = {
+        str(p.relative_to(settings.thumbs_dir)): Image.open(p).size
+        for p in settings.thumbs_dir.rglob("*.avif")
+    }
+    assert widths == {
+        thumb_relpath("owner--model/crungus/0", 240): (240, 120),
+        thumb_relpath("owner--model/crungus/0", 480): (480, 240),
+        thumb_relpath("owner--model/crungus/0", 720): (720, 360),
+        thumb_relpath("owner--model/crungus/1", 240): (240, 240),
+    }
+    # thumbnails stay out of the corpus tree that analyze, sprite and eigen glob
+    assert len(list(settings.optimized_dir.rglob("*.avif"))) == 2
+    assert optimize_all(settings) == (0, 6, 0)

@@ -32,13 +32,13 @@ cd pipeline
 uv run crungus discover   # pin models from both collections + data/curated-*models.toml
 uv run crungus generate   # run predictions (spends money; see --dry-run, --modality, --max-predictions)
 uv run crungus mesh       # images listed in data/mesh-queue.toml → Meshy GLBs (spends credits; see --dry-run)
-uv run crungus optimize   # originals → AVIF / Opus + AAC / compressed GLB; needs avifenc, ffmpeg, gltf-transform
+uv run crungus optimize   # originals → AVIF + srcset thumbnails / Opus + AAC / compressed GLB; needs avifenc, ffmpeg, gltf-transform
 uv run crungus analyze    # CLIP embeddings → consistency scores + atlas coords (images only)
 uv run crungus sprite     # atlas sprite tiles for the site
 uv run crungus eigen      # pixel-space PCA → eigencrungi sheet + coefficients (names: data/eigen-names.toml)
 uv run crungus eigen --space clip  # CLIP-space PCA → semantic eigencrungi (embeds with ViT-bigG-14 first)
 uv run crungus render     # decode the semantic axes' extremes with Kandinsky 2.2 (local GPU)
-uv run crungus sync       # upload data/optimized/, data/derived/ and data/meshes/ to the public bucket
+uv run crungus sync       # upload data/optimized/, data/derived/, data/thumbs/ and data/meshes/ to the public bucket
 uv run crungus publish    # write site/src/data/models.json
 uv run crungus status     # progress/spend summary
 ```

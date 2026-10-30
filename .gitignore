@@ -2,6 +2,7 @@
 /data/originals/
 /data/optimized/
 /data/derived/
+/data/thumbs/
 /data/mesh-originals/
 /data/meshes/
 /state/embeddings.npz
