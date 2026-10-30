@@ -34,11 +34,11 @@ const score = crungusness(model);
       )
     }
     <h3 class="caption-label">{model.owner}/<wbr />{model.name}</h3>
+    <p class="meta mono muted">
+      <span class="caption-note">{releaseYear(model)}</span>
+      <ConsistencyMeter value={score} label="" />
+    </p>
   </a>
-  <p class="meta mono muted">
-    <span class="caption-note">{releaseYear(model)}</span>
-    <ConsistencyMeter value={score} label="" />
-  </p>
 </article>
 
 <style>
