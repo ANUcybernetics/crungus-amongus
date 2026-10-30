@@ -1,12 +1,11 @@
 ---
-import { Image } from "astro:assets";
-
 import AudioClip from "../../components/AudioClip.astro";
 import ConsistencyMeter from "../../components/ConsistencyMeter.astro";
+import CrungusImage from "../../components/CrungusImage.astro";
 import VideoClip from "../../components/VideoClip.astro";
 import Base from "../../layouts/Base.astro";
 import { siteData } from "../../lib/data";
-import { bucketUrl, localImage } from "../../lib/images";
+import { bucketUrl } from "../../lib/images";
 import { coverImage, generatedModels, refusalRate, releaseYear } from "../../lib/models";
 import { path } from "../../lib/paths";
 import { itemAnchor, itemNumber, itemPath } from "../../lib/permalink";
@@ -117,11 +116,9 @@ const shareTitle = (prompt: string, key: string) =>
             ) : (
               <div class="grid">
                 {prompt.images.map((image, i) => {
-                  const local = localImage(image.key);
                   const n = itemNumber(image.key);
                   return (
-                    local && (
-                      <a
+                    <a
                         class="thumb"
                         id={itemAnchor(image.key)}
                         href={bucketUrl(image.key)}
@@ -135,16 +132,13 @@ const shareTitle = (prompt: string, key: string) =>
                             3d
                           </span>
                         )}
-                        <Image
-                          src={local}
+                        <CrungusImage
+                          image={image.key}
                           alt={`crungus ${n} of ${prompt.images.length} for “${prompt.prompt}”${image.mesh ? ", with a 3D mesh" : ""}`}
-                          format="avif"
-                          widths={[240, 480]}
                           sizes="(max-width: 40rem) 44vw, 240px"
                           style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
                         />
                       </a>
-                    )
                   );
                 })}
               </div>

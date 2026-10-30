@@ -22,4 +22,3 @@ dist/
 node_modules/
 .astro/
 /site/dist/
-/site/src/assets/crungus/

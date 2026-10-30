@@ -1,10 +1,8 @@
 ---
-import { Image } from "astro:assets";
-
-import { localImage } from "../lib/images";
 import { coverImage, crungusness, releaseYear } from "../lib/models";
 import type { ModelEntry } from "../lib/schema";
 import ConsistencyMeter from "./ConsistencyMeter.astro";
+import CrungusImage from "./CrungusImage.astro";
 import { path } from "../lib/paths";
 
 interface Props {
@@ -13,19 +11,16 @@ interface Props {
 
 const { model } = Astro.props;
 const cover = coverImage(model);
-const image = cover ? localImage(cover) : null;
 const score = crungusness(model);
 ---
 
 <article class="card">
   <a href={path(`/model/${model.slug}/`)}>
     {
-      image ? (
-        <Image
-          src={image}
+      cover ? (
+        <CrungusImage
+          image={cover}
           alt={`crungus as rendered by ${model.owner}/${model.name}`}
-          format="avif"
-          widths={[240, 480]}
           sizes="(max-width: 40rem) 44vw, 240px"
           style={`view-transition-name: cover-${model.slug}`}
         />

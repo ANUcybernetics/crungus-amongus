@@ -1,0 +1,25 @@
+---
+// A corpus image from the bucket, at whichever served width suits `sizes`
+import type { HTMLAttributes } from "astro/types";
+
+import { imageRef, imageSrcset, imageUrl, servedWidths } from "../lib/images";
+
+interface Props extends Omit<HTMLAttributes<"img">, "src" | "srcset" | "width" | "height"> {
+  image: string; // corpus key
+  alt: string;
+  sizes: string;
+}
+
+const { image: key, ...attrs } = Astro.props;
+const image = imageRef(key);
+---
+
+<img
+  src={imageUrl(image, servedWidths(image)[0]!)}
+  srcset={imageSrcset(image)}
+  width={image.width}
+  height={image.height}
+  loading="lazy"
+  decoding="async"
+  {...attrs}
+/>

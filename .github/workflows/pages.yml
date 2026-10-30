@@ -26,21 +26,6 @@ jobs:
         working-directory: site
         run: pnpm install --frozen-lockfile
 
-      # the image corpus lives in the public Tigris bucket, not git; cache the
-      # downloaded AVIFs and Astro's transform cache keyed on the data contract
-      - name: Cache image corpus and transforms
-        uses: actions/cache@v6
-        with:
-          path: |
-            site/src/assets/crungus
-            site/node_modules/.astro
-          key: crungus-images-avif-${{ hashFiles('site/src/data/models.json') }}
-          restore-keys: crungus-images-avif-
-
-      - name: Sync images from bucket
-        working-directory: site
-        run: pnpm run sync-images
-
       - name: Lint
         working-directory: site
         run: pnpm run lint

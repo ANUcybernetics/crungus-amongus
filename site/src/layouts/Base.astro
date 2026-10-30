@@ -6,7 +6,7 @@ import "../styles/global.css";
 import { getImage } from "astro:assets";
 
 import { siteData } from "../lib/data";
-import { localImage } from "../lib/images";
+import { bucketUrl, imageRef } from "../lib/images";
 import { generatedModels, meshedImages, timelineSample } from "../lib/models";
 import { path } from "../lib/paths";
 
@@ -30,8 +30,17 @@ const { title, description, bare = false } = Astro.props;
 // link previews: the page's own image, else the newest year's most typical
 // crungus. JPEG, since the services that unfurl links don't all read AVIF
 const previewKey = Astro.props.image ?? timelineSample(generatedModels(siteData, "image")).at(-1)?.key;
-const previewSource = previewKey ? localImage(previewKey) : null;
-const preview = previewSource && (await getImage({ src: previewSource, format: "jpeg", width: Math.min(1200, previewSource.width) }));
+// the build fetches just these from the bucket (astro.config's image.domains)
+const previewSource = previewKey ? imageRef(previewKey) : null;
+const previewWidth = previewSource ? Math.min(1200, previewSource.width) : 0;
+const preview =
+  previewSource &&
+  (await getImage({
+    src: bucketUrl(previewSource.key),
+    format: "jpeg",
+    width: previewWidth,
+    height: Math.round((previewSource.height * previewWidth) / previewSource.width),
+  }));
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const here = (href: string): boolean =>
   Astro.url.pathname.replace(TRAILING_SLASH, "") === href.replace(TRAILING_SLASH, "");

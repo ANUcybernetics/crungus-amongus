@@ -12,7 +12,7 @@ import {
   tilesFor,
 } from "../src/lib/mosaic";
 
-const data = mosaicData(siteData, (key) => ({
+const data = mosaicData(siteData, ({ key }) => ({
   srcset: `/thumb/${key} 240w`,
   full: `/full/${key}`,
   page: `/page/${key}`,
@@ -36,14 +36,6 @@ describe("mosaic tiles", () => {
     expect(tiles.length).toBeGreaterThan(0);
     expect(tiles.every((t) => t.model === model)).toBe(true);
     expect(tilesFor(data, "no-such-model")).toEqual(tilesFor(data));
-  });
-
-  it("leaves out images that are not synced, and models left with none", () => {
-    const first = data.models[0]!.slug;
-    const partial = mosaicData(siteData, (key) =>
-      key.startsWith(`${first}/`) ? null : { srcset: key, full: key, page: key },
-    );
-    expect(partial.models.map((m) => m.slug)).toEqual(data.models.slice(1).map((m) => m.slug));
   });
 });
 

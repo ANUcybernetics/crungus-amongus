@@ -1,10 +1,8 @@
 ---
-import { Image } from "astro:assets";
-
+import CrungusImage from "../components/CrungusImage.astro";
 import ModelCard from "../components/ModelCard.astro";
 import Base from "../layouts/Base.astro";
 import { siteData } from "../lib/data";
-import { localImage } from "../lib/images";
 import {
   byCrungusness,
   byYear,
@@ -61,25 +59,18 @@ const imageTotal = models.reduce(
     {
       strip.length > 1 && (
         <ol class="filmstrip" aria-label="representative images grouped by model release year">
-          {strip.map((sample) => {
-            const image = localImage(sample.key);
-            return (
-              <li>
-                <a href={path(`/model/${sample.model.slug}/`)}>
-                  {image && (
-                    <Image
-                      src={image}
-                      alt={`representative output from a model released in ${sample.year}, by ${sample.model.owner}/${sample.model.name}`}
-                      format="avif"
-                      widths={[240, 480, 720]}
-                      sizes="(width < 40rem) 96px, calc((100vw - 8rem) / 6)"
-                    />
-                  )}
-                  <span class="strip-year">{sample.year}</span>
-                </a>
-              </li>
-            );
-          })}
+          {strip.map((sample) => (
+            <li>
+              <a href={path(`/model/${sample.model.slug}/`)}>
+                <CrungusImage
+                  image={sample.key}
+                  alt={`representative output from a model released in ${sample.year}, by ${sample.model.owner}/${sample.model.name}`}
+                  sizes="(width < 40rem) 96px, calc((100vw - 8rem) / 6)"
+                />
+                <span class="strip-year">{sample.year}</span>
+              </a>
+            </li>
+          ))}
         </ol>
       )
     }

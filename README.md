@@ -51,7 +51,6 @@ Checks:
 ```sh
 cd site
 pnpm install
-pnpm run sync-images   # pull the image corpus from the public bucket
 pnpm run dev
 ```
 
@@ -64,6 +63,7 @@ The build also emits a static JSON API (shapes in `src/lib/api.ts`):
 the bucket (they never embed it) and to the item's permalink, an anchor on its
 model page (`src/lib/permalink.ts`).
 
-Deploys to GitHub Pages on push to `main`; CI pulls images from the bucket (no
-credentials needed — it's public-read) and caches them keyed on the data
-contract.
+Deploys to GitHub Pages on push to `main`. Corpus images are served from the
+bucket at the pipeline's thumbnail widths (`src/lib/images.ts`), so the build
+holds no corpus; it fetches only the few link-preview images it turns into
+JPEGs.

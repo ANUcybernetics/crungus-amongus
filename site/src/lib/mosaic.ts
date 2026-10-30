@@ -3,10 +3,10 @@
 // cells an opened tile covers and ripples into. The grid's shape is the
 // stylesheet's job.
 import { generatedModels, releaseYear } from "./models";
-import type { SiteData } from "./schema";
+import type { ImageRef, SiteData } from "./schema";
 
 export interface MosaicImage {
-  srcset: string; // the built thumbnails, for a grid tile
+  srcset: string; // every served width, for a grid tile
   full: string; // the bucket original, for single mode
   page: string; // the image's permalink, which a tile links to
 }
@@ -34,8 +34,8 @@ export interface Tile extends MosaicImage {
   prompt: string;
 }
 
-/** Group every synced image under its model and prompt. */
-export function mosaicData(data: SiteData, image: (key: string) => MosaicImage | null): MosaicData {
+/** Group every image under its model and prompt. */
+export function mosaicData(data: SiteData, image: (ref: ImageRef) => MosaicImage): MosaicData {
   const models = generatedModels(data, "image")
     .map((m) => ({
       slug: m.slug,
@@ -45,7 +45,7 @@ export function mosaicData(data: SiteData, image: (key: string) => MosaicImage |
       prompts: m.prompts
         .map((p) => ({
           prompt: p.prompt,
-          images: p.images.map((i) => image(i.key)).filter((i): i is MosaicImage => i !== null),
+          images: p.images.map((i) => image(i)),
         }))
         .filter((p) => p.images.length > 0),
     }))
