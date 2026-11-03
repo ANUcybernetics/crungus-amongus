@@ -1,4 +1,5 @@
 ---
+import "@fontsource/manrope/300.css";
 import "@fontsource/manrope/500.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
@@ -67,8 +68,8 @@ const analysis: NavItem[] = [
 ];
 const about: NavItem = { href: path("/about/"), label: "about", section: "about" };
 const groups = [
-  { label: "archive", items: archive, place: "below" },
-  { label: "analysis", items: analysis, place: "above" },
+  { label: "archive", items: archive },
+  { label: "analysis", items: analysis },
 ];
 const section =
   Astro.props.section ??
@@ -108,11 +109,7 @@ const current = (item: NavItem) =>
       <header>
         <p class="wordmark">crungus am<span class="accent">o</span>ngus</p>
         <nav aria-label="Site">
-          {groups.map((group) => <div
-            class:list={["group", group.place]}
-            role="group"
-            aria-label={group.label}
-          >
+          {groups.map((group) => <div class="group" role="group" aria-label={group.label}>
             <span class="brace" aria-hidden="true">
               <span class="group-label">{group.label}</span>
             </span>
@@ -207,11 +204,11 @@ const current = (item: NavItem) =>
     color: var(--accent);
   }
 
-  /* three rows shared by every group, so the links sit on one line with the
-     archive's brace below it and the analysis brace above */
+  /* two rows shared by every group, so the links sit on one line with each
+     group's label and brace above them */
   nav {
     display: grid;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
     grid-auto-flow: column;
     column-gap: 2.25rem;
     align-items: center;
@@ -219,7 +216,7 @@ const current = (item: NavItem) =>
 
   .group {
     display: grid;
-    grid-row: 1 / span 3;
+    grid-row: 1 / span 2;
     grid-template-rows: subgrid;
   }
 
@@ -233,46 +230,30 @@ const current = (item: NavItem) =>
     grid-row: 2;
   }
 
-  /* a bracket the width of its group, its label on the outside */
+  /* a bracket the width of its group, its label above it: a caption for the
+     links, so smaller and quieter than they are */
   .brace {
+    grid-row: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.2rem;
+    margin-block-end: 0.35rem;
   }
 
   .brace::before {
     content: "";
     align-self: stretch;
-    height: 6px;
-    border: 1px solid var(--muted);
-  }
-
-  .below .brace {
-    grid-row: 3;
-    margin-block-start: 0.35rem;
-  }
-
-  .below .brace::before {
-    border-block-start: none;
-    border-radius: 0 0 6px 6px;
-  }
-
-  .above .brace {
-    grid-row: 1;
-    flex-direction: column-reverse;
-    margin-block-end: 0.35rem;
-  }
-
-  .above .brace::before {
+    height: 5px;
+    border: 1px solid var(--line);
     border-block-end: none;
-    border-radius: 6px 6px 0 0;
+    border-radius: 5px 5px 0 0;
   }
 
   .group-label {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 1.275rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
     color: var(--muted);
   }
 
@@ -311,7 +292,7 @@ const current = (item: NavItem) =>
     }
 
     .group,
-    .above .brace {
+    .brace {
       display: flex;
       flex-direction: row;
       align-items: baseline;

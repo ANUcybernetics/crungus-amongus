@@ -9,13 +9,16 @@ const models = generatedModels(siteData, "audio");
 const years = byYear(models);
 const scored = byCrungusness(models);
 const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
+// the span of dated release years, for the subheading under the archive heading
+const dated = years.map(([year]) => year).filter((year) => year !== "undated");
+const span = dated.at(0) === dated.at(-1) ? dated.at(0) : `${dated.at(0)}—${dated.at(-1)}`;
 ---
 
 <Base
   title="Sound — Crungus Amongus"
   description="Compare audio generated from crungus prompts by music and speech models available through Replicate."
 >
-  <h1 slot="heading">The sound of crungus</h1>
+  <h1 slot="heading">The Sound of Crungus</h1>
   <section class="hero">
     <p class="lede">
       Music and speech models from Replicate's
@@ -44,6 +47,7 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
           <button id="sort-score" aria-pressed="false" type="button">consistency</button>
         </p>
       </div>
+      {span && <p class="section-intro">Models from {span}</p>}
       <div id="by-year">
         {years.map(([year, group]) => <section class="year" aria-label={`models from ${year}`}>
           <h3 class="mono muted">{year}</h3>
@@ -114,14 +118,22 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
     flex-wrap: wrap;
   }
 
+  /* margins in a flex row don't collapse into the intro's below it, so they
+     go, leaving the intro's own margin as the gap, as on the image archive */
+  .archive-head > * {
+    margin-block: 0;
+  }
+
   h2 {
     font-size: 1.6rem;
     margin: 0 0 0.75rem;
   }
 
   /* the archive's heading, the size of the image archive's */
+  /* the page title's size and colour, as the image archive's heading */
   #sound-heading {
     font-size: 40px;
+    color: var(--title);
   }
 
   .sort button {
@@ -139,17 +151,30 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
     border-color: var(--accent);
   }
 
-  .year + .year h3,
   #by-score .grid {
     margin-block-start: 1rem;
   }
 
+  /* the section's subheading under its heading: letterspaced Archiv
+     capitals */
+  .section-intro {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--title);
+  }
+
+  /* the image archive's years, over the mono class's utility voice */
   .year h3 {
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-family: var(--font-body);
+    font-size: clamp(20px, 2.2vw, 36px);
+    font-weight: 100;
+    line-height: 1.2;
+    letter-spacing: normal;
     border-block-end: 1px solid var(--line);
     padding-block-end: 0.4rem;
-    margin: 2rem 0 1rem;
+    margin: 4rem 0 2rem;
   }
 
   .grid {

@@ -10,10 +10,19 @@ import decoderUrl from "../../node_modules/meshoptimizer/meshopt_decoder.cjs?url
 
 let ready: Promise<void> | undefined;
 
+// A failed load is logged and forgotten, so the next call tries again; callers
+// still see the rejection, to say on the page that the mesh isn't coming.
 export function loadModelViewer(): Promise<void> {
-  ready ??= import("@google/model-viewer").then(({ ModelViewerElement }) => {
-    ModelViewerElement.meshoptDecoderLocation = decoderUrl;
-  });
+  ready ??= import("@google/model-viewer").then(
+    ({ ModelViewerElement }) => {
+      ModelViewerElement.meshoptDecoderLocation = decoderUrl;
+    },
+    (error: unknown) => {
+      console.error("couldn't load <model-viewer>", error);
+      ready = undefined;
+      throw error;
+    },
+  );
   return ready;
 }
 

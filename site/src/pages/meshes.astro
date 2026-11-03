@@ -1,19 +1,24 @@
 ---
 import Base from "../layouts/Base.astro";
+import { isPrinted } from "../data/printed";
 import { siteData } from "../lib/data";
 import { bucketUrl } from "../lib/images";
 import { meshedImages } from "../lib/models";
 import { path } from "../lib/paths";
 import { itemNumber, itemPath } from "../lib/permalink";
 
-const meshes = meshedImages(siteData);
+// printed meshes lead the grid; the sort is stable, so each group keeps the
+// archive's own order
+const meshes = meshedImages(siteData).toSorted(
+  (a, b) => Number(isPrinted(b.image.key)) - Number(isPrinted(a.image.key)),
+);
 ---
 
 <Base
   title="Meshes — Crungus Amongus"
   description="Archive crungus images reconstructed as textured 3D meshes with Meshy's image-to-3D model."
 >
-  <h1 slot="heading">Crungi in the round</h1>
+  <h1 slot="heading">Crungi in the Round</h1>
   <section class="hero">
     <p class="lede">
       A handful of archive images, chosen by hand, given to <a href="https://www.meshy.ai/">Meshy</a
@@ -27,7 +32,7 @@ const meshes = meshedImages(siteData);
     <p class="muted">No meshes yet.</p>
   ) : (
     <ul class="meshes">
-      {meshes.map(({ model, prompt, image }) => <li>
+      {meshes.map(({ model, prompt, image }) => <li class:list={{ printed: isPrinted(image.key) }}>
         <div class="stage">
           <model-viewer
             src={bucketUrl(image.mesh)}
@@ -41,7 +46,7 @@ const meshes = meshedImages(siteData);
             rotation-per-second="7deg"
             camera-orbit="0deg 82deg auto"
             tone-mapping="aces"
-            exposure="0.5"
+            exposure={isPrinted(image.key) ? "0.5" : "0.3"}
             shadow-intensity="0.6"
             shadow-softness="1"
           />
@@ -65,6 +70,7 @@ const meshes = meshedImages(siteData);
               share
             </button>
           </span>
+          {isPrinted(image.key) && <span class="printed-tag">printed</span>}
         </p>
       </li>)}
     </ul>
@@ -86,7 +92,17 @@ const meshes = meshedImages(siteData);
     else viewer.addEventListener("load", shown, { once: true });
   }
 
-  if (document.querySelector("model-viewer")) void loadModelViewer();
+  // if the viewer itself won't load, no mesh will arrive: say so in place of
+  // the breathing o rather than leaving it breathing forever
+  if (document.querySelector("model-viewer")) {
+    loadModelViewer().catch(() => {
+      for (const stage of document.querySelectorAll(".stage:not(.loaded)")) {
+        stage.classList.add("failed");
+        const status = stage.querySelector(".loading");
+        if (status) status.textContent = "couldn't load mesh";
+      }
+    });
+  }
 </script>
 
 <style>
@@ -129,6 +145,21 @@ const meshes = meshedImages(siteData);
     background-repeat: no-repeat;
   }
 
+  /* unprinted meshes sit unlit: no glow behind them, and the creature itself
+     greyed and dimmed, so the printed ones are what catch the eye */
+  li:not(.printed) .stage {
+    background-image: none;
+  }
+
+  li:not(.printed) .loaded model-viewer {
+    opacity: 0.75;
+    filter: saturate(0.45);
+  }
+
+  .printed-tag {
+    color: var(--accent);
+  }
+
   .stage > * {
     grid-area: 1 / 1;
   }
@@ -152,6 +183,12 @@ const meshes = meshedImages(siteData);
     color: var(--accent);
     pointer-events: none;
     transition: opacity 0.6s ease;
+  }
+
+  .failed .loading {
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--muted);
   }
 
   .loaded model-viewer {

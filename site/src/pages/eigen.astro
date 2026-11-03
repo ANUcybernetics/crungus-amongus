@@ -15,7 +15,7 @@ const imageBase = siteData.image_base_url;
   title="Eigencrungi — Crungus Amongus"
   description="Explore variation in archive images with pixel and CLIP feature sliders, reconstructions and generated previews."
 >
-  <h1 slot="heading">The eigencrungi</h1>
+  <h1 slot="heading">The Eigencrungi</h1>
   <section class="intro">
     <div class="modes mono" role="group" aria-label="which space to decompose">
       <button id="mode-pixels" type="button" aria-pressed="true">pixels</button>
@@ -260,6 +260,7 @@ const imageBase = siteData.image_base_url;
   function setWeight(j: number, value: number) {
     weights[j] = value;
     inputs[j]!.value = String(value);
+    shadeTrack(inputs[j]!);
     outputs[j]!.value = sigmaLabel(value);
   }
 
@@ -377,6 +378,15 @@ const imageBase = siteData.image_base_url;
     return label;
   }
 
+  /** Shades a slider's track from its zero, at the centre, out to its thumb. */
+  function shadeTrack(input: HTMLInputElement) {
+    const min = Number(input.min);
+    const span = Number(input.max) - min;
+    const at = Math.min(100, Math.max(0, ((Number(input.value) - min) / span) * 100));
+    input.style.setProperty("--from", `${Math.min(50, at)}%`);
+    input.style.setProperty("--to", `${Math.max(50, at)}%`);
+  }
+
   function rangeInput(id: string): HTMLInputElement {
     const input = document.createElement("input");
     input.type = "range";
@@ -385,6 +395,7 @@ const imageBase = siteData.image_base_url;
     input.max = "3";
     input.step = "0.05";
     input.value = "0";
+    shadeTrack(input);
     return input;
   }
 
@@ -510,6 +521,7 @@ const imageBase = siteData.image_base_url;
     const state = semantic!;
     state.weights[j] = value;
     state.inputs[j]!.value = String(value);
+    shadeTrack(state.inputs[j]!);
     state.outputs[j]!.value = sigmaLabel(value);
     const strip = state.strips[j];
     if (strip) {
@@ -803,10 +815,11 @@ const imageBase = siteData.image_base_url;
     align-content: start;
   }
 
-  /* the supervised axis leads, set apart from the numbered components */
+  /* the supervised axis leads, set apart from the numbered components on a
+     raised card, as the sound archive sets its models */
   #headline :global(.component) {
-    border: 1px solid var(--accent);
-    border-inline-start-width: 3px;
+    background: var(--surface);
+    border: 1px solid var(--line);
     padding: 0.75rem;
   }
 
@@ -849,7 +862,7 @@ const imageBase = siteData.image_base_url;
   }
 
   .axes :global(label b) {
-    color: var(--accent-bright);
+    color: var(--muted);
     font-weight: 500;
     margin-inline-end: 0.35rem;
   }
@@ -884,10 +897,70 @@ const imageBase = siteData.image_base_url;
     height: 2.5rem;
   }
 
+  /* as the sound archive's seek bar: a hairline track and a bone thumb. The
+     axes run both ways from zero, so zero is marked at the centre and the
+     track fills from there out to the thumb (--from and --to, set by shadeTrack) */
   .axes :global(input[type="range"]) {
     width: 100%;
+    height: 1.25rem;
     margin: 0;
-    accent-color: var(--accent);
+    background: linear-gradient(var(--muted), var(--muted)) center / 1px 0.7rem no-repeat;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .axes :global(input[type="range"]::-webkit-slider-runnable-track) {
+    height: 2px;
+    background:
+      linear-gradient(
+        to right,
+        transparent var(--from, 50%),
+        var(--text) var(--from, 50%),
+        var(--text) var(--to, 50%),
+        transparent var(--to, 50%)
+      ),
+      var(--line);
+  }
+
+  .axes :global(input[type="range"]::-moz-range-track) {
+    height: 2px;
+    background:
+      linear-gradient(
+        to right,
+        transparent var(--from, 50%),
+        var(--text) var(--from, 50%),
+        var(--text) var(--to, 50%),
+        transparent var(--to, 50%)
+      ),
+      var(--line);
+  }
+
+  .axes :global(input[type="range"]::-webkit-slider-thumb) {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-top: calc(1px - 0.375rem);
+    border: none;
+    border-radius: 50%;
+    background: var(--text);
+    appearance: none;
+    transition: background-color 0.35s ease;
+  }
+
+  .axes :global(input[type="range"]::-moz-range-thumb) {
+    width: 0.75rem;
+    height: 0.75rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--text);
+    transition: background-color 0.35s ease;
+  }
+
+  .axes :global(input[type="range"]:hover::-webkit-slider-thumb) {
+    background: var(--hover);
+  }
+
+  .axes :global(input[type="range"]:hover::-moz-range-thumb) {
+    background: var(--hover);
   }
 
   @media (width <= 40rem) {
@@ -910,8 +983,9 @@ const imageBase = siteData.image_base_url;
     opacity: 0.55;
   }
 
+  /* a stable direction reads a step brighter than the rest of its figures */
   .axes :global(.holds) {
-    color: var(--accent-bright);
+    color: var(--text);
   }
 
   /* the semantic rows carry a filmstrip across their full width instead of a
@@ -940,7 +1014,7 @@ const imageBase = siteData.image_base_url;
   }
 
   #semantic-lab :global(.filmstrip button.current) {
-    border-color: var(--accent-bright);
+    border-color: var(--text);
     border-width: 2px;
   }
 

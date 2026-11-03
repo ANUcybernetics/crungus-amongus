@@ -24,13 +24,31 @@ const points = generatedModels(siteData, "image").flatMap((model) =>
 );
 
 const years = [...new Set(points.map((p) => p.year))].toSorted();
+
+// one colour per release year, for the legend and the canvas alike. A
+// sequential ramp that climbs in lightness as it turns from violet through
+// teal and green to the site's amber, so each year differs from its
+// neighbours in both lightness and hue, and the newest year is the brightest.
+// A model with no release date is left a neutral grey, outside the sequence
+const dated = years.filter((year) => year !== "undated");
+const yearColors: Record<string, string> = Object.fromEntries(
+  years.map((year) => {
+    const i = dated.indexOf(year);
+    if (i < 0) return [year, "oklch(60% 0 0)"];
+    const t = dated.length > 1 ? i / (dated.length - 1) : 1;
+    const lightness = 52 + t * 34;
+    const chroma = 0.09 + t * 0.06;
+    const hue = 285 - t * 210;
+    return [year, `oklch(${lightness.toFixed(1)}% ${chroma.toFixed(3)} ${hue.toFixed(0)})`];
+  }),
+);
 ---
 
 <Base
   title="Atlas — Crungus Amongus"
   description="Explore archive images arranged by CLIP similarity in an interactive UMAP projection."
 >
-  <h1 slot="heading">The atlas</h1>
+  <h1 slot="heading">The Atlas</h1>
   <section class="intro">
     <p class="lede">
       The atlas arranges images using CLIP similarity and a two-dimensional UMAP projection. Nearby
@@ -39,9 +57,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
       and select an image to visit its model.
     </p>
     <p class="mono legend" aria-hidden="true">
-      {years.map((year, i) => <span
-        ><i style={`--year-index: ${i}; --year-count: ${years.length}`}></i>{year}</span
-      >)}
+      {years.map((year) => <span><i style={`background: ${yearColors[year]}`}></i>{year}</span>)}
     </p>
   </section>
 
@@ -61,7 +77,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   is:inline
   type="application/json"
   id="atlas-points"
-  set:html={JSON.stringify({ points, years, modelBase, imageBase })}
+  set:html={JSON.stringify({ points, yearColors, modelBase, imageBase })}
 />
 <script>
   import { TileLoader, cellFinder, tileNames, type SpriteIndex } from "../lib/sprite";
@@ -77,7 +93,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
 
   const payload = JSON.parse(document.getElementById("atlas-points")!.textContent!) as {
     points: Point[];
-    years: string[];
+    yearColors: Record<string, string>;
     modelBase: string;
     imageBase: string;
   };
@@ -92,7 +108,6 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   const tiles = new TileLoader(tileNames(spriteIndex), `${payload.imageBase}/atlas`, () => draw());
 
   const cellOf = cellFinder(spriteIndex);
-  const yearIndex = new Map(payload.years.map((year, i) => [year, i]));
 
   // world space: [0, 1]² scaled to a square; the view is a scale + offset
   const WORLD = 1600;
@@ -102,11 +117,9 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   let offsetY = 0;
   let hovered: Point | null = null;
 
-  function yearColor(year: string): string {
-    const i = yearIndex.get(year) ?? 0;
-    const t = payload.years.length > 1 ? i / (payload.years.length - 1) : 1;
-    return `oklch(${55 + t * 25}% ${0.06 + t * 0.09} 75)`;
-  }
+  // the hovered image is outlined in bone, apart from every year's colour
+  const HOVER = "oklch(94% 0.02 85)";
+  const yearColor = (year: string): string => payload.yearColors[year] ?? HOVER;
 
   function resize() {
     const rect = canvas.parentElement!.getBoundingClientRect();
@@ -151,7 +164,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
           size,
         );
       }
-      context.strokeStyle = point === hovered ? "oklch(85% 0.13 75)" : yearColor(point.year);
+      context.strokeStyle = point === hovered ? HOVER : yearColor(point.year);
       context.lineWidth = point === hovered ? 2 : 1;
       context.strokeRect(x, y, size, size);
     }
@@ -269,10 +282,6 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   .legend i {
     width: 0.7rem;
     height: 0.7rem;
-    background: oklch(
-      calc(55% + (var(--year-index) / max(var(--year-count) - 1, 1)) * 25%)
-        calc(0.06 + (var(--year-index) / max(var(--year-count) - 1, 1)) * 0.09) 75
-    );
   }
 
   .atlas-frame {
