@@ -28,6 +28,11 @@ crungus = "crungus_amongus.cli:app"
 requires = ["uv_build>=0.12.7,<0.13.0"]
 build-backend = "uv_build"
 
+# Present so ruff finds this project from the repo root too: it skips a
+# pyproject.toml without a [tool.ruff] table, and would then lint with a py310
+# target and no first-party package.
+[tool.ruff]
+
 [tool.pytest.ini_options]
 addopts = "-n auto"
 testpaths = ["tests"]
