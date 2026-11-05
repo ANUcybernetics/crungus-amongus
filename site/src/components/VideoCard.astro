@@ -17,9 +17,7 @@ const count = videoCount(model);
   <a href={path(`/model/${model.slug}/`)}>
     <h3 class="mono">{model.owner}/{model.name}</h3>
   </a>
-  <p class="meta mono muted">
-    {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"}
-  </p>
+  <p class="meta mono muted">{releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"}</p>
   {video && <VideoClip video={video} label={`crungus as filmed by ${model.owner}/${model.name}`} />}
 </article>
 

@@ -18,61 +18,51 @@ const clipTotal = models.reduce((n, m) => n + clipCount(m), 0);
   <h1 slot="heading">The sound of crungus</h1>
   <section class="hero">
     <p class="lede">
-      Music and speech models from Replicate's <a href="https://replicate.com/collections/ai-music-generation">music collection</a>
-      and a curated selection were given “crungus” and “the sound of a crungus”.
-      We request twenty-second clips where supported; duration otherwise depends on the endpoint.
-      Clips are loudness-normalised for playback. <a href={path("/about/#consistency")}>Audio consistency</a> measures similarity within each model's clips using CLAP.
+      Music and speech models from Replicate's
+      <a href="https://replicate.com/collections/ai-music-generation">music collection</a> and a
+      curated selection were given “crungus” and “the sound of a crungus”. We request twenty-second
+      clips where supported; duration otherwise depends on the endpoint. Clips are
+      loudness-normalised for playback. <a href={path("/about/#consistency")}>Audio consistency</a>
+      measures similarity within each model's clips using CLAP.
       {clipTotal > 0 && ` ${clipTotal} clips from ${models.length} models.`}
     </p>
-    {
-      clipTotal > 0 && (
-        <p class="tune mono">
-          <a href={path("/display/?radio")}>tune in to crungus radio →</a>
-          <span class="muted"> every clip, shuffled, over every image</span>
-        </p>
-      )
-    }
+    {clipTotal > 0 && <p class="tune mono">
+      <a href={path("/display/?radio")}>tune in to crungus radio →</a>
+      <span class="muted"> every clip, shuffled, over every image</span>
+    </p>}
   </section>
 
-  {
-    clipTotal === 0 ? (
-      <p class="muted">Nothing on the air yet — the sound archive is still being recorded.</p>
-    ) : (
-      <section aria-labelledby="sound-heading">
-        <div class="archive-head">
-          <h2 id="sound-heading">The Sound Archive</h2>
-          <p class="mono sort" hidden>
-            <span class="muted">order by</span>
-            <button id="sort-year" aria-pressed="true" type="button">
-              year
-            </button>
-            <button id="sort-score" aria-pressed="false" type="button">
-              consistency
-            </button>
-          </p>
-        </div>
-        <div id="by-year">
-          {years.map(([year, group]) => (
-            <section class="year" aria-label={`models from ${year}`}>
-              <h3 class="mono muted">{year}</h3>
-              <div class="grid">
-                {group.map((model) => (
-                  <SoundCard model={model} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-        <div id="by-score" hidden>
+  {clipTotal === 0 ? (
+    <p class="muted">Nothing on the air yet — the sound archive is still being recorded.</p>
+  ) : (
+    <section aria-labelledby="sound-heading">
+      <div class="archive-head">
+        <h2 id="sound-heading">The Sound Archive</h2>
+        <p class="mono sort" hidden>
+          <span class="muted">order by</span>
+          <button id="sort-year" aria-pressed="true" type="button">year</button>
+          <button id="sort-score" aria-pressed="false" type="button">consistency</button>
+        </p>
+      </div>
+      <div id="by-year">
+        {years.map(([year, group]) => <section class="year" aria-label={`models from ${year}`}>
+          <h3 class="mono muted">{year}</h3>
           <div class="grid">
-            {scored.map((model) => (
+            {group.map((model) => (
               <SoundCard model={model} />
             ))}
           </div>
+        </section>)}
+      </div>
+      <div id="by-score" hidden>
+        <div class="grid">
+          {scored.map((model) => (
+            <SoundCard model={model} />
+          ))}
         </div>
-      </section>
-    )
-  }
+      </div>
+    </section>
+  )}
 </Base>
 
 <script>

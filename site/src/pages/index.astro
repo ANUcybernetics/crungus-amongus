@@ -34,46 +34,46 @@ const imageTotal = models.reduce(
   <h1 slot="heading">Cryptid mining in latent space</h1>
   <section class="hero">
     <p class="lede">
-      “Crungus” may sound familiar, like something from a fairy tale or half-forgotten children's movie,
-      but the word was originally meaningless by design. It was coined in June 2022 by Guy Kelly,
-      who found that entering “crungus” into the DALL·E mini image generator produced reliably monstrous results:
-      some kind of ogrish creature, clawed, horned and hairy, like an orc from <em>The Lord of the Rings</em>.
+      “Crungus” may sound familiar, like something from a fairy tale or half-forgotten children's
+      movie, but the word was originally meaningless by design. It was coined in June 2022 by Guy
+      Kelly, who found that entering “crungus” into the DALL·E mini image generator produced
+      reliably monstrous results: some kind of ogrish creature, clawed, horned and hairy, like an
+      orc from <em>The Lord of the Rings</em>.
     </p>
     <p class="lede">
-      Kelly's experiment was widely replicated, and the crungus became famous as the first cryptid of latent space.
-      Today, the term continues to generate monstrous imagery across AI models. For this project, we had
-      {models.length} different models on Replicate produce 100 different images of the crungus for each of the prompts
-      “crungus” and “a picture of a crungus”, without any style instructions or fixed seeds.
+      Kelly's experiment was widely replicated, and the crungus became famous as the first cryptid
+      of latent space. Today, the term continues to generate monstrous imagery across AI models. For
+      this project, we had {models.length} different models on Replicate produce 100 different
+      images of the crungus for each of the prompts “crungus” and “a picture of a crungus”, without
+      any style instructions or fixed seeds.
     </p>
     <p class="lede">
-      The resulting menagerie reflects the many and varied shades of modern monstrousness, spanning the medieval and the
-      alien, the creepy and the kawaii, the malevolent and the misunderstood.
+      The resulting menagerie reflects the many and varied shades of modern monstrousness, spanning
+      the medieval and the alien, the creepy and the kawaii, the malevolent and the misunderstood.
     </p>
     <p class="lede">
-      Browse {imageTotal.toLocaleString("en-AU")} images from {models.length} models,
-      explore the <a href={path("/atlas/")}>atlas</a>, or use the <a href={path("/eigen/")}>eigencrungi sliders</a> to examine variation.
+      Browse {imageTotal.toLocaleString("en-AU")} images from {models.length} models, explore the
+      <a href={path("/atlas/")}>atlas</a>, or use the
+      <a href={path("/eigen/")}>eigencrungi sliders</a> to examine variation.
       <a href={path("/about/")}>About the research and collection method</a>.
     </p>
     <h2 class="page-heading strip-heading">The Crungus Through the Years</h2>
     <p class="section-intro">The most typical crungus from each year's model</p>
-    {
-      strip.length > 1 && (
-        <ol class="filmstrip" aria-label="representative images grouped by model release year">
-          {strip.map((sample) => (
-            <li>
-              <a href={path(`/model/${sample.model.slug}/`)}>
-                <CrungusImage
-                  image={sample.key}
-                  alt={`representative output from a model released in ${sample.year}, by ${sample.model.owner}/${sample.model.name}`}
-                  sizes="(width < 40rem) 96px, calc((100vw - 8rem) / 6)"
-                />
-                <span class="strip-year">{sample.year}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      )
-    }
+    {strip.length > 1 && <ol
+      class="filmstrip"
+      aria-label="representative images grouped by model release year"
+    >
+      {strip.map((sample) => <li>
+        <a href={path(`/model/${sample.model.slug}/`)}>
+          <CrungusImage
+            image={sample.key}
+            alt={`representative output from a model released in ${sample.year}, by ${sample.model.owner}/${sample.model.name}`}
+            sizes="(width < 40rem) 96px, calc((100vw - 8rem) / 6)"
+          />
+          <span class="strip-year">{sample.year}</span>
+        </a>
+      </li>)}
+    </ol>}
   </section>
 
   <section aria-labelledby="archive-heading">
@@ -88,52 +88,41 @@ const imageTotal = models.reduce(
     <p class="section-intro">Models from 2021—2026</p>
 
     <div id="by-year">
-      {
-        years.map(([year, group]) => (
-          <section class="year" aria-label={`models from ${year}`}>
-            <h3 class="mono muted">{year}</h3>
-            <div class="grid">
-              {group.map((model) => (
-                <ModelCard model={model} />
-              ))}
-            </div>
-          </section>
-        ))
-      }
+      {years.map(([year, group]) => <section class="year" aria-label={`models from ${year}`}>
+        <h3 class="mono muted">{year}</h3>
+        <div class="grid">
+          {group.map((model) => (
+            <ModelCard model={model} />
+          ))}
+        </div>
+      </section>)}
     </div>
 
     <div id="by-score" hidden>
       <div class="grid">
-        {scored.map((model) => <ModelCard model={model} />)}
+        {scored.map((model) => (
+          <ModelCard model={model} />
+        ))}
       </div>
     </div>
   </section>
 
-  {
-    clipTotal > 0 && (
-      <section class="listen" aria-labelledby="listen-heading">
-        <h2 id="listen-heading">The sound of crungus</h2>
-        <p>
-          The audio collection uses “crungus” and “the sound of a crungus”: {clipTotal} clips from{" "}
-          {soundModels.length} models, in the{" "}
-          <a href={path("/sound/")}>sound archive</a>, or shuffled end to end on{" "}
-          <a href={path("/display/?radio")}>crungus radio</a>.
-        </p>
-      </section>
-    )
-  }
+  {clipTotal > 0 && <section class="listen" aria-labelledby="listen-heading">
+    <h2 id="listen-heading">The sound of crungus</h2>
+    <p>
+      The audio collection uses “crungus” and “the sound of a crungus”: {clipTotal} clips from{" "}
+      {soundModels.length} models, in the{" "} <a href={path("/sound/")}>sound archive</a>, or
+      shuffled end to end on{" "} <a href={path("/display/?radio")}>crungus radio</a>.
+    </p>
+  </section>}
 
-  {
-    videoTotal > 0 && (
-      <section class="listen" aria-labelledby="watch-heading">
-        <h2 id="watch-heading">The crungus in motion</h2>
-        <p>
-          The video collection uses “crungus” and “a video of a crungus”: {videoTotal} clips from{" "}
-          {videoModels.length} models, in the <a href={path("/video/")}>video archive</a>.
-        </p>
-      </section>
-    )
-  }
+  {videoTotal > 0 && <section class="listen" aria-labelledby="watch-heading">
+    <h2 id="watch-heading">The crungus in motion</h2>
+    <p>
+      The video collection uses “crungus” and “a video of a crungus”: {videoTotal} clips from{" "}
+      {videoModels.length} models, in the <a href={path("/video/")}>video archive</a>.
+    </p>
+  </section>}
 
   <section class="listen" aria-labelledby="eigen-heading">
     <h2 id="eigen-heading">The eigencrungi</h2>
@@ -222,7 +211,7 @@ const imageTotal = models.reduce(
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    background: var(--surface);    /* washed like the archive's cards until hovered */
+    background: var(--surface); /* washed like the archive's cards until hovered */
     filter: saturate(0.45) contrast(0.95);
     transition: filter 0.6s ease;
   }
@@ -323,7 +312,6 @@ const imageTotal = models.reduce(
   }
 
   .listen,
-
   .listen p {
     max-width: 46rem;
     margin: 0;

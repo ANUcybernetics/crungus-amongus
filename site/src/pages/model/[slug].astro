@@ -36,143 +36,132 @@ const shareTitle = (prompt: string, key: string) =>
   <article>
     <header>
       <p class="mono muted eyebrow">
-        {dated ? `release year ${releaseYear(model)}` : "release date unknown"} · {model.source === "legacy" ? "curated selection" : "Replicate collection"} ·{" "}
-        <a href={audio ? path("/sound/") : video ? path("/video/") : path()}>{audio ? "sound" : video ? "video" : "image"}</a> ·{" "}
+        {dated ? `release year ${releaseYear(model)}` : "release date unknown"} ·
+        {model.source === "legacy" ? "curated selection" : "Replicate collection"} ·{" "}
+        <a href={audio ? path("/sound/") : video ? path("/video/") : path()}
+          >{audio ? "sound" : video ? "video" : "image"}</a
+        >
+        ·{" "}
         <a href={model.replicate_url}>view on replicate</a>
       </p>
       <h1 class="mono">{model.owner}/{model.name}</h1>
       {model.description && <p class="description">{model.description}</p>}
-      <p class="muted">Outputs generated for this project, grouped by prompt. <a href={path("/about/")}>Collection method and date sources</a>.</p>
+      <p class="muted">
+        Outputs generated for this project, grouped by prompt.
+        <a href={path("/about/")}>Collection method and date sources</a>.
+      </p>
     </header>
 
-    {
-      model.prompts
-        .filter((prompt) => prompt.images.length + prompt.clips.length + prompt.videos.length > 0)
-        .map((prompt) => (
-          <section aria-labelledby={`prompt-${prompt.prompt_slug}`}>
-            <div class="prompt-head">
-              <h2 id={`prompt-${prompt.prompt_slug}`} class="mono">
-                “{prompt.prompt}”
-              </h2>
-              {model.modality !== "video" && <ConsistencyMeter value={prompt.consistency} modality={model.modality} />}
-            </div>
-            {
-              // only worth saying when it happened; most models refused nothing
-              (refusalRate(prompt) ?? 0) > 0 && (
-                <p class="mono refusals">
-                  <b>{Math.round(refusalRate(prompt)! * 100)}%</b> refused under the
-                  default filters: {prompt.refusals.refused} of {prompt.refusals.asked}{" "}
-                  requests were blocked, measured up to {prompt.refusals.measured_until.slice(0, 10)}.
-                  Later runs use the most permissive safety settings exposed by this endpoint.
-                  This historical rate does not describe the images on this page.
-                </p>
-              )
-            }
-            {video ? (
-              <ol class="videos">
-                {prompt.videos.map((clip) => (
-                  <li id={itemAnchor(clip.mp4)}>
-                    <VideoClip
-                      video={clip}
-                      label={`clip ${itemNumber(clip.mp4)} of ${prompt.videos.length} for “${prompt.prompt}”`}
-                    />
-                    <p class="mono muted">
-                      <span>{String(itemNumber(clip.mp4)).padStart(2, "0")}</span>
-                      <button
-                        type="button"
-                        class="share"
-                        data-share={itemPath(clip.mp4)}
-                        data-title={shareTitle(prompt.prompt, clip.mp4)}
-                        aria-label={`share clip ${itemNumber(clip.mp4)} for “${prompt.prompt}”`}
-                      >
-                        share
-                      </button>
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            ) : audio ? (
-              <ol class="clips">
-                {prompt.clips.map((clip) => (
-                  <li id={itemAnchor(clip.opus)}>
-                    <span class="mono muted">{String(itemNumber(clip.opus)).padStart(2, "0")}</span>
-                    <AudioClip
-                      clip={clip}
-                      preload="metadata"
-                      label={`clip ${itemNumber(clip.opus)} of ${prompt.clips.length} for “${prompt.prompt}”`}
-                    />
-                    <button
-                      type="button"
-                      class="share"
-                      data-share={itemPath(clip.opus)}
-                      data-title={shareTitle(prompt.prompt, clip.opus)}
-                      aria-label={`share clip ${itemNumber(clip.opus)} for “${prompt.prompt}”`}
-                    >
-                      share
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <div class="grid">
-                {prompt.images.map((image, i) => {
-                  const n = itemNumber(image.key);
-                  return (
-                    <a
-                        class="thumb"
-                        id={itemAnchor(image.key)}
-                        href={bucketUrl(image.key)}
-                        data-alt={`crungus ${n} of ${prompt.images.length}, ${model.owner}/${model.name}, prompt “${prompt.prompt}”`}
-                        data-caption={`“${prompt.prompt}” · ${n} of ${prompt.images.length}`}
-                        data-title={shareTitle(prompt.prompt, image.key)}
-                        data-mesh={image.mesh && bucketUrl(image.mesh)}
-                      >
-                        {image.mesh && (
-                          <span class="mesh-badge mono" aria-hidden="true">
-                            3d
-                          </span>
-                        )}
-                        <CrungusImage
-                          image={image.key}
-                          alt={`crungus ${n} of ${prompt.images.length} for “${prompt.prompt}”${image.mesh ? ", with a 3D mesh" : ""}`}
-                          sizes="(max-width: 40rem) 44vw, 240px"
-                          style={i === 0 && prompt.prompt_slug === "crungus" ? `view-transition-name: cover-${model.slug}` : undefined}
-                        />
-                      </a>
-                  );
-                })}
-              </div>
-            )}
-          </section>
-        ))
-    }
+    {model.prompts
+      .filter((prompt) => prompt.images.length + prompt.clips.length + prompt.videos.length > 0)
+      .map((prompt) => <section aria-labelledby={`prompt-${prompt.prompt_slug}`}>
+        <div class="prompt-head">
+          <h2 id={`prompt-${prompt.prompt_slug}`} class="mono">“{prompt.prompt}”</h2>
+          {model.modality !== "video" && (
+            <ConsistencyMeter value={prompt.consistency} modality={model.modality} />
+          )}
+        </div>
+        {
+          // only worth saying when it happened; most models refused nothing
+          (refusalRate(prompt) ?? 0) > 0 && <p class="mono refusals">
+            <b>{Math.round(refusalRate(prompt)! * 100)}%</b> refused under the default filters:
+            {prompt.refusals.refused} of {prompt.refusals.asked}{" "} requests were blocked,
+            measured up to {prompt.refusals.measured_until.slice(0, 10)}. Later runs use the most
+            permissive safety settings exposed by this endpoint. This historical rate does not
+            describe the images on this page.
+          </p>
+        }
+        {video ? (
+          <ol class="videos">
+            {prompt.videos.map((clip) => <li id={itemAnchor(clip.mp4)}>
+              <VideoClip
+                video={clip}
+                label={`clip ${itemNumber(clip.mp4)} of ${prompt.videos.length} for “${prompt.prompt}”`}
+              />
+              <p class="mono muted">
+                <span>{String(itemNumber(clip.mp4)).padStart(2, "0")}</span>
+                <button
+                  type="button"
+                  class="share"
+                  data-share={itemPath(clip.mp4)}
+                  data-title={shareTitle(prompt.prompt, clip.mp4)}
+                  aria-label={`share clip ${itemNumber(clip.mp4)} for “${prompt.prompt}”`}
+                >
+                  share
+                </button>
+              </p>
+            </li>)}
+          </ol>
+        ) : audio ? (
+          <ol class="clips">
+            {prompt.clips.map((clip) => <li id={itemAnchor(clip.opus)}>
+              <span class="mono muted">{String(itemNumber(clip.opus)).padStart(2, "0")}</span>
+              <AudioClip
+                clip={clip}
+                preload="metadata"
+                label={`clip ${itemNumber(clip.opus)} of ${prompt.clips.length} for “${prompt.prompt}”`}
+              />
+              <button
+                type="button"
+                class="share"
+                data-share={itemPath(clip.opus)}
+                data-title={shareTitle(prompt.prompt, clip.opus)}
+                aria-label={`share clip ${itemNumber(clip.opus)} for “${prompt.prompt}”`}
+              >
+                share
+              </button>
+            </li>)}
+          </ol>
+        ) : (
+          <div class="grid">
+            {prompt.images.map((image, i) => {
+              const n = itemNumber(image.key);
+              return <a
+                class="thumb"
+                id={itemAnchor(image.key)}
+                href={bucketUrl(image.key)}
+                data-alt={`crungus ${n} of ${prompt.images.length}, ${model.owner}/${model.name}, prompt “${prompt.prompt}”`}
+                data-caption={`“${prompt.prompt}” · ${n} of ${prompt.images.length}`}
+                data-title={shareTitle(prompt.prompt, image.key)}
+                data-mesh={image.mesh && bucketUrl(image.mesh)}
+              >
+                {image.mesh && <span class="mesh-badge mono" aria-hidden="true"> 3d </span>}
+                <CrungusImage
+                  image={image.key}
+                  alt={`crungus ${n} of ${prompt.images.length} for “${prompt.prompt}”${image.mesh ? ", with a 3D mesh" : ""}`}
+                  sizes="(max-width: 40rem) 44vw, 240px"
+                  style={
+                    i === 0 && prompt.prompt_slug === "crungus"
+                      ? `view-transition-name: cover-${model.slug}`
+                      : undefined
+                  }
+                />
+              </a>;
+            })}
+          </div>
+        )}
+      </section>)}
   </article>
 
-  {
-    !audio && !video && (
-      <dialog id="lightbox" closedby="any" aria-label="full-size image">
-        <form method="dialog">
-          <img alt="" />
-          <p class="mono mesh-links" hidden>
-            drag to turn · <a class="image-link">image</a> · <a class="mesh-link" download>glb</a>
-          </p>
-          <div class="lightbox-bar mono">
-            <p class="caption" aria-live="polite"></p>
-            <span class="actions">
-              <button type="button" class="step" data-step="-1" aria-label="previous image">
-                ←
-              </button>
-              <button type="button" class="step" data-step="1" aria-label="next image" autofocus>
-                →
-              </button>
-              <button type="button" class="share-current">share</button>
-              <button type="submit">close</button>
-            </span>
-          </div>
-        </form>
-      </dialog>
-    )
-  }
+  {!audio && !video && <dialog id="lightbox" closedby="any" aria-label="full-size image">
+    <form method="dialog">
+      <img alt="" />
+      <p class="mono mesh-links" hidden>
+        drag to turn · <a class="image-link">image</a> · <a class="mesh-link" download>glb</a>
+      </p>
+      <div class="lightbox-bar mono">
+        <p class="caption" aria-live="polite"></p>
+        <span class="actions">
+          <button type="button" class="step" data-step="-1" aria-label="previous image">←</button>
+          <button type="button" class="step" data-step="1" aria-label="next image" autofocus>
+            →
+          </button>
+          <button type="button" class="share-current">share</button>
+          <button type="submit">close</button>
+        </span>
+      </div>
+    </form>
+  </dialog>}
 </Base>
 
 <script>
@@ -188,7 +177,11 @@ const shareTitle = (prompt: string, key: string) =>
   const thumbs = [...document.querySelectorAll<HTMLAnchorElement>(".thumb")];
   let current: HTMLAnchorElement | undefined;
 
-  function showMesh(lightbox: HTMLDialogElement, still: HTMLImageElement, thumb: HTMLAnchorElement) {
+  function showMesh(
+    lightbox: HTMLDialogElement,
+    still: HTMLImageElement,
+    thumb: HTMLAnchorElement,
+  ) {
     const mesh = thumb.dataset.mesh!;
     const alt = `3D mesh of ${thumb.dataset.alt ?? "this crungus"}`;
     still.hidden = true;
@@ -230,7 +223,11 @@ const shareTitle = (prompt: string, key: string) =>
       still.alt = thumb.dataset.alt ?? "";
     }
 
-    function open(lightbox: HTMLDialogElement, still: HTMLImageElement, thumb: HTMLAnchorElement): void {
+    function open(
+      lightbox: HTMLDialogElement,
+      still: HTMLImageElement,
+      thumb: HTMLAnchorElement,
+    ): void {
       const hadMesh = lightbox.querySelector("model-viewer") !== null;
       clear(lightbox, still, !hadMesh && !thumb.dataset.mesh);
       current = thumb;

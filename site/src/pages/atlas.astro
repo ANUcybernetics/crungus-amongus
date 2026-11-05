@@ -33,14 +33,15 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   <h1 slot="heading">The atlas</h1>
   <section class="intro">
     <p class="lede">
-      The atlas arranges images using CLIP similarity and a two-dimensional UMAP projection.
-      Nearby images can share subjects, colours or composition. Apparent clusters depend on the projection and need closer inspection.
-      Colours identify model release years. Drag to pan, scroll to zoom, and select an image to visit its model.
+      The atlas arranges images using CLIP similarity and a two-dimensional UMAP projection. Nearby
+      images can share subjects, colours or composition. Apparent clusters depend on the projection
+      and need closer inspection. Colours identify model release years. Drag to pan, scroll to zoom,
+      and select an image to visit its model.
     </p>
     <p class="mono legend" aria-hidden="true">
-      {years.map((year, i) => (
-        <span><i style={`--year-index: ${i}; --year-count: ${years.length}`}></i>{year}</span>
-      ))}
+      {years.map((year, i) => <span
+        ><i style={`--year-index: ${i}; --year-count: ${years.length}`}></i>{year}</span
+      >)}
     </p>
   </section>
 
@@ -62,7 +63,6 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
   id="atlas-points"
   set:html={JSON.stringify({ points, years, modelBase, imageBase })}
 />
-
 <script>
   import { TileLoader, cellFinder, tileNames, type SpriteIndex } from "../lib/sprite";
 
@@ -75,9 +75,12 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
     year: string;
   }
 
-  const payload = JSON.parse(
-    document.getElementById("atlas-points")!.textContent!,
-  ) as { points: Point[]; years: string[]; modelBase: string; imageBase: string };
+  const payload = JSON.parse(document.getElementById("atlas-points")!.textContent!) as {
+    points: Point[];
+    years: string[];
+    modelBase: string;
+    imageBase: string;
+  };
   const canvas = document.getElementById("atlas") as HTMLCanvasElement;
   const caption = document.getElementById("atlas-caption")!;
   const context = canvas.getContext("2d")!;
@@ -86,11 +89,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
     await fetch(`${payload.imageBase}/atlas/sprite.json`)
   ).json()) as SpriteIndex;
   // tiles arrive as the viewport asks for them; each one redraws what it fills in
-  const tiles = new TileLoader(
-    tileNames(spriteIndex),
-    `${payload.imageBase}/atlas`,
-    () => draw(),
-  );
+  const tiles = new TileLoader(tileNames(spriteIndex), `${payload.imageBase}/atlas`, () => draw());
 
   const cellOf = cellFinder(spriteIndex);
   const yearIndex = new Map(payload.years.map((year, i) => [year, i]));
@@ -152,8 +151,7 @@ const years = [...new Set(points.map((p) => p.year))].toSorted();
           size,
         );
       }
-      context.strokeStyle =
-        point === hovered ? "oklch(85% 0.13 75)" : yearColor(point.year);
+      context.strokeStyle = point === hovered ? "oklch(85% 0.13 75)" : yearColor(point.year);
       context.lineWidth = point === hovered ? 2 : 1;
       context.strokeRect(x, y, size, size);
     }

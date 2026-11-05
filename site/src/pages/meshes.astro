@@ -16,61 +16,59 @@ const meshes = meshedImages(siteData);
   <h1 slot="heading">Crungi in the round</h1>
   <section class="hero">
     <p class="lede">
-      A handful of archive images, chosen by hand, given to <a href="https://www.meshy.ai/">Meshy</a>'s image-to-3D model.
-      It has one picture to go on, so everything the image does not show (the back, the far side, the underside) is Meshy's guess.
-      Each mesh is listed with its source image in <a href={path("/api/meshes.json")}>the JSON API</a>.
+      A handful of archive images, chosen by hand, given to <a href="https://www.meshy.ai/">Meshy</a
+      >'s image-to-3D model. It has one picture to go on, so everything the image does not show (the
+      back, the far side, the underside) is Meshy's guess. Each mesh is listed with its source image
+      in <a href={path("/api/meshes.json")}>the JSON API</a>.
     </p>
   </section>
 
-  {
-    meshes.length === 0 ? (
-      <p class="muted">No meshes yet.</p>
-    ) : (
-      <ul class="meshes">
-        {meshes.map(({ model, prompt, image }) => (
-          <li>
-            <div class="stage">
-              <model-viewer
-                src={bucketUrl(image.mesh)}
-                alt={`3D mesh of a crungus by ${model.owner}/${model.name} for “${prompt.prompt}”`}
-                loading="lazy"
-                camera-controls
-                touch-action="pan-y"
-                interaction-prompt="none"
-                auto-rotate
-                auto-rotate-delay="0"
-                rotation-per-second="7deg"
-                camera-orbit="0deg 82deg auto"
-                tone-mapping="aces"
-                exposure="0.5"
-                shadow-intensity="0.6"
-                shadow-softness="1"
-              />
-              <span class="loading" role="status">
-                <span aria-hidden="true">o</span>
-                <span class="visually-hidden">loading mesh</span>
-              </span>
-            </div>
-            <p class="caption-label">
-              <a href={path(`/model/${model.slug}/`)}>{model.owner}/<wbr />{model.name}</a>
-              <span class="caption-note">“{prompt.prompt}”</span>
-              <span class="actions">
-                <a href={bucketUrl(image.key)}>image</a> · <a href={bucketUrl(image.mesh)} download>glb</a> ·{" "}
-                <button
-                  type="button"
-                  class="share"
-                  data-share={itemPath(image.key)}
-                  data-title={`“${prompt.prompt}” #${itemNumber(image.key)} by ${model.owner}/${model.name}, in 3D — Crungus Amongus`}
-                >
-                  share
-                </button>
-              </span>
-            </p>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+  {meshes.length === 0 ? (
+    <p class="muted">No meshes yet.</p>
+  ) : (
+    <ul class="meshes">
+      {meshes.map(({ model, prompt, image }) => <li>
+        <div class="stage">
+          <model-viewer
+            src={bucketUrl(image.mesh)}
+            alt={`3D mesh of a crungus by ${model.owner}/${model.name} for “${prompt.prompt}”`}
+            loading="lazy"
+            camera-controls
+            touch-action="pan-y"
+            interaction-prompt="none"
+            auto-rotate
+            auto-rotate-delay="0"
+            rotation-per-second="7deg"
+            camera-orbit="0deg 82deg auto"
+            tone-mapping="aces"
+            exposure="0.5"
+            shadow-intensity="0.6"
+            shadow-softness="1"
+          />
+          <span class="loading" role="status">
+            <span aria-hidden="true">o</span>
+            <span class="visually-hidden">loading mesh</span>
+          </span>
+        </div>
+        <p class="caption-label">
+          <a href={path(`/model/${model.slug}/`)}>{model.owner}/<wbr />{model.name}</a>
+          <span class="caption-note">“{prompt.prompt}”</span>
+          <span class="actions">
+            <a href={bucketUrl(image.key)}>image</a> ·
+            <a href={bucketUrl(image.mesh)} download>glb</a> ·{" "}
+            <button
+              type="button"
+              class="share"
+              data-share={itemPath(image.key)}
+              data-title={`“${prompt.prompt}” #${itemNumber(image.key)} by ${model.owner}/${model.name}, in 3D — Crungus Amongus`}
+            >
+              share
+            </button>
+          </span>
+        </p>
+      </li>)}
+    </ul>
+  )}
 </Base>
 
 <script>
@@ -80,7 +78,9 @@ const meshes = meshedImages(siteData);
   bindShareButtons();
 
   // each mesh fades in over its loading o once it has arrived
-  for (const viewer of document.querySelectorAll<HTMLElement & { loaded?: boolean }>(".stage model-viewer")) {
+  for (const viewer of document.querySelectorAll<HTMLElement & { loaded?: boolean }>(
+    ".stage model-viewer",
+  )) {
     const shown = () => viewer.parentElement?.classList.add("loaded");
     if (viewer.loaded) shown();
     else viewer.addEventListener("load", shown, { once: true });

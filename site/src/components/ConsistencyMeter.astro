@@ -15,18 +15,14 @@ const bands = { image: { low: 0.55, high: 0.75 }, audio: { low: 0.65, high: 0.85
 const embedding = modality === "audio" ? "CLAP" : "CLIP";
 ---
 
-{
-  value !== null && (
-    <span
-      class="consistency mono"
-      title={`consistency: mean pairwise ${embedding} similarity within a prompt; archive cards show the higher prompt score`}
-    >
-      <span class="muted">{label}</span>
-      <meter min="0" max="1" low={bands.low} high={bands.high} optimum={0.99} value={value} />
-      <span>{value.toFixed(2)}</span>
-    </span>
-  )
-}
+{value !== null && <span
+  class="consistency mono"
+  title={`consistency: mean pairwise ${embedding} similarity within a prompt; archive cards show the higher prompt score`}
+>
+  <span class="muted">{label}</span>
+  <meter min="0" max="1" low={bands.low} high={bands.high} optimum={0.99} value={value} />
+  <span>{value.toFixed(2)}</span>
+</span>}
 
 <style>
   .consistency {

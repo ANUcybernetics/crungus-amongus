@@ -23,25 +23,29 @@ const imageBase = siteData.image_base_url;
     </div>
     <div id="intro-pixels">
       <p class="lede">
-        Move the sliders to combine patterns of variation across {imageTotal.toLocaleString("en-AU")} archive images.
-        The display starts with their mean image. Select an archive thumbnail to compare its reconstruction with the original.
-        Images are centre-cropped and resized to 128 × 128 pixels before analysis.
+        Move the sliders to combine patterns of variation across
+        {imageTotal.toLocaleString("en-AU")} archive images. The display starts with their mean
+        image. Select an archive thumbnail to compare its reconstruction with the original. Images
+        are centre-cropped and resized to 128 × 128 pixels before analysis.
       </p>
       <p class="lede">
-        Numbered sliders are principal components fitted to the image pixels. Their stability scores describe how closely they reproduce across subsets of the archive.
-        The separate “crungus-ness” slider follows similarity to CLIP's text embedding of “crungus”, with a pixel visualisation fitted from the archive.
+        Numbered sliders are principal components fitted to the image pixels. Their stability scores
+        describe how closely they reproduce across subsets of the archive. The separate
+        “crungus-ness” slider follows similarity to CLIP's text embedding of “crungus”, with a pixel
+        visualisation fitted from the archive.
       </p>
     </div>
     <div id="intro-semantic" hidden>
       <p class="lede">
-        These sliders explore variation in CLIP image features, which can reflect subjects and visual style.
-        Each filmstrip shows Kandinsky 2.2's interpretations of positions along one direction.
-        Compare those generated previews with the nearest archive images below the main display.
+        These sliders explore variation in CLIP image features, which can reflect subjects and
+        visual style. Each filmstrip shows Kandinsky 2.2's interpretations of positions along one
+        direction. Compare those generated previews with the nearest archive images below the main
+        display.
       </p>
       <p class="lede">
-        The preview follows the last slider you moved; it does not combine sliders.
-        The nearest archive images respond to all slider positions together.
-        Kandinsky is also one of the {models.length} image models in this collection.
+        The preview follows the last slider you moved; it does not combine sliders. The nearest
+        archive images respond to all slider positions together. Kandinsky is also one of the
+        {models.length} image models in this collection.
       </p>
     </div>
   </section>
@@ -50,14 +54,21 @@ const imageBase = siteData.image_base_url;
     <div class="stage">
       <div class="pair">
         <figure>
-          <canvas id="recon" width="128" height="128" aria-label="the reconstructed crungus"></canvas>
+          <canvas
+            id="recon"
+            width="128"
+            height="128"
+            aria-label="the reconstructed crungus"
+          ></canvas>
           <figcaption id="stage-caption" class="mono muted" aria-live="polite">
             the mean crungus
           </figcaption>
         </figure>
         <figure id="original" hidden>
           <img id="original-image" alt="" width="128" height="128" />
-          <figcaption class="mono muted"><a id="original-link" href="#">the original</a></figcaption>
+          <figcaption class="mono muted">
+            <a id="original-link" href="#">the original</a>
+          </figcaption>
         </figure>
       </div>
       <p class="mono controls">
@@ -111,33 +122,39 @@ const imageBase = siteData.image_base_url;
   <section id="notes-pixels" class="notes">
     <p>
       This experiment adapts the eigenfaces approach introduced by Turk and Pentland in 1991:
-      represent images as a mean plus weighted principal components.
-      Here, subjects are not aligned before analysis, so components capture differences in brightness and framing as well as depicted subjects.
-      Retaining a limited number of components produces an approximation of each image.
+      represent images as a mean plus weighted principal components. Here, subjects are not aligned
+      before analysis, so components capture differences in brightness and framing as well as
+      depicted subjects. Retaining a limited number of components produces an approximation of each
+      image.
     </p>
     <p>
-      Stability is the cosine similarity between corresponding components fitted to disjoint halves of the archive, averaged over eight splits.
-      Higher scores indicate closer agreement across those splits. We name components only when their score exceeds our chosen threshold of 0.7.
-      Scores below that threshold indicate less reproducible directions, which remain available to explore.
-      <a href={path("/about/")}>Read about the method</a> or see the <a href={path("/technical-notes/")}>historical experiments</a>.
+      Stability is the cosine similarity between corresponding components fitted to disjoint halves
+      of the archive, averaged over eight splits. Higher scores indicate closer agreement across
+      those splits. We name components only when their score exceeds our chosen threshold of 0.7.
+      Scores below that threshold indicate less reproducible directions, which remain available to
+      explore. <a href={path("/about/")}>Read about the method</a> or see the
+      <a href={path("/technical-notes/")}>historical experiments</a>.
     </p>
   </section>
   <section id="notes-semantic" class="notes" hidden>
     <p>
-      Each image is represented by 1,280 features from open-clip's ViT-bigG-14 model.
-      Principal component analysis finds directions of variation in these features.
-      Stability is measured across eight disjoint-half splits, using the same procedure as the pixel analysis.
+      Each image is represented by 1,280 features from open-clip's ViT-bigG-14 model. Principal
+      component analysis finds directions of variation in these features. Stability is measured
+      across eight disjoint-half splits, using the same procedure as the pixel analysis.
     </p>
     <p>
       Filmstrips sample a single direction at seven positions between −3 and +3 standard deviations.
-      At each position, Kandinsky renders three candidates; we retain the middle candidate ranked by embedding similarity to the target.
-      These are decoder interpretations of positions in feature space, including positions no archive image occupies.
-      The adjacent thumbnails show collected outputs for comparison.
+      At each position, Kandinsky renders three candidates; we retain the middle candidate ranked by
+      embedding similarity to the target. These are decoder interpretations of positions in feature
+      space, including positions no archive image occupies. The adjacent thumbnails show collected
+      outputs for comparison.
     </p>
     <p>
-      We render filmstrips for components whose stability exceeds 0.7. Other sliders still affect the nearest-image results.
-      The text-similarity slider uses CLIP's association with “crungus”; it is distinct from the consistency scores on model pages.
-      <a href={path("/about/")}>Read about the method</a> or see the <a href={path("/technical-notes/")}>decoder configuration notes</a>.
+      We render filmstrips for components whose stability exceeds 0.7. Other sliders still affect
+      the nearest-image results. The text-similarity slider uses CLIP's association with “crungus”;
+      it is distinct from the consistency scores on model pages.
+      <a href={path("/about/")}>Read about the method</a> or see the
+      <a href={path("/technical-notes/")}>decoder configuration notes</a>.
     </p>
   </section>
 </Base>
@@ -148,7 +165,6 @@ const imageBase = siteData.image_base_url;
   id="eigen-config"
   set:html={JSON.stringify({ labels, modelBase, imageBase })}
 />
-
 <script>
   import {
     clipPositions,
@@ -192,13 +208,9 @@ const imageBase = siteData.image_base_url;
   }
 
   const [data, sheet, spriteIndex] = await Promise.all([
-    fetch(`${config.imageBase}/eigen/eigen.json`).then(
-      (r) => r.json() as Promise<EigenData>,
-    ),
+    fetch(`${config.imageBase}/eigen/eigen.json`).then((r) => r.json() as Promise<EigenData>),
     loadImage(`${config.imageBase}/eigen/eigen.webp`),
-    fetch(`${config.imageBase}/atlas/sprite.json`).then(
-      (r) => r.json() as Promise<SpriteIndex>,
-    ),
+    fetch(`${config.imageBase}/atlas/sprite.json`).then((r) => r.json() as Promise<SpriteIndex>),
   ]);
 
   const axes = sliderAxes(data);
@@ -224,14 +236,10 @@ const imageBase = siteData.image_base_url;
   // exemplars are scattered across the corpus, so their tiles arrive as the
   // thumbnails ask for them and each one paints itself when its tile lands
   const pendingThumbnails = new Map<number, (() => void)[]>();
-  const tiles = new TileLoader(
-    tileNames(spriteIndex),
-    `${config.imageBase}/atlas`,
-    (loaded) => {
-      for (const paint of pendingThumbnails.get(loaded) ?? []) paint();
-      pendingThumbnails.delete(loaded);
-    },
-  );
+  const tiles = new TileLoader(tileNames(spriteIndex), `${config.imageBase}/atlas`, (loaded) => {
+    for (const paint of pendingThumbnails.get(loaded) ?? []) paint();
+    pendingThumbnails.delete(loaded);
+  });
   const keys = Object.keys(data.coefficients);
   const threshold = data.stability_threshold ?? 0.7;
 
@@ -320,9 +328,7 @@ const imageBase = siteData.image_base_url;
     canvas.height = side;
     canvas.className = "tile";
     canvas.setAttribute("aria-hidden", "true");
-    canvas
-      .getContext("2d")!
-      .drawImage(sheet, index * side, 0, side, side, 0, 0, side, side);
+    canvas.getContext("2d")!.drawImage(sheet, index * side, 0, side, side, 0, 0, side, side);
     return canvas;
   }
 
@@ -441,19 +447,15 @@ const imageBase = siteData.image_base_url;
   const stageFrame = document.getElementById("s-frame") as HTMLImageElement;
   const stageLine = document.getElementById("s-caption")!;
   const clipOriginal = document.getElementById("s-original") as HTMLElement;
-  const clipOriginalImage = document.getElementById(
-    "s-original-image",
-  ) as HTMLImageElement;
-  const clipOriginalLink = document.getElementById(
-    "s-original-link",
-  ) as HTMLAnchorElement;
+  const clipOriginalImage = document.getElementById("s-original-image") as HTMLImageElement;
+  const clipOriginalLink = document.getElementById("s-original-link") as HTMLAnchorElement;
   const nearestPanel = document.getElementById("s-nearest")!;
 
   let semantic: Awaited<ReturnType<typeof buildSemantic>> | null = null;
 
   async function buildSemantic() {
-    const clip = (await fetch(`${config.imageBase}/eigen-clip/eigen-clip.json`).then(
-      (r) => r.json(),
+    const clip = (await fetch(`${config.imageBase}/eigen-clip/eigen-clip.json`).then((r) =>
+      r.json(),
     )) as ClipEigenData;
     const sliders = clipSliders(clip);
     const positions = clipPositions(clip);
@@ -538,7 +540,9 @@ const imageBase = siteData.image_base_url;
     stageFrame.src = frameSrc(frames[at]!);
     stageFrame.alt = `${name} at ${sigmaLabel(value)}, rendered by Kandinsky 2.2`;
     stageLine.textContent =
-      value === 0 ? "mean embedding rendered by Kandinsky 2.2" : `${name} at ${sigmaLabel(value)}, rendered by Kandinsky 2.2`;
+      value === 0
+        ? "mean embedding rendered by Kandinsky 2.2"
+        : `${name} at ${sigmaLabel(value)}, rendered by Kandinsky 2.2`;
   }
 
   let nearestPending = 0;
@@ -548,9 +552,7 @@ const imageBase = siteData.image_base_url;
     nearestPending = requestAnimationFrame(() => {
       const state = semantic!;
       const found = nearestKeys(state.positions, state.weights, NEAREST);
-      nearestPanel.replaceChildren(
-        ...found.map((key) => thumbnail(key, showClipImage)),
-      );
+      nearestPanel.replaceChildren(...found.map((key) => thumbnail(key, showClipImage)));
     });
   }
 
@@ -596,14 +598,10 @@ const imageBase = siteData.image_base_url;
 
     const negatives = document.createElement("div");
     negatives.className = "exemplars";
-    negatives.append(
-      ...slider.axis.negative.map((key) => thumbnail(key, showClipImage)),
-    );
+    negatives.append(...slider.axis.negative.map((key) => thumbnail(key, showClipImage)));
     const positives = document.createElement("div");
     positives.className = "exemplars";
-    positives.append(
-      ...slider.axis.positive.map((key) => thumbnail(key, showClipImage)),
-    );
+    positives.append(...slider.axis.positive.map((key) => thumbnail(key, showClipImage)));
     const controls = document.createElement("div");
     controls.className = "row";
     controls.append(negatives, input, positives);
@@ -612,7 +610,7 @@ const imageBase = siteData.image_base_url;
     state.outputs.push(output);
     item.append(head, controls);
     const strip = filmstrip(slider, j);
-    state.strips.push(strip === null ? null : [...strip.children] as HTMLButtonElement[]);
+    state.strips.push(strip === null ? null : ([...strip.children] as HTMLButtonElement[]));
     if (strip !== null) item.append(strip);
     return item;
   }
@@ -632,9 +630,7 @@ const imageBase = siteData.image_base_url;
     document.getElementById("s-reset")!.addEventListener("click", showClipMean);
     document.getElementById("s-random")!.addEventListener("click", () => {
       showClipImage(
-        semantic!.positions.keys[
-          Math.floor(Math.random() * semantic!.positions.keys.length)
-        ]!,
+        semantic!.positions.keys[Math.floor(Math.random() * semantic!.positions.keys.length)]!,
       );
     });
     showClipMean();

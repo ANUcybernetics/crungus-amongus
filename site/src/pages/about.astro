@@ -19,150 +19,168 @@ const generatedAt = siteData.generated_at.slice(0, 10);
 >
   <h1 slot="heading">About</h1>
   <article>
-
     <p>
-      Crungus Amongus combines a comparative study of model outputs with an interactive audiovisual archive.
-      It investigates how consistently different models respond to prompts containing “crungus”, and what similarities appear across their outputs.
-      Shared prompts make those differences available for inspection.
+      Crungus Amongus combines a comparative study of model outputs with an interactive audiovisual
+      archive. It investigates how consistently different models respond to prompts containing
+      “crungus”, and what similarities appear across their outputs. Shared prompts make those
+      differences available for inspection.
     </p>
     <p>
       Browse the <a href={path()}>images by model</a>, explore visual similarities in the
-      <a href={path("/atlas/")}>atlas</a>, or examine variation with the <a href={path("/eigen/")}>eigencrungi sliders</a>.
-      The <a href={path("/display/")}>display</a> fills a screen with images drawn at random, and <a href={path("/display/?radio")}>crungus radio</a> plays independently shuffled sounds over it.
+      <a href={path("/atlas/")}>atlas</a>, or examine variation with the
+      <a href={path("/eigen/")}>eigencrungi sliders</a>. The <a href={path("/display/")}>display</a>
+      fills a screen with images drawn at random, and
+      <a href={path("/display/?radio")}>crungus radio</a> plays independently shuffled sounds over
+      it.
     </p>
     <h2>The word</h2>
     <p>
-      In June 2022, comedian Guy Kelly shared a grid of nine DALL·E mini images generated from the word “crungus”.
-      Several resembled a hairy, horned creature. The images became known as a
-      <a href="https://en.wikipedia.org/wiki/Crungus">digital cryptid</a>.
-      This project uses that recurring resemblance as a starting point for comparing models.
+      In June 2022, comedian Guy Kelly shared a grid of nine DALL·E mini images generated from the
+      word “crungus”. Several resembled a hairy, horned creature. The images became known as a
+      <a href="https://en.wikipedia.org/wiki/Crungus">digital cryptid</a>. This project uses that
+      recurring resemblance as a starting point for comparing models.
     </p>
     <h2>The archive</h2>
     <p>
-      Models are drawn from Replicate's <a href="https://replicate.com/collections/text-to-image">text-to-image collection</a>
-      and a curated selection of older models. This is a sample of available endpoints, including related models and fine-tunes.
-      It is not an exhaustive survey or a set of independent model families.
+      Models are drawn from Replicate's
+      <a href="https://replicate.com/collections/text-to-image">text-to-image collection</a> and a
+      curated selection of older models. This is a sample of available endpoints, including related
+      models and fine-tunes. It is not an exhaustive survey or a set of independent model families.
     </p>
     <p>
-      The image experiment requests 100 outputs per model for each of two prompts: “crungus” and “a picture of a crungus”.
-      We supply no stylistic instructions or fixed seeds. Endpoint defaults and required inputs vary between models.
-      Where an endpoint exposes safety controls, we use the most permissive settings available.
-      As of {generatedAt}, the archive holds {imageTotal.toLocaleString("en-AU")} images from {models.length} models.
+      The image experiment requests 100 outputs per model for each of two prompts: “crungus” and “a
+      picture of a crungus”. We supply no stylistic instructions or fixed seeds. Endpoint defaults
+      and required inputs vary between models. Where an endpoint exposes safety controls, we use the
+      most permissive settings available. As of {generatedAt}, the archive holds
+      {imageTotal.toLocaleString("en-AU")} images from {models.length} models.
     </p>
     <p>
-      Timeline years identify model releases, using curated dates where available and Replicate version dates as a fallback.
-      The images were generated for this project; they are not historical samples collected in those release years.
-      The homepage filmstrip selects the image with the highest average CLIP similarity to the other images in each release-year group.
+      Timeline years identify model releases, using curated dates where available and Replicate
+      version dates as a fallback. The images were generated for this project; they are not
+      historical samples collected in those release years. The homepage filmstrip selects the image
+      with the highest average CLIP similarity to the other images in each release-year group.
     </p>
     <h2>The sound</h2>
     <p>
       The audio experiment requests ten outputs for each of “crungus” and “the sound of a crungus”.
-      Models come from Replicate's <a href="https://replicate.com/collections/ai-music-generation">music collection</a> and a curated selection including Bark.
-      We request twenty-second clips where duration is configurable; other endpoints set their own length.
-      Required lyrics use “crungus”, repeated where necessary to meet input constraints.
-      Clips are encoded and loudness-normalised for playback.
-      {clipTotal > 0 ? ` The archive holds ${clipTotal} clips from ${soundModels.length} models.` : " The sound archive is still being recorded."}
+      Models come from Replicate's
+      <a href="https://replicate.com/collections/ai-music-generation">music collection</a> and a
+      curated selection including Bark. We request twenty-second clips where duration is
+      configurable; other endpoints set their own length. Required lyrics use “crungus”, repeated
+      where necessary to meet input constraints. Clips are encoded and loudness-normalised for
+      playback.
+      {clipTotal > 0
+        ? ` The archive holds ${clipTotal} clips from ${soundModels.length} models.`
+        : " The sound archive is still being recorded."}
     </p>
     <h2>The video</h2>
     <p>
-      The video experiment requests ten outputs for each of “crungus” and “a video of a crungus” from the models in Replicate's <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a>.
-      Each clip runs at the model's default length, since most price by the second and the default is the length a model is built for; the one model priced per clip gets its longest.
-      Where a model can generate its own soundtrack, it is asked to, and that soundtrack is loudness-normalised like the audio archive.
-      Video has no consistency score.
-      {videoTotal > 0 ? ` The archive holds ${videoTotal} clips from ${videoModels.length} models.` : " The video archive is still being filmed."}
+      The video experiment requests ten outputs for each of “crungus” and “a video of a crungus”
+      from the models in Replicate's
+      <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a>. Each
+      clip runs at the model's default length, since most price by the second and the default is the
+      length a model is built for; the one model priced per clip gets its longest. Where a model can
+      generate its own soundtrack, it is asked to, and that soundtrack is loudness-normalised like
+      the audio archive. Video has no consistency score.
+      {videoTotal > 0
+        ? ` The archive holds ${videoTotal} clips from ${videoModels.length} models.`
+        : " The video archive is still being filmed."}
     </p>
     <h2 id="consistency">Consistency</h2>
     <p>
-      Consistency is the mean pairwise cosine similarity between a model's output embeddings for one prompt.
-      Images use CLIP embeddings; audio uses <a href="https://github.com/LAION-AI/CLAP">CLAP</a> embeddings.
-      A high score can reflect recurring subjects, composition or style. It does not establish that a model represents a particular creature.
-      Even a model that always produces a beige void could score highly.
+      Consistency is the mean pairwise cosine similarity between a model's output embeddings for one
+      prompt. Images use CLIP embeddings; audio uses
+      <a href="https://github.com/LAION-AI/CLAP">CLAP</a> embeddings. A high score can reflect
+      recurring subjects, composition or style. It does not establish that a model represents a
+      particular creature. Even a model that always produces a beige void could score highly.
     </p>
     <p>
-      Archive cards show the higher of a model's two prompt scores; model pages show each prompt separately.
-      The scores describe similarity within each model's outputs, not agreement between models or output quality.
-      Image and audio scores use different embedding models and should be compared within their respective collections.
+      Archive cards show the higher of a model's two prompt scores; model pages show each prompt
+      separately. The scores describe similarity within each model's outputs, not agreement between
+      models or output quality. Image and audio scores use different embedding models and should be
+      compared within their respective collections.
     </p>
     <h2>Refusals</h2>
     <p>
-      Early runs used each endpoint's default safety settings. The refusal figures on model pages record those runs,
-      measured before the configuration changed on 9 September 2026.
-      Subsequent runs use the most permissive safety settings each endpoint exposes; provider restrictions may still apply.
-      The historical refusal rates do not describe the images currently displayed.
+      Early runs used each endpoint's default safety settings. The refusal figures on model pages
+      record those runs, measured before the configuration changed on 9 September 2026. Subsequent
+      runs use the most permissive safety settings each endpoint exposes; provider restrictions may
+      still apply. The historical refusal rates do not describe the images currently displayed.
     </p>
     <h2>The atlas</h2>
     <p>
-      The <a href={path("/atlas/")}>atlas</a> projects CLIP image embeddings into two dimensions using UMAP.
-      Nearby images can share subjects, colours or composition.
-      Apparent clusters and the gaps between them depend on the projection: <a href="https://umap-learn.readthedocs.io/en/latest/clustering.html">UMAP can introduce separations</a>.
-      The map supports visual exploration; it does not establish distinct categories of creature.
+      The <a href={path("/atlas/")}>atlas</a> projects CLIP image embeddings into two dimensions
+      using UMAP. Nearby images can share subjects, colours or composition. Apparent clusters and
+      the gaps between them depend on the projection:
+      <a href="https://umap-learn.readthedocs.io/en/latest/clustering.html"
+        >UMAP can introduce separations</a
+      >. The map supports visual exploration; it does not establish distinct categories of creature.
     </p>
     <h2>The eigencrungi</h2>
     <p>
-      The <a href={path("/eigen/")}>pixel sliders</a> combine a mean image with principal components fitted to the archive.
-      Images are centre-cropped and resized to 128 × 128 pixels, without aligning subjects.
-      The components capture variation in colour and framing as well as depicted subjects. Combining the retained components gives an approximation of an archive image.
+      The <a href={path("/eigen/")}>pixel sliders</a> combine a mean image with principal components
+      fitted to the archive. Images are centre-cropped and resized to 128 × 128 pixels, without
+      aligning subjects. The components capture variation in colour and framing as well as depicted
+      subjects. Combining the retained components gives an approximation of an archive image.
     </p>
     <p>
-      The CLIP features mode applies principal component analysis to ViT-bigG-14 image embeddings, each containing 1,280 values.
-      Kandinsky 2.2 renders selected positions along individual components. These previews are the decoder's interpretations;
-      compare them with the nearby archive images shown alongside. Kandinsky is also one of the models represented in the collection.
+      The CLIP features mode applies principal component analysis to ViT-bigG-14 image embeddings,
+      each containing 1,280 values. Kandinsky 2.2 renders selected positions along individual
+      components. These previews are the decoder's interpretations; compare them with the nearby
+      archive images shown alongside. Kandinsky is also one of the models represented in the
+      collection.
     </p>
     <p>
-      Stability measures how closely a component reproduces across disjoint halves of the archive, averaged over eight splits.
-      We use a cosine similarity threshold of 0.7 when naming components and rendering their filmstrips.
-      This is a working threshold, not a boundary between meaningful features and noise. Current scores appear beside the sliders.
+      Stability measures how closely a component reproduces across disjoint halves of the archive,
+      averaged over eight splits. We use a cosine similarity threshold of 0.7 when naming components
+      and rendering their filmstrips. This is a working threshold, not a boundary between meaningful
+      features and noise. Current scores appear beside the sliders.
     </p>
     <p>
-      The separate “crungus-ness” slider uses image similarity to CLIP's text embedding of “crungus”.
-      It measures an association in CLIP, distinct from the within-model consistency score.
-      Its pixel visualisation is fitted from the archive by least squares, so that visualisation depends on the sampled images.
+      The separate “crungus-ness” slider uses image similarity to CLIP's text embedding of
+      “crungus”. It measures an association in CLIP, distinct from the within-model consistency
+      score. Its pixel visualisation is fitted from the archive by least squares, so that
+      visualisation depends on the sampled images.
     </p>
     <p>
-      <a href={path("/technical-notes/")}>Technical notes</a> document earlier sample-size experiments, component rotation,
-      decoder configuration and generation costs. Those historical observations are kept separate from the current component scores.
+      <a href={path("/technical-notes/")}>Technical notes</a> document earlier sample-size
+      experiments, component rotation, decoder configuration and generation costs. Those historical
+      observations are kept separate from the current component scores.
     </p>
 
     <h2>Prior sightings</h2>
     <ul>
-      <li>
-        <a href="https://en.wikipedia.org/wiki/Crungus">Crungus</a> on
-        Wikipedia
-      </li>
+      <li><a href="https://en.wikipedia.org/wiki/Crungus">Crungus</a> on Wikipedia</li>
       <li>
         Bruce Sterling's{" "}
         <a href="https://www.flickr.com/photos/brucesterling/albums/72177720324124391/">
-        Flickr archive</a> of the original Craiyon screenshots
+          Flickr archive</a>
+        of the original Craiyon screenshots
       </li>
       <li>
-        <a href="https://artificialanalysis.ai/image/explore">Artificial
-        Analysis</a>, for comparisons of image models
+        <a href="https://artificialanalysis.ai/image/explore">Artificial Analysis</a>, for
+        comparisons of image models
       </li>
     </ul>
 
     <h2>The data</h2>
     <p>
       The archive is also published as static JSON, readable from any origin.{" "}
-      <a href={path("/api/models.json")}><code>/api/models.json</code></a> lists
-      the models, <a href={path("/api/images.json")}><code>/api/images.json</code></a>{" "}
-      <a href={path("/api/audio.json")}><code>/api/audio.json</code></a>{" "}
-      and <a href={path("/api/videos.json")}><code>/api/videos.json</code></a> list
-      every image, sound and video clip, and <code>/api/models/&lt;slug&gt;.json</code> holds
-      one model's outputs. Each entry is a link to the file with the model and
-      prompt that produced it, plus its permalink on this site. To sample an
-      output, fetch a list and select an entry.
+      <a href={path("/api/models.json")}><code>/api/models.json</code></a> lists the models,
+      <a href={path("/api/images.json")}><code>/api/images.json</code></a>{" "}
+      <a href={path("/api/audio.json")}><code>/api/audio.json</code></a>{" "} and
+      <a href={path("/api/videos.json")}><code>/api/videos.json</code></a> list every image, sound
+      and video clip, and <code>/api/models/&lt;slug&gt;.json</code> holds one model's outputs. Each
+      entry is a link to the file with the model and prompt that produced it, plus its permalink on
+      this site. To sample an output, fetch a list and select an entry.
     </p>
 
     <h2>Colophon</h2>
     <p class="mono">
-      images and clips generated via the Replicate API · scored with
-      open-clip (ViT-B/32) and LAION CLAP · projected with UMAP · decomposed
-      with numpy · encoded as
-      AVIF and Opus
-      (with an AAC fallback) · served from Tigris object storage · built with
-      Astro · made by{" "}
-      <a href="https://benswift.me">Ben Swift</a> at the ANU School of
-      Cybernetics
+      images and clips generated via the Replicate API · scored with open-clip (ViT-B/32) and LAION
+      CLAP · projected with UMAP · decomposed with numpy · encoded as AVIF and Opus (with an AAC
+      fallback) · served from Tigris object storage · built with Astro · made by{" "}
+      <a href="https://benswift.me">Ben Swift</a> at the ANU School of Cybernetics
     </p>
   </article>
 </Base>

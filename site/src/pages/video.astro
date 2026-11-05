@@ -17,40 +17,33 @@ const videoTotal = models.reduce((n, m) => n + videoCount(m), 0);
   <h1 slot="heading">The crungus in motion</h1>
   <section class="hero">
     <p class="lede">
-      Models from Replicate's <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a>
-      were given “crungus” and “a video of a crungus”.
-      Each clip runs at the model's default length, and carries a soundtrack wherever the model can make one.
+      Models from Replicate's
+      <a href="https://replicate.com/collections/text-to-video">text-to-video collection</a> were
+      given “crungus” and “a video of a crungus”. Each clip runs at the model's default length, and
+      carries a soundtrack wherever the model can make one.
       {videoTotal > 0 && ` ${videoTotal} clips from ${models.length} models.`}
     </p>
-    {
-      videoTotal > 0 && (
-        <p class="watch mono">
-          <a href={path("/display/video/")}>watch them all →</a>
-          <span class="muted"> every clip, shuffled, full screen</span>
-        </p>
-      )
-    }
+    {videoTotal > 0 && <p class="watch mono">
+      <a href={path("/display/video/")}>watch them all →</a>
+      <span class="muted"> every clip, shuffled, full screen</span>
+    </p>}
   </section>
 
-  {
-    videoTotal === 0 ? (
-      <p class="muted">Nothing showing yet: the video archive is still being filmed.</p>
-    ) : (
-      <section aria-labelledby="video-heading">
-        <h2 id="video-heading">The Video Archive</h2>
-        {years.map(([year, group]) => (
-          <section class="year" aria-label={`models from ${year}`}>
-            <h3 class="mono muted">{year}</h3>
-            <div class="grid">
-              {group.map((model) => (
-                <VideoCard model={model} />
-              ))}
-            </div>
-          </section>
-        ))}
-      </section>
-    )
-  }
+  {videoTotal === 0 ? (
+    <p class="muted">Nothing showing yet: the video archive is still being filmed.</p>
+  ) : (
+    <section aria-labelledby="video-heading">
+      <h2 id="video-heading">The Video Archive</h2>
+      {years.map(([year, group]) => <section class="year" aria-label={`models from ${year}`}>
+        <h3 class="mono muted">{year}</h3>
+        <div class="grid">
+          {group.map((model) => (
+            <VideoCard model={model} />
+          ))}
+        </div>
+      </section>)}
+    </section>
+  )}
 </Base>
 
 <style>

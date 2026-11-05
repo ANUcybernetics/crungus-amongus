@@ -29,7 +29,8 @@ const { title, description, bare = false } = Astro.props;
 
 // link previews: the page's own image, else the newest year's most typical
 // crungus. JPEG, since the services that unfurl links don't all read AVIF
-const previewKey = Astro.props.image ?? timelineSample(generatedModels(siteData, "image")).at(-1)?.key;
+const previewKey =
+  Astro.props.image ?? timelineSample(generatedModels(siteData, "image")).at(-1)?.key;
 // the build fetches just these from the bucket (astro.config's image.domains)
 const previewSource = previewKey ? imageRef(previewKey) : null;
 const previewWidth = previewSource ? Math.min(1200, previewSource.width) : 0;
@@ -92,66 +93,57 @@ const current = (item: NavItem) =>
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {
-      preview && (
-        <>
-          <meta property="og:image" content={new URL(preview.src, Astro.site)} />
-          <meta property="og:image:width" content={String(preview.attributes.width)} />
-          <meta property="og:image:height" content={String(preview.attributes.height)} />
-          <meta property="og:image:alt" content="a crungus" />
-          <meta name="twitter:card" content="summary_large_image" />
-        </>
-      )
-    }
+    {preview && (
+      <>
+        <meta property="og:image" content={new URL(preview.src, Astro.site)} />
+        <meta property="og:image:width" content={String(preview.attributes.width)} />
+        <meta property="og:image:height" content={String(preview.attributes.height)} />
+        <meta property="og:image:alt" content="a crungus" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
   </head>
   <body>
-    {
-      !bare && (
-        <div class="masthead">
-        <header>
-          <p class="wordmark">crungus am<span class="accent">o</span>ngus</p>
-          <nav aria-label="Site">
-            {groups.map((group) => (
-              <div class:list={["group", group.place]} role="group" aria-label={group.label}>
-                <span class="brace" aria-hidden="true">
-                  <span class="group-label">{group.label}</span>
-                </span>
-                <span class="links">
-                  {group.items.map((item) => (
-                    <a class="mono" href={item.href} aria-current={current(item)}>
-                      {item.label}
-                    </a>
-                  ))}
-                </span>
-              </div>
-            ))}
-            <a class="mono solo" href={about.href} aria-current={current(about)}>
-              {about.label}
-            </a>
-          </nav>
-        </header>
-        {Astro.slots.has("heading") && (
-          <div class="heading">
-            <slot name="heading" />
-          </div>
-        )}
-        </div>
-      )
-    }
+    {!bare && <div class="masthead">
+      <header>
+        <p class="wordmark">crungus am<span class="accent">o</span>ngus</p>
+        <nav aria-label="Site">
+          {groups.map((group) => <div
+            class:list={["group", group.place]}
+            role="group"
+            aria-label={group.label}
+          >
+            <span class="brace" aria-hidden="true">
+              <span class="group-label">{group.label}</span>
+            </span>
+            <span class="links">
+              {group.items.map((item) => <a
+                class="mono"
+                href={item.href}
+                aria-current={current(item)}
+              >
+                {item.label}
+              </a>)}
+            </span>
+          </div>)}
+          <a class="mono solo" href={about.href} aria-current={current(about)}>
+            {about.label}
+          </a>
+        </nav>
+      </header>
+      {Astro.slots.has("heading") && <div class="heading">
+        <slot name="heading" />
+      </div>}
+    </div>}
     <main class:list={{ bare }}>
       <slot />
     </main>
-    {
-      !bare && (
-        <footer>
-          <p class="mono muted">
-            images and sounds generated from crungus prompts ·
-            <a href={path("/display/")}>display</a> ·
-            <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
-          </p>
-        </footer>
-      )
-    }
+    {!bare && <footer>
+      <p class="mono muted">
+        images and sounds generated from crungus prompts · <a href={path("/display/")}>display</a> ·
+        <a href="https://github.com/anucybernetics/crungus-amongus">source</a>
+      </p>
+    </footer>}
   </body>
 </html>
 
@@ -163,7 +155,10 @@ const current = (item: NavItem) =>
     new ResizeObserver(() => {
       // nothing to clear on a phone, where it scrolls away
       const pinned = getComputedStyle(masthead).position === "sticky";
-      document.documentElement.style.setProperty("--masthead-height", `${pinned ? masthead.offsetHeight : 0}px`);
+      document.documentElement.style.setProperty(
+        "--masthead-height",
+        `${pinned ? masthead.offsetHeight : 0}px`,
+      );
     }).observe(masthead);
   }
 </script>
@@ -177,7 +172,6 @@ const current = (item: NavItem) =>
     z-index: 5;
     background: var(--ground);
   }
-
 
   .heading {
     width: calc(100% - 2 * var(--gutter));

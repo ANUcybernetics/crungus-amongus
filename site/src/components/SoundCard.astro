@@ -20,9 +20,7 @@ const score = crungusness(model);
     <h3 class="mono">{model.owner}/{model.name}</h3>
   </a>
   <p class="meta mono muted">
-    <span>
-      {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"}
-    </span>
+    <span> {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"} </span>
     <ConsistencyMeter value={score} label="" modality="audio" />
   </p>
   {clip && <AudioClip clip={clip} label={`crungus as played by ${model.owner}/${model.name}`} />}

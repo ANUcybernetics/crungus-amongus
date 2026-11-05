@@ -16,18 +16,16 @@ const score = crungusness(model);
 
 <article class="card">
   <a href={path(`/model/${model.slug}/`)}>
-    {
-      cover ? (
-        <CrungusImage
-          image={cover}
-          alt={`crungus as rendered by ${model.owner}/${model.name}`}
-          sizes="(max-width: 40rem) 44vw, 240px"
-          style={`view-transition-name: cover-${model.slug}`}
-        />
-      ) : (
-        <div class="no-image mono muted">no output</div>
-      )
-    }
+    {cover ? (
+      <CrungusImage
+        image={cover}
+        alt={`crungus as rendered by ${model.owner}/${model.name}`}
+        sizes="(max-width: 40rem) 44vw, 240px"
+        style={`view-transition-name: cover-${model.slug}`}
+      />
+    ) : (
+      <div class="no-image mono muted">no output</div>
+    )}
     <h3 class="caption-label">{model.owner}/<wbr />{model.name}</h3>
     <p class="meta mono muted">
       <span class="caption-note">{releaseYear(model)}</span>
