@@ -1,6 +1,6 @@
 [tools]
 python = "3.14"
-uv = "latest"
+uv = "0.13.7"
 node = "26"
 pnpm = "latest"
 # crungus optimize compresses Meshy GLBs with it, as avifenc does images
