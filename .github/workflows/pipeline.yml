@@ -21,6 +21,10 @@ jobs:
 
       - uses: jdx/mise-action@v5
 
+      # The optimizer and analyzer shell out to these, and the tests run them.
+      - name: Install media encoders
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg libavif-bin
+
       - name: Install dependencies
         run: uv sync --locked
 
