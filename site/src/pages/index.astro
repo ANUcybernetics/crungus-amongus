@@ -163,7 +163,7 @@ const imageTotal = models.reduce(
      size and the strip scrolls instead */
   .filmstrip li {
     flex: 1 1 0;
-    min-width: 96px;
+    min-width: 6rem;
   }
 
   .filmstrip a {
@@ -187,10 +187,10 @@ const imageTotal = models.reduce(
 
   .strip-year {
     display: block;
-    font-weight: 100;
+    font-weight: var(--numeral-weight);
     padding-top: 0.4rem;
     font-family: var(--font-body);
-    font-size: clamp(20px, 2.2vw, 36px);
+    font-size: clamp(1.25rem, 2.2vw, 2.25rem);
     line-height: 1.2;
     color: var(--title);
   }
@@ -222,7 +222,7 @@ const imageTotal = models.reduce(
      set in global.css */
   /* in the page title's colour and size, so the sections read as its peers */
   .page-heading {
-    font-size: 40px;
+    font-size: 2.5rem;
     color: var(--title);
   }
 
@@ -269,8 +269,8 @@ const imageTotal = models.reduce(
     position: sticky;
     top: calc(var(--masthead-height, 0px) + 1rem);
     font-family: var(--font-body);
-    font-size: clamp(20px, 2.2vw, 36px);
-    font-weight: 100;
+    font-size: clamp(1.25rem, 2.2vw, 2.25rem);
+    font-weight: var(--numeral-weight);
     line-height: 1;
     letter-spacing: normal;
     margin: 0;
@@ -290,7 +290,8 @@ const imageTotal = models.reduce(
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(170px, 44vw), 1fr));
-    gap: 1.25rem 1rem;
+    /* plates of at least 240px at desk size, as the bestiary's specimen index */
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 44vw), 1fr));
+    gap: clamp(0.875rem, 1.6vw, 1.625rem) clamp(0.625rem, 1.2vw, 1.25rem);
   }
 </style>

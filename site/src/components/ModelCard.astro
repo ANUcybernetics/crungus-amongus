@@ -20,21 +20,25 @@ const score = crungusness(model);
       <CrungusImage
         image={cover}
         alt={`crungus as rendered by ${model.owner}/${model.name}`}
-        sizes="(max-width: 40rem) 44vw, 240px"
+        sizes="(max-width: 40rem) 44vw, 360px"
         style={`view-transition-name: cover-${model.slug}`}
       />
     ) : (
       <div class="no-image mono muted">no output</div>
     )}
-    <h3 class="caption-label">{model.owner}/<wbr />{model.name}</h3>
-    <p class="meta mono muted">
-      <ConsistencyMeter value={score} label="" />
-    </p>
+    <div class="caption">
+      <h3 class="name">{model.owner}/<wbr />{model.name}</h3>
+      <ConsistencyMeter value={score} per="model" cells={11} />
+    </div>
   </a>
 </article>
 
 <style>
+  /* a plate, as the bestiary's specimen index sets them: the model's name and
+     its consistency laid over the foot of the image. Always shown, since a
+     TV has no hover to reveal them; hover gives the plate its colour back */
   .card a {
+    position: relative;
     display: block;
     color: var(--text);
     text-decoration: none;
@@ -54,15 +58,6 @@ const score = crungusness(model);
     place-items: center;
   }
 
-  .card h3 {
-    margin: 0.5rem 0 0.15rem;
-    overflow-wrap: anywhere;
-  }
-
-  .card a:hover h3 {
-    color: var(--hover);
-  }
-
   /* held back, as the bestiary gallery holds its plates, and given their
      colour back on hover */
   .card img {
@@ -74,11 +69,52 @@ const score = crungusness(model);
     filter: none;
   }
 
-  .meta {
+  /* the ground shades up from the foot, so the type holds against a bright
+     image without dimming the rest of it */
+  .caption {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 3rem 0.75rem 0.7rem;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--ground) 92%, transparent) 0%,
+      color-mix(in srgb, var(--ground) 60%, transparent) 55%,
+      transparent 100%
+    );
+    pointer-events: none;
+    container-type: inline-size;
+  }
+
+  /* the slug in letterspaced Archiv capitals. The trial cut has no slash or
+     underscore, so those fall through to the grotesques after it */
+  .name {
     margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+    color: var(--text);
+  }
+
+  .card a:is(:hover, :focus-visible) .name {
+    color: var(--hover);
+  }
+
+  /* the score in Manrope, over the meter's mono utility voice */
+  .caption :global(.consistency) {
+    font-family: var(--font-body);
+    font-weight: 300;
+    /* the line is about 17em wide (11 + 11 strip cells + 4 digits, at 0.6em
+       a character, and two gaps), so 5.8cqi is the size that just fits */
+    font-size: min(0.9rem, 5.8cqi);
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
   }
 </style>

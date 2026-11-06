@@ -34,12 +34,15 @@
   --accent-bright: #dfa14e;
   --hover: var(--accent); /* the sort buttons' amber, the o in the name */
 
+  /* the large year numerals: Manrope Thin (raised in TV mode) */
+  --numeral-weight: 100;
+
   --font-display: "Archiv Grotesk", "Helvetica Neue", arial, sans-serif;
   --font-body: "Manrope", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   /* side margin, as the bestiary gallery: full width less a gutter */
-  --gutter: clamp(16px, 4vw, 56px);
+  --gutter: clamp(1rem, 4vw, 3.5rem);
 
   color-scheme: dark;
 }
@@ -66,6 +69,29 @@ html {
   font-weight: 300;
   line-height: 1.55;
   text-size-adjust: 100%;
+}
+
+/* TV mode (?tv, set in Base.astro): type for a screen read from across a
+   room. The root size follows the screen's width, 24px on a 1080p panel and
+   48px on a 4K one at 1x, so the page keeps its proportions at any size; and
+   since every size is in rem, everything scales with it. Never below the
+   desk size, so a narrow window stays usable */
+html[data-tv] {
+  font-size: max(100%, 1.25vw);
+
+  /* a TV crushes near-blacks together and is read from across a lit room, so
+     the ground's layers, the rules and the reading colours all spread
+     further apart. The ground and the accent stay. On --ground: surface
+     1.24:1, raised 1.46:1, line 2.7:1, title 9.7:1, muted 7.7:1 */
+  --surface: #2e271c;
+  --surface-raised: #3b3223;
+  --line: #665944;
+  --title: #c8bba9;
+  --muted: #b3a693;
+
+  /* Thin breaks up under a TV's scaling and sharpening; ExtraLight keeps
+     the numerals light but whole */
+  --numeral-weight: 200;
 }
 
 body {
@@ -160,16 +186,19 @@ img {
   color: var(--hover);
 }
 
-/* every page's title, under the header's large name: Archiv in title case,
-   the size of the sections' headings (.page-heading, in index.astro). The case is in the markup, since
-   CSS capitalize would capitalise "in" and "the" as well. Not in the bare
+/* every page's title, under the header's large name: Archiv capitals,
+   three quarters the size of the sections' headings (.page-heading, in
+   index.astro), a little letterspaced as capitals want. The markup keeps its
+   title case for anything that reads it without the styles. Not in the bare
    display pages, whose titles are in their help panels */
 main:not(.bare) h1:not(.mono),
-.masthead .heading h1:not(.mono) {
+body > .heading h1:not(.mono) {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 40px;
+  font-size: 1.875rem;
   line-height: 1.15;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--title);
 }
 
@@ -193,7 +222,7 @@ main:not(.bare) > :first-child {
   font-family: var(--font-body);
   font-weight: 300;
   font-style: italic;
-  font-size: 15px;
+  font-size: 0.9375rem;
   letter-spacing: 0;
   text-transform: none;
   color: var(--muted);

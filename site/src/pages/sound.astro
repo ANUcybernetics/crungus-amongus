@@ -132,7 +132,7 @@ const span = dated.at(0) === dated.at(-1) ? dated.at(0) : `${dated.at(0)}—${da
   /* the archive's heading, the size of the image archive's */
   /* the page title's size and colour, as the image archive's heading */
   #sound-heading {
-    font-size: 40px;
+    font-size: 2.5rem;
     color: var(--title);
   }
 
@@ -168,8 +168,8 @@ const span = dated.at(0) === dated.at(-1) ? dated.at(0) : `${dated.at(0)}—${da
   /* the image archive's years, over the mono class's utility voice */
   .year h3 {
     font-family: var(--font-body);
-    font-size: clamp(20px, 2.2vw, 36px);
-    font-weight: 100;
+    font-size: clamp(1.25rem, 2.2vw, 2.25rem);
+    font-weight: var(--numeral-weight);
     line-height: 1.2;
     letter-spacing: normal;
     border-block-end: 1px solid var(--line);

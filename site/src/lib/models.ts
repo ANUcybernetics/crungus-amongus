@@ -44,6 +44,28 @@ export function crungusness(model: ModelEntry): number | null {
   return scores.length ? Math.max(...scores) : null;
 }
 
+/** Every consistency score of one modality, the ground a single score is read
+ * against: per model (its crungusness, as the archive cards show) or per prompt
+ * (as the model pages show). Ascending. */
+export function consistencyScores(
+  data: SiteData,
+  modality: Modality,
+  per: "model" | "prompt",
+): number[] {
+  const models = data.models.filter((m) => m.modality === modality);
+  const scores =
+    per === "model"
+      ? models.map(crungusness)
+      : models.flatMap((m) => m.prompts.map((p) => p.consistency));
+  return scores.filter((s): s is number => s !== null).toSorted((a, b) => a - b);
+}
+
+/** Share of `scores` strictly below `value`, as a whole percentage. */
+export function percentileOf(value: number, scores: number[]): number {
+  if (scores.length === 0) return 0;
+  return Math.round((scores.filter((s) => s < value).length / scores.length) * 100);
+}
+
 /** Share of asks the provider's default filter refused, when it was measured.
  *
  * Historical: the filters are off now, so this does not move. Null when the

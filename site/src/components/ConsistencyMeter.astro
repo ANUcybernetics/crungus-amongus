@@ -1,6 +1,11 @@
 ---
-// Mean pairwise embedding similarity. Bands are set per modality from
-// the spread of the archive's scores.
+// Mean pairwise embedding similarity, typed as a strip of characters: every
+// other score in the modality binned into cells across the archive's own range
+// (blank, · a few, : many), with this score's cell a ●. A position among peers,
+// not a fill: a filled 0–1 bar read as a percentage, and since the archive's
+// scores bunch between about 0.5 and 1, every bar looked nearly full.
+import { siteData } from "../lib/data";
+import { consistencyScores, percentileOf } from "../lib/models";
 import type { Modality } from "../lib/schema";
 
 interface Props {
@@ -8,59 +13,88 @@ interface Props {
   label?: string;
   // video has no consistency score
   modality?: Exclude<Modality, "video">;
+  // what the value is: a model's best prompt score (the cards) or one prompt's
+  per?: "model" | "prompt";
+  // the strip's width in characters; the cards take fewer to fit one line
+  cells?: number;
 }
 
-const { value, label = "consistency", modality = "image" } = Astro.props;
-const bands = { image: { low: 0.55, high: 0.75 }, audio: { low: 0.65, high: 0.85 } }[modality];
+const {
+  value,
+  label = "consistency",
+  modality = "image",
+  per = "prompt",
+  cells = 15,
+} = Astro.props;
 const embedding = modality === "audio" ? "CLAP" : "CLIP";
+const scores = consistencyScores(siteData, modality, per);
+
+const lo = Math.min(...scores, value ?? 1);
+const hi = Math.max(...scores, value ?? 0);
+const cell = (s: number) => Math.min(cells - 1, Math.floor(((s - lo) / (hi - lo || 1)) * cells));
+
+const counts = Array.from<number>({ length: cells }).fill(0);
+for (const s of scores) counts[cell(s)]++;
+const densest = Math.max(...counts);
+// a third of the densest cell or more reads as crowded
+const glyph = (n: number) => (n === 0 ? " " : n * 3 < densest ? "·" : ":");
+const mark = value === null ? -1 : cell(value);
+const before = counts.slice(0, Math.max(mark, 0)).map(glyph).join("");
+const after = counts
+  .slice(mark + 1)
+  .map(glyph)
+  .join("");
+
+const peers = per === "model" ? "models" : "prompts";
+const percentile = value === null ? 0 : percentileOf(value, scores);
+const summary =
+  value === null
+    ? ""
+    : `consistency ${value.toFixed(2)}: higher than ${percentile}% of ${modality} ${peers} (range ${lo.toFixed(2)}–${hi.toFixed(2)})`;
 ---
 
 {value !== null && <span
   class="consistency mono"
-  title={`consistency: mean pairwise ${embedding} similarity within a prompt; archive cards show the higher prompt score`}
+  title={`${summary}. Mean pairwise ${embedding} similarity within a prompt; archive cards show the higher prompt score`}
 >
-  {/* no empty label, whose gap would push the meter off the card's edge */}
-  {label && <span class="muted">{label}</span>}
-  <meter min="0" max="1" low={bands.low} high={bands.high} optimum={0.99} value={value} />
+  {label && <span class="label muted">{label}</span>}
+  <span class="strip" role="img" aria-label={summary}
+    ><span class="peers">{before}</span><span class="score">●</span
+    ><span class="peers">{after}</span></span
+  >
   <span>{value.toFixed(2)}</span>
 </span>}
 
 <style>
+  /* one line always: a card that can't hold it shrinks the type instead
+     (see the cards' container sizing) */
   .consistency {
     display: inline-flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.6em;
+    white-space: nowrap;
   }
 
-  meter {
-    width: 4.5rem;
-    height: 0.5rem;
-
-    /* firefox */
-    background: var(--surface-raised);
-    border: none;
-
-    /* a capsule: round-ended track, and a round-ended fill inside it */
-    border-radius: 999px;
-    overflow: hidden;
+  /* always mono, even where a caption sets the score in Manrope: the label
+     reads as part of the typed strip, and every cell is one character wide */
+  .label,
+  .strip {
+    font-family: var(--font-mono);
+    white-space: pre;
+    letter-spacing: 0;
+    line-height: 1;
   }
 
-  meter::-webkit-meter-bar {
-    background: var(--surface-raised);
-    border: none;
-    border-radius: 999px;
-    height: 0.5rem;
+  .peers {
+    color: var(--text);
   }
 
-  meter::-webkit-meter-optimum-value,
-  meter::-webkit-meter-suboptimum-value,
-  meter::-webkit-meter-even-less-good-value {
-    background: var(--accent);
-    border-radius: 999px;
-  }
-
-  meter::-moz-meter-bar {
-    background: var(--accent);
-    border-radius: 999px;
+  /* Plex Mono has no ●, so the fallback font draws it: held to one cell so
+     that font's width can't shift the strip */
+  .score {
+    display: inline-block;
+    width: 1ch;
+    text-align: center;
+    color: var(--accent);
   }
 </style>

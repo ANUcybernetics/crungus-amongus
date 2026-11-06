@@ -6,11 +6,13 @@ import {
   byTimeline,
   clipCount,
   coverClip,
+  consistencyScores,
   coverImage,
   crungusness,
   generatedModels,
   imageCount,
   modelRefusals,
+  percentileOf,
   refusalRate,
 } from "../src/lib/models";
 import type { ModelEntry } from "../src/lib/schema";
@@ -128,6 +130,21 @@ function fakeModel(overrides: Partial<ModelEntry>): ModelEntry {
 }
 
 describe("helpers", () => {
+  it("consistencyScores gathers one modality's scores, ascending", () => {
+    for (const per of ["model", "prompt"] as const) {
+      const scores = consistencyScores(siteData, "image", per);
+      expect(scores.length).toBeGreaterThan(0);
+      expect(scores).toEqual(scores.toSorted((a, b) => a - b));
+    }
+    expect(consistencyScores(siteData, "video", "prompt")).toEqual([]);
+  });
+
+  it("percentileOf counts the scores strictly below", () => {
+    expect(percentileOf(0.5, [0.2, 0.4, 0.5, 0.9])).toBe(50);
+    expect(percentileOf(0.1, [0.2, 0.4])).toBe(0);
+    expect(percentileOf(0.5, [])).toBe(0);
+  });
+
   it("crungusness is the max consistency across prompts", () => {
     expect(crungusness(fakeModel({}))).toBe(0.8);
   });

@@ -1,5 +1,5 @@
 ---
-import { clipCount, coverClip, crungusness, releaseYear } from "../lib/models";
+import { clipCount, coverClip, crungusness } from "../lib/models";
 import { path } from "../lib/paths";
 import type { ModelEntry } from "../lib/schema";
 import AudioClip from "./AudioClip.astro";
@@ -16,18 +16,21 @@ const score = crungusness(model);
 ---
 
 <article class="card">
-  <a href={path(`/model/${model.slug}/`)}>
-    <h3 class="mono">{model.owner}/{model.name}</h3>
-  </a>
+  <div class="head">
+    <a href={path(`/model/${model.slug}/`)}>
+      <h3 class="mono">{model.owner}/{model.name}</h3>
+    </a>
+    <span class="count mono muted">{count} {count === 1 ? "clip" : "clips"}</span>
+  </div>
   <p class="meta mono muted">
-    <span> {releaseYear(model)} · {count} {count === 1 ? "clip" : "clips"} </span>
-    <ConsistencyMeter value={score} label="" modality="audio" />
+    <ConsistencyMeter value={score} modality="audio" per="model" />
   </p>
   {clip && <AudioClip clip={clip} label={`crungus as played by ${model.owner}/${model.name}`} />}
 </article>
 
 <style>
   .card {
+    container-type: inline-size;
     padding: 0.9rem 1rem 1rem;
     background: var(--surface);
     border: 1px solid var(--line);
@@ -49,11 +52,27 @@ const score = crungusness(model);
     color: var(--hover);
   }
 
-  .meta {
+  /* the name, and the clip count set against the right edge */
+  .head {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     gap: 0.5rem;
+  }
+
+  .count {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .meta {
     margin: 0.2rem 0 0.7rem;
+  }
+
+  /* shrunk to stay one line: about 19em (11 + 15 cells + 4 digits at 0.6em a
+     character, and two gaps) */
+  .meta :global(.consistency) {
+    font-size: min(1em, 5.2cqi);
   }
 </style>
