@@ -96,24 +96,6 @@ const current = (item: NavItem) =>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <script is:inline>
-      // TV mode, for a screen read from across a room: ?tv turns it on for
-      // this browser, ?tv=off turns it off. Set before first paint, so the
-      // page never shows at desk size first
-      (() => {
-        const key = "crungus-tv";
-        const asked = new URLSearchParams(location.search).get("tv");
-        let on = asked !== null && asked !== "off";
-        try {
-          if (asked === "off") localStorage.removeItem(key);
-          else if (on) localStorage.setItem(key, "1");
-          else on = localStorage.getItem(key) === "1";
-        } catch {
-          // no storage: the address alone decides
-        }
-        if (on) document.documentElement.dataset.tv = "";
-      })();
-    </script>
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Crungus Amongus" />
@@ -233,18 +215,14 @@ const current = (item: NavItem) =>
   .wordmark {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: min(4.03rem, (100vw - 2 * var(--gutter)) / 8.6);
+    /* smaller than the type around it would suggest: at the root's full
+       scale on a TV a larger name makes the pinned masthead take a third of
+       the screen, and pushes the menu off the name's line */
+    font-size: min(1.3125rem, (100vw - 2 * var(--gutter)) / 17.2);
     line-height: 1;
     letter-spacing: 0.005em;
     color: var(--text);
     margin: 0;
-  }
-
-  /* in TV mode the name grows less than the type around it: at full scale the
-     pinned masthead would take a third of the screen, and push the menu off
-     the name's line */
-  :global(html[data-tv]) .wordmark {
-    font-size: 2.625rem;
   }
 
   /* the o of amongus, in the accent of the archive's sort buttons */

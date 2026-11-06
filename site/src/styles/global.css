@@ -14,6 +14,17 @@
   font-display: swap;
 }
 
+/* the sections' subheadings. K-Type's free download, which is licensed for
+   personal use only: putting it on the public site needs their Commercial
+   Licence (k-type.com/licences) */
+@font-face {
+  font-family: Adequate;
+  src: url("../assets/fonts/Adequate-ExtraLight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: Manrope;
   src: url("../assets/fonts/Manrope-Thin.otf") format("opentype");
@@ -24,21 +35,28 @@
 
 :root {
   --ground: #17140f;
-  --surface: #211c14;
-  --surface-raised: #2a2418;
-  --line: #3a3226;
+
+  /* set for a TV, which crushes near-blacks together and is read from across
+     a lit room, so the ground's layers, the rules and the reading colours sit
+     well apart. On --ground: surface 1.24:1, raised 1.46:1, line 2.7:1,
+     title 9.7:1, muted 7.7:1 */
+  --surface: #2e271c;
+  --surface-raised: #3b3223;
+  --line: #665944;
   --text: #d9cfbf;
-  --title: #ac9f91; /* the pages' titles, their intros and links */
-  --muted: #968a7a; /* clears AA on --surface (5.01:1) and --surface-raised (4.56:1); #8d8171 was 4.44 */
+  --title: #c8bba9; /* the pages' titles, their intros and links */
+  --muted: #b3a693;
   --accent: #c08434;
   --accent-bright: #dfa14e;
   --hover: var(--accent); /* the sort buttons' amber, the o in the name */
 
-  /* the large year numerals: Manrope Thin (raised in TV mode) */
-  --numeral-weight: 100;
+  /* the large year numerals: ExtraLight, not Thin, which breaks up under a
+     TV's scaling and sharpening */
+  --numeral-weight: 200;
 
   --font-display: "Archiv Grotesk", "Helvetica Neue", arial, sans-serif;
   --font-body: "Manrope", system-ui, sans-serif;
+  --font-intro: "Adequate", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   /* side margin, as the bestiary gallery: full width less a gutter */
@@ -64,34 +82,18 @@ html {
   color: var(--text);
   font-family: var(--font-body);
 
+  /* type for a screen read from across a room. The root size follows the
+     screen's width, 24px on a 1080p panel and 48px on a 4K one at 1x, so the
+     page keeps its proportions at any size; and since every size is in rem,
+     everything scales with it. Never below 16px, so a narrow window stays
+     usable */
+  font-size: max(100%, 1.25vw);
+
   /* Light, not Thin: hairline strokes break up as light text on a dark
-     ground at reading sizes. Thin is kept for the large year numerals */
+     ground at reading sizes */
   font-weight: 300;
   line-height: 1.55;
   text-size-adjust: 100%;
-}
-
-/* TV mode (?tv, set in Base.astro): type for a screen read from across a
-   room. The root size follows the screen's width, 24px on a 1080p panel and
-   48px on a 4K one at 1x, so the page keeps its proportions at any size; and
-   since every size is in rem, everything scales with it. Never below the
-   desk size, so a narrow window stays usable */
-html[data-tv] {
-  font-size: max(100%, 1.25vw);
-
-  /* a TV crushes near-blacks together and is read from across a lit room, so
-     the ground's layers, the rules and the reading colours all spread
-     further apart. The ground and the accent stay. On --ground: surface
-     1.24:1, raised 1.46:1, line 2.7:1, title 9.7:1, muted 7.7:1 */
-  --surface: #2e271c;
-  --surface-raised: #3b3223;
-  --line: #665944;
-  --title: #c8bba9;
-  --muted: #b3a693;
-
-  /* Thin breaks up under a TV's scaling and sharpening; ExtraLight keeps
-     the numerals light but whole */
-  --numeral-weight: 200;
 }
 
 body {

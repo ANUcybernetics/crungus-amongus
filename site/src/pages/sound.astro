@@ -152,13 +152,14 @@ const span = dated.at(0) === dated.at(-1) ? dated.at(0) : `${dated.at(0)}—${da
     margin-block-start: 1rem;
   }
 
-  /* the section's subheading under its heading: italic Manrope at half as
-     big again as the text around it, in the title case the markup is
+  /* the section's subheading under its heading: Adequate Extra Light, at
+     about the size of the text around it, in the title case the markup is
      written in */
   .section-intro {
-    font-family: var(--font-body);
-    font-size: 1.5em;
-    font-style: italic;
+    margin-block-start: 0.5em;
+    font-family: var(--font-intro);
+    font-size: 0.975em;
+    font-weight: 200;
     color: var(--title);
   }
 

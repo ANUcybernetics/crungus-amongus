@@ -75,21 +75,21 @@ const span = dated.at(0) === dated.at(-1) ? dated.at(0) : `${dated.at(0)}—${da
   }
 
   /* the archive's heading, in the page title's colour as the image archive's
-     is; that heading's row is ~3px deeper than it, as its sort buttons hang
-     below the baseline, and this page has none, so the margin makes up the
-     gap to the intro */
+     is; no margin below, so the gap to the intro is the intro's own, as on
+     the other archives */
   #video-heading {
     color: var(--title);
-    margin-block-end: 1.1875rem;
+    margin-block-end: 0;
   }
 
-  /* the section's subheading under its heading: italic Manrope at half as
-     big again as the text around it, in the title case the markup is
+  /* the section's subheading under its heading: Adequate Extra Light, at
+     about the size of the text around it, in the title case the markup is
      written in */
   .section-intro {
-    font-family: var(--font-body);
-    font-size: 1.5em;
-    font-style: italic;
+    margin-block-start: 0.5em;
+    font-family: var(--font-intro);
+    font-size: 0.975em;
+    font-weight: 200;
     color: var(--title);
   }
 

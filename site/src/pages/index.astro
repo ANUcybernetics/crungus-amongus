@@ -232,7 +232,7 @@ const imageTotal = models.reduce(
       if (!frame) frame = requestAnimationFrame(step);
     };
     // the halves' and letters' sizes, which change with the font's arrival
-    // and TV mode
+    // and the root size, which follows the window's width
     new ResizeObserver(() => {
       const fade = FADE_EM * parseFloat(getComputedStyle(before).fontSize);
       masthead.style.setProperty("--fold-before", `${before.offsetWidth}px`);
@@ -299,7 +299,7 @@ const imageTotal = models.reduce(
   }
 
   /* the title on one line: its usual size where the column holds it, and
-     just small enough to fit where it doesn't (TV mode's larger type). The
+     just small enough to fit where it doesn't (the larger type on a wide screen). The
      line is about 19.8em wide, so 5cqi is the size that fills the column */
   .ledes h1 {
     font-size: min(1.875rem, 5cqi);
@@ -478,18 +478,20 @@ const imageTotal = models.reduce(
     }
   }
 
-  /* twice the last lede's 2.25rem, which this margin collapses into */
+  /* twice the last lede's 2.25rem, which this margin collapses into; none
+     below, so the gap to the intro is the intro's own margin */
   .strip-heading {
-    margin: 4.5rem 0 0.5rem;
+    margin: 4.5rem 0 0;
   }
 
-  /* the section's subheading under its heading: italic Manrope at half as
-     big again as the text around it, in the title case the markup is
+  /* the section's subheading under its heading: Adequate Extra Light, at
+     about the size of the text around it, in the title case the markup is
      written in */
   .section-intro {
-    font-family: var(--font-body);
-    font-size: 1.5em;
-    font-style: italic;
+    margin-block-start: 0.5em;
+    font-family: var(--font-intro);
+    font-size: 0.975em;
+    font-weight: 200;
     color: var(--title);
   }
 
