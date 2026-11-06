@@ -25,9 +25,16 @@ interface Props {
   bare?: boolean;
   // corpus key of the image a shared link previews with
   image?: string | null;
+  // the wordmark's o carries the rest of the name, folded away, for the page
+  // to open (see .fold below); otherwise the name is set in full
+  unfold?: boolean;
 }
 
-const { title, description, bare = false } = Astro.props;
+const { title, description, bare = false, unfold = false } = Astro.props;
+
+// the rest of the name, a letter at a time, for each to fade up on its own
+const before = [..."crungus am"];
+const after = [..."ngus"];
 
 // link previews: the page's own image, else the newest year's most typical
 // crungus. JPEG, since the services that unfurl links don't all read AVIF
@@ -127,7 +134,15 @@ const current = (item: NavItem) =>
     {!bare && <div class="masthead">
       <header>
         <p class="wordmark">
-          <span class="accent" aria-hidden="true">o</span>
+          {!unfold && <span aria-hidden="true">crungus am<span class="accent">o</span>ngus</span>}
+          {unfold && <span class="fold before" aria-hidden="true"
+            >{before.map((letter) => <span class="letter">{letter}</span>)}</span
+          >}
+          {unfold && <span class="accent" aria-hidden="true"
+            >o<span class="fold after"
+              >{after.map((letter) => <span class="letter">{letter}</span>)}</span
+            ></span
+          >}
           <span class="visually-hidden">crungus amongus</span>
         </p>
         <nav aria-label="Site">
@@ -211,13 +226,14 @@ const current = (item: NavItem) =>
     padding-block: 1.4rem 0.6rem;
   }
 
-  /* the bestiary's specimen name, cut down to its amber o: large lowercase
-     Archiv. The name itself is there for screen readers; the images page
-     sets it in full under its huddle */
+  /* the bestiary's specimen name: large lowercase Archiv, the o of amongus
+     in amber. Read once, from the hidden copy, for screen readers. On the
+     images page it starts as just the o and opens out (see .fold). The name
+     is about 8.5em wide, so on a phone it shrinks to fit the window */
   .wordmark {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 5.375rem;
+    font-size: min(4.03rem, (100vw - 2 * var(--gutter)) / 8.6);
     line-height: 1;
     letter-spacing: 0.005em;
     color: var(--text);
@@ -228,12 +244,77 @@ const current = (item: NavItem) =>
      pinned masthead would take a third of the screen, and push the menu off
      the name's line */
   :global(html[data-tv]) .wordmark {
-    font-size: 3.5rem;
+    font-size: 2.625rem;
   }
 
   /* the o of amongus, in the accent of the archive's sort buttons */
   .wordmark .accent {
+    position: relative;
+    display: inline-block;
     color: var(--accent);
+  }
+
+  /* the rest of the name, folded into the o, which the images page opens as
+     its own copy of the name scrolls under the masthead. The page sets, each
+     from 0 to 1:
+       --slide    how far the o has gone right, of the width of "crungus am"
+                  (--fold-before, which it measures)
+       --extrude  how much of each half has been drawn out of the o: "crungus
+                  am" leftward out of its left side, "ngus" rightward out of
+                  its right. It lags the o a little, so the left half is
+                  carried right at first and then glides left into place
+       --done     the last stretch, which brings every letter fully up
+     and, for the letters' fade, --fade-gain: each half's width over the
+     distance a letter takes to come up from the ground once it's clear of
+     the o; and on each letter --at, its centre as a share of its half.
+     Out of the flow, so the header's layout never moves */
+  .wordmark {
+    position: relative;
+  }
+
+  .wordmark .accent:has(.fold) {
+    z-index: 1;
+    translate: calc(var(--slide, 0) * var(--fold-before, 0px)) 0;
+  }
+
+  .fold {
+    position: absolute;
+    inset-block-start: 0;
+    color: var(--text);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* in the name's own place, carried right by however far the o is ahead
+     of the drawing out, and hidden right of the o's left side */
+  .fold.before {
+    inset-inline-start: 0;
+    translate: calc((var(--slide, 0) - var(--extrude, 0)) * var(--fold-before, 0px)) 0;
+    clip-path: inset(0 calc((1 - var(--extrude, 0)) * 100%) 0 0);
+  }
+
+  /* riding with the o, pushed out of its right side */
+  .fold.after {
+    inset-inline-start: 100%;
+    translate: calc((var(--extrude, 0) - 1) * 100%) 0;
+    clip-path: inset(0 0 0 calc((1 - var(--extrude, 0)) * 100%));
+  }
+
+  /* each letter up from the ground as it draws away from the o */
+  .before .letter {
+    opacity: clamp(
+      0,
+      (var(--extrude, 0) - var(--at, 0)) * var(--fade-gain-before, 1) + var(--done, 0),
+      1
+    );
+  }
+
+  .after .letter {
+    opacity: clamp(
+      0,
+      (var(--extrude, 0) - 1 + var(--at, 0)) * var(--fade-gain-after, 1) + var(--done, 0),
+      1
+    );
   }
 
   /* two rows shared by every group, so the links sit on one line with each
