@@ -28,7 +28,7 @@ const score = crungusness(model);
     )}
     <div class="caption">
       <h3 class="name">{model.owner}/<wbr />{model.name}</h3>
-      <ConsistencyMeter value={score} per="model" cells={11} />
+      <ConsistencyMeter value={score} label="" per="model" cells={11} />
     </div>
   </a>
 </article>
@@ -111,9 +111,9 @@ const score = crungusness(model);
   .caption :global(.consistency) {
     font-family: var(--font-body);
     font-weight: 300;
-    /* the line is about 17em wide (11 + 11 strip cells + 4 digits, at 0.6em
-       a character, and two gaps), so 5.8cqi is the size that just fits */
-    font-size: min(0.9rem, 5.8cqi);
+    /* the line is about 9.6em wide (11 strip cells + 4 digits, at 0.6em a
+       character, and a gap), so 10cqi is the size that just fits */
+    font-size: min(0.9rem, 10cqi);
     letter-spacing: 0;
     font-variant-numeric: tabular-nums;
   }

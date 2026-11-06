@@ -126,7 +126,10 @@ const current = (item: NavItem) =>
   <body>
     {!bare && <div class="masthead">
       <header>
-        <p class="wordmark">crungus am<span class="accent">o</span>ngus</p>
+        <p class="wordmark">
+          <span class="accent" aria-hidden="true">o</span>
+          <span class="visually-hidden">crungus amongus</span>
+        </p>
         <nav aria-label="Site">
           {groups.map((group) => <div class="group" role="group" aria-label={group.label}>
             <span class="brace" aria-hidden="true">
@@ -208,7 +211,9 @@ const current = (item: NavItem) =>
     padding-block: 1.4rem 0.6rem;
   }
 
-  /* the bestiary's specimen name: large lowercase Archiv */
+  /* the bestiary's specimen name, cut down to its amber o: large lowercase
+     Archiv. The name itself is there for screen readers; the images page
+     sets it in full under its huddle */
   .wordmark {
     font-family: var(--font-display);
     font-weight: 400;
@@ -226,7 +231,7 @@ const current = (item: NavItem) =>
     font-size: 3.5rem;
   }
 
-  /* the o in amongus, in the accent of the archive's sort buttons */
+  /* the o of amongus, in the accent of the archive's sort buttons */
   .wordmark .accent {
     color: var(--accent);
   }

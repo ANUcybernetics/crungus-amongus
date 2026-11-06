@@ -56,7 +56,7 @@ const shareTitle = (prompt: string, key: string) =>
       .filter((prompt) => prompt.images.length + prompt.clips.length + prompt.videos.length > 0)
       .map((prompt) => <section aria-labelledby={`prompt-${prompt.prompt_slug}`}>
         <div class="prompt-head">
-          <h2 id={`prompt-${prompt.prompt_slug}`} class="mono">“{prompt.prompt}”</h2>
+          <h2 id={`prompt-${prompt.prompt_slug}`}>“{prompt.prompt}”</h2>
           {model.modality !== "video" && (
             <ConsistencyMeter value={prompt.consistency} modality={model.modality} />
           )}
@@ -338,8 +338,7 @@ const shareTitle = (prompt: string, key: string) =>
   }
 
   h2 {
-    font-size: 1rem;
-    font-weight: 500;
+    font-weight: 400;
     margin: 0;
   }
 

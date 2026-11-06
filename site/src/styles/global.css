@@ -116,6 +116,15 @@ h3 {
   text-wrap: balance;
 }
 
+/* every section heading in letterspaced Archiv capitals at the page title's
+   size; the markup keeps its case for anything that reads it without the
+   styles. Pages set only the headings' spacing, not their size */
+h2 {
+  font-size: 1.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 a {
   color: var(--title);
   text-decoration-thickness: 1px;
@@ -167,6 +176,16 @@ img {
   color: var(--muted);
 }
 
+/* read by screen readers, not drawn */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* a permalink's share button reads as a link, in the utility voice */
 .share {
   background: none;
@@ -186,11 +205,11 @@ img {
   color: var(--hover);
 }
 
-/* every page's title, under the header's large name: Archiv capitals,
-   three quarters the size of the sections' headings (.page-heading, in
-   index.astro), a little letterspaced as capitals want. The markup keeps its
-   title case for anything that reads it without the styles. Not in the bare
-   display pages, whose titles are in their help panels */
+/* every page's title, under the header's large name: Archiv capitals, the
+   size of the sections' headings (the h2 rule above), a little letterspaced
+   as capitals want. The markup keeps its title case for anything that reads
+   it without the styles. Not in the bare display pages, whose titles are in
+   their help panels */
 main:not(.bare) h1:not(.mono),
 body > .heading h1:not(.mono) {
   font-family: var(--font-display);

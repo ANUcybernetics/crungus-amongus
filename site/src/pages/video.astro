@@ -71,27 +71,25 @@ const span = dated.at(0) === dated.at(-1) ? dated.at(0) : `${dated.at(0)}—${da
   }
 
   h2 {
-    font-size: 1.6rem;
     margin: 0 0 0.75rem;
   }
 
-  /* the archive's heading, the size of the image archive's; that heading's row
-     is ~3px deeper than it, as its sort buttons hang below the baseline, and
-     this page has none, so the margin makes up the gap to the intro */
-  /* the page title's size and colour, as the image archive's heading */
+  /* the archive's heading, in the page title's colour as the image archive's
+     is; that heading's row is ~3px deeper than it, as its sort buttons hang
+     below the baseline, and this page has none, so the margin makes up the
+     gap to the intro */
   #video-heading {
-    font-size: 2.5rem;
     color: var(--title);
     margin-block-end: 1.1875rem;
   }
 
-  /* the section's subheading under its heading: letterspaced Archiv
-     capitals */
+  /* the section's subheading under its heading: italic Manrope at half as
+     big again as the text around it, in the title case the markup is
+     written in */
   .section-intro {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-size: 1.5em;
+    font-style: italic;
     color: var(--title);
   }
 
