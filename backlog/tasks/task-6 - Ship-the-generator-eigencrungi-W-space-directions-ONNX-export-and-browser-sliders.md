@@ -52,7 +52,7 @@ Task-1 trains a generator and stops at a go/no-go gate. This task takes a genera
 - rendering coalesced with requestAnimationFrame, dropping frames while a run is in flight; draw to the same stage canvas.
 - keep the maths in `site/src/lib/` with vitest coverage for the slider-to-w arithmetic.
 - copy: extend the intro and about page with what the generator is, and that it is not any of the archive's models. Colophon gains a line about onnxruntime-web.
-- README: the new stages and the model asset flow. CLAUDE.md: one line that generator weights never go in git and that a retrain means new hashed keys plus a `gan.json` update.
+- README: the new stages and the model asset flow. AGENTS.md: one line that generator weights never go in git and that a retrain means new hashed keys plus a `gan.json` update.
 
 ### Verification
 
@@ -72,6 +72,6 @@ Task-1 trains a generator and stops at a go/no-go gate. This task takes a genera
 - [ ] #7 sliders edit the latent along PCA directions in sigma units, a new random crungus can be sampled via the mapping network, reset returns to the mean, and WebGPU frames take under 100 ms on a laptop
 - [ ] #8 pixels and semantic modes remain available with no regression
 - [ ] #9 the agent-browser smoke test confirms the stage canvas changes when a slider moves, on both execution providers
-- [ ] #10 README, CLAUDE.md and the about page describe the generator, its stages and the weights-never-in-git constraint
+- [ ] #10 README, AGENTS.md and the about page describe the generator, its stages and the weights-never-in-git constraint
 - [ ] #11 all pipeline and site checks are green, and the live page loads the generator from the bucket with the expected headers after sync and push
 <!-- AC:END -->
